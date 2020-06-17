@@ -24,7 +24,11 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
 
-        <Person/>
+        {this.state.persons.map(pers => {
+           return <Person name={pers.name} age={pers.age}/>
+        })}
+
+        
       </div>
     );
   }

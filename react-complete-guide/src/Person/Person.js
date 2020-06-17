@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
 
-class Person extends Component {
+const person = ( props ) => {   
 
-    state={
-        persons:[
-            {name:'Premendra',age:29},
-            {name:'Vandana',age:26},
-            {name:'Narendra',age:27}
-        ]
-
-        
-    };
-
-
-    render(){
+    
         return (
-            <div>Premendra</div>
+            <div>I am {props.name} and I am {props.age} years old.</div>
         );
-    };
+    
 
 }
 
-export default Person;
+export default person;

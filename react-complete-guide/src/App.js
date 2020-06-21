@@ -3,13 +3,29 @@ import logo from './logo.svg';
 import './App.css';
 import Person from './Person/Person';
 
+import topicMgmtInstance from './axios';
+import Views from './Views/Views';
+
 class App extends Component {
+
+  componentDidMount(){
+    topicMgmtInstance.get('/groups')
+    .then(response =>{
+      console.log(response);
+      this.setState({
+        views:response.data
+      });
+    })
+  }
+
   state={
     persons:[
         {name:'Premendra',age:29},
         {name:'Vandana',age:26},
         {name:'Narendra',age:27}
-    ]    
+    ],
+    views:[],
+    counter:1    
 };
 
 
@@ -24,8 +40,13 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
 
+
         {this.state.persons.map(pers => {
            return <Person name={pers.name} age={pers.age}/>
+        })}
+
+        {this.state.views.map(pers => {
+           return <Views title={pers.title}/>
         })}
 
         

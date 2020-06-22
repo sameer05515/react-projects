@@ -10,6 +10,10 @@ import topicMgmtInstance from './axios';
 //import ReactQuill from 'react-quill';
 //import 'react-quill/dist/quill.snow.css';
 
+// import 'jodit';
+// import 'jodit/build/jodit.min.css';
+// import JoditEditor from "jodit-react";
+
 import items from "./data";
 
 class App extends Component {
@@ -37,10 +41,14 @@ class App extends Component {
   scrollTo = (name) => {
     this._scroller.scrollTo(name);
   }
+
+  updateContent(value) {
+    this.setState({ content: value })
+  }
   render() {
     return (
       <div className="app">
-        {
+        {/* {
           items.map(({ name }) => <button onClick={() => this.scrollTo(name)}>{name}</button>)
         }
         <ScrollView ref={scroller => this._scroller = scroller}>
@@ -56,7 +64,7 @@ class App extends Component {
               );
             })}
           </div>
-        </ScrollView>
+        </ScrollView> */}
 
         {
           this.state.views.map(({ id, title }) => <button onClick={() => this.scrollTo(id)}>{title}</button>)
@@ -71,12 +79,24 @@ class App extends Component {
                 <ScrollElement name={group.id}>
                   <div className="item">
 
-                  {/* <strong>{group.title}</strong>  : <TrixEditor value={group.description} ></TrixEditor> */}
-                    
-                    {/* <strong>{group.title}</strong>  : {group.description} */}
+                    {/* <strong>{group.title}</strong>  : <TrixEditor value={group.description} ></TrixEditor> */}
 
-                    
-                    <ReactQuill className={"blurred-editor"} theme="snow" readOnly value={group.description} />
+                    <strong>{group.title}</strong>  : {group.description}
+
+
+                    {/* <ReactQuill 
+                    className={"blurred-editor"} 
+                    theme="snow" 
+                    readOnly 
+                    value={group.description} /> */}
+
+                    {/* <JoditEditor
+                      value={group.description}
+                      config={{
+                        readonly: true // all options from https://xdsoft.net/jodit/play.html
+                      }}
+                      
+                    /> */}
 
                     {/* <div>
                       <input type="hidden" id="trix" value={group.description} />
@@ -85,7 +105,7 @@ class App extends Component {
                       />
                     </div> */}
 
-                   
+
 
 
                   </div>

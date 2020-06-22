@@ -4,7 +4,7 @@ import Person from './Person/Person';
 
 import topicMgmtInstance from './axios';
 import Views from './Views/Views';
-import List from './List/List'
+//import List from './List/List'
 
 class App extends Component {
 
@@ -40,13 +40,13 @@ class App extends Component {
            return <Person name={pers.name} age={pers.age}/>
         })}
 
-        {
+        {/* {
           <List list={this.state.views}/>
-        }
+        } */}
 
-        {/* {this.state.views.map(pers => {
+         {this.state.views.map(pers => {
            return <Views title={pers.title}/>
-        })} */}
+        })} 
 
         
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import ScrollView, { ScrollElement } from "./scroller";
 import topicMgmtInstance from './axios';
+import Wysiwyg from './Wysiwyg';
 
 import items from "./data";
 
@@ -61,7 +62,7 @@ class App extends Component {
                 <ScrollElement name={id}>
                   <div className="item">
                     
-                   <strong>{title}</strong>  : {description}
+                   <strong>{title}</strong>  : <Wysiwyg value={description}/>
                   </div>
                 </ScrollElement>
               );

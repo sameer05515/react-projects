@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "dependencies": {},
+    "dependencies": {
+        "systemjs": "^6.8.3"
+    },
     "devDependencies": {
         "lite-server": "^2.6.1"
     },

@@ -7,11 +7,24 @@
     <title>Document</title>
     <!-- <script src="dist/basics/function-types.js"></script> -->
     <!-- <script src="dist/class-interfaces/class_definition.js"></script> -->
-    <script src="dist/class-interfaces/class-inheritance.js"></script>
+    <!-- <script src="dist/class-interfaces/class-inheritance.js"></script> -->
+
+    <!-- <script src="dist/namespce/module_runner.js"></script> -->
+
 </head>
 
 <body>
 
+    <script>
+        var myNS = (function() {
+            return {
+                displayData: function() {
+                    console.log('Will display data');
+                }
+            }
+        })();
+        myNS.displayData();
+    </script>
 </body>
 
 </html>

@@ -9,21 +9,33 @@
     <!-- <script src="dist/class-interfaces/class_definition.js"></script> -->
     <!-- <script src="dist/class-interfaces/class-inheritance.js"></script> -->
 
-    <!-- <script src="dist/namespce/module_runner.js"></script> -->
+
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script type="systemjs-module" src="dist/namespce/module_runner.js"></script>
 
 </head>
 
 <body>
 
     <script>
-        var myNS = (function() {
-            return {
-                displayData: function() {
-                    console.log('Will display data');
-                }
-            }
-        })();
-        myNS.displayData();
+        // var myNS = (function() {
+        //     return {
+        //         displayData: function() {
+        //             console.log('Will display data');
+        //         }
+        //     }
+        // })();
+        // myNS.displayData();
+
+        // SystemJS.config({
+        //     baseURL: '/',
+        //     packages: {
+        //         '/': {
+        //             defaultExtension: 'js'
+        //         }
+        //     }
+        // });
+        // SystemJS.import('dist/namespce/module_runner.js')
     </script>
 </body>
 

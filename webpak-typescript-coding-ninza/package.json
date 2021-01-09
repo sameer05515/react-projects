@@ -1,0 +1,17 @@
+{
+  "name": "webpak-typescript-coding-ninza",
+  "version": "1.0.0",
+  "description": "https://www.youtube.com/watch?v=lXWDkPCzeE4",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
+    "webpack": "^5.12.1",
+    "webpack-cli": "^4.3.1"
+  }
+}

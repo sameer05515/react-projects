@@ -18,3 +18,8 @@ create "src" for all source typescript files
 
 create "public" / "dist" folder to contain final files.
 
+===========================================
+
+update below values in tsconfig.json
+"target": "es6",                          
+"module": "ES2015",

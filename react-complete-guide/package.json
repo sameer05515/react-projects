@@ -6,7 +6,7 @@
   "homepage": "http://127.0.0.1:8080/my-react-app",
 
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "1.1.5"

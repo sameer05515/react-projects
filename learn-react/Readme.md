@@ -185,9 +185,10 @@ Windows JacobEnsor's solution
       - for state that updates together, or only one field at a time updates - a single useState object
       - for state where user interactions update different parts of the state - useReducer
     - Read more on https://tkdodo.eu/blog/use-state-vs-use-reducer
-- React context
+- **React context**
   - Context API
   - React’s useContext hook makes it easy to pass data throughout your app without manually passing props down the tree.
-  - Read more at:- https://daveceddia.com/usecontext-hook/
-  - 
+  - React Context is not optimized for high frequency changes.
+    - Redux is better tool for this purpose.
+  - Read more at:- https://daveceddia.com/usecontext-hook/  - 
   

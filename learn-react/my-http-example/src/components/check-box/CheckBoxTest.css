@@ -1,0 +1,20 @@
+.text {
+	width: 50%;
+	margin: auto;
+}
+
+.top {
+	/* margin: auto; */
+	margin-top: 4%;
+	width: 50%;
+	border: 2px ridge black;
+	background-color: #f1f1f1;
+}
+
+h3 {
+	text-align: center;
+}
+
+.row {
+	padding-left: 20%;
+}

@@ -1,7 +1,7 @@
-# React 
+# React Learning
 
 ## 1. Current Reading
-Section 10: Chapter 120
+Section 10: Chapter 128
 
 ## 2. Learn React
 - Learn next-gen javascript
@@ -190,5 +190,59 @@ Windows JacobEnsor's solution
   - React’s useContext hook makes it easy to pass data throughout your app without manually passing props down the tree.
   - React Context is not optimized for high frequency changes.
     - Redux is better tool for this purpose.
-  - Read more at:- https://daveceddia.com/usecontext-hook/  - 
-  
+  - Read more at:- https://daveceddia.com/usecontext-hook/
+- **Rules of Hooks**
+  - Only call React Hooks in React functions (React component functions and custom react hooks )
+  - Only call React hooks at the top level
+    - Don't call them in nested function
+    - Don't call them in any block statements
+  - third unofficial rule for **useEffect**:- Always add everything you refer to inside useEffect() as a dependency
+- **useImperativeHandle()** hook
+  - useImperativeHandle customizes the instance value that is exposed to parent components when using ref. As always, imperative code using refs should be avoided in most cases. useImperativeHandle should be used with forwardRef
+  - ```
+    function FancyInput(props, ref) {
+    const inputRef = useRef();
+    useImperativeHandle(ref, () => ({
+    focus: () => {
+    inputRef.current.focus();
+    }
+    }));
+    return <input ref={inputRef} ... />;
+    }
+    FancyInput = forwardRef(FancyInput);
+    ```
+  - Read more at https://reactjs.org/docs/hooks-reference.html#useimperativehandle
+
+### 3.11: Practice Project: Building a Food Order App
+- practical for concepts learnt so far
+
+
+
+
+
+
+------------------
+------------------
+## Additional notes
+### How To Call Web APIs with the useEffect Hook in React
+https://www.digitalocean.com/community/tutorials/how-to-call-web-apis-with-the-useeffect-hook-in-react
+
+### How to Use Bootstrap with React?
+https://www.geeksforgeeks.org/how-to-use-bootstrap-with-react/
+
+### React Router
+- https://v5.reactrouter.com/web/guides/quick-start
+- https://www.educative.io/blog/react-router-tutorial
+
+### How to get multiple checkbox values in React.js ?
+https://www.geeksforgeeks.org/how-to-get-multiple-checkbox-values-in-react-js/
+
+### How to Send GET and POST Requests with JavaScript Fetch API
+https://medium.com/meta-box/how-to-send-get-and-post-requests-with-javascript-fetch-api-d0685b7ee6ed
+
+### How to manage API calls in React 
+https://dev.to/adyasha8105/how-to-manage-api-calls-in-react-11a8
+
+### Differences between Functional Components and Class Components in React
+https://www.geeksforgeeks.org/differences-between-functional-components-and-class-components-in-react/
+

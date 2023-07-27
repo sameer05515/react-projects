@@ -7,8 +7,20 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const REACT_PORT=process.env.REACT_PORT || 3002;
 
+// Replace 'YOUR_USERNAME', 'YOUR_PASSWORD', 'YOUR_CLUSTER_NAME', and 'YOUR_DATABASE_NAME' with your actual MongoDB Atlas credentials
+// const username = 'prem';
+// const password = 'India@123';
+// const clusterName = 'cluster0.h9zdm';
+// const databaseName = 'mongodb_test';
+
+// const mongoDBUri = `mongodb+srv://${encodeURIComponent(username)}:${encodeURIComponent(
+//   password
+// )}@${clusterName}.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
+
+const mongoDBUri = 'mongodb://127.0.0.1:27017/mongodb_test';
+
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/mongodb_test', {
+mongoose.connect(mongoDBUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

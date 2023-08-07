@@ -1,8 +1,8 @@
 // redux/dataSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const dataSlice = createSlice({
-  name: 'data',
+  name: "data",
   initialState: [],
   reducers: {
     addData: (state, action) => {

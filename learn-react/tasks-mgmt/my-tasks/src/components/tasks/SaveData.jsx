@@ -8,25 +8,20 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { updateData } from "../../redux/dataSlice1";
+import { saveData as addData } from "../../redux/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { format } from "date-fns";
-import { enGB } from "date-fns/locale";
 import "./SaveDataComponent.css"; // Import custom CSS for styling
 import tagList from "./tagList";
 
-const EditDataComponent = ({ savedData }) => {
-  const [selectedDate, setSelectedDate] = useState(
-    format(new Date(savedData.date), "yyyy-MM-dd", { locale: enGB })
-  );
-  const [title, setTitle] = useState(savedData.title);
-  const [htmlText, setHtmlText] = useState(savedData.htmlText);
-  const [selectedTags, setSelectedTags] = useState(savedData.tags || []);
-  const [privateData, setPrivateData] = useState(savedData.private || false);
+const SaveDataComponent = () => {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [htmlText, setHtmlText] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
   const [tagFilterText, setTagFilterText] = useState("");
+  const [privateData, setPrivateData] = useState(false);
   const [errors, setErrors] = useState({});
-
   const dispatch = useDispatch();
 
   const handleDateChange = (event) => {
@@ -73,18 +68,17 @@ const EditDataComponent = ({ savedData }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (validateForm()) {
       const newData = {
-        id: savedData._id,
         date: selectedDate,
         title,
         htmlText,
         tags: selectedTags,
         private: privateData,
       };
-      dispatch(updateData(newData));
-
+      dispatch(addData(newData));
+      console.log("Data saved successfully");
       // Optionally, you can display a success message or clear the form after saving.
     }
   };
@@ -95,8 +89,7 @@ const EditDataComponent = ({ savedData }) => {
 
   return (
     <div>
-      <h2>Edit Data</h2>
-      {selectedDate}
+      <h2>Save Data</h2>
       <div>
         <TextField
           label="Date"
@@ -183,4 +176,4 @@ const EditDataComponent = ({ savedData }) => {
   );
 };
 
-export default EditDataComponent;
+export default SaveDataComponent;

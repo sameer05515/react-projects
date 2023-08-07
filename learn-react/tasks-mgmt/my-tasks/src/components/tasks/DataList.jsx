@@ -21,7 +21,6 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
   return (
     <div>
       <h2>Data List</h2>
-      {/* {JSON.stringify(dataList)} */}
       <ul>
         {dataList.map((item) => (
           <li
@@ -30,8 +29,8 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
             className={selectedItemId === item._id ? "selected-item" : ""}
           >
             [ {format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB })} ] -
-            Title: {item.title}
-            <div dangerouslySetInnerHTML={{ __html: item.htmlText }} />
+            : {item.title}
+            {/* <div dangerouslySetInnerHTML={{ __html: item.htmlText }} /> */}
           </li>
         ))}
       </ul>

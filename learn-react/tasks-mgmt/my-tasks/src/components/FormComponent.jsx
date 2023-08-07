@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Container } from '@mui/material';
+import React, { useState } from "react";
+import { TextField, Button, Box, Container } from "@mui/material";
 
 const FormComponent = () => {
   const [formData, setFormData] = useState({
-    date: '',
-    text: '',
+    date: "",
+    text: "",
   });
 
   const handleInputChange = (event) => {
@@ -19,7 +19,7 @@ const FormComponent = () => {
     event.preventDefault();
 
     // Perform any actions you want to take with the form data
-    console.log('Form Data:', formData);
+    console.log("Form Data:", formData);
   };
 
   return (

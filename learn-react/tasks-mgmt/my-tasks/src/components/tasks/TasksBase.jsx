@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import { Button } from "react-bootstrap";
 import * as PageModes from "../../common/taskPageModes";
 import ViewTask from "./ViewTask";
-import SaveDataComponent from "./SaveDataComponent3";
+import SaveDataComponent from "./SaveData";
 import DataList from "./DataList";
 import EditDataComponent from "./EditDataComponent";
 
@@ -37,7 +37,6 @@ function TasksBase() {
   const showAdd = () => {
     console.log("Add form will be shown");
     changePageMode(PageModes.NEW_ITEM);
-
   };
   const showData = (id) => {
     console.log("Show form will be shown");
@@ -51,7 +50,6 @@ function TasksBase() {
   };
   return (
     <Container>
-      
       {/* <Row>
                 <Col sm={3}>
                     <Row>
@@ -66,7 +64,7 @@ function TasksBase() {
                 <Col sm={9}>2 of 2</Col>
             </Row> */}
       <Row>
-        <Col sm={3}>
+        <Col sm={5}>
           <div style={{ backgroundColor: "lightblue" }}>
             <Button onClick={showAdd}>Add</Button>
             <Button onClick={showAdd}>Previous</Button>
@@ -81,11 +79,11 @@ function TasksBase() {
               </li>
             </ul>
           </div> */}
-          <DataList itemSelectionHandler={showData}/>
+          <DataList itemSelectionHandler={showData} />
         </Col>
 
-        <Col sm={9}>
-          {pageMode}
+        <Col sm={7}>
+          {/* {pageMode} */}
           {pageMode && pageMode === PageModes.NO_SELECTION && (
             <div>Please select any item</div>
           )}
@@ -102,7 +100,7 @@ function TasksBase() {
             <div>
               {/* Add form */}
               {/* <CreateNewTask /> */}
-              <SaveDataComponent/>
+              <SaveDataComponent />
               {/* <Button onClick={showAdd}>Save</Button>
               <Button onClick={showAdd}>Cancel</Button> */}
             </div>
@@ -124,6 +122,7 @@ function TasksBase() {
               <Button onClick={showAdd}>No</Button>
             </div>
           )}
+          {/* <SearchDataComponent/> */}
         </Col>
       </Row>
     </Container>

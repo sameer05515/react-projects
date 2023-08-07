@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -7,27 +7,34 @@ import {
   Checkbox,
   FormGroup,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateData } from "../../redux/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { format } from "date-fns";
-import { enGB } from "date-fns/locale";
-import "./SaveDataComponent.css"; // Import custom CSS for styling
-import tagList from "./tagList";
+import "./UpdateDataComponent.css"; // Import custom CSS for styling
 
-const EditDataComponent = ({ savedData }) => {
-  const [selectedDate, setSelectedDate] = useState(
-    format(new Date(savedData.date), "yyyy-MM-dd", { locale: enGB })
-  );
-  const [title, setTitle] = useState(savedData.title);
-  const [htmlText, setHtmlText] = useState(savedData.htmlText);
-  const [selectedTags, setSelectedTags] = useState(savedData.tags || []);
-  const [privateData, setPrivateData] = useState(savedData.private || false);
+const UpdateDataComponent = ({ match, history }) => {
+  const { id } = match.params;
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.data);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [htmlText, setHtmlText] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
   const [tagFilterText, setTagFilterText] = useState("");
   const [errors, setErrors] = useState({});
 
-  const dispatch = useDispatch();
+  const tagList = ["Tag 1", "Tag 2", "Tag 3"]; // Replace this with your list of tags
+
+  useEffect(() => {
+    const selectedItem = data.find((item) => item.id === id);
+    if (selectedItem) {
+      setSelectedDate(selectedItem.date);
+      setTitle(selectedItem.title);
+      setHtmlText(selectedItem.htmlText);
+      setSelectedTags(selectedItem.tags || []);
+    }
+  }, [data, id]);
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
@@ -73,19 +80,17 @@ const EditDataComponent = ({ savedData }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = async () => {
+  const handleUpdate = () => {
     if (validateForm()) {
-      const newData = {
-        id: savedData._id,
+      const updatedData = {
+        id,
         date: selectedDate,
         title,
         htmlText,
         tags: selectedTags,
-        private: privateData,
       };
-      dispatch(updateData(newData));
-
-      // Optionally, you can display a success message or clear the form after saving.
+      dispatch(updateData(updatedData));
+      history.push("/"); // Redirect to the data list after updating
     }
   };
 
@@ -96,7 +101,6 @@ const EditDataComponent = ({ savedData }) => {
   return (
     <div>
       <h2>Edit Data</h2>
-      {selectedDate}
       <div>
         <TextField
           label="Date"
@@ -163,24 +167,11 @@ const EditDataComponent = ({ savedData }) => {
           ))}
         </div>
       </div>
-      <div>
-        {/* New input for the 'private' field */}
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={privateData}
-              onChange={(e) => setPrivateData(e.target.checked)}
-              color="primary"
-            />
-          }
-          label="Private"
-        />
-      </div>
-      <Button variant="contained" onClick={handleSave}>
-        Save
+      <Button variant="contained" onClick={handleUpdate}>
+        Update
       </Button>
     </div>
   );
 };
 
-export default EditDataComponent;
+export default UpdateDataComponent;

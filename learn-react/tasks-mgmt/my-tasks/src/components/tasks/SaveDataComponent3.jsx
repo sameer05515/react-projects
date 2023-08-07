@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { saveData } from '../../redux/dataSlice1';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useState } from "react";
+import { TextField, Button, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { saveData } from "../../redux/dataSlice1";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const SaveDataComponent = () => {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [title, setTitle] = useState('');
-  const [htmlText, setHtmlText] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
+  const [title, setTitle] = useState("");
+  const [htmlText, setHtmlText] = useState("");
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
@@ -29,15 +29,15 @@ const SaveDataComponent = () => {
     const newErrors = {};
 
     if (!selectedDate.trim()) {
-      newErrors.selectedDate = 'Date is required';
+      newErrors.selectedDate = "Date is required";
     }
 
     if (!title.trim()) {
-      newErrors.title = 'Title is required';
+      newErrors.title = "Title is required";
     }
 
     if (!htmlText.trim()) {
-      newErrors.htmlText = 'HTML Text is required';
+      newErrors.htmlText = "HTML Text is required";
     }
 
     setErrors(newErrors);
@@ -48,7 +48,7 @@ const SaveDataComponent = () => {
     if (validateForm()) {
       const newData = { date: selectedDate, title, htmlText };
       dispatch(saveData(newData));
-    
+
       // Optionally, you can display a success message or clear the form after saving.
     }
   };

@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
-import dayjs from 'dayjs';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import React, { useState } from "react";
+import dayjs from "dayjs";
 
 const CreateNewTask = () => {
   // State to manage the data entered by the user
-  const [data, setData] = useState('');
-  const today = dayjs();
-  const [value, setValue]=useState('');
-const yesterday = dayjs().subtract(1, 'day');
-const todayStartOfTheDay = today.startOf('day');
+  const [data, setData] = useState("");
+  
 
   // Function to handle changes in the input field
   const handleChange = (e) => {
@@ -18,11 +14,11 @@ const todayStartOfTheDay = today.startOf('day');
   // Function to save the data in localStorage
   const handleSave = () => {
     // Check if data is not empty
-    if (data.trim() !== '') {
-      localStorage.setItem('savedData', data);
-      alert('Data saved successfully!');
+    if (data.trim() !== "") {
+      localStorage.setItem("savedData", data);
+      alert("Data saved successfully!");
     } else {
-      alert('Please enter some data before saving.');
+      alert("Please enter some data before saving.");
     }
   };
 
@@ -44,6 +40,6 @@ const todayStartOfTheDay = today.startOf('day');
       <button onClick={handleSave}>Save</button>
     </div>
   );
-}
+};
 
-export default CreateNewTask
+export default CreateNewTask;

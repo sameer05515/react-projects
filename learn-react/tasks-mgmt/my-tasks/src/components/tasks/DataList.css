@@ -1,0 +1,28 @@
+.data-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .date-accordion {
+    background-color: #f2f2f2;
+    padding: 10px;
+  }
+  
+  .date-toggle {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .data-content {
+    display: none;
+    padding: 15px;
+  }
+  
+  .data-content.expanded {
+    display: block;
+  }
+  

@@ -1,4 +1,5 @@
 import "./App.css";
+import GitDiff from "./components/GitDiff";
 import TasksBase from "./components/tasks/TasksBase";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +25,7 @@ function App() {
       {/* <FormComponent /> */}
       {/* <UserListComponent/> */}
       {/* <ToastButtonComponent /> */}
+      <GitDiff oldContent="This is the old content." newContent="This is the new content."/>
     </div>
   );
 }

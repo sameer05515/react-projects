@@ -10,6 +10,11 @@ li {
   padding: 0;
 }
 
+/* Set Times New Roman font family globally */
+body {
+  font-family: "Times New Roman", serif;
+}
+
 /* Basic styling for the main container */
 .tweet-container {
   width: 600px;
@@ -99,3 +104,5 @@ CSS for sort button
 .sort-button button:hover {
   background-color: #2980b9;
 }
+
+

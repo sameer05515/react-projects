@@ -1,0 +1,42 @@
+/* App.css */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .string-list {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #f7f7f7;
+  }
+  
+  .droppable-area {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #e0e0e0;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    background-color: #f0f0f0;
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* You can add more specific styles here */
+  

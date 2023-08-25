@@ -1,16 +1,40 @@
 import React, { useState } from "react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ReactHtmlParser from "react-html-parser";
+import CustomButton from "./CustomButton";
 
-function EditableLabel({ text, postUpdateClick = () => {}, style = {} }) {
-  const [editing, setEditing] = useState(false);
+function EditableLabel({
+  text,
+  postUpdateClick = () => {},
+  labelStyle = { fontSize: "10px" },
+  textAreaStyle = {},
+  placeholder = "No placeholder given",
+  editMode = false,
+  submitButtonText = "Update",
+  cancelButtonText = "Cancel",
+  flushSavedText = false,
+  saveOnBlur = true,
+  editable = true,
+}) {
+  const [editing, setEditing] = useState(editMode);
   const [editedText, setEditedText] = useState(text);
 
   const handleLabelClick = () => {
-    setEditing(true);
+    if (editable) setEditing(true);
   };
 
-  const handleTextareaChange = (e) => {
-    setEditedText((prevEditedText) => e.target.value);
-    console.log(editedText);
+  const handleEditorChange = (event, editor) => {
+    const data = editor.getData();
+    setEditedText(data);
+  };
+
+  const handleSubmitClick = () => {
+    setEditing(false);
+    postUpdateClick(editedText);
+    if (flushSavedText) {
+      setEditedText("");
+    }
   };
 
   const cancelEdit = () => {
@@ -21,41 +45,27 @@ function EditableLabel({ text, postUpdateClick = () => {}, style = {} }) {
     <div>
       {editing ? (
         <>
-          <textarea
-            value={editedText}
-            onChange={handleTextareaChange}
-            onBlur={cancelEdit}
-            style={{
-              width: "100%", // Expand the textarea width
-              height: `${editedText.split("\n").length + 3}em`, // Set height based on number of lines
-            }}
+          <CKEditor
+            editor={ClassicEditor}
+            data={editedText}
+            onChange={handleEditorChange}
           />
-          <button
-            onClick={() => {
-              console.log(editedText);
-              setEditing(false);
-              postUpdateClick(editedText);
-            }}
-          >
-            Update
-          </button>
-          <button onClick={cancelEdit}>cancel</button>
+          <CustomButton onClick={handleSubmitClick}>
+            {submitButtonText}
+          </CustomButton>
+          <CustomButton onClick={cancelEdit}>{cancelButtonText}</CustomButton>
         </>
       ) : (
-        <>
-          <label
-            onClick={handleLabelClick}
-            style={{
-              ...style, // Apply custom style passed via prop
-              whiteSpace: "pre-wrap", // Allows wrapping within <pre>
-              cursor: "pointer", // Change cursor to pointer on hover
-              padding: "10px", // Add padding for visual comfort
-              border: "1px solid #ccc", // Add a border for clarity
-            }}
-          >
-            {text}
-          </label>
-        </>
+        <div
+          onDoubleClick={handleLabelClick}
+          style={{
+            ...labelStyle,
+            cursor: "pointer",
+            border: editable ? "1px solid #ccc" : "",
+          }}
+        >
+          {ReactHtmlParser(text || placeholder)}
+        </div>
       )}
     </div>
   );

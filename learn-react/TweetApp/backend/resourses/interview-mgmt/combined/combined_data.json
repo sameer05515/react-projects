@@ -1,0 +1,207 @@
+[
+  {
+    "categoryId": 1,
+    "categoryName": "<div><!--block--><strong><em>Java - Introspection and other technology comparison</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 2,
+    "categoryName": "<div><!--block--><strong>Self Evaluation- First Thing First</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 3,
+    "categoryName": "<div><!--block--><strong><em>Interview - General Introduction Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 4,
+    "categoryName": "<div><!--block--><strong><em>Top 50 Leadership Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 5,
+    "categoryName": "<div><!--block--><strong><em>DevOps Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 6,
+    "categoryName": "<div><!--block--><strong><em>Top 12 JENKIN Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 7,
+    "categoryName": "<div><!--block--><strong><em>Struts 2 Discussion questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 8,
+    "categoryName": "<div><!--block--><strong><em>Top 10 Java Serialization Discussion Questions and Answers</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 9,
+    "categoryName": "<div><!--block--><strong>Servlet&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 10,
+    "categoryName": "<div><!--block--><strong><em>Collections Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 11,
+    "categoryName": "<div><!--block--><strong><em>Java Design Patterns</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 12,
+    "categoryName": "<div><!--block--><strong><em>Spring MVC Discussion Questions with Answers</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 13,
+    "categoryName": "<div><!--block--><strong><em>Maven Discussion questions- WideSkills</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 14,
+    "categoryName": "<div><!--block--><strong><em>Spring Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 15,
+    "categoryName": "<div><!--block--><strong><em>Expectations and accomplishments</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 16,
+    "categoryName": "<div><!--block--><strong><em>Top 50 Management Discussion Questions &amp; Answers</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 17,
+    "categoryName": "<div><!--block--><strong><em>Top 50 Leadership Discussion Questions &amp; Answers</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 18,
+    "categoryName": "<div><!--block--><strong><em>Top 50 Project Manager Discussion Questions &amp; Answers</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 19,
+    "categoryName": "<div><!--block--><strong>Java Exception&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 20,
+    "categoryName": "<div><!--block--><strong>Apache Ant&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 21,
+    "categoryName": "<div><!--block--><strong><em>Hibernate Discussion Questions - XML Configurations</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 22,
+    "categoryName": "<div><!--block--><strong><em>Quartz Enterprise Job Scheduler - Discussion Questions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 23,
+    "categoryName": "<div><!--block--><strong><em>My office works - Concentrix second innings</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 24,
+    "categoryName": "<div><!--block--><strong>Analysis of common Human nature - Target \"how to manage human resources\"</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 25,
+    "categoryName": "<div><!--block--><strong>Get Rid of bad habits and Enhancing good habits</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 26,
+    "categoryName": "<div><!--block--><strong><em>My Divorce Case Hearings, my statements, doubts and questions and Success</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 27,
+    "categoryName": "<div><!--block--><strong>Analysis of different situations and its postmortem - what happened there and what ought to be done there.&nbsp;</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 28,
+    "categoryName": "<div><!--block--><strong><em>My Task diary, its progress and completion<br><br></em></strong>Template</div><ul><li><!--block--><em>{office/home/other}Description of task</em></li><li><!--block--><em>Target Date</em><ul><li><!--block--><em>10-Feb-2018</em></li><li><!--block--><em><del>1-Feb-2018 -change due to xxx reason</del></em></li></ul></li><li><!--block--><em>Status</em><ul><li><!--block--><em>inprogress - 10-Feb-2018</em></li><li><!--block--><em><del>open - 1-Feb-2018</del></em></li></ul></li><li><!--block--><em>Recurrence</em></li><li><!--block-->Task History<ul><li><!--block-->15-Feb-2018 - yyyyy</li><li><!--block-->1-Feb-2018 - xxxxxxx</li></ul></li><li><!--block-->Dependency<ul><li><!--block-->Dependency 1</li><li><!--block-->Dependency 2</li></ul></li></ul>",
+    "questions": []
+  },
+  {
+    "categoryId": 29,
+    "categoryName": "<div><!--block--><strong>My different views of questions and groups - For easy handling<br><br></strong>Template</div><ul><li><!--block--><em>{Home/Office/Others} - Description of view- why this view?</em></li><li><!--block--><em>Aim to achieve from group.</em></li><li><!--block-->Description and link of questions/groups&nbsp;</li></ul>",
+    "questions": []
+  },
+  {
+    "categoryId": 30,
+    "categoryName": "<div><!--block--><strong><em>Linux Common Practices</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 31,
+    "categoryName": "<div><!--block--><strong><em>GIT - Overview and Discussions</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 32,
+    "categoryName": "<div><!--block--><strong><em>mere khud se sawal</em></strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 33,
+    "categoryName": "<div><!--block--><strong>Data Structure and Algorithm in Java</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 34,
+    "categoryName": "<div><!--block--><strong>Planning and Management - BCOM, MCOM , SET, NET</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 35,
+    "categoryName": "<div><!--block--><strong>Spring Boot Interview Question<br></strong><br></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 36,
+    "categoryName": "<div><!--block--><strong>Artificial Intelligence (old style ) Interview Questions &amp; Answers\t</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 37,
+    "categoryName": "<div><!--block--><strong>Top Artificial Intelligence Interview Questions And Answers -&nbsp;</strong>latest questions, mainly added in sequence of creation date.</div>",
+    "questions": []
+  },
+  {
+    "categoryId": 38,
+    "categoryName": "<div><!--block--><strong>Top Ethical Hacking Interview Questions And Answers</strong><br><br></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 39,
+    "categoryName": "<div><!--block--><strong>Top Robotic Process Automation Interview Questions And Answers</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 40,
+    "categoryName": "<div><!--block--><strong>Top Power BI Interview Questions And Answers</strong></div>",
+    "questions": []
+  },
+  {
+    "categoryId": 41,
+    "categoryName": "<div><!--block--><strong>Top Answers to Business Analyst Interview Questions</strong></div>",
+    "questions": []
+  }
+]

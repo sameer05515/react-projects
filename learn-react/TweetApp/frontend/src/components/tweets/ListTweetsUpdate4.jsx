@@ -3,6 +3,7 @@ import "./list-tweets3.css";
 import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/globalConstants";
+import Accordion from "../common/Accordion";
 
 function formatTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
@@ -14,19 +15,25 @@ function ListTweetsUpdate({
   refreshFunction = () => {},
   handleTweetCreated = () => {},
 }) {
-    const BASE_URL=GlobalConstants.tweetsApplicationBaseURL;
+  const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
 
-    const [sortAscending, setSortAscending] = useState(false); // Toggle to sort ascending or descending
+  const [sortAscending, setSortAscending] = useState(false); // Toggle to sort ascending or descending
 
-    const sortedTweets = [...tweets].sort((a, b) =>
-      sortAscending
-        ? a.createdAt.localeCompare(b.createdAt)
-        : b.createdAt.localeCompare(a.createdAt)
-    );
-  
-    const toggleSort = () => {
-      setSortAscending((prevSort) => !prevSort);
-    };
+  const sortedTweets = [...tweets].sort((a, b) =>
+    sortAscending
+      ? a.createdAt.localeCompare(b.createdAt)
+      : b.createdAt.localeCompare(a.createdAt)
+  );
+
+  const toggleSort = () => {
+    setSortAscending((prevSort) => !prevSort);
+  };
+
+  const [expandAll, setExpandAll] = useState(false); // State to track expand/collapse all
+
+  const handleToggleExpandAll = () => {
+    setExpandAll(!expandAll);
+  };
 
   const handleUpdateTweet = async (tweetId, updatedContent) => {
     if (updatedContent.trim() === "") {
@@ -108,30 +115,27 @@ function ListTweetsUpdate({
     }
   };
 
-  const [newCommentText, setNewCommentText] = useState(""); // State to hold the new comment text
+  
 
-  const handleAddComment = async (tweetId) => {
+  const handleAddComment = async (tweetId, newCommentText) => {
     if (newCommentText.trim() === "") {
       return;
     }
 
     try {
-      const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: newCommentText }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/tweets/${tweetId}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: newCommentText }),
+      });
 
       if (response.ok) {
         const updatedTweet = await response.json();
         onUpdate(updatedTweet);
-        refreshFunction();        
-        setNewCommentText(""); // Reset the new comment text
+        refreshFunction();
+        //setNewCommentText(""); // Reset the new comment text
       }
     } catch (error) {
       console.error("Error adding comment:", error);
@@ -173,24 +177,31 @@ function ListTweetsUpdate({
     <div>
       <h2>Tweets</h2>
       <CreateTweet onTweetCreated={handleTweetCreated} />
-      <div className="sort-button">
-        <button onClick={toggleSort}>
-          Sort by {sortAscending ? "Newest" : "Oldest"}
-        </button>
+      <div className="button-row">
+        <div className="toggle-expand-button">
+          <button onClick={handleToggleExpandAll}>
+            {expandAll ? "Collapse All" : "Expand All"}
+          </button>
+        </div>
+        <div className="sort-button">
+          <button onClick={toggleSort}>
+            Sort by {sortAscending ? "Newest" : "Oldest"}
+          </button>
+        </div>
       </div>
+
       {sortedTweets.map((tweet) => (
-        <Tweet
-          key={tweet._id}
-          tweet={tweet}
-          handleUpdateTweet={handleUpdateTweet}
-          handleUpdateComment={handleUpdateComment}
-          handleUpdateNestedComment={handleUpdateNestedComment}
-          handleAddComment={handleAddComment}
-          handleAddNestedComment={handleAddNestedComment}
-          formatTimestamp={formatTimestamp}
-          newCommentText={newCommentText} // Pass the new comment text as a prop
-          setNewCommentText={setNewCommentText} // Pass the setter function as a prop
-        />
+        <Accordion key={tweet._id} title={tweet.content} isExpanded={expandAll}>
+          <Tweet
+            tweet={tweet}
+            handleUpdateTweet={handleUpdateTweet}
+            handleUpdateComment={handleUpdateComment}
+            handleUpdateNestedComment={handleUpdateNestedComment}
+            handleAddComment={handleAddComment}
+            handleAddNestedComment={handleAddNestedComment}
+            formatTimestamp={formatTimestamp}
+          />
+        </Accordion>
       ))}
     </div>
   );

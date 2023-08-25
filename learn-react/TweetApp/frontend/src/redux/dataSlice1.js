@@ -1,5 +1,5 @@
 // redux/dataSlice.js
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Replace 'your-api-base-url' with your actual API base URL.

@@ -80,29 +80,30 @@ body {
   float: right;
 }
 
-/**
-  =================
-CSS for sort button
-  =================
-  */
-
-.sort-button {
-  margin: 10px 0;
-  text-align: center;
+/*Toggle and sort button in same row*/
+.button-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.sort-button button {
+.button-row button {
   padding: 5px 10px;
-  background-color: #3498db;
+  margin-right: 10px; /* Adjusted margin for the gap */
+  background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 4px;
   font-size: 14px;
+  transition: background-color 0.3s;
 }
 
-.sort-button button:hover {
-  background-color: #2980b9;
+.button-row button:hover {
+  background-color: #0056b3;
 }
 
-
+/* Align both buttons to the left */
+.button-row button:first-child {
+  margin-right: auto;
+}

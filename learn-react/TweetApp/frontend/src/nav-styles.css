@@ -1,0 +1,35 @@
+/* nav-styles.css */
+nav {
+    background-color: #333; /* Background color for the navigation menu */
+    width: 200px; /* Set the width of the vertical menu as needed */
+    height: 100%; /* Ensure the menu takes the full height of the parent container */
+    position: fixed; /* Fixed positioning to keep it visible */
+    top: 0;
+    left: 0;
+    overflow-y: auto; /* Enable vertical scrolling if the menu overflows */
+    padding-top: 20px; /* Add top padding as needed */
+    color: white; /* Text color for menu items */
+  }
+  
+  nav ul {
+    list-style-type: none; /* Remove bullet points from the list */
+    padding: 0; /* Remove default padding */
+  }
+  
+  nav li {
+    display: block; /* Display list items as block elements */
+    /*margin-bottom: 10px;*/ /* Add margin between menu items */
+    padding-right: 10px;
+  }
+  
+  nav a {
+    text-decoration: none; /* Remove underline from links */
+    color: white; /* Text color for links */
+    padding: 10px 20px; /* Add padding for each link (adjust as needed) */
+    transition: background-color 0.3s; /* Add a transition effect for background color */
+  }
+  
+  nav a:hover {
+    background-color: #555; /* Background color on hover */
+  }
+  

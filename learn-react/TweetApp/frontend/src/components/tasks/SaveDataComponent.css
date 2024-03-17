@@ -1,0 +1,32 @@
+/* SaveDataComponent.css */
+
+/* Dropdown container style */
+.tag-dropdown {
+  max-height: 150px; /* Set the maximum height of the dropdown to create a scrollable area */
+  overflow-y: auto; /* Add a vertical scrollbar when the dropdown overflows */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+/* Style for individual tag checkboxes */
+.tag-dropdown .MuiFormControlLabel-root {
+  display: block; /* Display checkboxes in a block layout */
+  margin: 8px 0;
+}
+
+/* Style for the selected tags container */
+.selected-tags-container {
+  margin-top: 16px;
+}
+
+/* Style for individual selected tags */
+.selected-tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 4px 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}

@@ -1,0 +1,109 @@
+/* Reset some default styles */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set Times New Roman font family globally */
+body {
+  font-family: "Times New Roman", serif;
+}
+
+/* Basic styling for the main container */
+.tweet-container {
+  width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Styling for individual tweet cards */
+.tweet-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+/* Styling for tweet content */
+.tweet-content {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Styling for comments */
+.comment {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+}
+
+/* Styling for nested comments */
+.nested-comment {
+  margin-top: 10px;
+  padding-left: 40px;
+  border-left: 2px solid #ccc;
+}
+
+/* Styling for timestamps */
+.timestamp {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Styling for textarea inputs */
+.textarea-input {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Styling for buttons */
+.button {
+  background-color: #1da1f2;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Align the button to the right */
+.button-right {
+  float: right;
+}
+
+/*Toggle and sort button in same row*/
+.button-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.button-row button {
+  padding: 5px 10px;
+  margin-right: 10px; /* Adjusted margin for the gap */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.button-row button:hover {
+  background-color: #0056b3;
+}
+
+/* Align both buttons to the left */
+.button-row button:first-child {
+  margin-right: auto;
+}

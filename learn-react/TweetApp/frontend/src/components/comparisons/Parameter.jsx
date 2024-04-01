@@ -4,7 +4,7 @@ import React from "react";
 const Parameter = ({ parameter, onParameterChange, onRemoveParameter }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(`${name} : ${value}`);
+    // console.log(`${name} : ${value}`);
     onParameterChange({ ...parameter, [name]: value });
   };
 

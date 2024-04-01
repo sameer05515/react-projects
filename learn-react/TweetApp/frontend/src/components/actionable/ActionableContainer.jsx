@@ -3,7 +3,7 @@ import ActionableForm from "./ActionableForm";
 import ActionableList from './ActionableList';
 import axios from 'axios';
 import GlobalConstants from "../../common/globalConstants";
-import CronExpressionGenerator from '../common/CronExpressionGenerator';
+import CronExpressionGenerator from '../../common/components/CronExpressionGenerator';
 
 const ActionableContainer = () => {
   const [activities, setActivities] = React.useState([]);

@@ -3,7 +3,7 @@ import "./list-tweets3.css";
 import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/globalConstants";
-import Accordion from "../common/Accordion";
+import Accordion from "../../common/components/Accordion";
 
 function formatTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();

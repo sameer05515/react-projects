@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Viewer</title>
+    <style>
+      /* Add some basic styling for better visualization */
+      body {
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+      #left-section {
+        flex: 1;
+        width: 250px; /* Fixed width for the left section */
+        padding: 20px;
+        border-right: 1px solid #ccc;
+        overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+        position: fixed; /* Fixed positioning to keep the left section fixed */
+        top: 0; /* Align to the top of the viewport */
+        bottom: 0; /* Align to the bottom of the viewport */
+      }
+      #left-section ul {
+        list-style: none; /* Remove bullet points */
+        /*padding: 0;*/
+      }
+      #left-section li {
+        margin-bottom: 10px; /* Add some spacing between list items */
+      }
+      #left-section span {
+        text-decoration: none; /* Remove underline from links */
+        font-size: 16px; /* Set font size for links */
+      }
+      #left-section span:hover {
+        font-weight: bold; /* Make link text bold on hover */
+        color: #e91140;
+      }
+      .selected {
+        font-weight: bold; /* Make selected link text bold */
+        font-size: 22px; /* Increase font size for selected link */
+        color: #e91140;
+      }
+      #right-section {
+        flex: 2;
+        padding: 20px;
+        margin-left: 280px; /* Adjust margin to account for the fixed-width left section */
+      }
+
+      /* CSS for code blocks */
+      pre {
+        background-color: #f4f4f4; /* Background color */
+        padding: 10px; /* Padding around code block */
+        border-radius: 5px; /* Rounded corners */
+        overflow-x: auto; /* Enable horizontal scrollbar if code overflows */
+      }
+
+      code {
+        font-family: Consolas, monospace; /* Specify font family for code */
+        font-size: 14px; /* Specify font size for code */
+        color: #333; /* Text color */
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css"/>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css"/> -->
+  </head>
+  <body>
+    <div id="left-section">
+      <h2>Markdown Files</h2>
+
+      <% const renderFileList = (fileList) => { %>
+      <ul>
+        <% fileList.forEach(file => { %>
+        <li>
+          <% if (file.fileType === 'directory') { %>
+          <span><%= file.name %></span>
+          <% if (file.children && file.children.length > 0) { %> <%
+          renderFileList(file.children); %> <% } %> <% } else { %>
+          <!-- <a <% if (file.selected) { %> class="selected" <% } %> href="/?filename=<%= encodeURIComponent(file.path) %>"><%= file.name %></a> -->
+          <span <% if (file.selected) { %>
+            class="selected" <% } %> onclick="navigateTo('<%=
+            encodeURIComponent(file.path) %>')"><%= file.name %></span
+          >
+          <% } %>
+        </li>
+        <% }); %>
+      </ul>
+      <% } %> <% renderFileList(fileList); %>
+
+      <!-- <% if(fileList && fileList.length>0){ %>
+
+      <ul>
+        <% fileList.forEach(file => { %>
+        <li>
+          <% if(file.fileType==='directory'){ %>
+
+            <span><%= file.name %></span>
+
+          <%}else{%>
+
+            <a <% if (file.selected) { %>
+              class="selected"<% } %> href="/?filename=<%=
+              encodeURIComponent(file.path) %>" > <%= file.name %>
+            </a>
+
+          <%}%>
+        </li>
+        <% }); %>
+      </ul>
+
+      <%}%> -->
+
+      <!-- <ul>
+        <% fileList.forEach(file => { %>
+        <li <% if (file.selected) { %>
+          class="selected"<% } %> >
+          <a href="/?filename=<%= encodeURIComponent(file.path) %>"
+            ><%= file.name %></a
+          >
+        </li>
+        <% }); %>
+      </ul> -->
+    </div>
+    <div id="right-section">
+      <div>
+        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev')">Previous</button>
+        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next')">Next</button>
+      </div>
+
+      <% if (htmlContent) { %> <%- htmlContent %> <% } else { %>
+      <p>Select a file from the left menu to render its content here.</p>
+      <% } %>
+
+      <div>
+        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev')">Previous</button>
+        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next')">Next</button>
+
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const selectedElement = document.querySelector(".selected");
+        if (selectedElement) {
+          selectedElement.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "start",
+          });
+        }
+      });
+    </script>
+    <script>
+      function navigateTo(path,direction='') {
+        // Handle navigation logic here
+        // console.log("Navigating to:", path);
+        // console.log(`direction: ${direction}`);
+        // console.log(`direction && direction.trim().length>0 : ${direction && direction.trim().length>0}`)
+        const fileUrl= `/?${direction && direction.trim().length>0? "direction="+direction+"&":""}filename=${path}`;
+        // window.location.href = "/?direction="+direction+"&filename=" + path;
+        // console.log(fileUrl);
+        window.location.href= fileUrl;
+      }      
+    </script>
+  </body>
+</html>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import { getUserIdFromToken } from "../../common/authService";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../../common/components/CustomButton";
 
 function UpdateUserProfile() {
   const [formData, setFormData] = useState({

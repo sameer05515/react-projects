@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTags, createTag, updateTag } from "../../../redux/tagsSlice";
+import { fetchTags, createTag, updateTag } from "../../../redux/slices/tagsSlice";
 import TagsCreate from "./TagsCreate"; // Import the TagsCreate componenthe createTag and updateTag actions
 
 function TagList() {

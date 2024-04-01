@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../../common/components/CustomButton";
 
 function MarkAsAdminButton({ userId }) {
   const [isAdmin, setIsAdmin] = useState(false);

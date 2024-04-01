@@ -1,8 +1,8 @@
 // SaveUpdateComparableData.js
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { saveData, updateData } from "../../redux/comparableDataSlice"; // Adjust the path
-import CustomButton from "../common/CustomButton";
+import { saveData, updateData } from "../../redux/slices/comparableDataSlice"; // Adjust the path
+import CustomButton from "../../common/components/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 

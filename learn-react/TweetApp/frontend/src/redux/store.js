@@ -1,12 +1,14 @@
 // redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import dataReducer from "./dataSlice1";
-import taskReducer from './taskSlice';
-import tagsReducer from './tagsSlice';
-import topicReducer from './topicSlice';
-import comparableDataReducer from "./comparableDataSlice";
-import wordReducer from './wordsSlice';
-import myResumeReducer from './myResumeSlice'
+import dataReducer from "./slices/dataSlice1";
+import taskReducer from './slices/taskSlice';
+import tagsReducer from './slices/tagsSlice';
+import topicReducer from './slices/topicSlice';
+import comparableDataReducer from "./slices/comparableDataSlice";
+import wordReducer from './slices/wordsSlice';
+import myResumeReducer from './slices/myResumeSlice';
+import linksReducer from './slices/linksSlice';
+import pinnedItemReducer from './slices/pinnedItemSlice';
 
 const store = configureStore({
   reducer: {
@@ -16,7 +18,9 @@ const store = configureStore({
     topics: topicReducer,
     comparableData: comparableDataReducer,
     words: wordReducer,
-    myResume: myResumeReducer
+    myResume: myResumeReducer,
+    links: linksReducer,
+    pinnedItems: pinnedItemReducer
   },
 });
 

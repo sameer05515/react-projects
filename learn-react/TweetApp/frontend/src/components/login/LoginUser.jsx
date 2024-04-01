@@ -3,6 +3,8 @@ import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import { NavLink, useNavigate } from "react-router-dom";
 
+// const BACKEND_APPLICATION_BASE_URL1= process.env.BACKEND_APPLICATION_BASE_URL;
+
 const inputStyle = {
   width: "100%",
   padding: "10px",
@@ -53,6 +55,8 @@ function LoginUser() {
 
   const handleLogin = async () => {
     try {
+      // alert(`BACKEND_APPLICATION_BASE_URL : ${BACKEND_APPLICATION_BASE_URL1} \n
+      // PORT ${process.env.PORT}`)
       const response = await axios.post(
         `${BACKEND_APPLICATION_BASE_URL}/api/users/login`,
         formData

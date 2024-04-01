@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDateToDDMMMYYYY } from "../../common/commonService";
-import { fetchTags } from "../../redux/tagsSlice";
-import { fetchTopics } from "../../redux/topicSlice";
+import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTopics } from "../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic";
 import TopicCard from "./TopicCard";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../../common/components/CustomButton";
 
 function ListTopicsByCreatedDate() {
   const topics = useSelector((state) => state.topics.data);
@@ -40,7 +40,7 @@ function ListTopicsByCreatedDate() {
   };
 
   const groupTopicsByOccurenceDate = (topics) => {
-    console.log(`startDate : ${startDate}, endDate : ${endDate}`);
+    // console.log(`startDate : ${startDate}, endDate : ${endDate}`);
     const groupedTopics = {};
     topics.forEach((topic) => {
       if (groupedTopics[topic.occurenceDate]) {
@@ -62,7 +62,7 @@ function ListTopicsByCreatedDate() {
   };
 
   const filteredTopics = topics.filter((topic) => {
-    
+
     if (!startDate || !endDate) {
       return true; // No filter applied
     }
@@ -90,6 +90,9 @@ function ListTopicsByCreatedDate() {
   const itemStyle = {
     border: "1px solid #ccc",
     padding: "10px",
+    borderRadius: "10px", // Adding round borders
+    backgroundColor: "#f2f2f2", // Grey background color
+    marginBottom: "5px", // Adding vertical spacing of 5px
   };
 
   return (

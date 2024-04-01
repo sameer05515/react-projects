@@ -8,6 +8,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/store";
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css');
+`;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,6 +20,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
+        <GlobalStyle/>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

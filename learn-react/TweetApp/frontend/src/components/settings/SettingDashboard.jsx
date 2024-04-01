@@ -3,6 +3,8 @@ import TagList from "./tags/TagList";
 import GoldRateCalculator from "../miscelleneous/GoldRateCalculator";
 import ComparisonContainer from "../comparisons/ComparisonContainer";
 import ComparisonTableContainer from "../comparisons/ComparisonTableContainer";
+import StudentList from "../miscelleneous/StudentList";
+import Breadcrumb2 from "../../common/components/Breadcrumb2";
 
 const tabButtonStyle = {
   padding: "10px",
@@ -14,7 +16,9 @@ const TabNames = {
   listUsers: "tags",
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
-  comparisonTableContainer:"ComparisonTableContainer"
+  comparisonTableContainer: "ComparisonTableContainer",
+  studentListContainer: "studentListContainer",
+  breadCrumbContainer: "breadCrumbContainer"
   //   updateProfile:"updateProfile"
 };
 
@@ -24,6 +28,30 @@ function SettingDashboard() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
+
+  const students= [
+    {
+      id: 1,
+      name: "John Doe",
+      address: "123 Main St, Cityville",
+      age: 20,
+      major: "Computer Science"
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      address: "456 Elm St, Townsville",
+      age: 22,
+      major: "Mathematics"
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      address: "789 Oak St, Villagetown",
+      age: 21,
+      major: "Physics"
+    }
+  ];
 
   return (
     <div>
@@ -75,6 +103,30 @@ function SettingDashboard() {
         >
           Comparison Table Container
         </button>
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.studentListContainer ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.studentListContainer ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.studentListContainer)}
+        >
+          Student List Container
+        </button>
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.breadCrumbContainer ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.breadCrumbContainer ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.breadCrumbContainer)}
+        >
+          BreadCrumb Container
+        </button>
         {/* <button
           style={{
             ...tabButtonStyle,
@@ -91,6 +143,8 @@ function SettingDashboard() {
         {activeTab === TabNames.goldRateCalculator && <GoldRateCalculator />}
         {activeTab === TabNames.comparisonContainer && <ComparisonContainer />}
         {activeTab === TabNames.comparisonTableContainer && <ComparisonTableContainer />}
+        {activeTab === TabNames.studentListContainer && <StudentList students={students} />}
+        {activeTab === TabNames.breadCrumbContainer && <Breadcrumb2 />}
       </div>
     </div>
   );

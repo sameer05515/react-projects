@@ -9,8 +9,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import VerticalMenu from "./VerticalMenu";
 import { clearToken, getToken } from "./common/authService";
-import GitDiff from "./components/GitDiff";
-import MyFormWithValidation from "./components/MyFormWithValidation";
+import GitDiff from "./components/miscelleneous/GitDiff";
+import MyFormWithValidation from "./components/miscelleneous/MyFormWithValidation";
 import ActionableContainer from "./components/actionable/ActionableContainer";
 import ActivityForm from "./components/activity/ActivityForm";
 import SchedulerCalender from "./components/calendar/SchedulerCalenderWithEventsWithViews";
@@ -26,6 +26,10 @@ import TweetBase from "./components/tweets/TweetBase";
 import WordList from "./components/words/WordList";
 import "./styles/nav-styles.css";
 import MyResumeComponent from "./components/my-resume/MyResumeComponent";
+import InterviewMgmtBase, { CreateCategory, EditCategory, ViewCategoryDetails, ViewQuestionDetails } from "./components/interview-mgmt/InterviewMgmtBase";
+import LinksBase, { AddChildLink, CreateLink, EditLink, ViewLink } from "./components/links/LinksBase";
+import TopicBase, { AddSubTopicComp, CreateSectionRouterPage, CreateTopicComp, EditSectionRouterPage, EditTopicComp, MoveToAnotherTopicParent, ViewTopic } from "./components/topic/TopicBase";
+import TaskBase, { AddSubTaskComp, CreateTaskComp, EditTaskComp, ViewTaskComp } from "./components/my-tasks/TaskBase";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -95,10 +99,12 @@ function App() {
         {isAuthenticated && (
           <>
             <Route path="/tweet-base" element={<TweetBase />} />
+
             <Route
               path="/myformvalidation"
               element={<MyFormWithValidation />}
             />
+
             <Route
               path="/gitDiff"
               element={
@@ -108,22 +114,74 @@ function App() {
                 />
               }
             />
+
             <Route path="/scheduler-calender" element={<SchedulerCalender />} />
+
             <Route path="/activity" element={<ActivityForm />} />
+
             <Route path="/draggable-area" element={<DraggableArea />} />
+
             <Route path="/actionable" element={<ActionableContainer />} />
-            <Route path="/task-container" element={<TaskContainer />} />
+
+            <Route path="/task-mgmt" element={<TaskBase />} >
+              <Route path=":id/edit" element={<EditTaskComp />} />
+              <Route path=":id/add-sub-task" element={<AddSubTaskComp />} />
+              <Route path=":id" element={<ViewTaskComp />} />
+              <Route path="create" element={<CreateTaskComp />} />
+            </Route>
+
             <Route path="/user-mgmt" element={<UserDashboard />} />
+
             <Route path="/resume-mgmt" element={<ResumeForm />} />
-            <Route path="/settings" element={<SettingDashboard/>}/>
-            <Route path="/topic-dashboard" element={<TopicDashboard/>}/>
-            <Route path="/words" element={<WordList/>}/>
-            <Route path="/my-resume" element={<MyResumeComponent uniqueId='john_doe_resume'/>}/>
+
+            <Route path="/settings" element={<SettingDashboard />} />
+
+            <Route path="/topic-mgmt" element={<TopicBase />} >
+              <Route path=":id/edit" element={<EditTopicComp />} />
+              <Route path=":id" element={<ViewTopic />} />
+              <Route path=":id/add-sub-topic" element={<AddSubTopicComp />} />
+              <Route path=":id/move-parent" element={<MoveToAnotherTopicParent/>}/>
+              <Route path=":id/add-section" element={<CreateSectionRouterPage/>}/>
+              <Route path=":id/section/:sectionId/edit" element={<EditSectionRouterPage/>}/>
+              <Route path="create" element={<CreateTopicComp />} />
+            </Route>
+
+            <Route path="/words" element={<WordList />} />
+
+            <Route path="/my-resume" element={<MyResumeComponent uniqueId='john_doe_resume' />} />
+
+            <Route path="/interview-mgmt" element={<InterviewMgmtBase />} >
+              <Route path=":id/edit" element={<EditCategory />} />
+              <Route path=":id" element={<ViewCategoryDetails />} >
+                {/* <Route path="edit" element={<EditCategory />} /> */}
+                {/* <Route path="questions/:qid" element={<ViewQuestionDetails />} /> */}
+              </Route>
+              <Route path=":id/questions/:qid" element={<ViewQuestionDetails />} />
+              <Route path="create" element={<CreateCategory />} />
+            </Route>
+            
+            <Route path="/links-mgmt" element={<LinksBase />} >
+              <Route path=":id/edit" element={<EditLink />} />
+              <Route path=":id" element={<ViewLink />} />
+              <Route path="create" element={<CreateLink />} />
+              {/* <Route path=":id/add-child" element={<AddChildLink/>}/> */}
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
           </>
         )}
       </Routes>
     </>
   );
 }
+
+const NotFound = () => {
+  return (
+    <div>
+      <h1>404 Not Found</h1>
+      <p>Oops! Page not found.</p>
+    </div>
+  );
+};
 
 export default App;

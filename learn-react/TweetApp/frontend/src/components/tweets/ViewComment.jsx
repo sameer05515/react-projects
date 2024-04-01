@@ -1,5 +1,5 @@
 import React from "react";
-import EditableLabel from "../common/EditableLabel";
+import EditableLabel from "../../common/components/EditableLabel";
 import NestedComment from "./ViewNestedComment";
 import NewNestedComment from './CreateNestedComment'
 

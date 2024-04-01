@@ -1,7 +1,7 @@
 // ComparableDataList.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchData } from '../../redux/comparableDataSlice'; // Adjust the path
+import { fetchData } from '../../redux/slices/comparableDataSlice'; // Adjust the path
 
 const ComparableDataList = ({ onDoubleClick }) => {
   const dispatch = useDispatch();

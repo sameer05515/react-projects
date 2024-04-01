@@ -3,12 +3,12 @@ const fs = require('fs');
 
 // MySQL configuration
 const mysqlConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'admin@123',
-    database: 'interview_mgmt_sep_27_2019',
-    insecureAuth: true,
-  };
+  host: 'localhost',
+  user: 'root',
+  password: 'admin@123',
+  database: 'interview_mgmt',
+  insecureAuth: true,
+};
 
 // Create MySQL connection
 const mysqlConnection = mysql.createConnection(mysqlConfig);
@@ -27,7 +27,7 @@ mysqlConnection.connect((err) => {
 });
 
 function fetchCategoryIds() {
-  const query = 'SELECT cat_id FROM t_category';
+  const query = 'SELECT cat_id, cat_name, rating FROM t_category';
 
   mysqlConnection.query(query, (err, results) => {
     if (err) {
@@ -38,6 +38,8 @@ function fetchCategoryIds() {
 
     // Initialize an array to store all data
     const allData = [];
+
+    console.log(JSON.stringify(results, null, 2));
 
     // Step 2: Iterate through each category ID
     results.forEach((category) => {

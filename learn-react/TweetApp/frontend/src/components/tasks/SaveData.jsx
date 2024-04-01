@@ -78,7 +78,7 @@ const SaveDataComponent = () => {
         private: privateData,
       };
       dispatch(addData(newData));
-      console.log("Data saved successfully");
+      // console.log("Data saved successfully");
       // Optionally, you can display a success message or clear the form after saving.
     }
   };

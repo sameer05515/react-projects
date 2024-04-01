@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GlobalConstants from "../../common/globalConstants";
-import EditableLabel from "../common/EditableLabel";
+import EditableLabel from "../../common/components/EditableLabel";
 import { toast } from "react-toastify";
 
 function CreateTweet({ onTweetCreated }) {

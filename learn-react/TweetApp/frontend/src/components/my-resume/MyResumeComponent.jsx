@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyResumeData } from '../../redux/myResumeSlice'; 
+import { fetchMyResumeData } from '../../redux/slices/myResumeSlice'; 
 
 const MyResumeComponent = ({ uniqueId }) => {
   const dispatch = useDispatch();

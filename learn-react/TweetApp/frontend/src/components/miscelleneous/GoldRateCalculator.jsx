@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GOLD_RATE from '../../common/goldRate';
 
 const GoldRateCalculator = () => {
   const goldData = GOLD_RATE.data;
 
-  const [selectedYear, setSelectedYear] = useState("");
-  const [amount, setAmount] = useState(1);
-  const [targetAmount, setTargetAmount] = useState(0);
-  const [selectedTargetYear, setSelectedTargetYear] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState("");
-  const [formula, setFormula] = useState("");
+  const [combinedState, setCombinedState] = useState({
+    selectedYear: "",
+    amount: 1,
+    targetAmount: 0,
+    selectedTargetYear: "",
+    formula: ""
+  });
+
+  useEffect(() => {
+    if (combinedState.selectedYear && combinedState.selectedTargetYear) {
+      const calculatedObj = calculateTargetAmount();
+      setCombinedState(pre => ({ ...pre, ...calculatedObj }));
+    }
+  }, [combinedState.selectedYear, combinedState.selectedTargetYear, combinedState.amount]);
 
   const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-    calculateTargetAmount();
+    setCombinedState(pre => ({ ...pre, selectedYear: event.target.value }));
   };
 
   const handleTargetYearChange = (event) => {
-    setSelectedTargetYear(event.target.value);
-    calculateTargetAmount();
-  };
-
-  const handlePriceChange = (event) => {
-    setSelectedPrice(event.target.value);
-    calculateTargetAmount();
+    setCombinedState(pre => ({ ...pre, selectedTargetYear: event.target.value }));
   };
 
   const yearOptions = goldData.map((data, index) => (
@@ -32,29 +33,24 @@ const GoldRateCalculator = () => {
     </option>
   ));
 
-  const priceOptions = goldData.map((data, index) => (
-    <option key={index} value={data.price}>
-      {data.price}
-    </option>
-  ));
-
   const handleInputChange = (e) => {
     const { value } = e.target;
-    const myVal=parseFloat(value);
-    setAmount(pre=>myVal);
-    calculateTargetAmount();
+    const myVal = parseFloat(value);
+    if (myVal >= 0) {
+      setCombinedState(pre => ({ ...pre, amount: myVal }));
+    }
   };
 
   const calculateTargetAmount = () => {
-    const price = getPriceForYear(selectedYear);
-    const targetPrice = getPriceForYear(selectedTargetYear);
+    const price = getPriceForYear(combinedState.selectedYear);
+    const targetPrice = getPriceForYear(combinedState.selectedTargetYear);
     if (price !== 0 && targetPrice !== 0) {
-      const tAmount = amount * (targetPrice / price);
-      setFormula(`amount * (targetPrice / price) : ${amount} * (${targetPrice} / ${price})`);
-      setTargetAmount(tAmount);
+      const tAmount = combinedState.amount * (targetPrice / price);
+      const calFormula = `amount * (targetPrice / price) : ${combinedState.amount} * (${targetPrice} / ${price})`;
+      return { formula: calFormula, targetAmount: tAmount };
     } else {
-      setFormula("Invalid selection. Please choose valid years and prices.");
-      setTargetAmount(0);
+      const calFormula = "Invalid selection. Please choose valid years and prices.";
+      return { formula: calFormula, targetAmount: 0 };
     }
   };
 
@@ -65,39 +61,34 @@ const GoldRateCalculator = () => {
 
   return (
     <div>
+      <pre>{JSON.stringify(combinedState, null, 2)}</pre>
       <label>Select a Year: </label>
-      <select value={selectedYear} onChange={handleYearChange}>
+      <select value={combinedState.selectedYear} onChange={handleYearChange}>
         <option value="">-- Select Year --</option>
         {yearOptions}
       </select>
 
       <label>Select a Target Year: </label>
-      <select value={selectedTargetYear} onChange={handleTargetYearChange}>
+      <select value={combinedState.selectedTargetYear} onChange={handleTargetYearChange}>
         <option value="">-- Select Target Year --</option>
         {yearOptions}
       </select>
 
-      <label>Select a Price: </label>
-      <select value={selectedPrice} onChange={handlePriceChange}>
-        <option value="">-- Select Price --</option>
-        {priceOptions}
-      </select>
-
       <div>
-        <p>Selected Year: '{selectedYear}'</p>
-        <p>Selected Target Year: '{selectedTargetYear}'</p>
-        <p>Selected Price: {selectedPrice}</p>
+        <p>Selected Year: '{combinedState.selectedYear}'</p>
+        <p>Selected Target Year: '{combinedState.selectedTargetYear}'</p>
+        <p>Selected Price: {combinedState.amount}</p>
       </div>
-      {selectedYear && selectedTargetYear && <div>
-        <b>Enter Amount for year {selectedYear}: </b> <input type='text' name="title"
+      {combinedState.selectedYear && combinedState.selectedTargetYear && <div>
+        <b> Enter Amount for year {combinedState.selectedYear}: </b>
+        <input type='text' name="title"
           placeholder="Amount"
-          value={amount}
-          onChange={handleInputChange}
-        //   onBlur={handleInputChange}
-        /> <br/>
-        <b>Equivalent Target Amount for year {selectedTargetYear}: </b>{targetAmount}
-        <br/>
-        <b>Formula: </b> {formula}
+          value={combinedState.amount}
+          onInput={event => handleInputChange(event)} />
+        <br />
+        <b>Equivalent Target Amount for year {combinedState.selectedTargetYear}: </b>{combinedState.targetAmount}
+        <br />
+        <b>Formula: </b> {combinedState.formula}
       </div>}
     </div>
   );

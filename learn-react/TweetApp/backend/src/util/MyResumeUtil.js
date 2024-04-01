@@ -1,6 +1,6 @@
 // MyResumeUtil.js
 
-const MyResumeModel = require('../models/MyResumeModel');
+const MyResumeModel = require('../models/MyResume.model');
 
 const upsertMyResumeData = async (resumeData) => {
   try {

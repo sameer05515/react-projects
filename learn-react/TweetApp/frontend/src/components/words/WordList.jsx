@@ -1,9 +1,9 @@
 // WordList.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWords } from '../../redux/wordsSlice';
-import ReactHtmlParser from "react-html-parser";
-import HtmlTextRendrer from '../common/HtmlTextRenderer';
+import { fetchWords } from '../../redux/slices/wordsSlice';
+// import ReactHtmlParser from "react-html-parser";
+import HtmlTextRendrer from '../../common/components/HtmlTextRenderer';
 
 const WordList = () => {
   const dispatch = useDispatch();
@@ -27,12 +27,12 @@ const WordList = () => {
     return <p>Error: {error}</p>;
   }
 
-  const customStyles = {
-    ol: {
-      display: 'block',
-      marginLeft: '1em', // Adjust as needed
-    },
-  };
+  // const customStyles = {
+  //   ol: {
+  //     display: 'block',
+  //     marginLeft: '1em', // Adjust as needed
+  //   },
+  // };
 
   return (
     <div>

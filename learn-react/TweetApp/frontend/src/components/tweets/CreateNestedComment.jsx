@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditableLabel from "../common/EditableLabel";
+import EditableLabel from "../../common/components/EditableLabel";
 
 function CreateNestedComment({
   tweetId,

@@ -1,0 +1,39 @@
+
+/* Add some basic styling for better visualization */
+.linksContainer {
+  display: flex;
+  font-family: Arial, sans-serif;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+.left-section {
+  flex: 1;
+  width: 250px; /* Fixed width for the left section */
+  padding: 20px;
+  margin-top: 100px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+  position: fixed; /* Fixed positioning to keep the left section fixed */
+  top: 0; /* Align to the top of the viewport */
+  bottom: 0; /* Align to the bottom of the viewport */
+}
+
+.right-section {
+  flex: 2;
+  padding: 20px;
+  margin-left: 280px; /* Adjust margin to account for the fixed-width left section */
+}
+
+/* CSS for code blocks */
+pre {
+  background-color: #f4f4f4; /* Background color */
+  padding: 10px; /* Padding around code block */
+  border-radius: 5px; /* Rounded corners */
+  overflow-x: auto; /* Enable horizontal scrollbar if code overflows */
+}
+
+code {
+  font-family: Consolas, monospace; /* Specify font family for code */
+  font-size: 14px; /* Specify font size for code */
+  color: #333; /* Text color */
+}

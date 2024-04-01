@@ -1,19 +1,19 @@
 import React from "react";
-import CustomButton from "../common/CustomButton";
-import ReactHtmlParser from "react-html-parser";
+import CustomButton from "../../common/components/CustomButton";
+// import ReactHtmlParser from "react-html-parser";
 import TaskCard from "./TaskCard";
 
 const ViewTask = ({ task, onClose, tags = [] }) => {
-  const filteredTags = task.tags?.map((tagId) =>
-    tags.find((tag) => tag.tagId === tagId)
-  );
-  const tagStyle = {
-    backgroundColor: "#ccc", // Grey background color
-    border: "1px solid #999", // Grey border
-    padding: "2px 5px", // Adjust padding as needed
-    fontSize: "12px", // Small font size
-    borderRadius: "4px", // Rounded corners
-  };
+  // const filteredTags = task.tags?.map((tagId) =>
+  //   tags.find((tag) => tag.tagId === tagId)
+  // );
+  // const tagStyle = {
+  //   backgroundColor: "#ccc", // Grey background color
+  //   border: "1px solid #999", // Grey border
+  //   padding: "2px 5px", // Adjust padding as needed
+  //   fontSize: "12px", // Small font size
+  //   borderRadius: "4px", // Rounded corners
+  // };
   const modalStyle = {
     position: "fixed",
     top: "0",

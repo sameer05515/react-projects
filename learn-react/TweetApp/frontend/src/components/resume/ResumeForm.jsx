@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../../common/components/CustomButton";
+import WysiwygEditor from "../../common/components/WysiwygEditor";
 
 const StepIndicator = ({ currentStep, totalSteps }) => {
   const stepIndicatorStyle = {
@@ -45,12 +46,12 @@ const StepIndicator = ({ currentStep, totalSteps }) => {
 };
 
 const PersonalInfoStep = ({ formData, setFormData, nextStep }) => {
-  const { fullName, email, phone, address, professionalTitle } = formData;
+  // const { fullName, email, phone, address, professionalTitle } = formData;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
 
   return (
     <div>
@@ -318,6 +319,8 @@ const ResumeForm = () => {
       )}
 
       {/* Add more steps and corresponding components */}
+    
+    <WysiwygEditor/>
     </div>
   );
 };

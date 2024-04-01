@@ -3,14 +3,14 @@ import jwtDecode from "jwt-decode";
 
 // Function to store the token in localStorage or cookies
 export const storeToken = (token) => {
-  console.log(`Token : ${JSON.stringify(token)}`);
+  // console.log(`Token : ${JSON.stringify(token)}`);
   localStorage.setItem("token", token);
 };
 
 // Function to retrieve the token
 export const getToken = () => {
   const token = localStorage.getItem("token");
-  console.log(`Token : ${JSON.stringify(token)}`);
+  // console.log(`Token : ${JSON.stringify(token)}`);
   return token;
 };
 
@@ -22,13 +22,37 @@ export const getUserIdFromToken = () => {
     try {
       // Decode the JWT token
       const decodedToken = jwtDecode(token);
-      console.log(`decodedToken : ${JSON.stringify(decodedToken)}`);
+      // console.log(`decodedToken : ${JSON.stringify(decodedToken)}`);
 
       // Extract the userId from the decoded token
       const userId = decodedToken.userId;
       localStorage.setItem("userId", userId);
 
       return userId;
+    } catch (error) {
+      // Handle any errors that may occur during token decoding
+      console.error("Error decoding JWT token:", error);
+      return null;
+    }
+  }
+
+  return null; // Return null if there's no token or if decoding fails
+};
+
+export const getUserNameFromToken = () => {
+  const token = getToken();
+
+  if (token) {
+    try {
+      // Decode the JWT token
+      const decodedToken = jwtDecode(token);
+      // console.log(`decodedToken : ${JSON.stringify(decodedToken)}`);
+
+      // Extract the userId from the decoded token
+      const userName = decodedToken.userName;
+      localStorage.setItem("userName", userName);
+
+      return userName;
     } catch (error) {
       // Handle any errors that may occur during token decoding
       console.error("Error decoding JWT token:", error);

@@ -17,92 +17,44 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
     padding: "10px",
   };
 
+  const isPathStartsWith = (path) => {
+    return (
+      window.location.pathname === path ||
+      window.location.pathname.startsWith(path)
+    );
+  };
+
+  const links = [
+    { linkPath: "/tweet-base", linkHeader: "Tweets" },
+    { linkPath: "/task-mgmt", linkHeader: "TaskContainer" },
+    { linkPath: "/user-mgmt", linkHeader: "User Mgmt" },
+    { linkPath: "/resume-mgmt", linkHeader: "Resume Mgmt" },
+    { linkPath: "/my-resume", linkHeader: "My Resume" },
+    { linkPath: "/topic-mgmt", linkHeader: "Topic Mgmt" },
+    { linkPath: "/words", linkHeader: "Words" },
+    { linkPath: "/interview-mgmt", linkHeader: "Interview-Mgmt" },
+    { linkPath: "/links-mgmt", linkHeader: "Links" },
+    { linkPath: "/settings", linkHeader: "Settings" }
+  ];
+
+
   return (
     <nav style={menuStyle}>
       <ul>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/tweet-base"
-            style={
-              window.location.pathname === "/tweet-base" ? selectedLinkStyle : {}
-            }
-          >
-            Tweets
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/task-container"
-            style={
-              window.location.pathname === "/task-container"
-                ? selectedLinkStyle
-                : {}
-            }
-          >
-            TaskContainer
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/user-mgmt"
-            style={
-              window.location.pathname === "/user-mgmt" ? selectedLinkStyle : {}
-            }
-          >
-            User Mgmt
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/resume-mgmt"
-            style={
-              window.location.pathname === "/resume-mgmt" ? selectedLinkStyle : {}
-            }
-          >
-            Resume Mgmt
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/my-resume"
-            style={
-              window.location.pathname === "/my-resume" ? selectedLinkStyle : {}
-            }
-          >
-            My Resume
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/topic-dashboard"
-            style={
-              window.location.pathname === "/topic-dashboard" ? selectedLinkStyle : {}
-            }
-          >
-            Topic Dashboard
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/words"
-            style={
-              window.location.pathname === "/words" ? selectedLinkStyle : {}
-            }
-          >
-            Words
-          </NavLink>
-        </li>
-        <li style={listItemStyle}>
-          <NavLink
-            to="/settings"
-            style={
-              window.location.pathname === "/settings" ? selectedLinkStyle : {}
-            }
-          >
-            Settings
-          </NavLink>
-        </li>
         
+        {
+          links.map(({ linkPath, linkHeader }) => (
+            <li key={linkPath} style={listItemStyle}>
+              <NavLink
+                to={linkPath}
+                style={isPathStartsWith(linkPath) ? selectedLinkStyle : {}}
+              >
+                {linkHeader}
+              </NavLink>
+            </li>
+          ))
+        }        
+
         {/* Add a Logout button */}
         {isAuthenticated && (
           <li style={{ ...listItemStyle, marginLeft: "auto" }}>

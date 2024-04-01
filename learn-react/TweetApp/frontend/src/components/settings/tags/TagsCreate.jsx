@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { createTag, updateTag } from '../../../redux/tagsSlice';
-import CustomButton from '../../common/CustomButton';
+import { useDispatch } from 'react-redux';
+import { createTag, updateTag } from '../../../redux/slices/tagsSlice';
+import CustomButton from '../../../common/components/CustomButton';
 
 function TagsCreate({ tag, onCancelEdit }) {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function TagsCreate({ tag, onCancelEdit }) {
     if (validateForm()) {
       if (isEditing) {
         // If editing an existing tag, dispatch the updateTag action
-        console.log(JSON.stringify(` in component : tagData : ${JSON.stringify(tagData)}`))
+        // console.log(JSON.stringify(` in component : tagData : ${JSON.stringify(tagData)}`))
         dispatch(updateTag(tagData));
       } else {
         // If creating a new tag, dispatch the createTag action

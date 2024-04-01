@@ -1,31 +1,30 @@
 /* styles.css */
 
 nav {
-    background-color: #333;
-    padding: 10px;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    display: flex; /* Display the list items horizontally */
-  }
-  
-  li {
-    margin-right: 20px; /* Add some spacing between the list items */
-  }
-  
-  li:last-child {
-    margin-right: 0; /* Remove margin from the last list item */
-  }
-  
-  a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
+  background-color: #333;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex; /* Display the list items horizontally */
+}
+
+nav li {
+  margin-right: 20px; /* Add some spacing between the list items */
+}
+
+nav li:last-child {
+  margin-right: 0; /* Remove margin from the last list item */
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}

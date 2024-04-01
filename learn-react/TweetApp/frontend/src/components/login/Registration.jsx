@@ -70,7 +70,9 @@ function Registration() {
     }
 
     // Check if the password contains a capital letter and alphanumeric characters
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]+$/;
+    // const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]+$/;
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
     if (!passwordRegex.test(formData.password)) {
       setPasswordError("Password must contain a capital letter and alphanumeric characters");

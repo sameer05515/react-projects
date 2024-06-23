@@ -32,7 +32,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     }, [dispatch]);
 
     const tagOptions = availableTags.map((tag) => ({
-        value: tag.tagId, // Assuming tags have unique IDs
+        value: tag.uniqueId, // Assuming tags have unique IDs
         label: tag.name, // Display tag names in the dropdown
     }));
 

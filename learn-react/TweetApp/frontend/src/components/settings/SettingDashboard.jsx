@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TagList from "./tags/TagList";
+// import TagList from "../tags/TagList";
 import GoldRateCalculator from "../miscelleneous/GoldRateCalculator";
 import ComparisonContainer from "../comparisons/ComparisonContainer";
 import ComparisonTableContainer from "../comparisons/ComparisonTableContainer";
@@ -13,7 +13,7 @@ const tabButtonStyle = {
 };
 
 const TabNames = {
-  listUsers: "tags",
+  //listUsers: "tags",
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
   comparisonTableContainer: "ComparisonTableContainer",
@@ -23,7 +23,7 @@ const TabNames = {
 };
 
 function SettingDashboard() {
-  const [activeTab, setActiveTab] = useState(TabNames.listUsers);
+  const [activeTab, setActiveTab] = useState(TabNames.goldRateCalculator);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -57,7 +57,7 @@ function SettingDashboard() {
     <div>
       <h2>Setting Dashboard</h2>
       <div style={{ display: "flex", gap: "10px" }}>
-        <button
+        {/* <button
           style={{
             ...tabButtonStyle,
             background: activeTab === TabNames.listUsers ? "#007bff" : "white",
@@ -66,7 +66,7 @@ function SettingDashboard() {
           onClick={() => handleTabChange(TabNames.listUsers)}
         >
           Tags
-        </button>
+        </button> */}
         <button
           style={{
             ...tabButtonStyle,
@@ -139,7 +139,7 @@ function SettingDashboard() {
         </button> */}
       </div>
       <div style={{ marginTop: "10px" }}>
-        {activeTab === TabNames.listUsers && <TagList />}
+        {/* {activeTab === TabNames.listUsers && <TagList />} */}
         {activeTab === TabNames.goldRateCalculator && <GoldRateCalculator />}
         {activeTab === TabNames.comparisonContainer && <ComparisonContainer />}
         {activeTab === TabNames.comparisonTableContainer && <ComparisonTableContainer />}

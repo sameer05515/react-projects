@@ -16,19 +16,23 @@ import {
 import { updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 import HtmlTextRendrer from "../../common/components/HtmlTextRenderer";
+import FloatingButton from "../../common/components/FloatingButton";
 
 const TaskCard = ({
   task,
   tags = [],
   showDescription = false,
+  pinnedTasks = [],
+  isPinned = false,
   onEdit = () => { },
   onTaskTraversal = () => { },
   onAddSubTask = () => { },
   onChildTaskClick = () => { },
+  onPinTask = () => { },
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = task.tags?.map((tagId) =>
-    tags.find((tag) => tag.tagId === tagId)
+  const filteredTags = task.tags?.map((uniqueId) =>
+    tags.find((tag) => tag.uniqueId === uniqueId)
   );
 
   const handleEdit = () => {
@@ -44,6 +48,10 @@ const TaskCard = ({
   const handleAddSubTask = () => {
     onAddSubTask(task);
   };
+
+  const handlePinTopic = (isPinned) => {
+    onPinTask(task, isPinned);
+  }
 
   return (
     <>
@@ -85,6 +93,34 @@ const TaskCard = ({
           >
             Next
           </CustomButton>
+
+          <CustomButton
+            style={{ ...styles.tagStyle, marginRight: "10px" }}
+            onClick={() => handlePinTopic(isPinned)}
+          >
+            {isPinned ? 'Un-Pin' : 'Pin'} topic
+          </CustomButton>
+
+          <FloatingButton
+            buttonStyle={{ ...styles.tagStyle, marginRight: "10px" }}
+            buttonText={"Show Pinned Topics"}
+          >
+            <div style={{ padding: "10px" }}>
+              <b>List of all pinned Topics:-</b>
+            </div>
+            {pinnedTasks && pinnedTasks.length > 0 && (
+              // <DynamicDataRenderer data={pinnedTasks} />
+              <ul style={styles.ulStyle}>
+                {pinnedTasks.map((t) => (
+                  <li style={styles.liStyles} key={t.uniqueId}>
+                    <HoverableSpan onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}>
+                      {t.title}
+                    </HoverableSpan>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </FloatingButton>
         </div>
         <div>
           <h2>{task.title}</h2>

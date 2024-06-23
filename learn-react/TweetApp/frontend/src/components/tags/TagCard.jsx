@@ -1,97 +1,56 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  formatDateToDDMMMYYYY,
-  prepareQuestions,
-} from "../../common/commonService";
+import React, { useState } from 'react'
+import HoverableSpan from '../../common/components/HoverableSpan';
+import CustomButton from '../../common/components/CustomButton';
+import { formatDateToDDMMMYYYYWithTime } from '../../common/commonService';
+import { Breadcrumbs } from '../topic/TopicBase';
+import { SmartPreviewer } from '../../common/components/SmartEditor';
 import ReactHtmlParser from "react-html-parser";
-import CustomButton from "../../common/components/CustomButton";
-import FloatingButton from "../../common/components/FloatingButton";
-import DynamicDataRenderer from "../../common/components/DynamicDataRenderer";
-import { Breadcrumbs } from "./TopicBase";
-import HoverableSpan from "../../common/components/HoverableSpan";
-import { SmartPreviewer } from "../../common/components/SmartEditor";
 
-const TopicCard = ({
-  topic,
-  tags = [],
+const TagCard = ({
+  tag,
   showDescription = false,
-  selectedSectionId = null,
-  topicSections = [],
-  pinnedTopics = [],
-  isPinned=false,
   onEdit = () => { },
-  onTopicTraversal = () => { },
-  onAddSubTopic = () => { },
-  onChildTopicClick = () => { },
+  onTagTraversal = () => { },
+  onAddSubTag = () => { },
+  onChildTagClick = () => { },
   onMoveAnotherParent = () => { },
   onAncestorClick = () => { },
-  onPinTopic= ()=>{},
-  onAddSection = () => {
-    alert("Functionality will be added soon!");
-  },
-  onEditSection = () => {
-    alert("Functionality will be added soon!");
-  },
-  onTopicSectionClick = () => {
-    alert("Topic section click callback not provided.");
-  },
+  onLinkedItemClick = () => { }
 }) => {
+
   const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = topic.tags?.map((uniqueId) =>
-    tags.find((tag) => tag.uniqueId === uniqueId)
-  );
-
-  const selectedElementRef = useRef(null);
-
-  useEffect(() => {
-    if (selectedElementRef.current) {
-      selectedElementRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-    }
-  }, [selectedSectionId]);
 
   const handleEdit = () => {
-    // console.log(`Edit : ${JSON.stringify(topic)}`);
+    // console.log(`Edit : ${JSON.stringify(tag)}`);
     // console.log(`typeof onEdit: ${typeof onEdit}`);
-    onEdit(topic);
+    onEdit(tag);
   };
 
-  const traverseTopic = (increment = 0) => {
-    // console.log(`Soon topic will traverse and show data with increment: ${increment}`);
-    onTopicTraversal(increment);
+  const traverseTag = (increment = 0) => {
+    // console.log(`Soon tag will traverse and show data with increment: ${increment}`);
+    onTagTraversal(increment);
   };
 
-  const handleAddSubTopic = () => {
-    onAddSubTopic(topic);
-  };
-
-  const handleAddSection = () => {
-    onAddSection(topic);
+  const handleAddSubTag = () => {
+    onAddSubTag(tag);
   };
 
   const handleMoveAnotherParent = () => {
-    onMoveAnotherParent(topic);
+    onMoveAnotherParent(tag);
   };
-
-  const handlePinTopic= (isPinned)=>{
-    onPinTopic(topic,isPinned);
-  }
 
   const handleAncestorClick = (ancestor) => {
     onAncestorClick(ancestor);
   };
 
-  const populateChildren = (childTopicList) => {
+  const populateChildren = (childTagList) => {
     return (
       <>
-        {childTopicList && childTopicList.length > 0 && (
+        {childTagList && childTagList.length > 0 && (
           <ul style={styles.ulStyle}>
-            {childTopicList.map((t) => (
+            {childTagList.map((t) => (
               <li style={styles.liStyles} key={t.uniqueId}>
-                <HoverableSpan onClick={() => onChildTopicClick(t)}>
+                <HoverableSpan onClick={() => onChildTagClick(t)}>
                   {t.name}
                 </HoverableSpan>
                 {populateChildren(t.children)}
@@ -103,7 +62,7 @@ const TopicCard = ({
     );
   };
 
-  const populateSections = (sectionsList) => {
+  const populateLinkedItems = (sectionsList, type='') => {
     return (
       <>
         {/* <pre>{JSON.stringify(sectionsList, null, 2)}</pre> */}
@@ -111,9 +70,13 @@ const TopicCard = ({
           <ul style={styles.ulStyle}>
             {sectionsList.map((t) => (
               <li style={styles.liStyles} key={t.uniqueId}>
-                <HoverableSpan onClick={() => onTopicSectionClick(t.uniqueId)}>
+                {(TagLinkedItemType.topic===type || TagLinkedItemType.task===type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>
                   {t.name}
-                </HoverableSpan>
+                </HoverableSpan>}
+
+                {TagLinkedItemType.topicSection===type && <HoverableSpan onClick={() => onLinkedItemClick({ linkedTopicUniqueId:t.linkedTopicUniqueId, uniqueId: t.uniqueId }, type)}>
+                  {t.name}
+                </HoverableSpan>}
                 {/* {populateChildren(t.children)} */}
               </li>
             ))}
@@ -139,15 +102,22 @@ const TopicCard = ({
   };
 
   return (
+    // <>
+    //   <div>
+    //     <span>You will see details for tag: {tag.uniqueId}</span>
+    //     <pre>{JSON.stringify(tag, null, 2)}</pre>
+    //   </div>
+    // </>
+
     <>
       <div>
         <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => traverseTopic(-1)}
+          onClick={() => traverseTag(-1)}
         >
           Previous
         </CustomButton>
-        <CustomButton style={tagStyle} onClick={() => traverseTopic(1)}>
+        <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
           Next
         </CustomButton>
       </div>
@@ -155,27 +125,24 @@ const TopicCard = ({
       <div>
         {/* <div> */}
         <Breadcrumbs
-          topic={topic}
-          ancestors={topic.ancestors}
+          topic={tag}
+          ancestors={tag.ancestors}
           onAncestorClick={(a) => handleAncestorClick(a)}
         />
-        <h3>{topic.name}</h3> <br />
-        {/* <p>{topic.ancestors&& topic.ancestors.length>0 ? JSON.stringify(topic.ancestors):"Iss topic ka baap kon??"}</p> */}
+        <h3>{tag.name}</h3> <br />
+        {/* <p>{tag.ancestors&& tag.ancestors.length>0 ? JSON.stringify(tag.ancestors):"Iss tag ka baap kon??"}</p> */}
         {/* </div> */}
         {/* <h1>selectedSectionId: {`${selectedSectionId}`}</h1> */}
         <div style={datesStyle}>
           <span style={{ marginRight: "10px" }}>
-            <b>Occurred:</b> {formatDateToDDMMMYYYY(topic.occurenceDate)}
-          </span>
-          <span style={{ marginRight: "10px" }}>
-            <b>Created:</b> {formatDateToDDMMMYYYY(topic.createdDate)}
+            <b>Created:</b> {formatDateToDDMMMYYYYWithTime(tag.createdDate)}
           </span>
           <span>
-            <b>Last updated:</b> {formatDateToDDMMMYYYY(topic.updatedDate)}
+            <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(tag.updatedDate)}
           </span>
         </div>
       </div>
-      {/* <p style={{ whiteSpace: "pre-line" }}>{topic.description}</p> */}
+      {/* <p style={{ whiteSpace: "pre-line" }}>{tag.description}</p> */}
       {/* Add Edit and Show Description buttons */}
       <div style={{ margin: "10px 0" }}>
         <CustomButton
@@ -202,17 +169,17 @@ const TopicCard = ({
         )}
         <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => handleAddSubTopic()}
+          onClick={() => handleAddSubTag()}
         >
-          Add subtopic
+          Add Sub-Tag
         </CustomButton>
 
-        <CustomButton
+        {/* <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
           onClick={() => handleAddSection()}
         >
           Add Section
-        </CustomButton>
+        </CustomButton> */}
 
         <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
@@ -221,14 +188,14 @@ const TopicCard = ({
           Move to another parent
         </CustomButton>
 
-        <CustomButton
+        {/* <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
           onClick={() => handlePinTopic(isPinned)}
         >
-          {isPinned?'Un-Pin':'Pin'} topic
-        </CustomButton>
+          {isPinned?'Un-Pin':'Pin'} tag
+        </CustomButton> */}
 
-        <FloatingButton
+        {/* <FloatingButton
           buttonStyle={{ ...tagStyle, marginRight: "10px" }}
           buttonText={"Show Pinned Topics"}
         >
@@ -236,7 +203,6 @@ const TopicCard = ({
             <b>List of all pinned Topics:-</b> 
           </div>
           {pinnedTopics && pinnedTopics.length > 0 && (
-            // <DynamicDataRenderer data={pinnedTopics} />
             <ul style={styles.ulStyle}>
               {pinnedTopics.map((t) => (
                 <li style={styles.liStyles} key={t.uniqueId}>
@@ -247,36 +213,56 @@ const TopicCard = ({
               ))}
             </ul>
           )}
-        </FloatingButton>
+        </FloatingButton> */}
 
-        <FloatingButton
+        {/* <FloatingButton
           buttonStyle={{ ...tagStyle, marginRight: "10px" }}
           buttonText={"?"}
         >
           <div style={{ padding: "10px" }}>
-            If this <b>{`${topic.name}`}</b> is a topic, It should answer below
+            If this <b>{`${tag.name}`}</b> is a tag, It should answer below
             questions
           </div>
-          {topic.name && (
-            <DynamicDataRenderer data={prepareQuestions(topic.name)} />
+          {tag.name && (
+            <DynamicDataRenderer data={prepareQuestions(tag.name)} />
           )}
-        </FloatingButton>
+        </FloatingButton> */}
         <br />
       </div>
 
-      {topic.sections && topic.sections.length > 0 && (
-        <div style={styles.sectionStyle}>
-          <b>Sections:-</b> <br />
-          {populateSections(topic.sections)}
-        </div>
-      )}
-
-      {topic.children && topic.children.length > 0 && (
+      {tag.children && tag.children.length > 0 && (
         <div
           style={styles.descriptionStyle}
         >
           <b>Child Topics:-</b> <br />
-          {populateChildren(topic.children)}
+          {populateChildren(tag.children)}
+        </div>
+      )}
+
+      {tag.linkedTopics && tag.linkedTopics.length > 0 && (
+        <div
+          style={styles.descriptionStyle}
+        >
+          <b>Linked Topics:-</b> <br />
+          {populateLinkedItems(tag.linkedTopics,TagLinkedItemType.topic)}
+        </div>
+      )}
+
+      {tag.linkedSections && tag.linkedSections.length > 0 && (
+        <div
+          style={styles.descriptionStyle}
+        >
+          <b>Linked Topic Sections:-</b> <br />
+          {populateLinkedItems(tag.linkedSections,TagLinkedItemType.topicSection)}
+        </div>
+      )}
+
+      {tag.linkedTasks && tag.linkedTasks.length > 0 && (
+        <div
+          style={styles.descriptionStyle}
+        >
+          <b>Linked Tasks:-</b> <br />
+          {populateLinkedItems(tag.linkedTasks,TagLinkedItemType.task)}
         </div>
       )}
 
@@ -290,79 +276,31 @@ const TopicCard = ({
             width: '77vw',
             overflow: 'auto'
           }}>
-          <b>{topic.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
-          {topic.description && !topic.smartContent && ReactHtmlParser(topic.description || "")}
-          {topic.smartContent && <SmartPreviewer data={topic.smartContent} />}
+          <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
+          {tag.description && !tag.smartContent && ReactHtmlParser(tag.description || "")}
+          {tag.smartContent && <SmartPreviewer data={tag.smartContent} />}
         </div>
       }
-      {filteredTags.map(
-        (tag) =>
-          tag && (
-            <span style={tagStyle} key={tag._id}>
-              {tag.name}
-            </span>
-          )
-      )}
 
-      {topicSections && topicSections.length > 0 && (
-        <div
-          style={styles.topicSectionsStyle}
-        >
-          <b>Sections:-</b> <br />
-          <ol>
-            {topicSections.map((ts) => (
-              <li
-                key={ts.uniqueId}
-                style={{
-                  border: "1px solid #999", // Grey border
-                  padding: "2px 5px", // Adjust padding as needed
-                  borderRadius: "4px",
-                  marginBottom: "10px",
-                }}
-              >
-                <span ref={
-                  selectedSectionId === ts.uniqueId
-                    ? selectedElementRef
-                    : null
-                }>
-                  <h3>{ts.name}</h3>
-                </span>
 
-                <div style={{ margin: "10px 0" }}>
-                  <CustomButton
-                    style={{ ...tagStyle, marginRight: "10px" }}
-                    onClick={() => onEditSection(ts.uniqueId)}
-                  >
-                    Edit
-                  </CustomButton>
-                  <CustomButton style={{ ...tagStyle, marginRight: "10px" }}> Move up</CustomButton>
-                  <CustomButton style={{ ...tagStyle, marginRight: "10px" }}> Move down</CustomButton>
-                </div>
 
-                <SmartPreviewer data={ts.smartContent} />
 
-                {/* <pre>{`${JSON.stringify(ts.smartContent, null, 2)}`}</pre> */}
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
 
 
 
       <div>
         <CustomButton
           style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => traverseTopic(-1)}
+          onClick={() => traverseTag(-1)}
         >
           Previous
         </CustomButton>
-        <CustomButton style={tagStyle} onClick={() => traverseTopic(1)}>
+        <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
           Next
         </CustomButton>
       </div>
     </>
-  );
+  )
 };
 
 const styles = {
@@ -402,4 +340,11 @@ const styles = {
   }
 };
 
-export default TopicCard;
+const TagLinkedItemType={
+  topic:'topic',
+  task:'task',
+  topicSection:'topic-section'
+}
+
+export default TagCard;
+export {TagLinkedItemType};

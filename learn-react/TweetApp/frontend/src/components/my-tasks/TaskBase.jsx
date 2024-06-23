@@ -17,6 +17,7 @@ import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
 import TaskContainer from "./TaskContainer";
 import TaskForm from "./TaskForm";
+import { fetchPinnedItems, upsertPinnedItem } from "../../redux/slices/pinnedItemSlice";
 
 const TaskBase = () => {
     const [selectedView, setSelectedView] = useState("list");
@@ -157,7 +158,7 @@ const CreateTaskComp = () => {
 
     return (
         <>
-            {/* <span>Create Topic: parentId : {parentId}</span> <br /> */}
+            {/* <span>Create Task: parentId : {parentId}</span> <br /> */}
             <TaskForm
                 onSave={() => {
                     dispatch(fetchTasks());
@@ -210,13 +211,16 @@ const ViewTaskComp = () => {
     const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
     const { data, loading, error, refetch } = useDataFetching(url);
     const availableTags = useSelector((state) => state.tags.data);
+    const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
-    const tasks = useSelector((state) => state.tasks.data);
+    const tasks = useSelector((state) => state.tasks.flatData);
+    const [pinnedTasks, setPinnedTasks] = useState([]);
+    const [isPinned, setIsPinned]= useState(false);
 
     const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
         (state) => {
             //const flatList = prepareTasksQueue(state.tasks.data, []);
-            const flatList = state.tasks.flatData;
+            const flatList = [...state.tasks.flatData];
             const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
             // console.log(`flatList size: ${flatList.length}`);
             // console.log(`state.tasks.selectedTaskUniqueId : ${selectedTaskUniqueId}`);
@@ -241,6 +245,7 @@ const ViewTaskComp = () => {
 
     useEffect(() => {
         dispatch(fetchTags());
+        dispatch(fetchPinnedItems());
     }, [dispatch]);
 
     useEffect(() => {
@@ -249,6 +254,18 @@ const ViewTaskComp = () => {
             dispatch(setSelectedTaskUniqueId(id));
         }
     }, [id, tasks, dispatch]);
+
+    useEffect(() => {
+        if (id && pinnedItems && tasks && pinnedItems.length > 0 && tasks.length > 0) {
+            let pinnedTasksList = pinnedItems.filter(pi => pi.linkedItemType === 'task' && pi.softDelete === false);
+            pinnedTasksList = pinnedTasksList ? pinnedTasksList.map(pit => ({
+                ...pit, title: tasks.find(t => t.uniqueId === pit.linkedUniqueId)?.title || ''
+            })) : [];
+            setPinnedTasks(prev => [...pinnedTasksList]);
+            setIsPinned(prev=> pinnedTasksList.findIndex(pit=> pit.linkedUniqueId=== id)>=0)
+        }
+    }, [id, tasks, pinnedItems]);
+
     const handleEdit = (item) => {
         navigate(`/task-mgmt/${id}/edit`);
     };
@@ -268,6 +285,14 @@ const ViewTaskComp = () => {
         }
     };
 
+    const handlePinTopic = (item, isPinned) => {
+        dispatch(upsertPinnedItem({
+            "linkedUniqueId": item.uniqueId,
+            "linkedItemType": "task",
+            "softDelete": isPinned
+        }))
+    }
+
 
     if (loading) {
         return <div>Loading...</div>;
@@ -278,15 +303,18 @@ const ViewTaskComp = () => {
     }
     return (
         <>
-            <TaskCard
+            {data ? <TaskCard
                 task={data}
                 tags={availableTags}
                 showDescription={true}
+                pinnedTasks={pinnedTasks}
+                isPinned={isPinned}
                 onEdit={handleEdit}
                 onTaskTraversal={handleTaskTraversal}
                 onAddSubTask={handleAddSubTask}
                 onChildTaskClick={handleChildTaskClick}
-            />
+                onPinTopic={handlePinTopic}
+            />:<>No task data found for id: {id}</>}
         </>
     );
 };
@@ -309,7 +337,7 @@ const AddSubTaskComp = () => {
     }));
 
     const handleTaskSelect = (selectedTags) => {
-        // Extract the tag values and store them in the 'tags' property of the topic data
+        // Extract the tag values and store them in the 'tags' property of the task data
         setFormData({ ...formData, children: selectedTags.map((tag) => tag.value) });
     };
 
@@ -320,14 +348,14 @@ const AddSubTaskComp = () => {
         description: task && task.description ? task.description : "",
         parentId: task && task.parentId ? task.parentId : "",
         linkedTasks: task && task.linkedTasks ? task.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs
-        tags: task && task.tags ? task.tags : [], // Set the initial tags based on the topic
+        tags: task && task.tags ? task.tags : [], // Set the initial tags based on the task
         children: task && task.children ? task.children.map(c => c.uniqueId) : []
     });
 
     const handleSaveTask = () => {
         console.log(`Going to save: taskId: ${task._id} , formData : ${JSON.stringify(formData)}`)
         if (task && task._id && task.uniqueId) {
-            // If a topic is provided, it's an update
+            // If a task is provided, it's an update
             dispatch(updateTask({ taskId: task._id, taskData: { children: formData.children } }));
             // dispatch(updateTask({ taskId: task._id, taskData: {} }));
             // alert('going to edit')

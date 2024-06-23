@@ -28,8 +28,10 @@ import "./styles/nav-styles.css";
 import MyResumeComponent from "./components/my-resume/MyResumeComponent";
 import InterviewMgmtBase, { CreateCategory, EditCategory, ViewCategoryDetails, ViewQuestionDetails } from "./components/interview-mgmt/InterviewMgmtBase";
 import LinksBase, { AddChildLink, CreateLink, EditLink, ViewLink } from "./components/links/LinksBase";
-import TopicBase, { AddSubTopicComp, CreateSectionRouterPage, CreateTopicComp, EditSectionRouterPage, EditTopicComp, MoveToAnotherTopicParent, ViewTopic } from "./components/topic/TopicBase";
+import TopicBase, { AddSubTopicComp, CreateSectionRouterPage, CreateTopicComp, EditSectionRouterPage, EditTopicComp, MoveToAnotherTopicParent, SearchRouterPage, ViewTopic } from "./components/topic/TopicBase";
 import TaskBase, { AddSubTaskComp, CreateTaskComp, EditTaskComp, ViewTaskComp } from "./components/my-tasks/TaskBase";
+// import TagList from "./components/tags/TagList";
+import TagBase, { CreateTag, EditTag, MoveToAnotherTagParent, SearchTagRouterPage, ViewTag } from "./components/tags/TagBase";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -144,6 +146,7 @@ function App() {
               <Route path=":id/add-section" element={<CreateSectionRouterPage/>}/>
               <Route path=":id/section/:sectionId/edit" element={<EditSectionRouterPage/>}/>
               <Route path="create" element={<CreateTopicComp />} />
+              <Route path="search" element={<SearchRouterPage/>} />
             </Route>
 
             <Route path="/words" element={<WordList />} />
@@ -164,6 +167,15 @@ function App() {
               <Route path=":id/edit" element={<EditLink />} />
               <Route path=":id" element={<ViewLink />} />
               <Route path="create" element={<CreateLink />} />
+              {/* <Route path=":id/add-child" element={<AddChildLink/>}/> */}
+            </Route>
+
+            <Route path="/tags" element={<TagBase />} >
+              <Route path=":id/edit" element={<EditTag />} />
+              <Route path=":id" element={<ViewTag />} />
+              <Route path="create" element={<CreateTag/>} />
+              <Route path="search" element={<SearchTagRouterPage/>} />              
+              <Route path=":id/move-parent" element={<MoveToAnotherTagParent/>}/>
               {/* <Route path=":id/add-child" element={<AddChildLink/>}/> */}
             </Route>
 

@@ -14,6 +14,8 @@ import { fetchTags } from "../../redux/slices/tagsSlice";
 import {
     createTopicSection,
     fetchTopics,
+    searchTopic,
+    setSearchString,
     setSelectedTopicUniqueId,
     updateTopic,
     updateTopicSectionsById,
@@ -27,7 +29,10 @@ import Select from "react-select"; // Import the Select component from react-sel
 import HoverableSpan from "../../common/components/HoverableSpan";
 import TooltipSpan from "../../common/components/TooltipSpan";
 import TopicSectionForm from "./TopicSectionForm";
-import { fetchPinnedItems } from "../../redux/slices/pinnedItemSlice";
+import {
+    fetchPinnedItems,
+    upsertPinnedItem,
+} from "../../redux/slices/pinnedItemSlice";
 
 const TopicBase = () => {
     const [selectedView, setSelectedView] = useState("list");
@@ -135,9 +140,26 @@ const ListTopics = () => {
         <div className="linksContainer">
             <div className="left-section">
                 {/* <pre>{links && JSON.stringify(links)}</pre> */}
-                <CustomButton onClick={() => handleButtonClick("create")}>
-                    Create Topic
-                </CustomButton>
+                <div style={{ margin: "10px 0" }}>
+                    <CustomButton
+                        style={{ ...styles.tagStyle, marginRight: "10px" }}
+                        onClick={() => handleButtonClick("create")}
+                    >
+                        Create Topic
+                    </CustomButton>
+                    <CustomButton
+                        style={{ ...styles.tagStyle, marginRight: "10px" }}
+                        onClick={() => dispatch(fetchTopics())}
+                    >
+                        Refresh
+                    </CustomButton>
+                    <CustomButton
+                        style={{ ...styles.tagStyle, marginRight: "10px" }}
+                        onClick={() => navigate(`/topic-mgmt/search`)}
+                    >
+                        Search
+                    </CustomButton>
+                </div>
                 {getTopicsJSX(topics)}
             </div>
             {/* -- left-section */}
@@ -150,6 +172,169 @@ const ListTopics = () => {
             {/* -- right-section */}
         </div>
         // -- linksContainer
+    );
+};
+
+const SearchRouterPage = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const taskFormStyle = {};
+    // const url = `${BACKEND_APPLICATION_BASE_URL}/topics/search`;
+    // const [options, setOptions] = useState({});
+    // const { data, loading, error, refetch } = useDataFetching(url, options, false);
+    const [formData, setFormData] = useState({
+        title: "",
+    });
+    const data = useSelector((state) => state.topics.searchedData);
+    const searchString = useSelector((state) => state.topics.searchString);
+    const flatData = useSelector((state) => state.topics.flatData);
+
+    const [criteriaList, setCriteriaList] = useState({
+        name: { value: 1, editable: false },
+        description: { value: 0, editable: true },
+    });
+
+    const handleChange = (event) => {
+        const { name, checked } = event.target;
+        setCriteriaList((prevFruits) => ({
+            ...prevFruits,
+            [name]: { ...prevFruits[name], value: checked ? 1 : 0 },
+        }));
+    };
+
+    useEffect(() => {
+        if (searchString && searchString.trim().length > 0) {
+            setFormData((prev) => ({ ...prev, title: searchString }));
+        }
+    }, [searchString]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // const prepareOptions = () => {
+    //     const myHeaders = new Headers();
+    //     myHeaders.append("Content-Type", "application/json");
+
+    //     const raw = JSON.stringify({
+    //         "searchString": formData.title,
+    //         "searchOptions": {
+    //             "name": 1,
+    //             "description": 0
+    //         }
+    //     });
+
+    //     const requestOptions = {
+    //         method: "POST",
+    //         headers: myHeaders,
+    //         body: raw,
+    //         redirect: "follow"
+    //     };
+
+    //     setOptions(prev=>({...requestOptions}));
+    // }
+
+    const handleSearch = () => {
+        const searchOptions = Object.keys(criteriaList).reduce((acc, key) => {
+            acc[key] = criteriaList[key].value;
+            return acc;
+        }, {});
+
+        //   console.log(searchOptions);
+        const raw = {
+            searchString: formData.title,
+            searchOptions: searchOptions,
+        };
+        //prepareOptions();
+        dispatch(setSearchString(formData.title));
+        dispatch(searchTopic(raw));
+    };
+
+    const onChildTopicClick = (selectedTopic) => {
+        navigate(`/topic-mgmt/${selectedTopic?.uniqueId}`);
+    };
+
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
+
+    // if (error) {
+    //     return <div>Error: {error.message}</div>;
+    // }
+
+    return (
+        <>
+            <h1>Search</h1>
+            <div style={taskFormStyle}>
+                <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+                    <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>
+                        Title
+                    </label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Search {currently only searching in name of topic. search in description will be available soon!}"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        style={{ width: "90%" }}
+                    />
+                </div>
+                <pre>{JSON.stringify(criteriaList)}</pre>
+                <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+                    <label
+                        htmlFor="searchOptions"
+                        style={{ width: "9%", fontWeight: "bold" }}
+                    >
+                        Search Options
+                    </label>
+                    {Object.keys(criteriaList).map((criteria) => (
+                        <div key={criteria}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name={criteria}
+                                    checked={criteriaList[criteria].value}
+                                    onChange={handleChange}
+                                    disabled={!criteriaList[criteria].editable}
+                                />
+                                {criteria.charAt(0).toUpperCase() + criteria.slice(1)}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div>
+                <CustomButton onClick={() => handleSearch()}>Search</CustomButton>
+                <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+            </div>
+
+            <div>
+                {data && data.length > 0 && (
+                    <>
+                        <b>Search Results:- </b>
+                        <ul>
+                            {data.map((t) => (
+                                <li>
+                                    <HoverableSpan
+                                        key={t.uniqueId}
+                                        onClick={() => onChildTopicClick(t)}
+                                    >
+                                        {flatData?.find((ft) => ft.uniqueId === t.uniqueId)
+                                            ?.title || t.name}
+                                    </HoverableSpan>
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                )}
+            </div>
+        </>
     );
 };
 
@@ -172,7 +357,8 @@ const ViewTopic = () => {
     const topics = useSelector((state) => state.topics.data);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
-    const [pinnedTopics, setPinnedTopics]= useState([]);
+    const [pinnedTopics, setPinnedTopics] = useState([]);
+    const [isPinned, setIsPinned] = useState(false);
     // const [increment, setIncrement] = useState(0); // Initial increment value
 
     // const selectedTopicUniqueId = useSelector(
@@ -213,7 +399,7 @@ const ViewTopic = () => {
 
     useEffect(() => {
         dispatch(fetchTags());
-        dispatch(fetchPinnedItems())
+        dispatch(fetchPinnedItems());
     }, [dispatch]);
 
     useEffect(() => {
@@ -224,16 +410,35 @@ const ViewTopic = () => {
         }
     }, [id, topics, dispatch]);
 
-    useEffect(()=>{
-        if(id && pinnedItems && pinnedItems.length>0){
-            let pinnedTopics= pinnedItems.filter(pi=>pi.linkedItemType==='topic');
-            setPinnedTopics(prev=>[...pinnedTopics]);
+    useEffect(() => {
+        if (
+            id &&
+            pinnedItems &&
+            tasks &&
+            pinnedItems.length > 0 &&
+            tasks.length > 0
+        ) {
+            let pinnedTopicsList = pinnedItems.filter(
+                (pi) => pi.linkedItemType === "topic" && pi.softDelete === false
+            );
+            pinnedTopicsList = pinnedTopicsList
+                ? pinnedTopicsList.map((pit) => ({
+                    ...pit,
+                    title:
+                        tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
+                }))
+                : [];
+            setPinnedTopics((prev) => [...pinnedTopicsList]);
+            setIsPinned(
+                (prev) =>
+                    pinnedTopicsList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
+            );
         }
-    },[id, pinnedItems])
+    }, [id, tasks, pinnedItems]);
 
     useEffect(() => {
         //if (id && sectionId) {
-            sectionsRefetch();
+        sectionsRefetch();
         //}
     }, [id, sectionId]);
 
@@ -241,19 +446,19 @@ const ViewTopic = () => {
     //     // Fetch tags and pinned items when the component mounts
     //     dispatch(fetchTags());
     //     dispatch(fetchPinnedItems());
-    
+
     //     // If 'id' is present, refetch data and set selected topic unique ID
     //     if (id) {
     //         refetch();
     //         dispatch(setSelectedTopicUniqueId(id));
     //     }
-    
+
     //     // If 'id' and pinned items are present, filter pinned topics
     //     if (id && pinnedItems && pinnedItems.length > 0) {
     //         const pinnedTopics = pinnedItems.filter(pi => pi.linkedItemType === 'topic');
     //         setPinnedTopics(prev => [...pinnedTopics]);
     //     }
-    
+
     //     // Refetch sections based on 'id' and 'sectionId'
     //     sectionsRefetch();
     // }, [dispatch, id, topics, pinnedItems, sectionId]);
@@ -290,6 +495,15 @@ const ViewTopic = () => {
         // console.log(`moving to subtask having : ${JSON.stringify(item)}`);
         navigate(`/topic-mgmt/${id}/move-parent`);
     };
+    const handlePinTopic = (item, isPinned) => {
+        dispatch(
+            upsertPinnedItem({
+                linkedUniqueId: item.uniqueId,
+                linkedItemType: "topic",
+                softDelete: isPinned,
+            })
+        );
+    };
     const handleAncestorClick = (ancestor) => {
         if (!ancestor) {
             return;
@@ -301,7 +515,7 @@ const ViewTopic = () => {
     };
     const handleEditSection = (sectionUniqueId) => {
         navigate(`/topic-mgmt/${id}/section/${sectionUniqueId}/edit`);
-    }
+    };
 
     const handleTopicSectionClick = (sectionUniqueId) => {
         // alert(`Navigation to section Id will be done soon!! ${sectionUniqueId}`);
@@ -324,23 +538,27 @@ const ViewTopic = () => {
     return (
         <>
             {/* Topic details : {id} <br /> */}
-            <TopicCard
-                topic={data}
-                topicSections={sectionsData}
-                tags={availableTags}
-                pinnedTopics={pinnedTopics}
-                showDescription={true}
-                onEdit={handleEdit}
-                onTopicTraversal={handleTopicTraversal}
-                onAddSubTopic={handleAddSubTask}
-                onMoveAnotherParent={handleMoveAnotherParent}
-                onAncestorClick={handleAncestorClick}
-                onChildTopicClick={handleChildTaskClick}
-                onAddSection={handleAddSection}
-                onEditSection={handleEditSection}
-                selectedSectionId={sectionId}
-                onTopicSectionClick={handleTopicSectionClick}
-            />
+            {data && (
+                <TopicCard
+                    topic={data}
+                    topicSections={sectionsData}
+                    tags={availableTags}
+                    pinnedTopics={pinnedTopics}
+                    isPinned={isPinned}
+                    showDescription={true}
+                    onEdit={handleEdit}
+                    onTopicTraversal={handleTopicTraversal}
+                    onAddSubTopic={handleAddSubTask}
+                    onMoveAnotherParent={handleMoveAnotherParent}
+                    onAncestorClick={handleAncestorClick}
+                    onChildTopicClick={handleChildTaskClick}
+                    onAddSection={handleAddSection}
+                    onEditSection={handleEditSection}
+                    selectedSectionId={sectionId}
+                    onTopicSectionClick={handleTopicSectionClick}
+                    onPinTopic={handlePinTopic}
+                />
+            )}
         </>
     );
 };
@@ -382,16 +600,18 @@ const EditTopicComp = () => {
         <>
             <span>
                 Edit Topic: id: {id}: parentId : {parentId}
-            </span>{" "}
+            </span>
             <br />
-            <CreateTopic
-                topic={data}
-                onSave={() => {
-                    // console.log(`Edited topic created`);
-                    navigate(-1);
-                }}
-                onCancelEdit={() => navigate(`/topic-mgmt/${id}`)}
-            />
+            {data && (
+                <CreateTopic
+                    topic={data}
+                    onSave={() => {
+                        // console.log(`Edited topic created`);
+                        navigate(-1);
+                    }}
+                    onCancelEdit={() => navigate(`/topic-mgmt/${id}`)}
+                />
+            )}
         </>
     );
 };
@@ -676,7 +896,6 @@ const EditSectionRouterPage = () => {
         }
     }, [topics]);
 
-
     const handleUpdate = (data) => {
         // alert(JSON.stringify(data, null, 2));
         dispatch(updateTopicSectionsById({ ...data }));
@@ -698,7 +917,7 @@ const EditSectionRouterPage = () => {
             />
         </>
     );
-}
+};
 
 // const getNameWithAncestors = (topic) => {
 //     if (!topic) {
@@ -721,7 +940,7 @@ const EditSectionRouterPage = () => {
 
 // const prepareTasksQueue = (list, prevQueue = []) => {
 //     let queue = [...prevQueue];
-    
+
 //     if (list && list.length > 0) {
 //         list.forEach((t) => {
 //             queue = [
@@ -832,6 +1051,13 @@ const styles = {
         marginLeft: "15px", // Add some space between list items
         paddingBottom: "3px",
     },
+    tagStyle: {
+        backgroundColor: "#ccc", // Grey background color
+        border: "1px solid #999", // Grey border
+        padding: "2px 5px", // Adjust padding as needed
+        fontSize: "12px", // Small font size
+        borderRadius: "4px", // Rounded corners
+    },
 };
 
 export default TopicBase;
@@ -843,5 +1069,6 @@ export {
     MoveToAnotherTopicParent,
     CreateSectionRouterPage,
     EditSectionRouterPage,
+    SearchRouterPage,
     Breadcrumbs,
 };

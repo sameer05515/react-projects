@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import CustomButton from "../../common/components/CustomButton";
 import { SmartEditor } from "../../common/components/SmartEditor";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
-import useDataFetching from "../../common/hooks/useDataFetching";
 
-const TopicSectionForm = ({
+const TagForm = ({
   formData: initialValue,
-  selectedTopic,
-  onSubmit = () => {},
-  onCancel: handleCancel = () => {},
+  onSubmit = () => { },
+  onCancel: handleCancel = () => { },
 }) => {
+  const dispatch = useDispatch();
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
 
@@ -32,38 +31,16 @@ const TopicSectionForm = ({
   const [formData, setFormData] = useState({
     uniqueId:
       initialValue && initialValue.uniqueId ? initialValue.uniqueId : "",
-    linkedTopicUniqueId:
-      initialValue && initialValue.linkedTopicUniqueId
-        ? initialValue.linkedTopicUniqueId
-        : "",
+    description: initialValue ? initialValue.description : '',
     name: initialValue && initialValue.name ? initialValue.name : "",
+    parentId:
+      initialValue && initialValue.parentId ? initialValue.parentId : "",
     smartContent: initialValue?.smartContent || {
-      content: "",
+      content: initialValue?.description || "",
       textOutputType: "",
       textInputType: "",
     },
   });
-
-  const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${initialValue.linkedTopicUniqueId}/sections/${initialValue.uniqueId}`;
-  const {
-    data: sectionsData,
-    // loading: sectionLoading,
-    // error: sectionsFetchError,
-    refetch: sectionsRefetch,
-  } = useDataFetching(sectionFetchUrl);
-  useEffect(() => {
-    if (initialValue.linkedTopicUniqueId && initialValue.uniqueId) {
-      sectionsRefetch();
-    }
-  }, [initialValue.linkedTopicUniqueId, initialValue.uniqueId]);
-
-  useEffect(() => {
-    if (sectionsData) {
-      // alert(JSON.stringify(sectionsData))
-      setFormData((pre) => ({ ...sectionsData }));
-    }
-  }, [sectionsData]);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -83,18 +60,19 @@ const TopicSectionForm = ({
       onSubmit(formData);
     }
   };
-
   return (
     <div>
       <div>
         <span>
-          <h2>{formData.uniqueId ? "Update Section" : "Save Section"}</h2>
+          <h2>{formData.uniqueId ? "Update Tag" : "Save Tag"}</h2>
         </span>
         <br />
-        <span>
+        {/* <pre>formData {JSON.stringify(formData, null, 2)}</pre>
+        <pre>initialValue: {JSON.stringify(initialValue, null, 2)}</pre> */}
+        {/* <span>
           <b>Topic: </b>
           {selectedTopic?.title || "Invalid Topic"}
-        </span>
+        </span> */}
       </div>
       <div>
         <label htmlFor="name" style={styles.labelStyle}>
@@ -137,7 +115,7 @@ const TopicSectionForm = ({
       </CustomButton>
       <CustomButton onClick={handleCancel}>Cancel</CustomButton>
     </div>
-  );
+  )
 };
 
 const styles = {
@@ -156,4 +134,4 @@ const styles = {
   },
 };
 
-export default TopicSectionForm;
+export default TagForm;

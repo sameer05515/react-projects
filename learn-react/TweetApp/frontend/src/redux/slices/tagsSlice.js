@@ -35,7 +35,7 @@ export const updateTag = createAsyncThunk(
   async (updatedTag) => {
     // console.log(`slice: ${JSON.stringify(updateTag)}`);
     const response = await fetch(
-      `${BACKEND_APPLICATION_BASE_URL}/tags/${updatedTag.tagId}`,
+      `${BACKEND_APPLICATION_BASE_URL}/tags/${updatedTag.uniqueId}`,
       {
         method: "PUT",
         headers: {
@@ -61,8 +61,19 @@ const tagsSlice = createSlice({
     data: [],
     loading: "idle",
     error: null,
+    flatData:[],
+    searchedData:[],
+    searchString:'',
+    selectedTagUniqueId: null
   },
-  reducers: {},
+  reducers: {
+    setSelectedTagUniqueId: (state, action) => {
+      state.selectedTagUniqueId = action.payload;
+    },
+    setSearchString:(state, action)=>{
+      state.searchString = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTags.pending, (state) => {
@@ -80,3 +91,5 @@ const tagsSlice = createSlice({
 });
 
 export default tagsSlice.reducer;
+// Export the reducer and actions
+export const { setSelectedTagUniqueId,setSearchString } = tagsSlice.actions;

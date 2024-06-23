@@ -34,6 +34,7 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
     { linkPath: "/words", linkHeader: "Words" },
     { linkPath: "/interview-mgmt", linkHeader: "Interview-Mgmt" },
     { linkPath: "/links-mgmt", linkHeader: "Links" },
+    { linkPath: "/tags", linkHeader: "Tags" },
     { linkPath: "/settings", linkHeader: "Settings" }
   ];
 

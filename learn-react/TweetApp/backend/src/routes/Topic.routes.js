@@ -65,14 +65,14 @@ router.get('/:uniqueId', async (req, res) => {
 
 // Search topics by searchString
 router.post('/search', async (req, res) => {
-  const { searchString } = req.body;
+  const { searchString, searchOptions } = req.body;
 
   if (!searchString) {
     return res.status(400).json({ error: 'searchString is required' });
   }
 
   try {
-    const topics = await searchTopics(searchString);
+    const topics = await searchTopics(searchString, searchOptions);
     res.json(topics);
   } catch (error) {
     console.error(error);

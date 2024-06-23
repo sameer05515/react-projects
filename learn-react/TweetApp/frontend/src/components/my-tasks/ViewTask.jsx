@@ -4,8 +4,8 @@ import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
 
 const ViewTask = ({ task, onClose, tags = [] }) => {
-  // const filteredTags = task.tags?.map((tagId) =>
-  //   tags.find((tag) => tag.tagId === tagId)
+  // const filteredTags = task.tags?.map((uniqueId) =>
+  //   tags.find((tag) => tag.uniqueId === uniqueId)
   // );
   // const tagStyle = {
   //   backgroundColor: "#ccc", // Grey background color

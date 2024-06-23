@@ -22,6 +22,20 @@ export const createTopic = createAsyncThunk(
   }
 );
 
+export const searchTopic = createAsyncThunk(
+  "topics/searchTopic",
+  async (topicData) => {
+    const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(topicData),
+    });
+    return response.json();
+  }
+);
+
 // Define an async thunk to create a new topic
 export const createTopicSection = createAsyncThunk(
   "topics/createTopic/Section",
@@ -139,6 +153,8 @@ const topicSlice = createSlice({
     // },
     data: [],
     flatData:[],
+    searchedData:[],
+    searchString:'',
     loading: "idle",
     error: null,
   },
@@ -156,6 +172,9 @@ const topicSlice = createSlice({
       //   state.selectedTopicTraversal.prevTopicUniqueId=state.data[prevIndex].uniqueId;
       // }
     },
+    setSearchString:(state, action)=>{
+      state.searchString = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -171,6 +190,17 @@ const topicSlice = createSlice({
         state.loading = "rejected";
         state.error = action.error.message;
       })
+      // .addCase(searchTopic.pending, (state) => {
+      //   state.loading = "pending";
+      // })
+      .addCase(searchTopic.fulfilled, (state, action) => {
+        //state.loading = "fulfilled";
+        state.searchedData = action.payload;
+      })
+      // .addCase(fetchTopics.rejected, (state, action) => {
+      //   state.loading = "rejected";
+      //   state.error = action.error.message;
+      // })
       .addCase(createTopic.fulfilled, (state, action) => {
         state.data.push(action.payload);
       })
@@ -207,4 +237,4 @@ const topicSlice = createSlice({
 
 export default topicSlice.reducer;
 // Export the reducer and actions
-export const { setSelectedTopicUniqueId } = topicSlice.actions;
+export const { setSelectedTopicUniqueId,setSearchString } = topicSlice.actions;

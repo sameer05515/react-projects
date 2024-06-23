@@ -146,6 +146,22 @@ async function deleteTask(taskId) {
     }
 }
 
+const getTasksByTagId = async (tagId) => {
+    try {
+      const selectFields = {
+        uniqueId: 1,
+        title: 1,
+        //parentId: 1,
+        //tags: 1,
+      };
+      const topics = await Task.find({ tags: tagId }).select(selectFields);
+      return topics;
+    } catch (error) {
+      console.error(error);    
+      throw new Error(`Error retrieving topics with tagId ${tagId}: ${error.message}`);
+    }
+  };
+
 
 
 module.exports = {
@@ -154,4 +170,5 @@ module.exports = {
     createTask,
     updateTask,
     deleteTask,
+    getTasksByTagId
 };

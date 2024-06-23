@@ -24,10 +24,14 @@ Below points done and pushed to repo
 
 ## Tweet Application: Second Phase: Requirements
 
-- 1 -> Bug Fixes of First Phase. New Development freeze till all major Bug Fix Done for First Phase.
+- 1 -> Bug Fixes of First Phase. New Development freeze till all major Bug Fix Done for First Phase. -- Done
 - 2 -> Add buttons to save new Comment, remove onBlur event on text-area for comment
 - 3 -> Add one property saveOnBlur(true or false) in EditableLabel.jsx component. If true, then on blur, data will be saved.
-- 4 -> Make default sorting order for tweets to descending order, i.e., latest tweet should be displayed first.
+- 4 -> Make default sorting order for tweets to descending order, i.e., latest tweet should be displayed first. -- Done
+
+### New Bugs
+- 1 -> If creating new comment, the text entered in other tweet's new comment textarea
+
 
 ### TechDebt
 - 1 -> updated text of EditableLabel component is not being saved on first click of "Update" button

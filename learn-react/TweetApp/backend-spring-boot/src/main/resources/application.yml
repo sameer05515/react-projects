@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mongodb_test_v2
+      uri: mongodb://localhost:27017/mongodb_test_v2

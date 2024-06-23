@@ -1,7 +1,7 @@
 import React from "react";
-import EditableLabel from "../common/EditableLabel";
+import EditableLabel from "../../common/components/EditableLabel";
 import NestedComment from "./ViewNestedComment";
-import { useState } from "react";
+import NewNestedComment from './CreateNestedComment'
 
 function Comment({
   tweetId,
@@ -10,10 +10,8 @@ function Comment({
   handleAddNestedComment,
   handleUpdateNestedComment,
   formatTimestamp,
-//   newNestedCommentText,
-//   setNewNestedCommentText
 }) {
-    const [newNestedCommentText, setNewNestedCommentText] = useState(""); // State to hold the new comment text
+  
   return (
     <div key={comment._id} className="comment">
       <p className="timestamp">{formatTimestamp(comment.createdAt)}</p>
@@ -22,23 +20,17 @@ function Comment({
         postUpdateClick={(updatedText) =>
           handleUpdateComment(tweetId, comment._id, updatedText)
         }
-        style={{
+        labelStyle={{
           fontWeight: "normal", // Apply normal style for comment
           fontSize: "16px", // Set font size for comment
         }}
       />
-      <div className="nested-comments">
-        <div>
-          <textarea
-            placeholder="Enter a nested comment"
-            onBlur={(e) =>{
-                handleAddNestedComment(tweetId, comment._id, e.target.value)
-              setNewNestedCommentText(""); // Reset the new comment text after adding
-            }}
-            value={newNestedCommentText} // Use the state value for the textarea value
-            onChange={(e) => setNewNestedCommentText(e.target.value)} // Update the state as you type
-          />
-        </div>
+      <div className="nested-comments">        
+        <NewNestedComment
+          tweetId={tweetId}
+          commentId={comment._id}
+          handleAddNestedComment={handleAddNestedComment}          
+        />
         {comment.nestedComments.map((nestedComment) => (
           <NestedComment
             key={nestedComment._id}

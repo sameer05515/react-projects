@@ -35,16 +35,16 @@ function TasksBase() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const showAdd = () => {
-    console.log("Add form will be shown");
+    // console.log("Add form will be shown");
     changePageMode(PageModes.NEW_ITEM);
   };
   const showData = (id) => {
-    console.log("Show form will be shown");
+    // console.log("Show form will be shown");
     changePageMode(PageModes.SHOW_ITEM);
     setSelectedId(id);
   };
   const editData = (item) => {
-    console.log("edit form will be shown");
+    // console.log("edit form will be shown");
     changePageMode(PageModes.EDIT);
     setSelectedItem(item);
   };

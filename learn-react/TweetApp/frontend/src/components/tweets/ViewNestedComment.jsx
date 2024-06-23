@@ -1,5 +1,5 @@
 import React from "react";
-import EditableLabel from "../common/EditableLabel";
+import EditableLabel from "../../common/components/EditableLabel";
 
 function NestedComment({
   tweetId,
@@ -13,7 +13,7 @@ function NestedComment({
       <p className="timestamp">{formatTimestamp(nestedComment.createdAt)}</p>
       <EditableLabel
         text={nestedComment.text}
-        style={{
+        labelStyle={{
           fontStyle: "italic", // Apply italic style for nested comment
           fontSize: "14px", // Set font size for nested comment
         }}

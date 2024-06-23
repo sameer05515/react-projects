@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import GlobalConstants from '../../common/globalConstants';
+import React, { useState } from "react";
+import GlobalConstants from "../../common/globalConstants";
+import CustomButton from "../common/CustomButton";
 
 function UpdateTweet({ tweet, onUpdate }) {
   const [content, setContent] = useState(tweet.content);
-  const [newComment, setNewComment] = useState('');
-  const [newNestedComment, setNewNestedComment] = useState('');
-  const BASE_URL=GlobalConstants.tweetsApplicationBaseURL;
+  const [newComment, setNewComment] = useState("");
+  const [newNestedComment, setNewNestedComment] = useState("");
+  const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
 
   const handleUpdateTweet = async () => {
     try {
       const response = await fetch(`${BASE_URL}/tweets/${tweet._id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ content }),
       });
@@ -22,39 +23,42 @@ function UpdateTweet({ tweet, onUpdate }) {
         onUpdate(updatedTweet);
       }
     } catch (error) {
-      console.error('Error updating tweet:', error);
+      console.error("Error updating tweet:", error);
     }
   };
 
   const handleUpdateComment = async (commentId, updatedText) => {
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweet._id}/comments/${commentId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: updatedText }),
-      });
+      const response = await fetch(
+        `${BASE_URL}/tweets/${tweet._id}/comments/${commentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: updatedText }),
+        }
+      );
 
       if (response.ok) {
         const updatedTweet = await response.json();
         onUpdate(updatedTweet);
       }
     } catch (error) {
-      console.error('Error updating comment:', error);
+      console.error("Error updating comment:", error);
     }
   };
 
   const handleAddComment = async () => {
-    if (newComment.trim() === '') {
+    if (newComment.trim() === "") {
       return;
     }
 
     try {
       const response = await fetch(`${BASE_URL}/tweets/${tweet._id}/comments`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ text: newComment }),
       });
@@ -62,35 +66,38 @@ function UpdateTweet({ tweet, onUpdate }) {
       if (response.ok) {
         const updatedTweet = await response.json();
         onUpdate(updatedTweet);
-        setNewComment('');
+        setNewComment("");
       }
     } catch (error) {
-      console.error('Error adding comment:', error);
+      console.error("Error adding comment:", error);
     }
   };
 
   const handleAddNestedComment = async (commentId) => {
-    if (newNestedComment.trim() === '') {
+    if (newNestedComment.trim() === "") {
       return;
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweet._id}/comments/${commentId}/nested`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: newNestedComment }),
-      });
+      const response = await fetch(
+        `${BASE_URL}/tweets/${tweet._id}/comments/${commentId}/nested`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: newNestedComment }),
+        }
+      );
 
       if (response.ok) {
         const updatedTweet = await response.json();
         onUpdate(updatedTweet);
-        setNewNestedComment('');
+        setNewNestedComment("");
         setSelectedCommentId(null);
       }
     } catch (error) {
-      console.error('Error adding nested comment:', error);
+      console.error("Error adding nested comment:", error);
     }
   };
 
@@ -104,7 +111,7 @@ function UpdateTweet({ tweet, onUpdate }) {
       />
       <button onClick={handleUpdateTweet}>Update Tweet</button>
       <h3>Comments</h3>
-      {tweet.comments.map(comment => (
+      {tweet.comments.map((comment) => (
         <div key={comment._id}>
           <p>{comment.text}</p>
           <textarea
@@ -120,7 +127,9 @@ function UpdateTweet({ tweet, onUpdate }) {
               onChange={(e) => setNewNestedComment(e.target.value)}
               placeholder="Enter a nested comment"
             />
-            <button onClick={() => handleAddNestedComment(comment._id)}>Add Nested Comment</button>
+            <CustomButton onClick={() => handleAddNestedComment(comment._id)}>
+              Add Nested Comment
+            </CustomButton>
           </div>
         </div>
       ))}
@@ -130,7 +139,7 @@ function UpdateTweet({ tweet, onUpdate }) {
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Enter a new comment"
         />
-        <button onClick={handleAddComment}>Add Comment</button>
+        <CustomButton onClick={handleAddComment}>Add Comment</CustomButton>
       </div>
     </div>
   );

@@ -1,0 +1,330 @@
+[
+  {
+    "cat_id": 1,
+    "cat_name": "<div><!--block--><strong><em>Java - Introspection and other technology comparison</em></strong></div>",
+    "creation_date": "2017-09-22T17:51:20.000Z",
+    "last_updation_date": "2017-09-22T17:51:20.000Z",
+    "rating": 3,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 2,
+    "cat_name": "<div><!--block--><strong>Self Evaluation- First Thing First</strong></div>",
+    "creation_date": "2017-09-23T07:57:54.000Z",
+    "last_updation_date": "2017-09-23T07:57:54.000Z",
+    "rating": 8,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 3,
+    "cat_name": "<div><!--block--><strong><em>Interview - General Introduction Questions</em></strong></div>",
+    "creation_date": "2017-09-24T09:13:15.000Z",
+    "last_updation_date": "2017-09-24T09:13:15.000Z",
+    "rating": 6,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 4,
+    "cat_name": "<div><!--block--><strong><em>Top 50 Leadership Discussion Questions</em></strong></div>",
+    "creation_date": "2017-10-07T05:20:20.000Z",
+    "last_updation_date": "2018-04-30T01:40:03.000Z",
+    "rating": 2,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 5,
+    "cat_name": "<div><!--block--><strong><em>DevOps Discussion Questions</em></strong></div>",
+    "creation_date": "2017-10-07T08:57:02.000Z",
+    "last_updation_date": "2018-04-30T01:40:13.000Z",
+    "rating": 5,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 6,
+    "cat_name": "<div><!--block--><strong><em>Top 12 JENKIN Discussion Questions</em></strong></div>",
+    "creation_date": "2017-10-07T11:05:22.000Z",
+    "last_updation_date": "2018-04-30T01:40:24.000Z",
+    "rating": 3,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 7,
+    "cat_name": "<div><!--block--><strong><em>Struts 2 Discussion questions</em></strong></div>",
+    "creation_date": "2017-10-08T01:14:28.000Z",
+    "last_updation_date": "2018-04-30T01:40:36.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 8,
+    "cat_name": "<div><!--block--><strong><em>Top 10 Java Serialization Discussion Questions and Answers</em></strong></div>",
+    "creation_date": "2017-10-08T04:12:23.000Z",
+    "last_updation_date": "2018-04-30T01:40:48.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 9,
+    "cat_name": "<div><!--block--><strong>Servlet&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "creation_date": "2017-10-17T12:42:50.000Z",
+    "last_updation_date": "2018-04-30T01:41:08.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 10,
+    "cat_name": "<div><!--block--><strong><em>Collections Discussion Questions</em></strong></div>",
+    "creation_date": "2017-10-18T08:58:10.000Z",
+    "last_updation_date": "2018-04-30T01:41:20.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 11,
+    "cat_name": "<div><!--block--><strong><em>Java Design Patterns</em></strong></div>",
+    "creation_date": "2017-10-18T09:24:42.000Z",
+    "last_updation_date": "2017-10-19T17:14:42.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 12,
+    "cat_name": "<div><!--block--><strong><em>Spring MVC Discussion Questions with Answers</em></strong></div>",
+    "creation_date": "2017-10-18T09:30:17.000Z",
+    "last_updation_date": "2018-04-30T01:41:37.000Z",
+    "rating": 8,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 13,
+    "cat_name": "<div><!--block--><strong><em>Maven Discussion questions- WideSkills</em></strong></div>",
+    "creation_date": "2017-10-18T14:14:42.000Z",
+    "last_updation_date": "2018-04-30T01:41:50.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 14,
+    "cat_name": "<div><!--block--><strong><em>Spring Discussion Questions</em></strong></div>",
+    "creation_date": "2017-10-19T11:04:54.000Z",
+    "last_updation_date": "2018-04-30T01:41:59.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 15,
+    "cat_name": "<div><!--block--><strong><em>Expectations and accomplishments</em></strong></div>",
+    "creation_date": "2017-10-19T18:03:33.000Z",
+    "last_updation_date": "2017-10-19T18:03:51.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 16,
+    "cat_name": "<div><!--block--><strong><em>Top 50 Management Discussion Questions &amp; Answers</em></strong></div>",
+    "creation_date": "2017-10-22T15:17:12.000Z",
+    "last_updation_date": "2018-04-30T01:42:11.000Z",
+    "rating": 2,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 17,
+    "cat_name": "<div><!--block--><strong><em>Top 50 Leadership Discussion Questions &amp; Answers</em></strong></div>",
+    "creation_date": "2017-10-22T15:28:14.000Z",
+    "last_updation_date": "2018-04-30T01:42:24.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 18,
+    "cat_name": "<div><!--block--><strong><em>Top 50 Project Manager Discussion Questions &amp; Answers</em></strong></div>",
+    "creation_date": "2017-10-24T06:45:14.000Z",
+    "last_updation_date": "2018-04-30T01:42:34.000Z",
+    "rating": 3,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 19,
+    "cat_name": "<div><!--block--><strong>Java Exception&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "creation_date": "2017-10-31T09:20:00.000Z",
+    "last_updation_date": "2018-04-30T01:42:44.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 20,
+    "cat_name": "<div><!--block--><strong>Apache Ant&nbsp;</strong><strong><em>Discussion&nbsp;</em></strong><strong>Questions and Answers</strong></div>",
+    "creation_date": "2017-11-04T08:27:43.000Z",
+    "last_updation_date": "2018-04-30T01:42:55.000Z",
+    "rating": 3,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 21,
+    "cat_name": "<div><!--block--><strong><em>Hibernate Discussion Questions - XML Configurations</em></strong></div>",
+    "creation_date": "2017-11-04T08:40:34.000Z",
+    "last_updation_date": "2018-04-30T01:37:34.000Z",
+    "rating": 6,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 22,
+    "cat_name": "<div><!--block--><strong><em>Quartz Enterprise Job Scheduler - Discussion Questions</em></strong></div>",
+    "creation_date": "2017-11-05T07:38:37.000Z",
+    "last_updation_date": "2017-11-06T03:42:48.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 23,
+    "cat_name": "<div><!--block--><strong><em>My office works - Concentrix second innings</em></strong></div>",
+    "creation_date": "2017-11-12T14:41:10.000Z",
+    "last_updation_date": "2017-11-12T14:57:01.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 24,
+    "cat_name": "<div><!--block--><strong>Analysis of common Human nature - Target \"how to manage human resources\"</strong></div>",
+    "creation_date": "2017-11-29T01:09:46.000Z",
+    "last_updation_date": "2018-03-17T04:38:42.000Z",
+    "rating": 10,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 25,
+    "cat_name": "<div><!--block--><strong>Get Rid of bad habits and Enhancing good habits</strong></div>",
+    "creation_date": "2017-12-04T01:22:18.000Z",
+    "last_updation_date": "2017-12-04T01:22:18.000Z",
+    "rating": 10,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 26,
+    "cat_name": "<div><!--block--><strong><em>My Divorce Case Hearings, my statements, doubts and questions and Success</em></strong></div>",
+    "creation_date": "2018-02-10T12:57:58.000Z",
+    "last_updation_date": "2018-04-30T01:36:31.000Z",
+    "rating": 10,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 27,
+    "cat_name": "<div><!--block--><strong>Analysis of different situations and its postmortem - what happened there and what ought to be done there.&nbsp;</strong></div>",
+    "creation_date": "2018-02-11T23:11:43.000Z",
+    "last_updation_date": "2018-02-11T23:11:43.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 28,
+    "cat_name": "<div><!--block--><strong><em>My Task diary, its progress and completion<br><br></em></strong>Template</div><ul><li><!--block--><em>{office/home/other}Description of task</em></li><li><!--block--><em>Target Date</em><ul><li><!--block--><em>10-Feb-2018</em></li><li><!--block--><em><del>1-Feb-2018 -change due to xxx reason</del></em></li></ul></li><li><!--block--><em>Status</em><ul><li><!--block--><em>inprogress - 10-Feb-2018</em></li><li><!--block--><em><del>open - 1-Feb-2018</del></em></li></ul></li><li><!--block--><em>Recurrence</em></li><li><!--block-->Task History<ul><li><!--block-->15-Feb-2018 - yyyyy</li><li><!--block-->1-Feb-2018 - xxxxxxx</li></ul></li><li><!--block-->Dependency<ul><li><!--block-->Dependency 1</li><li><!--block-->Dependency 2</li></ul></li></ul>",
+    "creation_date": "2018-02-11T23:34:51.000Z",
+    "last_updation_date": "2018-02-11T23:53:37.000Z",
+    "rating": 10,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 29,
+    "cat_name": "<div><!--block--><strong>My different views of questions and groups - For easy handling<br><br></strong>Template</div><ul><li><!--block--><em>{Home/Office/Others} - Description of view- why this view?</em></li><li><!--block--><em>Aim to achieve from group.</em></li><li><!--block-->Description and link of questions/groups&nbsp;</li></ul>",
+    "creation_date": "2018-02-11T23:41:50.000Z",
+    "last_updation_date": "2018-04-03T04:28:18.000Z",
+    "rating": 9,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 30,
+    "cat_name": "<div><!--block--><strong><em>Linux Common Practices</em></strong></div>",
+    "creation_date": "2018-04-10T09:40:18.000Z",
+    "last_updation_date": "2018-04-10T09:40:33.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 31,
+    "cat_name": "<div><!--block--><strong><em>GIT - Overview and Discussions</em></strong></div>",
+    "creation_date": "2018-04-13T10:49:02.000Z",
+    "last_updation_date": "2018-04-13T10:49:02.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 32,
+    "cat_name": "<div><!--block--><strong><em>mere khud se sawal</em></strong></div>",
+    "creation_date": "2018-05-06T06:37:08.000Z",
+    "last_updation_date": "2018-05-06T06:37:08.000Z",
+    "rating": 7,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 33,
+    "cat_name": "<div><!--block--><strong>Data Structure and Algorithm in Java</strong></div>",
+    "creation_date": "2018-05-28T05:42:54.000Z",
+    "last_updation_date": "2018-05-28T05:42:54.000Z",
+    "rating": 7,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 34,
+    "cat_name": "<div><!--block--><strong>Planning and Management - BCOM, MCOM , SET, NET</strong></div>",
+    "creation_date": "2018-08-10T15:18:36.000Z",
+    "last_updation_date": "2018-08-10T15:18:36.000Z",
+    "rating": 6,
+    "last_read_date": "2018-08-16T10:44:19.000Z"
+  },
+  {
+    "cat_id": 35,
+    "cat_name": "<div><!--block--><strong>Spring Boot Interview Question<br></strong><br></div>",
+    "creation_date": "2018-08-17T14:27:38.000Z",
+    "last_updation_date": "2018-08-17T14:27:38.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-17T14:27:38.000Z"
+  },
+  {
+    "cat_id": 36,
+    "cat_name": "<div><!--block--><strong>Artificial Intelligence (old style ) Interview Questions &amp; Answers\t</strong></div>",
+    "creation_date": "2018-08-19T08:23:48.000Z",
+    "last_updation_date": "2018-08-19T08:24:14.000Z",
+    "rating": 4,
+    "last_read_date": "2018-08-19T08:23:48.000Z"
+  },
+  {
+    "cat_id": 37,
+    "cat_name": "<div><!--block--><strong>Top Artificial Intelligence Interview Questions And Answers -&nbsp;</strong>latest questions, mainly added in sequence of creation date.</div>",
+    "creation_date": "2018-08-19T08:44:43.000Z",
+    "last_updation_date": "2018-08-19T09:21:52.000Z",
+    "rating": 7,
+    "last_read_date": "2018-08-19T08:44:43.000Z"
+  },
+  {
+    "cat_id": 38,
+    "cat_name": "<div><!--block--><strong>Top Ethical Hacking Interview Questions And Answers</strong><br><br></div>",
+    "creation_date": "2018-08-19T09:51:45.000Z",
+    "last_updation_date": "2018-08-19T09:51:45.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-19T09:51:45.000Z"
+  },
+  {
+    "cat_id": 39,
+    "cat_name": "<div><!--block--><strong>Top Robotic Process Automation Interview Questions And Answers</strong></div>",
+    "creation_date": "2018-08-19T10:14:41.000Z",
+    "last_updation_date": "2018-08-19T10:14:41.000Z",
+    "rating": 5,
+    "last_read_date": "2018-08-19T10:14:41.000Z"
+  },
+  {
+    "cat_id": 40,
+    "cat_name": "<div><!--block--><strong>Top Power BI Interview Questions And Answers</strong></div>",
+    "creation_date": "2018-08-19T10:15:23.000Z",
+    "last_updation_date": "2018-08-19T10:15:23.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-19T10:15:23.000Z"
+  },
+  {
+    "cat_id": 41,
+    "cat_name": "<div><!--block--><strong>Top Answers to Business Analyst Interview Questions</strong></div>",
+    "creation_date": "2018-08-19T10:23:03.000Z",
+    "last_updation_date": "2018-08-19T10:23:03.000Z",
+    "rating": 1,
+    "last_read_date": "2018-08-19T10:23:03.000Z"
+  }
+]

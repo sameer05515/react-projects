@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import dayjs from "dayjs";
 
 const CreateNewTask = () => {
   // State to manage the data entered by the user

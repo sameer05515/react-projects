@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import expectationsData from '../../common/expectationsData';
+import expectationsData from '../../common/constants/expectationsData';
 import ComparisonTable from './ComparisonTable';
 
 const ComparisonTableContainer = () => {

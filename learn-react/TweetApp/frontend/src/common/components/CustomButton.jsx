@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import IconComponent from './IconComponent';
 
-const CustomButton = ({ onClick, children, style={} }) => {
+const CustomButton = ({ onClick,iconName,title, children, style={} }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const buttonStyle = {
@@ -14,14 +15,29 @@ const CustomButton = ({ onClick, children, style={} }) => {
     transition: 'background-color 0.3s',
   };
 
+  const buttonHoverStyle = {
+    backgroundColor: '#0056b3',
+  };
+
+  const iconStyle = {
+    marginRight: '5px',
+  };
+  
+  const textStyle = {
+    marginLeft: '5px',
+  };
+
   return (
     <button
-      style={{...style,...buttonStyle}}
+      style={{...style,...buttonStyle, ...(isHovered && buttonHoverStyle)}}
+      title={title}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
-      {children}
+      {/* {children} */}
+      {iconName && <span style={iconStyle}><IconComponent iconName={iconName} /></span>}
+      {children && <span style={textStyle}>{children}</span>}
     </button>
   );
 };

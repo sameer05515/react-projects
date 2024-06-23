@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
-import { IconButton } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import React, { useState } from "react";
+import { IconButton } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
-const RatingComponent = ({rating:userRating, ratingScale=10, editable=false}) => {
+const RatingComponent = ({
+  rating: userRating,
+  ratingScale = 10,
+  editable = false,
+  onEdit = () => { },
+}) => {
   const [rating, setRating] = useState(userRating || 0);
 
   const handleRating = (value) => {
-    if(editable){
-        setRating(value);
-    }else{
-        console.log(`rating edit is : ${editable?'':'not'} enabled, Kripya apni saas ki gaand kahi aur marwayein!!`)
+    if (editable) {
+      setRating(value);
+      onEdit(value);
+    } else {
+      console.log(`rating edit is : ${editable ? "" : "not"} enabled`);
     }
-    
   };
 
   return (
@@ -23,16 +28,19 @@ const RatingComponent = ({rating:userRating, ratingScale=10, editable=false}) =>
           <span
             key={starValue}
             onClick={() => handleRating(starValue)}
-            style={{ padding: 0 }}
+            style={{ padding: 0,cursor:editable?'pointer':"" }}
           >
             {starValue <= rating ? (
-              <StarIcon style={{ color: 'gold' }} />
+              <StarIcon style={{ color: "gold" }} />
             ) : (
-              <StarBorderIcon style={{ color: 'gold' }} />
+              <StarBorderIcon style={{ color: "gold" }} />
             )}
           </span>
         );
-      })} <span style={{ paddingLeft:"2px", fontWeight: 'bold' }}> {rating}/{ratingScale}</span>
+      })}{" "}
+      <span style={{ paddingLeft: "2px", fontWeight: "bold",  }}>       
+        {rating}/{ratingScale}
+      </span>
     </span>
   );
 };

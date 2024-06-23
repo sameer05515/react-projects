@@ -2,23 +2,6 @@ const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid'); // Import the v4 function from the uuid library
 const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
 
-// const smartContentSchema = new mongoose.Schema({
-//   content: {
-//     type: String,
-//     required: true,
-//   },
-//   textOutputType: {
-//     type: String,
-//     enum: ['html', 'yaml', 'markdown', 'text'], // Assuming possible values are 'html' and 'plaintext'
-//     required: true,
-//   },
-//   textInputType: {
-//     type: String,
-//     enum: ['CKEditor', 'TextArea'], // Assuming possible values are 'CKEditor', 'Markdown', and 'Raw'
-//     required: true,
-//   }
-// }, { _id: false });
-
 const topicSectionSchema = new mongoose.Schema({
   uniqueId: {
     type: String,

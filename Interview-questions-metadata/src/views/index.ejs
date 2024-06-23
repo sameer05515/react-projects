@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="/icons8-questions-32.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Markdown Viewer</title>
+    <title>Interview Questions Metadata</title>
+    <link rel="apple-touch-icon" href="/icons8-questions-96.png" />
     <style>
       /* Add some basic styling for better visualization */
       body {
@@ -19,6 +21,7 @@
         position: fixed; /* Fixed positioning to keep the left section fixed */
         top: 0; /* Align to the top of the viewport */
         bottom: 0; /* Align to the bottom of the viewport */
+        word-break: break-all;
       }
       #left-section ul {
         list-style: none; /* Remove bullet points */
@@ -143,7 +146,7 @@
         if (selectedElement) {
           selectedElement.scrollIntoView({
             behavior: "smooth",
-            block: "nearest",
+            block: "center",
             inline: "start",
           });
         }

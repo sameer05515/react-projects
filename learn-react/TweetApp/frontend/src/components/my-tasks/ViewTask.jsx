@@ -4,8 +4,8 @@ import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
 
 const ViewTask = ({ task, onClose, tags = [] }) => {
-  // const filteredTags = task.tags?.map((tagId) =>
-  //   tags.find((tag) => tag.tagId === tagId)
+  // const filteredTags = task.tags?.map((uniqueId) =>
+  //   tags.find((tag) => tag.uniqueId === uniqueId)
   // );
   // const tagStyle = {
   //   backgroundColor: "#ccc", // Grey background color
@@ -46,26 +46,7 @@ const ViewTask = ({ task, onClose, tags = [] }) => {
   return (
     <div style={modalStyle}>
       <div style={modalContentStyle}>
-        <h3>View Task</h3>
-        {/* <strong>ID:</strong> {task.id}
-        <br />
-        <strong>Unique ID:</strong> {task.uniqueId}
-        <br />
-        <strong>Title:</strong> {task.title}
-        <br />
-        <div>{ReactHtmlParser(task.description || "")}</div>
-        <strong>Created Date:</strong> {task.createdDate}
-        <br />
-        <strong>Updated Date:</strong> {task.updatedDate}
-        <br />
-        {filteredTags.map(
-          (tag) =>
-            tag && (
-              <span style={tagStyle} key={tag._id}>
-                {tag.name}
-              </span>
-            )
-        )} */}
+        <h3>View Task</h3>        
         <TaskCard task={task} tags={tags}/>
         <div style={{ textAlign: "right", marginTop: "10px" }}>
           <CustomButton onClick={onClose} label="Close">

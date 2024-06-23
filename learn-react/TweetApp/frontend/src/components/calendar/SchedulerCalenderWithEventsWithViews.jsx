@@ -1,6 +1,16 @@
+import {
+  addDays,
+  addMonths,
+  endOfMonth,
+  endOfWeek,
+  format,
+  isSameDay,
+  startOfMonth,
+  startOfWeek,
+  subMonths
+} from "date-fns";
 import React, { useState } from "react";
-import { format, addMonths, subMonths, addDays, subDays, isToday, isSameMonth, isSameDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
-import '../../styles/calendar-with-events.css';
+import "../../common/styles/calendar-with-events.css";
 
 const Calendar = () => {
   const [date, setDate] = useState(new Date());
@@ -32,7 +42,10 @@ const Calendar = () => {
     const calendarDays = [];
     let currentDate = startDate;
     while (currentDate <= endDate) {
-      calendarDays.push({ date: currentDate, dayOfMonth: currentDate.getDate() });
+      calendarDays.push({
+        date: currentDate,
+        dayOfMonth: currentDate.getDate(),
+      });
       currentDate = addDays(currentDate, 1);
     }
 
@@ -40,19 +53,37 @@ const Calendar = () => {
       <div className="calendar">
         <div className="calendar-header">
           <button onClick={() => setDate(subMonths(date, 1))}>&lt;</button>
-          <h2>{format(date, view === "month" ? "MMMM yyyy" : "MMMM d, yyyy")}</h2>
+          <h2>
+            {format(date, view === "month" ? "MMMM yyyy" : "MMMM d, yyyy")}
+          </h2>
           <button onClick={() => setDate(addMonths(date, 1))}>&gt;</button>
           <div className="view-buttons">
-            <button onClick={() => setView("month")} className={view === "month" ? "active" : ""}>Month</button>
-            <button onClick={() => setView("week")} className={view === "week" ? "active" : ""}>Week</button>
-            <button onClick={() => setView("day")} className={view === "day" ? "active" : ""}>Day</button>
+            <button
+              onClick={() => setView("month")}
+              className={view === "month" ? "active" : ""}
+            >
+              Month
+            </button>
+            <button
+              onClick={() => setView("week")}
+              className={view === "week" ? "active" : ""}
+            >
+              Week
+            </button>
+            <button
+              onClick={() => setView("day")}
+              className={view === "day" ? "active" : ""}
+            >
+              Day
+            </button>
           </div>
         </div>
         <div className="calendar-body">
           {calendarDays.map((day, index) => (
             <div
               key={index}
-              className={`calendar-day${isSameDay(day.date, new Date()) ? " today" : ""}`}
+              className={`calendar-day${isSameDay(day.date, new Date()) ? " today" : ""
+                }`}
               onClick={() => handleDayClick(day.date)}
             >
               {day.dayOfMonth}
@@ -82,11 +113,7 @@ const Calendar = () => {
     );
   };
 
-  return (
-    <div className="calendar-container">
-      {renderCalendar()}
-    </div>
-  );
+  return <div className="calendar-container">{renderCalendar()}</div>;
 };
 
 export default Calendar;

@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import TaskList from "./TaskList";
 import TaskModel from "./TaskModel";
 import ViewTask from "./ViewTask";
-import { fetchTasks, saveTask, updateTask } from "../../redux/slices/taskSlice";
+import { fetchTasks, saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
 import { useSelector, useDispatch } from "react-redux";
 import TaskSearch from "./TaskSearch";
 import CustomButton from "../../common/components/CustomButton";
 
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 
 const TaskContainer = () => {
 
   const dispatch = useDispatch();
-  const availableTags = useSelector((state) => state.tags.data);
+  const availableTags = useSelector(selectAllFlatTags);
   
 
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
@@ -21,7 +21,7 @@ const TaskContainer = () => {
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);  
 
-  const tasks = useSelector((state) => state.tasks.data);
+  const tasks = useSelector(selectAllFlatTasks);
   const status = useSelector((state) => state.tasks.status);
   const error = useSelector((state) => state.tasks.error);
 

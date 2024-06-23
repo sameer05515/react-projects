@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import GOLD_RATE from '../../common/goldRate';
+import GOLD_RATE from '../../common/constants/goldRate';
 
 const GoldRateCalculator = () => {
   const goldData = GOLD_RATE.data;

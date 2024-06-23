@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ListTweets from "./ListTweetsUpdate4";
-import GlobalConstants from "../../common/globalConstants";
+import GlobalConstants from "../../common/constants/globalConstants";
 
 const TweetBase = () => {
   const [tweets, setTweets] = useState([]);

@@ -1,0 +1,36 @@
+/* Basic styles for the parallax container */
+.parallax-container {
+    height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  
+  /* Parallax background */
+  .parallax-background {
+    background-image: url('../../../../../../public/a-studious-student.png');
+    height: 120vh; /* Height larger than the viewport */
+    background-size: cover;
+    background-attachment: fixed; /* This enables the parallax effect */
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1; /* Place background behind content */
+  }
+  
+  /* Foreground content */
+  .parallax-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    color: #0f0f0f;
+    text-align: center;
+    margin-top: 200px; /* Offset to let the parallax effect be visible */
+  }
+  
+  .filler-content {
+    height: 150vh; /* Extra space to allow scrolling */
+  }
+  

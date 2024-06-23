@@ -9,6 +9,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+// Serve static files from "assets" directory
+// app.use(express.static(path.join(__dirname, 'assets')));
+app.use(express.static('assets'));
+
 
 // Route to render the file list and optionally render selected MD file as HTML
 app.get('/', (req, res) => {

@@ -278,8 +278,8 @@ const LinksBase = () => {
   const navigate = useNavigate();
 
   const links = useSelector((state) => state.links.data);
-  const status = useSelector((state) => state.tasks.status);
-  const error = useSelector((state) => state.tasks.error);
+  const status = useSelector((state) => state.links.status);
+  const error = useSelector((state) => state.links.error);
 
   // const [selectedLink, setSelectedLink] = useState(null);
 
@@ -372,7 +372,7 @@ const Breadcrumbs = ({ parentId = '', ancestors: providedAncestors = [] }) => {
         <span style={breadcrumbStyle.breadcrumbItem}><h1>Home</h1></span>
         {ancestors.map((ancestor, index) => (
           <span style={breadcrumbStyle.breadcrumbItem} key={index}>
-            <h2>/{ancestor}</h2>
+            <h2>/{ancestor.name}</h2>
           </span>
         ))}
       </div>

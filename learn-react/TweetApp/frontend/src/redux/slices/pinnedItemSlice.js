@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Define an async thunk to fetch all topics
 export const fetchPinnedItems = createAsyncThunk("pinnedItems/fetchPinnedItems", async () => {

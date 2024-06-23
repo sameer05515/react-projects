@@ -3,19 +3,19 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
-import { taskStatusList } from "../../common/globalConstants";
-import { fetchTags } from "../../redux/slices/tagsSlice";
-import { saveTask, updateTask } from "../../redux/slices/taskSlice";
+import { taskStatusList } from "../../common/constants/globalConstants";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
+import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();
-    const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
-    const tasks = useSelector((state) => state.tasks.data);
+    const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
+    const tasks = useSelector(selectAllFlatTasks);
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",
-        title: task && task.title ? task.title : "",
+        name: task && task.name ? task.name : "",
         description: task && task.description ? task.description : "",
         parentId: task && task.parentId ? task.parentId : "",
         taskStatus: task ? task.taskStatus : "",
@@ -32,8 +32,8 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     }, [dispatch]);
 
     const tagOptions = availableTags.map((tag) => ({
-        value: tag.tagId, // Assuming tags have unique IDs
-        label: tag.name, // Display tag names in the dropdown
+        value: tag.uniqueId, // Assuming tags have unique IDs
+        label: tag.title, // Display tag names in the dropdown
     }));
 
     const statusOptions = taskStatusList.map((status) => ({
@@ -94,21 +94,21 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         });
     };
 
-    const taskFormStyle = {};
+    const formStyle = {};
 
     return (
         <>
-            <div style={taskFormStyle}>
+            <div style={formStyle}>
                 <h3>{task && task._id && task.uniqueId ? "Edit Task" : "Add Task"}</h3>
                 {/* <pre>{`provided task object: ${JSON.stringify(task)}`}</pre> <br /> */}
                 <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-                    <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>Title</label>
+                    <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Name</label>
                     <input
                         type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Title"
-                        value={formData.title}
+                        id="name"
+                        name="name"
+                        placeholder="Name"
+                        value={formData.name}
                         onChange={handleInputChange}
                         style={{ width: "90%" }}
                     />

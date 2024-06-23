@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import CustomButton from "../../common/components/CustomButton";
 
 function MarkAsAdminButton({ userId }) {

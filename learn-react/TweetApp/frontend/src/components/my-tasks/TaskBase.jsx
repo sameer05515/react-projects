@@ -7,16 +7,30 @@ import {
     useParams,
     useSearchParams,
 } from "react-router-dom";
-import Select from 'react-select'; // Import the Select component from react-select
+import Select from "react-select"; // Import the Select component from react-select
 import ViewSwitcher from "../../common/components/ViewSwitcher";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
-import { fetchTags } from "../../redux/slices/tagsSlice";
-import { fetchTasks, setSelectedTaskUniqueId, updateTask } from "../../redux/slices/taskSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
+import {
+    fetchTasks,
+    selectAllFlatTasks,
+    selectAllTreeTasks,
+    selectNextTaskUniqueId,
+    selectPrevTaskUniqueId,
+    selectSelectedTaskUniqueId,
+    setSelectedTaskUniqueId,
+    updateTask,
+} from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
 import TaskContainer from "./TaskContainer";
 import TaskForm from "./TaskForm";
+import {
+    fetchPinnedItems,
+    upsertPinnedItem,
+} from "../../redux/slices/pinnedItemSlice";
+import Tree from "../../common/components/TreeViewer";
 
 const TaskBase = () => {
     const [selectedView, setSelectedView] = useState("list");
@@ -43,12 +57,10 @@ const TaskBase = () => {
 const ListTasks = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const tasks = useSelector((state) => state.tasks.data);
+    const tasks = useSelector(selectAllTreeTasks);
     const status = useSelector((state) => state.tasks.status);
     const error = useSelector((state) => state.tasks.error);
-    const selectedTaskUniqueId = useSelector(
-        (state) => state.tasks.selectedTaskUniqueId
-    );
+    const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
     const selectedElementRef = useRef(null);
     useEffect(() => {
         dispatch(fetchTasks()); // Dispatch the fetchTasks async thunk to fetch tasks
@@ -66,7 +78,7 @@ const ListTasks = () => {
             // console.log(`selectedElementRef.current: ${selectedElementRef.current}`);
             selectedElementRef.current.scrollIntoView({
                 behavior: "smooth",
-                block: "nearest",
+                block: "center",
                 inline: "start",
             });
         }
@@ -95,23 +107,23 @@ const ListTasks = () => {
                                     }
                                     style={{
                                         fontSize: "12px",
-                                        ...(selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId
+                                        ...(selectedTaskUniqueId &&
+                                            selectedTaskUniqueId === t.uniqueId
                                             ? styles.selected
-                                            : {})
+                                            : {}),
                                     }}
                                     onClick={() => handleLinkSelection(t)}
                                 >
-                                    {t.title}
+                                    {t.name}
                                 </span>
                                 {getTasksJSX(t.children)}
                             </li>
                         ))}
                     </ul>
                 )}
-
             </>
         );
-    }
+    };
 
     if (status === "loading") {
         return <div>Loading...</div>;
@@ -133,8 +145,33 @@ const ListTasks = () => {
                         Refresh
                     </CustomButton>
 
-                    {getTasksJSX(tasks)}
-                    
+                    {/* {getTasksJSX(tasks)} */}
+
+                    <Tree
+                        data={tasks}
+                        selectedNodeId={selectedTaskUniqueId}
+                        renderNode={(t) => (
+                            <>
+                                <span
+                                    ref={
+                                        selectedTaskUniqueId === t.uniqueId
+                                            ? selectedElementRef
+                                            : null
+                                    }
+                                    style={{
+                                        fontSize: "12px",
+                                        ...(selectedTaskUniqueId &&
+                                            selectedTaskUniqueId === t.uniqueId
+                                            ? styles.selected
+                                            : {}),
+                                    }}
+                                    onClick={() => handleLinkSelection(t)}
+                                >
+                                    {t.name}
+                                </span>
+                            </>
+                        )}
+                    />
                 </div>
                 {/* -- left-section */}
 
@@ -157,7 +194,7 @@ const CreateTaskComp = () => {
 
     return (
         <>
-            {/* <span>Create Topic: parentId : {parentId}</span> <br /> */}
+            {/* <span>Create Task: parentId : {parentId}</span> <br /> */}
             <TaskForm
                 onSave={() => {
                     dispatch(fetchTasks());
@@ -177,7 +214,7 @@ const EditTaskComp = () => {
     // const parentId = searchParams.get("parent");
     const { id } = useParams();
     const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
-    const { data, loading, error, /*refetch*/ } = useDataFetching(url);
+    const { data, loading, error /*refetch*/ } = useDataFetching(url);
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -187,18 +224,18 @@ const EditTaskComp = () => {
     }
     return (
         <>
-            {/* <span>
-                Edit Task: id: {id}: parentId : {parentId}
-            </span> */}
-            <br />
-            <TaskForm
-                task={data}
-                onSave={() => {
-                    dispatch(fetchTasks());
-                    navigate(-1);
-                }}
-                onCancelEdit={() => navigate(`/task-mgmt/${id}`)}
-            />
+            {data ? (
+                <TaskForm
+                    task={data}
+                    onSave={() => {
+                        dispatch(fetchTasks());
+                        navigate(-1);
+                    }}
+                    onCancelEdit={() => navigate(`/task-mgmt/${id}`)}
+                />
+            ) : (
+                <>No data found for id : {id}</>
+            )}
         </>
     );
 };
@@ -209,38 +246,40 @@ const ViewTaskComp = () => {
     const { id } = useParams();
     const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
     const { data, loading, error, refetch } = useDataFetching(url);
-    const availableTags = useSelector((state) => state.tags.data);
+    const availableTags = useSelector(selectAllFlatTags);
+    const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
-    const tasks = useSelector((state) => state.tasks.data);
+    const tasks = useSelector(selectAllFlatTasks);
+    const [pinnedTasks, setPinnedTasks] = useState([]);
+    const [isPinned, setIsPinned] = useState(false);
+    const nextTaskUniqueId = useSelector(selectNextTaskUniqueId);
+    const prevTaskUniqueId = useSelector(selectPrevTaskUniqueId);
 
-    const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
-        (state) => {
-            //const flatList = prepareTasksQueue(state.tasks.data, []);
-            const flatList = state.tasks.flatData;
-            const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
-            // console.log(`flatList size: ${flatList.length}`);
-            // console.log(`state.tasks.selectedTaskUniqueId : ${selectedTaskUniqueId}`);
-            let nextTaskUniqueId = null;
-            let prevTaskUniqueId = null;
-            if (flatList && flatList.length > 0 && selectedTaskUniqueId) {
-                const dataLength = flatList.length;
-                const selectedIndex = flatList.findIndex(
-                    (t) => t.uniqueId === selectedTaskUniqueId
-                );
-                const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
-                const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
-                nextTaskUniqueId =
-                    flatList[nextIndex].uniqueId;
-                prevTaskUniqueId =
-                    flatList[prevIndex].uniqueId;
-            }
-            // return state.tasks.selectedTaskTraversal;
-            return { nextTaskUniqueId, prevTaskUniqueId };
-        }
-    );
+    // const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
+    //     (state) => {
+    //         const flatList = [...state.tasks.flatData];
+    //         const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
+    //         let nextTaskUniqueId = null;
+    //         let prevTaskUniqueId = null;
+    //         if (flatList && flatList.length > 0 && selectedTaskUniqueId) {
+    //             const dataLength = flatList.length;
+    //             const selectedIndex = flatList.findIndex(
+    //                 (t) => t.uniqueId === selectedTaskUniqueId
+    //             );
+    //             const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    //             const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    //             nextTaskUniqueId =
+    //                 flatList[nextIndex].uniqueId;
+    //             prevTaskUniqueId =
+    //                 flatList[prevIndex].uniqueId;
+    //         }
+    //         return { nextTaskUniqueId, prevTaskUniqueId };
+    //     }
+    // );
 
     useEffect(() => {
         dispatch(fetchTags());
+        dispatch(fetchPinnedItems());
     }, [dispatch]);
 
     useEffect(() => {
@@ -249,17 +288,44 @@ const ViewTaskComp = () => {
             dispatch(setSelectedTaskUniqueId(id));
         }
     }, [id, tasks, dispatch]);
+
+    useEffect(() => {
+        if (
+            id &&
+            pinnedItems &&
+            tasks &&
+            pinnedItems.length > 0 &&
+            tasks.length > 0
+        ) {
+            let pinnedTasksList = pinnedItems.filter(
+                (pi) => pi.linkedItemType === "task" && pi.softDelete === false
+            );
+            pinnedTasksList = pinnedTasksList
+                ? pinnedTasksList.map((pit) => ({
+                    ...pit,
+                    title:
+                        tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
+                }))
+                : [];
+            setPinnedTasks((prev) => [...pinnedTasksList]);
+            setIsPinned(
+                (prev) =>
+                    pinnedTasksList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
+            );
+        }
+    }, [id, tasks, pinnedItems]);
+
     const handleEdit = (item) => {
         navigate(`/task-mgmt/${id}/edit`);
     };
     const handleAddSubTask = (item) => {
         console.log(`Subtask will be added soon for id : ${id}`);
         navigate(`/task-mgmt/${id}/add-sub-task`);
-    }
-    const handleChildTaskClick=(item)=>{
+    };
+    const handleChildTaskClick = (item) => {
         console.log(`moving to subtask having : ${JSON.stringify(item)}`);
         navigate(`/task-mgmt/${item?.uniqueId}`);
-    }
+    };
     const handleTaskTraversal = (increment) => {
         if (increment === 1 && nextTaskUniqueId) {
             navigate(`/task-mgmt/${nextTaskUniqueId}`);
@@ -268,6 +334,19 @@ const ViewTaskComp = () => {
         }
     };
 
+    const handleLinkedTagSelection = (linkedTagUID) => {
+        navigate(`/tags/${linkedTagUID}`);
+    };
+
+    const handlePinTask = (item, isPinned) => {
+        dispatch(
+            upsertPinnedItem({
+                linkedUniqueId: item.uniqueId,
+                linkedItemType: "task",
+                softDelete: isPinned,
+            })
+        );
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -278,15 +357,23 @@ const ViewTaskComp = () => {
     }
     return (
         <>
-            <TaskCard
-                task={data}
-                tags={availableTags}
-                showDescription={true}
-                onEdit={handleEdit}
-                onTaskTraversal={handleTaskTraversal}
-                onAddSubTask={handleAddSubTask}
-                onChildTaskClick={handleChildTaskClick}
-            />
+            {data ? (
+                <TaskCard
+                    task={data}
+                    tags={availableTags}
+                    showDescription={true}
+                    pinnedTasks={pinnedTasks}
+                    isPinned={isPinned}
+                    onEdit={handleEdit}
+                    onTaskTraversal={handleTaskTraversal}
+                    onAddSubTask={handleAddSubTask}
+                    onChildTaskClick={handleChildTaskClick}
+                    onPinTask={handlePinTask}
+                    onLinkedTagSelection={handleLinkedTagSelection}
+                />
+            ) : (
+                <>No task data found for id: {id}</>
+            )}
         </>
     );
 };
@@ -294,46 +381,57 @@ const ViewTaskComp = () => {
 const AddSubTaskComp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //const treeStructuredTasks = useSelector((state) => state.tasks.data);
     const { id } = useParams();
 
-    // const tasks = prepareTasksQueue(treeStructuredTasks);
+    const tasks = useSelector(selectAllFlatTasks);
 
-    const tasks = useSelector((state) => state.tasks.flatData);
+    const task = tasks?.find((t) => t.uniqueId === id);
 
-    const task = tasks?.find(t => t.uniqueId === id);
-
-    const taskOptions = tasks.filter(t => t.uniqueId !== task.uniqueId).map((t) => ({
-        value: t.uniqueId, // Assuming task have unique IDs
-        label: t.title, // Display tag title in the dropdown
-    }));
+    const taskOptions = tasks
+        .filter((t) => t.uniqueId !== task.uniqueId)
+        .map((t) => ({
+            value: t.uniqueId, // Assuming task have unique IDs
+            label: t.title, // Display tag title in the dropdown
+        }));
 
     const handleTaskSelect = (selectedTags) => {
-        // Extract the tag values and store them in the 'tags' property of the topic data
-        setFormData({ ...formData, children: selectedTags.map((tag) => tag.value) });
+        // Extract the tag values and store them in the 'tags' property of the task data
+        setFormData({
+            ...formData,
+            children: selectedTags.map((tag) => tag.value),
+        });
     };
 
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",
-        title: task && task.title ? task.title : "",
+        name: task && task.name ? task.name : "",
         description: task && task.description ? task.description : "",
         parentId: task && task.parentId ? task.parentId : "",
         linkedTasks: task && task.linkedTasks ? task.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs
-        tags: task && task.tags ? task.tags : [], // Set the initial tags based on the topic
-        children: task && task.children ? task.children.map(c => c.uniqueId) : []
+        tags: task && task.tags ? task.tags : [], // Set the initial tags based on the task
+        children: task && task.children ? task.children.map((c) => c.uniqueId) : [],
     });
 
     const handleSaveTask = () => {
-        console.log(`Going to save: taskId: ${task._id} , formData : ${JSON.stringify(formData)}`)
+        console.log(
+            `Going to save: taskId: ${task._id} , formData : ${JSON.stringify(
+                formData
+            )}`
+        );
         if (task && task._id && task.uniqueId) {
-            // If a topic is provided, it's an update
-            dispatch(updateTask({ taskId: task._id, taskData: { children: formData.children } }));
+            // If a task is provided, it's an update
+            dispatch(
+                updateTask({
+                    taskId: task._id,
+                    taskData: { children: formData.children },
+                })
+            );
             // dispatch(updateTask({ taskId: task._id, taskData: {} }));
             // alert('going to edit')
-            console.log('updated!!!');
+            console.log("updated!!!");
         } else {
-            console.log('Not updated!!!')
+            console.log("Not updated!!!");
         }
         navigate(-1);
     };
@@ -342,13 +440,12 @@ const AddSubTaskComp = () => {
         navigate({
             pathname: `/task-mgmt/create`,
             search: createSearchParams({
-                parent: id
-            }).toString()
+                parent: id,
+            }).toString(),
         });
     };
 
     const taskFormStyle = {};
-
 
     return (
         <>
@@ -356,7 +453,9 @@ const AddSubTaskComp = () => {
             {`my selected task : ${JSON.stringify(task)}`} <br />
             {`my transformed formData : ${JSON.stringify(formData)}`} */}
             <div>
-                <CustomButton onClick={handleCreateNewSubtask}>Create new Subtask</CustomButton>
+                <CustomButton onClick={handleCreateNewSubtask}>
+                    Create new Subtask
+                </CustomButton>
             </div>
 
             {/* {`Or select existing subtasks from list.`} */}
@@ -368,24 +467,23 @@ const AddSubTaskComp = () => {
                         isMulti
                         name="tasks"
                         options={taskOptions}
-                        value={taskOptions.filter((t) => formData.children.includes(t.value) && t.value !== formData.uniqueId)}
+                        value={taskOptions.filter(
+                            (t) =>
+                                formData.children.includes(t.value) &&
+                                t.value !== formData.uniqueId
+                        )}
                         onChange={handleTaskSelect}
                     />
                 </div>
             </div>
 
             <div>
-                <CustomButton onClick={handleSaveTask}>
-                    Save
-                </CustomButton>
+                <CustomButton onClick={handleSaveTask}>Save</CustomButton>
                 <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
             </div>
-
         </>
-    )
-}
-
-
+    );
+};
 
 // const prepareTasksQueue = (list, prevQueue = []) => {
 //     let queue = [...prevQueue];
@@ -409,4 +507,3 @@ const styles = {
 
 export default TaskBase;
 export { AddSubTaskComp, CreateTaskComp, EditTaskComp, ViewTaskComp };
-

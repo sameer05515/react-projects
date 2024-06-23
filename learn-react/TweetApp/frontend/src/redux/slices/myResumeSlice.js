@@ -2,7 +2,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 // Replace 'YOUR_API_ENDPOINT' with the actual endpoint for fetching MyResumeModel data
 const API_ENDPOINT = BACKEND_APPLICATION_BASE_URL;
 

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Define an async thunk to fetch all topics
 export const fetchTopics = createAsyncThunk("topics/fetchTopics", async () => {
@@ -12,6 +12,20 @@ export const createTopic = createAsyncThunk(
   "topics/createTopic",
   async (topicData) => {
     const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(topicData),
+    });
+    return response.json();
+  }
+);
+
+export const searchTopic = createAsyncThunk(
+  "topics/searchTopic",
+  async (topicData) => {
+    const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,29 +147,20 @@ const topicSlice = createSlice({
   name: "topics",
   initialState: {
     selectedTopicUniqueId: null,
-    // selectedTopicTraversal:{
-    //   nextTopicUniqueId:null,
-    //   prevTopicUniqueId:null
-    // },
     data: [],
     flatData:[],
+    searchedData:[],
+    searchString:'',
     loading: "idle",
     error: null,
   },
   reducers: {
     setSelectedTopicUniqueId: (state, action) => {
       state.selectedTopicUniqueId = action.payload;
-      // const dataLength= state.data.length;
-      // if(state.data && dataLength>0){
-      //   const selectedIndex = state.data.findIndex(t=>t.uniqueId===state.selectedTopicUniqueId);
-      //   // console.log(`[setSelectedTopicUniqueId]: selectedIndex: ${selectedIndex}, action.payload: ${action.payload}`);
-      //   // console.log(`[setSelectedTopicUniqueId]: dataLength: ${dataLength}`);
-      //   const nextIndex=((selectedIndex+dataLength+1)%dataLength);
-      //   const prevIndex=((selectedIndex+dataLength-1)%dataLength);
-      //   state.selectedTopicTraversal.nextTopicUniqueId=state.data[nextIndex].uniqueId;
-      //   state.selectedTopicTraversal.prevTopicUniqueId=state.data[prevIndex].uniqueId;
-      // }
     },
+    setSearchString:(state, action)=>{
+      state.searchString = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -171,8 +176,12 @@ const topicSlice = createSlice({
         state.loading = "rejected";
         state.error = action.error.message;
       })
+      .addCase(searchTopic.fulfilled, (state, action) => {
+        //state.loading = "fulfilled";
+        state.searchedData = action.payload;
+      })
       .addCase(createTopic.fulfilled, (state, action) => {
-        state.data.push(action.payload);
+        // state.data.push(action.payload);
       })
       .addCase(updateTopic.fulfilled, (state, action) => {
         const updatedTopic = action.payload;
@@ -207,4 +216,49 @@ const topicSlice = createSlice({
 
 export default topicSlice.reducer;
 // Export the reducer and actions
-export const { setSelectedTopicUniqueId } = topicSlice.actions;
+export const { setSelectedTopicUniqueId,setSearchString } = topicSlice.actions;
+
+
+/* ============== Selectors ======================*/
+const selectTopicsState = (state) => state.topics;
+
+export const selectAllTreeTopics = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.data
+);
+
+export const selectAllFlatTopics = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.flatData
+);
+
+export const selectSelectedTopicUniqueId = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.selectedTopicUniqueId
+);
+
+export const selectNextTopicUniqueId = createSelector(
+  [selectAllFlatTopics, selectSelectedTopicUniqueId],
+  (flatTopicList, selectedTopicUId) => {
+    const dataLength = flatTopicList?.length || 0;
+    const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    return flatTopicList[nextIndex].uniqueId;
+  }
+);
+
+export const selectPrevTopicUniqueId = createSelector(
+  [selectAllFlatTopics, selectSelectedTopicUniqueId],
+  (flatTopicList, selectedTopicUId) => {
+    const dataLength = flatTopicList?.length || 0;
+    const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    return flatTopicList[prevIndex].uniqueId;
+  }
+);

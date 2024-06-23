@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 

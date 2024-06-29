@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTopics } from "../../redux/topicSlice";
 import CreateTopic from "./CreateTopic"; // Import the CreateTopic component
 import TopicCard from "./TopicCard";
+import { selectAllFlatTopics } from "../../redux/slices/topicSlice";
 
 
 function ListTopic() {
-  const topics = useSelector((state) => state.topics.data);
+  const topics = useSelector(selectAllFlatTopics);
   const loading = useSelector((state) => state.topics.loading);
   const error = useSelector((state) => state.topics.error);
   const dispatch = useDispatch();

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDateToDDMMMYYYY } from "../../common/commonService";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
-import { fetchTopics } from "../../redux/slices/topicSlice";
+import { fetchTopics, selectAllFlatTopics } from "../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic";
 import TopicCard from "./TopicCard";
 import CustomButton from "../../common/components/CustomButton";
 
 function ListTopicsByCreatedDate() {
-  const topics = useSelector((state) => state.topics.data);
+  const topics = useSelector(selectAllFlatTopics);
   const loading = useSelector((state) => state.topics.loading);
   const error = useSelector((state) => state.topics.error);
   const dispatch = useDispatch();

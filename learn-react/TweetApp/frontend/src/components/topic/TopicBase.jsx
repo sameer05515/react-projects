@@ -15,6 +15,11 @@ import {
     createTopicSection,
     fetchTopics,
     searchTopic,
+    selectAllFlatTopics,
+    selectAllTreeTopics,
+    selectNextTopicUniqueId,
+    selectPrevTopicUniqueId,
+    selectSelectedTopicUniqueId,
     setSearchString,
     setSelectedTopicUniqueId,
     updateTopic,
@@ -59,14 +64,12 @@ const TopicBase = () => {
 
 const ListTopics = () => {
     const dispatch = useDispatch();
-    const topics = useSelector((state) => state.topics.data);
+    const topics = useSelector(selectAllTreeTopics);
     const status = useSelector((state) => state.topics.loading);
     const error = useSelector((state) => state.topics.error);
     const navigate = useNavigate();
 
-    const selectedTopicUniqueId = useSelector(
-        (state) => state.topics.selectedTopicUniqueId
-    );
+    const selectedTopicUniqueId = useSelector(selectSelectedTopicUniqueId);
 
     const selectedElementRef = useRef(null);
     useEffect(() => {
@@ -187,7 +190,7 @@ const SearchRouterPage = () => {
     });
     const data = useSelector((state) => state.topics.searchedData);
     const searchString = useSelector((state) => state.topics.searchString);
-    const flatData = useSelector((state) => state.topics.flatData);
+    const flatData = useSelector(selectAllFlatTopics);
 
     const [criteriaList, setCriteriaList] = useState({
         name: { value: 1, editable: false },
@@ -354,44 +357,35 @@ const ViewTopic = () => {
         refetch: sectionsRefetch,
     } = useDataFetching(sectionFetchUrl);
     const availableTags = useSelector(selectAllFlatTags);
-    const topics = useSelector((state) => state.topics.data);
+    const topics = useSelector(selectAllFlatTopics);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
     const [pinnedTopics, setPinnedTopics] = useState([]);
     const [isPinned, setIsPinned] = useState(false);
-    // const [increment, setIncrement] = useState(0); // Initial increment value
+    
+    const tasks = useSelector(selectAllFlatTopics);
 
-    // const selectedTopicUniqueId = useSelector(
-    //     (state) => state.topics.selectedTopicUniqueId
-    // );
-    // const { nextTopicUniqueId, prevTopicUniqueId } = useSelector(
-    //     (state) => state.topics.selectedTopicTraversal
-    // );
-    const tasks = useSelector((state) => state.topics.flatData);
+    const nextTopicUniqueId= useSelector(selectNextTopicUniqueId);
+    const prevTopicUniqueId= useSelector(selectPrevTopicUniqueId);
 
-    const { nextTopicUniqueId, prevTopicUniqueId } = useSelector((state) => {
-        const flatList = [...state.topics.flatData];
-        const selectedTopicUniqueId = state.topics.selectedTopicUniqueId;
-        let nextTopicUniqueId = null;
-        let prevTopicUniqueId = null;
-        if (flatList && flatList.length > 0 && selectedTopicUniqueId) {
-            const dataLength = flatList.length;
-            const selectedIndex = flatList.findIndex(
-                (t) => t.uniqueId === selectedTopicUniqueId
-            );
-            const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
-            const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
-            nextTopicUniqueId = flatList[nextIndex].uniqueId;
-            prevTopicUniqueId = flatList[prevIndex].uniqueId;
-        }
-        return { nextTopicUniqueId, prevTopicUniqueId };
-    });
-
-    // Create a selector with the increment value
-    // const getNextTopicIdSelector = makeGetNextTopicIdSelector();
-
-    // Use the created selector with the stored increment value
-    // const nextTopicId = useSelector(getNextTopicIdSelector(increment));
+    // const { nextTopicUniqueId, prevTopicUniqueId } = useSelector((state) => {
+    //     const flatList = [...state.topics.flatData];
+    //     const selectedTopicUniqueId = state.topics.selectedTopicUniqueId;
+    //     let nextTopicUniqueId = null;
+    //     let prevTopicUniqueId = null;
+    //     if (flatList && flatList.length > 0 && selectedTopicUniqueId) {
+    //         const dataLength = flatList.length;
+    //         const selectedIndex = flatList.findIndex(
+    //             (t) => t.uniqueId === selectedTopicUniqueId
+    //         );
+    //         const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    //         const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    //         nextTopicUniqueId = flatList[nextIndex].uniqueId;
+    //         prevTopicUniqueId = flatList[prevIndex].uniqueId;
+    //     }
+    //     return { nextTopicUniqueId, prevTopicUniqueId };
+    // });
+    
 
     useEffect(() => {
         dispatch(fetchTags());

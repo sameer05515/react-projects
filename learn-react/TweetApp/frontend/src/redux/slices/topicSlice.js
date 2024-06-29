@@ -147,10 +147,6 @@ const topicSlice = createSlice({
   name: "topics",
   initialState: {
     selectedTopicUniqueId: null,
-    // selectedTopicTraversal:{
-    //   nextTopicUniqueId:null,
-    //   prevTopicUniqueId:null
-    // },
     data: [],
     flatData:[],
     searchedData:[],
@@ -180,17 +176,10 @@ const topicSlice = createSlice({
         state.loading = "rejected";
         state.error = action.error.message;
       })
-      // .addCase(searchTopic.pending, (state) => {
-      //   state.loading = "pending";
-      // })
       .addCase(searchTopic.fulfilled, (state, action) => {
         //state.loading = "fulfilled";
         state.searchedData = action.payload;
       })
-      // .addCase(fetchTopics.rejected, (state, action) => {
-      //   state.loading = "rejected";
-      //   state.error = action.error.message;
-      // })
       .addCase(createTopic.fulfilled, (state, action) => {
         state.data.push(action.payload);
       })

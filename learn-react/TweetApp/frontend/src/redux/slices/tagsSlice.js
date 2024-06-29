@@ -55,21 +55,21 @@ export const updateTag = createAsyncThunk(
   }
 );
 
-const getNameWithAncestors = (topic) => {
-  if (!topic) {
+const getNameWithAncestors = (tag) => {
+  if (!tag) {
       return "";
   }
   let ancestorNames = [];
-  let currentAncestor = topic.ancestors?.find(
+  let currentAncestor = tag.ancestors?.find(
       (ancestor) => !ancestor.parentId
   )||null;
   while (currentAncestor) {
       ancestorNames.push(currentAncestor.name);
-      currentAncestor = topic.ancestors.find(
+      currentAncestor = tag.ancestors.find(
           (ancestor) => ancestor.parentId === currentAncestor.uniqueId
       );
   }
-  ancestorNames.push(topic.name);
+  ancestorNames.push(tag.name);
   const fullyQualifiedName = ancestorNames.join(" / ");
   return fullyQualifiedName;
 };

@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import HoverableSpan from '../../common/components/HoverableSpan';
 import CustomButton from '../../common/components/CustomButton';
 import { formatDateToDDMMMYYYYWithTime } from '../../common/commonService';
-import { Breadcrumbs } from '../topic/TopicBase';
+// import { Breadcrumbs } from '../topic/TopicBase';
 import { SmartPreviewer } from '../../common/components/SmartEditor';
 import ReactHtmlParser from "react-html-parser";
+import Breadcrumbs, { BreadcrumbItemType } from '../../common/components/GlobalBreadcrumb';
 
 const TagCard = ({
   tag,
@@ -15,7 +16,8 @@ const TagCard = ({
   onChildTagClick = () => { },
   onMoveAnotherParent = () => { },
   onAncestorClick = () => { },
-  onLinkedItemClick = () => { }
+  onLinkedItemClick = () => { },
+  onBaseSpanClick=()=>{}
 }) => {
 
   const [showDescr, setShowDescr] = useState(showDescription);
@@ -125,9 +127,11 @@ const TagCard = ({
       <div>
         {/* <div> */}
         <Breadcrumbs
-          topic={tag}
+          providedItem={tag}
+          providedItemType={BreadcrumbItemType.TAG}
           ancestors={tag.ancestors}
           onAncestorClick={(a) => handleAncestorClick(a)}
+          onBaseSpanClick={onBaseSpanClick}
         />
         <h3>{tag.name}</h3> <br />
         {/* <p>{tag.ancestors&& tag.ancestors.length>0 ? JSON.stringify(tag.ancestors):"Iss tag ka baap kon??"}</p> */}

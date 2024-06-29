@@ -457,21 +457,11 @@ const ViewTopic = () => {
         navigate(`/topic-mgmt/${data.uniqueId}/edit`);
     };
     const handleTopicTraversal = (increment) => {
-        // setIncrement(prev => increment);
-        // navigate(`/topic-mgmt/${nextTopicId}`);
-        // console.log(
-        //     `increment: ${increment}, nextTopicUniqueId: '${nextTopicUniqueId}' , prevTopicUniqueId: '${prevTopicUniqueId}'`
-        // );
-
         if (increment === 1 && nextTopicUniqueId) {
             navigate(`/topic-mgmt/${nextTopicUniqueId}`);
         } else if (increment === -1 && prevTopicUniqueId) {
             navigate(`/topic-mgmt/${prevTopicUniqueId}`);
         }
-        // else if (increment == 0 && id) {
-        //     navigate(`/topic-mgmt/${id}`);
-        // }
-        // dispatch(setSelectedTopicUniqueId(nextTopicId));
     };
     const handleAddSubTask = (item) => {
         // console.log(`Subtopic will be added soon for id : ${id}`);
@@ -523,6 +513,11 @@ const ViewTopic = () => {
         navigate(`/tags/${linkedTagUID}`);
     }
 
+    const handleBaseSpanClick= ()=>{
+        dispatch(setSelectedTopicUniqueId(null));
+        navigate(`/topic-mgmt`);
+    }
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -553,6 +548,7 @@ const ViewTopic = () => {
                     onTopicSectionClick={handleTopicSectionClick}
                     onPinTopic={handlePinTopic}
                     onLinkedTagSelection={handleLinkedTagSelection}
+                    onBaseSpanClick={handleBaseSpanClick}
                 />
             )}
         </>
@@ -658,7 +654,6 @@ const AddSubTopicComp = () => {
         // );
         if (topic && topic.uniqueId) {
             // If a topic is provided, it's an update
-            // dispatch(updateTopic({ topicId: topic._id, topicData: { children: formData.children } }));
             dispatch(
                 updateTopic({
                     ...{ children: formData.children },
@@ -915,70 +910,70 @@ const EditSectionRouterPage = () => {
     );
 };
 
-const Breadcrumbs = ({
-    parentId = "",
-    topic = null,
-    ancestors: providedAncestors = [],
-    onAncestorClick = () => { },
-}) => {
-    const [ancestors, setAncestors] = useState([]);
+// const Breadcrumbs = ({
+//     parentId = "",
+//     topic = null,
+//     ancestors: providedAncestors = [],
+//     onAncestorClick = () => { },
+// }) => {
+//     const [ancestors, setAncestors] = useState([]);
 
-    useEffect(() => {
-        setAncestors((prev) => [...providedAncestors]);
-    }, [providedAncestors]);
+//     useEffect(() => {
+//         setAncestors((prev) => [...providedAncestors]);
+//     }, [providedAncestors]);
 
-    return (
-        <div>
-            <div style={breadcrumbStyle.breadcrumbsContainer}>
-                <HoverableSpan
-                    style={breadcrumbStyle.breadcrumbItem}
-                    isHoverable={false}
-                >
-                    <i>Home / </i>
-                </HoverableSpan>
-                {ancestors.map((ancestor, index) => (
-                    <HoverableSpan
-                        style={{ ...breadcrumbStyle.breadcrumbItem, cursor: "pointer" }}
-                        key={index}
-                        onClick={() => onAncestorClick(ancestor)}
-                    >
-                        <i>{ancestor.name} / </i>
-                    </HoverableSpan>
-                ))}
-                <HoverableSpan
-                    style={breadcrumbStyle.breadcrumbItem}
-                    isSelected
-                    isHoverable={false}
-                >
-                    <>{topic?.name}</>
-                </HoverableSpan>
-            </div>
-        </div>
-    );
-};
+//     return (
+//         <div>
+//             <div style={breadcrumbStyle.breadcrumbsContainer}>
+//                 <HoverableSpan
+//                     style={breadcrumbStyle.breadcrumbItem}
+//                     isHoverable={false}
+//                 >
+//                     <i>Home / </i>
+//                 </HoverableSpan>
+//                 {ancestors.map((ancestor, index) => (
+//                     <HoverableSpan
+//                         style={{ ...breadcrumbStyle.breadcrumbItem, cursor: "pointer" }}
+//                         key={index}
+//                         onClick={() => onAncestorClick(ancestor)}
+//                     >
+//                         <i>{ancestor.name} / </i>
+//                     </HoverableSpan>
+//                 ))}
+//                 <HoverableSpan
+//                     style={breadcrumbStyle.breadcrumbItem}
+//                     isSelected
+//                     isHoverable={false}
+//                 >
+//                     <>{topic?.name}</>
+//                 </HoverableSpan>
+//             </div>
+//         </div>
+//     );
+// };
 
-const breadcrumbStyle = {
-    breadcrumbsContainer: {
-        marginBottom: "20px",
-        padding: "0 .5rem",
-    },
-    breadcrumbList: {
-        listStyleType: "none",
-        padding: "0",
-        margin: "0",
-    },
-    breadcrumbItem: {
-        display: "inline-block",
-        marginRight: "5px",
-    },
-    breadcrumbLink: {
-        color: "#007bff",
-        textDecoration: "none",
-    },
-    breadcrumbLinkHover: {
-        textDecoration: "underline",
-    },
-};
+// const breadcrumbStyle = {
+//     breadcrumbsContainer: {
+//         marginBottom: "20px",
+//         padding: "0 .5rem",
+//     },
+//     breadcrumbList: {
+//         listStyleType: "none",
+//         padding: "0",
+//         margin: "0",
+//     },
+//     breadcrumbItem: {
+//         display: "inline-block",
+//         marginRight: "5px",
+//     },
+//     breadcrumbLink: {
+//         color: "#007bff",
+//         textDecoration: "none",
+//     },
+//     breadcrumbLinkHover: {
+//         textDecoration: "underline",
+//     },
+// };
 
 const styles = {
     selected: {
@@ -1013,5 +1008,5 @@ export {
     CreateSectionRouterPage,
     EditSectionRouterPage,
     SearchRouterPage,
-    Breadcrumbs,
+    // Breadcrumbs,
 };

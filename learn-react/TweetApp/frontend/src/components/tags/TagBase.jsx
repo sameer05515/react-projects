@@ -242,6 +242,18 @@ const ViewTag = () => {
         }
     };
 
+    const handleAncestorClick = (ancestor) => {
+        if (!ancestor) {
+            return;
+        }
+        navigate(`/tags/${ancestor.uniqueId}`);
+    };
+
+    const handleBaseSpanClick= ()=>{
+        dispatch(setSelectedTagUniqueId(null));
+        navigate(`/tags`);
+    }
+
     
     return data ? (
         <TagCard
@@ -253,6 +265,8 @@ const ViewTag = () => {
             onChildTagClick={handleChildTagClick}
             onMoveAnotherParent={handleMoveAnotherParent}
             onTagTraversal={handleTagTraversal}
+            onAncestorClick={handleAncestorClick}
+            onBaseSpanClick={handleBaseSpanClick}
         />
     ) : (
         <>No data found for given tag id : {id}</>

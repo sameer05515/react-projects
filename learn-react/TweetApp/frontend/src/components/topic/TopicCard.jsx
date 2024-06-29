@@ -7,9 +7,10 @@ import ReactHtmlParser from "react-html-parser";
 import CustomButton from "../../common/components/CustomButton";
 import FloatingButton from "../../common/components/FloatingButton";
 import DynamicDataRenderer from "../../common/components/DynamicDataRenderer";
-import { Breadcrumbs } from "./TopicBase";
+// import { Breadcrumbs } from "./TopicBase";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import { SmartPreviewer } from "../../common/components/SmartEditor";
+import Breadcrumbs, { BreadcrumbItemType } from "../../common/components/GlobalBreadcrumb";
 
 const TopicCard = ({
   topic,
@@ -35,7 +36,8 @@ const TopicCard = ({
   onTopicSectionClick = () => {
     alert("Topic section click callback not provided.");
   },
-  onLinkedTagSelection=()=>{}
+  onLinkedTagSelection=()=>{},
+  onBaseSpanClick=()=>{}
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = topic.tags?.map((uniqueId) =>
@@ -160,9 +162,11 @@ const TopicCard = ({
       <div>
         {/* <div> */}
         <Breadcrumbs
-          topic={topic}
+          providedItem={topic}
+          providedItemType={BreadcrumbItemType.TOPIC}
           ancestors={topic.ancestors}
           onAncestorClick={(a) => handleAncestorClick(a)}
+          onBaseSpanClick={onBaseSpanClick}
         />
         <h3>{topic.name}</h3> <br />
         {/* <p>{topic.ancestors&& topic.ancestors.length>0 ? JSON.stringify(topic.ancestors):"Iss topic ka baap kon??"}</p> */}

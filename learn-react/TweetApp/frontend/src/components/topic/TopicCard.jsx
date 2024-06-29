@@ -35,6 +35,7 @@ const TopicCard = ({
   onTopicSectionClick = () => {
     alert("Topic section click callback not provided.");
   },
+  onLinkedTagSelection=()=>{}
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = topic.tags?.map((uniqueId) =>
@@ -82,6 +83,10 @@ const TopicCard = ({
 
   const handleAncestorClick = (ancestor) => {
     onAncestorClick(ancestor);
+  };
+
+  const handleLinkedTagSelection=(linkedTagUID)=>{
+    onLinkedTagSelection(linkedTagUID);
   };
 
   const populateChildren = (childTopicList) => {
@@ -298,9 +303,9 @@ const TopicCard = ({
       {filteredTags.map(
         (tag) =>
           tag && (
-            <span style={tagStyle} key={tag._id}>
-              {tag.name}
-            </span>
+            <HoverableSpan style={tagStyle} key={tag._id}  onClick={()=>handleLinkedTagSelection(tag.uniqueId)}>
+              {tag.title}
+            </HoverableSpan>
           )
       )}
 

@@ -518,6 +518,11 @@ const ViewTopic = () => {
                 : "",
         });
     };
+
+    const handleLinkedTagSelection=(linkedTagUID)=>{
+        navigate(`/tags/${linkedTagUID}`);
+    }
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -547,6 +552,7 @@ const ViewTopic = () => {
                     selectedSectionId={sectionId}
                     onTopicSectionClick={handleTopicSectionClick}
                     onPinTopic={handlePinTopic}
+                    onLinkedTagSelection={handleLinkedTagSelection}
                 />
             )}
         </>
@@ -909,49 +915,6 @@ const EditSectionRouterPage = () => {
     );
 };
 
-// const getNameWithAncestors = (topic) => {
-//     if (!topic) {
-//         return "";
-//     }
-//     let ancestorNames = [];
-//     let currentAncestor = topic.ancestors?.find(
-//         (ancestor) => !ancestor.parentId
-//     )||null;
-//     while (currentAncestor) {
-//         ancestorNames.push(currentAncestor.name);
-//         currentAncestor = topic.ancestors.find(
-//             (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-//         );
-//     }
-//     ancestorNames.push(topic.name);
-//     const fullyQualifiedName = ancestorNames.join(" / ");
-//     return fullyQualifiedName;
-// };
-
-// const prepareTasksQueue = (list, prevQueue = []) => {
-//     let queue = [...prevQueue];
-
-//     if (list && list.length > 0) {
-//         list.forEach((t) => {
-//             queue = [
-//                 ...queue,
-//                 {
-//                     uniqueId: t.uniqueId,
-//                     name: t.name,
-//                     title: getNameWithAncestors(t),
-//                     ancestors: t.ancestors,
-//                     children: t.children,
-//                     _id: t._id,
-//                 },
-//             ];
-//             const childQ = prepareTasksQueue(t.children, []);
-//             queue = [...queue, ...childQ];
-//         });
-//     }
-//     // console.log(JSON.stringify(queue, null, 2));
-//     return queue;
-// };
-
 const Breadcrumbs = ({
     parentId = "",
     topic = null,
@@ -962,16 +925,6 @@ const Breadcrumbs = ({
 
     useEffect(() => {
         setAncestors((prev) => [...providedAncestors]);
-        // const fetchAncestors = async () => {
-        //   try {
-        //     const response = await axios.get(`/ancestors/${parentId}`);
-        //     setAncestors(response.data);
-        //   } catch (error) {
-        //     console.error('Error fetching ancestors:', error);
-        //   }
-        // };
-
-        // fetchAncestors();
     }, [providedAncestors]);
 
     return (

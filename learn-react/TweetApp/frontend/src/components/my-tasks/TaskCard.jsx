@@ -29,6 +29,7 @@ const TaskCard = ({
   onAddSubTask = () => { },
   onChildTaskClick = () => { },
   onPinTask = () => { },
+  onLinkedTagSelection=()=>{}
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = task.tags?.map((uniqueId) =>
@@ -51,7 +52,11 @@ const TaskCard = ({
 
   const handlePinTask = (isPinned) => {
     onPinTask(task, isPinned);
-  }
+  };
+
+  const handleLinkedTagSelection=(linkedTagUID)=>{
+    onLinkedTagSelection(linkedTagUID);
+  };
 
   return (
     <>
@@ -109,7 +114,6 @@ const TaskCard = ({
               <b>List of all pinned Tasks:-</b>
             </div>
             {pinnedTasks && pinnedTasks.length > 0 && (
-              // <DynamicDataRenderer data={pinnedTasks} />
               <ul style={styles.ulStyle}>
                 {pinnedTasks.map((t) => (
                   <li style={styles.liStyles} key={t.uniqueId}>
@@ -180,9 +184,9 @@ const TaskCard = ({
             {filteredTags.map(
               (tag) =>
                 tag && (
-                  <span style={styles.tagStyle} key={tag._id}>
+                  <HoverableSpan style={styles.tagStyle} key={tag._id} onClick={()=>handleLinkedTagSelection(tag.uniqueId)}>
                     {tag.title}
-                  </span>
+                  </HoverableSpan>
                 )
             )}
           </div>

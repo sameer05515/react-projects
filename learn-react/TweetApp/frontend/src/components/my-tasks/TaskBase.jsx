@@ -279,6 +279,10 @@ const ViewTaskComp = () => {
         }
     };
 
+    const handleLinkedTagSelection=(linkedTagUID)=>{
+        navigate(`/tags/${linkedTagUID}`);
+    }
+
     const handlePinTask = (item, isPinned) => {
         dispatch(upsertPinnedItem({
             "linkedUniqueId": item.uniqueId,
@@ -308,6 +312,7 @@ const ViewTaskComp = () => {
                 onAddSubTask={handleAddSubTask}
                 onChildTaskClick={handleChildTaskClick}
                 onPinTask={handlePinTask}
+                onLinkedTagSelection={handleLinkedTagSelection}
             />:<>No task data found for id: {id}</>}
         </>
     );

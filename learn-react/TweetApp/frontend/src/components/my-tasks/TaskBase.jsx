@@ -12,7 +12,7 @@ import ViewSwitcher from "../../common/components/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
-import { fetchTasks, setSelectedTaskUniqueId, updateTask } from "../../redux/slices/taskSlice";
+import { fetchTasks, selectAllFlatTasks, selectAllTreeTasks, selectNextTaskUniqueId, selectPrevTaskUniqueId, selectSelectedTaskUniqueId, setSelectedTaskUniqueId, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
 import TaskContainer from "./TaskContainer";
@@ -44,12 +44,10 @@ const TaskBase = () => {
 const ListTasks = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const tasks = useSelector((state) => state.tasks.data);
+    const tasks = useSelector(selectAllTreeTasks);
     const status = useSelector((state) => state.tasks.status);
     const error = useSelector((state) => state.tasks.error);
-    const selectedTaskUniqueId = useSelector(
-        (state) => state.tasks.selectedTaskUniqueId
-    );
+    const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
     const selectedElementRef = useRef(null);
     useEffect(() => {
         dispatch(fetchTasks()); // Dispatch the fetchTasks async thunk to fetch tasks
@@ -213,35 +211,34 @@ const ViewTaskComp = () => {
     const availableTags = useSelector(selectAllFlatTags);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
-    const tasks = useSelector((state) => state.tasks.flatData);
+    const tasks = useSelector(selectAllFlatTasks);
     const [pinnedTasks, setPinnedTasks] = useState([]);
     const [isPinned, setIsPinned]= useState(false);
+    const nextTaskUniqueId= useSelector(selectNextTaskUniqueId);
+    const prevTaskUniqueId= useSelector(selectPrevTaskUniqueId);
 
-    const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
-        (state) => {
-            //const flatList = prepareTasksQueue(state.tasks.data, []);
-            const flatList = [...state.tasks.flatData];
-            const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
-            // console.log(`flatList size: ${flatList.length}`);
-            // console.log(`state.tasks.selectedTaskUniqueId : ${selectedTaskUniqueId}`);
-            let nextTaskUniqueId = null;
-            let prevTaskUniqueId = null;
-            if (flatList && flatList.length > 0 && selectedTaskUniqueId) {
-                const dataLength = flatList.length;
-                const selectedIndex = flatList.findIndex(
-                    (t) => t.uniqueId === selectedTaskUniqueId
-                );
-                const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
-                const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
-                nextTaskUniqueId =
-                    flatList[nextIndex].uniqueId;
-                prevTaskUniqueId =
-                    flatList[prevIndex].uniqueId;
-            }
-            // return state.tasks.selectedTaskTraversal;
-            return { nextTaskUniqueId, prevTaskUniqueId };
-        }
-    );
+
+    // const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
+    //     (state) => {
+    //         const flatList = [...state.tasks.flatData];
+    //         const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
+    //         let nextTaskUniqueId = null;
+    //         let prevTaskUniqueId = null;
+    //         if (flatList && flatList.length > 0 && selectedTaskUniqueId) {
+    //             const dataLength = flatList.length;
+    //             const selectedIndex = flatList.findIndex(
+    //                 (t) => t.uniqueId === selectedTaskUniqueId
+    //             );
+    //             const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    //             const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    //             nextTaskUniqueId =
+    //                 flatList[nextIndex].uniqueId;
+    //             prevTaskUniqueId =
+    //                 flatList[prevIndex].uniqueId;
+    //         }
+    //         return { nextTaskUniqueId, prevTaskUniqueId };
+    //     }
+    // );
 
     useEffect(() => {
         dispatch(fetchTags());
@@ -322,12 +319,9 @@ const ViewTaskComp = () => {
 const AddSubTaskComp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //const treeStructuredTasks = useSelector((state) => state.tasks.data);
     const { id } = useParams();
 
-    // const tasks = prepareTasksQueue(treeStructuredTasks);
-
-    const tasks = useSelector((state) => state.tasks.flatData);
+    const tasks = useSelector(selectAllFlatTasks);
 
     const task = tasks?.find(t => t.uniqueId === id);
 

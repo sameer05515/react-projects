@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 
 // Define an async thunk to fetch all topics
@@ -228,3 +228,48 @@ const topicSlice = createSlice({
 export default topicSlice.reducer;
 // Export the reducer and actions
 export const { setSelectedTopicUniqueId,setSearchString } = topicSlice.actions;
+
+
+/* ============== Selectors ======================*/
+const selectTopicsState = (state) => state.topics;
+
+export const selectAllTreeTopics = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.data
+);
+
+export const selectAllFlatTopics = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.flatData
+);
+
+export const selectSelectedTopicUniqueId = createSelector(
+  selectTopicsState,
+  (topicsState) => topicsState.selectedTopicUniqueId
+);
+
+export const selectNextTopicUniqueId = createSelector(
+  [selectAllFlatTopics, selectSelectedTopicUniqueId],
+  (flatTopicList, selectedTopicUId) => {
+    const dataLength = flatTopicList?.length || 0;
+    const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    return flatTopicList[nextIndex].uniqueId;
+  }
+);
+
+export const selectPrevTopicUniqueId = createSelector(
+  [selectAllFlatTopics, selectSelectedTopicUniqueId],
+  (flatTopicList, selectedTopicUId) => {
+    const dataLength = flatTopicList?.length || 0;
+    const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    return flatTopicList[prevIndex].uniqueId;
+  }
+);

@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
 import { taskStatusList } from "../../common/globalConstants";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
-import { saveTask, updateTask } from "../../redux/slices/taskSlice";
+import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();
     const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
-    const tasks = useSelector((state) => state.tasks.data);
+    const tasks = useSelector(selectAllFlatTasks);
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",

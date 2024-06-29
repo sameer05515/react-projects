@@ -1,5 +1,5 @@
 // slices/taskSlice.js
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 
 
@@ -115,3 +115,47 @@ const taskSlice = createSlice({
 export default taskSlice.reducer;
 // Export the reducer and actions
 export const { setSelectedTaskUniqueId } = taskSlice.actions;
+
+/* ============== Selectors ======================*/
+const selectTasksState = (state) => state.tasks;
+
+export const selectAllTreeTasks = createSelector(
+  selectTasksState,
+  (tasksState) => tasksState.data
+);
+
+export const selectAllFlatTasks = createSelector(
+  selectTasksState,
+  (tasksState) => tasksState.flatData
+);
+
+export const selectSelectedTaskUniqueId = createSelector(
+  selectTasksState,
+  (tasksState) => tasksState.selectedTaskUniqueId
+);
+
+export const selectNextTaskUniqueId = createSelector(
+  [selectAllFlatTasks, selectSelectedTaskUniqueId],
+  (flatTaskList, selectedTaskUId) => {
+    const dataLength = flatTaskList?.length || 0;
+    const selectedIndex = flatTaskList.findIndex((task) => task.uniqueId === selectedTaskUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    return flatTaskList[nextIndex].uniqueId;
+  }
+);
+
+export const selectPrevTaskUniqueId = createSelector(
+  [selectAllFlatTasks, selectSelectedTaskUniqueId],
+  (flatTaskList, selectedTaskUId) => {
+    const dataLength = flatTaskList?.length || 0;
+    const selectedIndex = flatTaskList.findIndex((task) => task.uniqueId === selectedTaskUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    return flatTaskList[prevIndex].uniqueId;
+  }
+);

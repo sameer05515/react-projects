@@ -370,11 +370,8 @@ const ViewTopic = () => {
     const tasks = useSelector((state) => state.topics.flatData);
 
     const { nextTopicUniqueId, prevTopicUniqueId } = useSelector((state) => {
-        // const flatList = prepareTasksQueue(state.topics.data, []);
         const flatList = [...state.topics.flatData];
         const selectedTopicUniqueId = state.topics.selectedTopicUniqueId;
-        // console.log(`flatList size: ${flatList.length}`);
-        // console.log(`state.tasks.selectedTopicUniqueId : ${selectedTopicUniqueId}`);
         let nextTopicUniqueId = null;
         let prevTopicUniqueId = null;
         if (flatList && flatList.length > 0 && selectedTopicUniqueId) {
@@ -387,7 +384,6 @@ const ViewTopic = () => {
             nextTopicUniqueId = flatList[nextIndex].uniqueId;
             prevTopicUniqueId = flatList[prevIndex].uniqueId;
         }
-        // return state.tasks.selectedTaskTraversal;
         return { nextTopicUniqueId, prevTopicUniqueId };
     });
 

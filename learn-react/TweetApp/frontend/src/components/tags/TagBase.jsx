@@ -7,6 +7,7 @@ import TooltipSpan from "../../common/components/TooltipSpan";
 import {
     createTag,
     fetchTags,
+    selectAllFlatTags,
     selectAllTreeTags,
     selectNextTagUniqueId,
     selectPrevTagUniqueId,
@@ -26,6 +27,7 @@ import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
 import TagForm from "./TagForm";
 import TagCard, { TagLinkedItemType } from "./TagCard";
+import Select from "react-select";
 
 const TagBase = () => {
     const [selectedView, setSelectedView] = useState("list");
@@ -61,7 +63,6 @@ const ListTags = () => {
 
     const selectedElementRef = useRef(null);
     useEffect(() => {
-        //dispatch(fetchTopics());
         dispatch(fetchTags());
     }, [dispatch]);
 
@@ -85,7 +86,7 @@ const ListTags = () => {
         navigate(`${selectedItem.uniqueId}`);
     };
 
-    const getTopicsJSX = (tags) => {
+    const getTagsJSX = (tags) => {
         return (
             <>
                 {tags && tags.length > 0 && (
@@ -110,7 +111,7 @@ const ListTags = () => {
                                     {/* {tag.name} */}
                                     <TooltipSpan maxCharLength={25} text={tag.name} />
                                 </span>
-                                {getTopicsJSX(tag.children)}
+                                {getTagsJSX(tag.children)}
                             </li>
                         ))}
                     </ul>
@@ -152,7 +153,7 @@ const ListTags = () => {
                             Search
                         </CustomButton>
                     </div>
-                    {getTopicsJSX(tags)}
+                    {getTagsJSX(tags)}
                 </div>
                 {/* -- left-section */}
 
@@ -184,7 +185,6 @@ const ViewTag = () => {
         if (id) {
             refetch();
             dispatch(setSelectedTagUniqueId(id));
-            // handleTopicTraversal(0);
         }
     }, [id, dispatch]);
 
@@ -214,14 +214,15 @@ const ViewTag = () => {
     };
 
     const addChildTag = (id) => {
-        navigate({
-            pathname: "/tags/create",
-            search: id
-                ? createSearchParams({
-                    parent: id,
-                }).toString()
-                : "",
-        });
+        // navigate({
+        //     pathname: "/tags/create",
+        //     search: id
+        //         ? createSearchParams({
+        //             parent: id,
+        //         }).toString()
+        //         : "",
+        // });
+        navigate(`/tags/${id}/add-sub-tag`);
     };
 
     const handleChildTagClick = (item) => {
@@ -234,7 +235,7 @@ const ViewTag = () => {
         navigate(`/tags/${id}/move-parent`);
     };
 
-    const handleTagTraversal = (increment) => {        
+    const handleTagTraversal = (increment) => {
         if (increment === 1 && nextTagUniqueId) {
             navigate(`/tags/${nextTagUniqueId}`);
         } else if (increment === -1 && prevTagUniqueId) {
@@ -249,12 +250,11 @@ const ViewTag = () => {
         navigate(`/tags/${ancestor.uniqueId}`);
     };
 
-    const handleBaseSpanClick= ()=>{
+    const handleBaseSpanClick = () => {
         dispatch(setSelectedTagUniqueId(null));
         navigate(`/tags`);
-    }
+    };
 
-    
     return data ? (
         <TagCard
             onAddSubTag={() => addChildTag(id)}
@@ -302,20 +302,12 @@ const EditTag = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
-    // const url = `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`;
-    // const { data, loading, error, refetch } = useDataFetching(url);
     const location = useLocation();
     const { data } = location.state || {};
     const handleCancel = () => {
         navigate(-1);
     };
-    // useEffect(() => {
-    //     if (id) {
-    //         refetch();
-    //         //dispatch(setSelectedTagUniqueId(id));
-    //         // handleTopicTraversal(0);
-    //     }
-    // }, [id, dispatch]);
+
     const handleEditTag = (data) => {
         // alert(JSON.stringify(data, null, 2));
         dispatch(updateTag({ ...data }));
@@ -337,11 +329,218 @@ const EditTag = () => {
     );
 };
 
-const MoveToAnotherTagParent=()=>{
-    return(
-        <>Move to another tag parent</>
-    )
-}
+// const MoveToAnotherTagParent=()=>{
+//     return(
+//         <>Move to another tag parent</>
+//     )
+// }
+
+const AddSubTagComp = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    // const treeStructuredTasks = useSelector((state) => state.tags.data);
+    const { id } = useParams();
+
+    // const tags = prepareTasksQueue(treeStructuredTasks);
+    const tags = useSelector(selectAllFlatTags);
+
+    const tag = tags?.find((t) => t.uniqueId === id);
+
+    const tagOptions = tags
+        .filter((t) => t.uniqueId !== tag.uniqueId)
+        .map((t) => ({
+            value: t.uniqueId, // Assuming tag have unique IDs
+            label: t.title, // Display tag title in the dropdown
+        }));
+
+    const handleTaskSelect = (selectedTags) => {
+        // Extract the tag values and store them in the 'tags' property of the tag data
+        setFormData({
+            ...formData,
+            children: selectedTags.map((tag) => tag.value),
+        });
+    };
+
+    const [formData, setFormData] = useState({
+        // _id: tag && tag._id ? tag._id : "",
+        uniqueId: tag && tag.uniqueId ? tag.uniqueId : "",
+        // title: tag && tag.title ? tag.title : "",
+        // description: tag && tag.description ? tag.description : "",
+        // parentId: tag && tag.parentId ? tag.parentId : "",
+        // linkedTasks: tag && tag.linkedTasks ? tag.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked tag IDs
+        // tags: tag && tag.tags ? tag.tags : [], // Set the initial tags based on the tag
+        children: tag && tag.children ? tag.children.map((c) => c.uniqueId) : [],
+    });
+
+    const handleSaveTask = () => {
+        // console.log(
+        //     `Going to save: tagId: ${tag._id} , formData : ${JSON.stringify(
+        //         formData
+        //     )}`
+        // );
+        if (tag && tag.uniqueId) {
+            // If a tag is provided, it's an update
+            dispatch(
+                updateTag({
+                    ...{ children: formData.children },
+                    uniqueId: tag.uniqueId,
+                })
+            );
+            // console.log("updated!!!");
+        } else {
+            // console.log("Not updated!!!");
+        }
+        navigate(-1);
+    };
+
+    const handleCreateNewSubtag = () => {
+        navigate({
+            pathname: `/tags/create`,
+            search: createSearchParams({
+                parent: id,
+            }).toString(),
+        });
+    };
+
+    const tagFormStyle = {};
+
+    return (
+        <>
+            {/* {`Either create and add as subtag of ${id}`} <br />
+            {`my selected tag : ${JSON.stringify(tag)}`} <br /> */}
+            {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
+            <div>
+                <CustomButton onClick={handleCreateNewSubtag}>
+                    Create new Sub-Tag
+                </CustomButton>
+            </div>
+
+            {/* {`Or select existing subtags from list.`} */}
+
+            <div style={tagFormStyle}>
+                <div>
+                    <label htmlFor="tags">Add Existing Tags:</label>
+                    <Select
+                        isMulti
+                        name="tags"
+                        options={tagOptions}
+                        value={tagOptions.filter(
+                            (t) =>
+                                formData.children.includes(t.value) &&
+                                t.value !== formData.uniqueId
+                        )}
+                        onChange={handleTaskSelect}
+                    />
+                </div>
+            </div>
+
+            <div>
+                <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
+                <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+            </div>
+        </>
+    );
+};
+
+const MoveToAnotherTagParent = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    // const treeStructuredTasks = useSelector((state) => state.tags.data);
+    const { id } = useParams();
+
+    // const tags = prepareTasksQueue(treeStructuredTasks);
+    const tags = useSelector(selectAllFlatTags);
+
+    const tag = tags?.find((t) => t.uniqueId === id);
+
+    const tagOptions = tags
+        .filter((t) => t.uniqueId !== tag.uniqueId)
+        .filter((t) => !t.ancestors.map((a) => a.uniqueId).includes(tag.uniqueId))
+        .map((t) => ({
+            value: t.uniqueId, // Assuming tag have unique IDs
+            label: t.title, // Display tag title in the dropdown
+        }));
+    // .push({
+    //     value: '', // Assuming tag have unique IDs
+    //     label: 'ROOT', // Display tag title in the dropdown
+    // });
+
+    const handleTaskSelect = (selectedTags) => {
+        // Extract the tag values and store them in the 'tags' property of the tag data
+        // console.log(
+        //     `JSON.stringify(selectedTags): ${JSON.stringify(selectedTags)}`
+        // );
+        setFormData({ ...formData, parentId: selectedTags.value });
+    };
+
+    const [formData, setFormData] = useState({
+        // _id: tag && tag._id ? tag._id : "",
+        uniqueId: tag && tag.uniqueId ? tag.uniqueId : "",
+        // title: tag && tag.title ? tag.title : "",
+        // description: tag && tag.description ? tag.description : "",
+        parentId: tag && tag.parentId ? tag.parentId : "",
+        // linkedTasks: tag && tag.linkedTasks ? tag.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked tag IDs
+        // tags: tag && tag.tags ? tag.tags : [], // Set the initial tags based on the tag
+        // children: tag && tag.children ? tag.children.map(c => c.uniqueId) : []
+    });
+
+    const handleSaveTask = () => {
+        // console.log(
+        //     `Going to save: tagId: ${tag._id} , formData : ${JSON.stringify(
+        //         formData
+        //     )}`
+        // );
+        if (tag && tag.uniqueId) {
+            // If a tag is provided, it's an update
+            dispatch(
+                updateTag({
+                    ...{ parentId: formData.parentId },
+                    uniqueId: tag.uniqueId,
+                })
+            );
+            // console.log("updated!!!");
+        } else {
+            // console.log("Not updated!!!");
+        }
+        navigate(-1);
+    };
+
+    const tagFormStyle = {};
+
+    const [selectedOption] = useState("");
+
+    return (
+        <>
+            {/* {`Either create and add as subtag of ${id}`} <br />
+            {`my selected tag : ${JSON.stringify(tag)}`} <br /> */}
+            {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
+            {/* <div>
+                <CustomButton onClick={handleCreateNewSubtag}>Create new Sub-Tag</CustomButton>
+            </div> */}
+
+            {/* {`Or select existing subtags from list.`} */}
+
+            <div style={tagFormStyle}>
+                <p>{tag?.title}</p>
+                <div>
+                    <label htmlFor="tags">Add Existing Tags:</label>
+                    <Select
+                        name="tags"
+                        options={tagOptions}
+                        defaultValue={selectedOption}
+                        // value={tagOptions.filter((t) => t.value === formData.uniqueId)}
+                        onChange={handleTaskSelect}
+                    />
+                </div>
+            </div>
+
+            <div>
+                <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
+                <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+            </div>
+        </>
+    );
+};
 
 const styles = {
     selected: {
@@ -371,4 +570,11 @@ const SearchTagRouterPage = () => {
 };
 
 export default TagBase;
-export { ViewTag, CreateTag, EditTag, SearchTagRouterPage, MoveToAnotherTagParent };
+export {
+    ViewTag,
+    CreateTag,
+    EditTag,
+    SearchTagRouterPage,
+    AddSubTagComp,
+    MoveToAnotherTagParent,
+};

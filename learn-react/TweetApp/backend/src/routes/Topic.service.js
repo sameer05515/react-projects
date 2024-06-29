@@ -29,7 +29,7 @@ const updateTopicByUniqueId = async (uniqueId, topicData) => {
     topic.tags = tags && tags.length >= 0 ? tags : topic.tags;
     topic.occurenceDate =
       occurenceDate != null ? occurenceDate : topic.occurenceDate;
-    topic.smartContent = smartContent;
+    topic.smartContent = smartContent || topic.smartContent;
     topic.updatedDate = new Date();
     topic = await topic.save();
     const childrenIds = children || [];

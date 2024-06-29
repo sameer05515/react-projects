@@ -31,7 +31,7 @@ import LinksBase, { AddChildLink, CreateLink, EditLink, ViewLink } from "./compo
 import TopicBase, { AddSubTopicComp, CreateSectionRouterPage, CreateTopicComp, EditSectionRouterPage, EditTopicComp, MoveToAnotherTopicParent, SearchRouterPage, ViewTopic } from "./components/topic/TopicBase";
 import TaskBase, { AddSubTaskComp, CreateTaskComp, EditTaskComp, ViewTaskComp } from "./components/my-tasks/TaskBase";
 // import TagList from "./components/tags/TagList";
-import TagBase, { CreateTag, EditTag, MoveToAnotherTagParent, SearchTagRouterPage, ViewTag } from "./components/tags/TagBase";
+import TagBase, { AddSubTagComp, CreateTag, EditTag, MoveToAnotherTagParent, SearchTagRouterPage, ViewTag } from "./components/tags/TagBase";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -175,6 +175,7 @@ function App() {
               <Route path=":id" element={<ViewTag />} />
               <Route path="create" element={<CreateTag/>} />
               <Route path="search" element={<SearchTagRouterPage/>} />              
+              <Route path=":id/add-sub-tag" element={<AddSubTagComp />} />
               <Route path=":id/move-parent" element={<MoveToAnotherTagParent/>}/>
               {/* <Route path=":id/add-child" element={<AddChildLink/>}/> */}
             </Route>

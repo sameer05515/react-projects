@@ -155,7 +155,9 @@ const updateTagById = async (uniqueId, tagData) => {
     if (!tag) {
       throw new Error("Task not found");
     }
-    // console.log(`tagData : ${JSON.stringify(tagData)}`)
+    // console.log(`[Tag.service.js]: [updateTagById]: [tagData] : ${JSON.stringify(tagData)}`);
+    // console.log(`[Tag.service.js]: [updateTagById]: [tag] : ${JSON.stringify(tag)}`);
+
     const {
       parentId,
       name,
@@ -171,7 +173,7 @@ const updateTagById = async (uniqueId, tagData) => {
     //tag.tags = tags && tags.length >= 0 ? tags : tag.tags;
     // tag.occurenceDate =
     //   occurenceDate != null ? occurenceDate : tag.occurenceDate;
-    tag.smartContent = smartContent;
+    tag.smartContent = smartContent || tag.smartContent;
     tag.updatedDate = new Date();
     tag = await tag.save();
     const childrenIds = children || [];

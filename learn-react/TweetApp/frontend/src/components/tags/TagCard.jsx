@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import HoverableSpan from '../../common/components/HoverableSpan';
-import CustomButton from '../../common/components/CustomButton';
-import { formatDateToDDMMMYYYYWithTime } from '../../common/commonService';
-// import { Breadcrumbs } from '../topic/TopicBase';
-import { SmartPreviewer } from '../../common/components/SmartEditor';
+import React, { useState } from "react";
+import { formatDateToDDMMMYYYYWithTime } from "../../common/commonService";
+import CustomButton from "../../common/components/CustomButton";
+import HoverableSpan from "../../common/components/HoverableSpan";
 import ReactHtmlParser from "react-html-parser";
-import Breadcrumbs, { BreadcrumbItemType } from '../../common/components/GlobalBreadcrumb';
+import Breadcrumbs, {
+  BreadcrumbItemType,
+} from "../../common/components/GlobalBreadcrumb";
+import { SmartPreviewer } from "../../common/components/SmartEditor";
 
 const TagCard = ({
   tag,
@@ -17,9 +18,8 @@ const TagCard = ({
   onMoveAnotherParent = () => { },
   onAncestorClick = () => { },
   onLinkedItemClick = () => { },
-  onBaseSpanClick=()=>{}
+  onBaseSpanClick = () => { },
 }) => {
-
   const [showDescr, setShowDescr] = useState(showDescription);
 
   const handleEdit = () => {
@@ -64,7 +64,7 @@ const TagCard = ({
     );
   };
 
-  const populateLinkedItems = (sectionsList, type='') => {
+  const populateLinkedItems = (sectionsList, type = "") => {
     return (
       <>
         {/* <pre>{JSON.stringify(sectionsList, null, 2)}</pre> */}
@@ -72,13 +72,32 @@ const TagCard = ({
           <ul style={styles.ulStyle}>
             {sectionsList.map((t) => (
               <li style={styles.liStyles} key={t.uniqueId}>
-                {(TagLinkedItemType.topic===type || TagLinkedItemType.task===type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>
-                  {t.name}
-                </HoverableSpan>}
+                {(TagLinkedItemType.topic === type ||
+                  TagLinkedItemType.task === type) && (
+                    <HoverableSpan
+                      onClick={() =>
+                        onLinkedItemClick({ uniqueId: t.uniqueId }, type)
+                      }
+                    >
+                      {t.name}
+                    </HoverableSpan>
+                  )}
 
-                {TagLinkedItemType.topicSection===type && <HoverableSpan onClick={() => onLinkedItemClick({ linkedTopicUniqueId:t.linkedTopicUniqueId, uniqueId: t.uniqueId }, type)}>
-                  {t.name}
-                </HoverableSpan>}
+                {TagLinkedItemType.topicSection === type && (
+                  <HoverableSpan
+                    onClick={() =>
+                      onLinkedItemClick(
+                        {
+                          linkedTopicUniqueId: t.linkedTopicUniqueId,
+                          uniqueId: t.uniqueId,
+                        },
+                        type
+                      )
+                    }
+                  >
+                    {t.name}
+                  </HoverableSpan>
+                )}
                 {/* {populateChildren(t.children)} */}
               </li>
             ))}
@@ -104,13 +123,6 @@ const TagCard = ({
   };
 
   return (
-    // <>
-    //   <div>
-    //     <span>You will see details for tag: {tag.uniqueId}</span>
-    //     <pre>{JSON.stringify(tag, null, 2)}</pre>
-    //   </div>
-    // </>
-
     <>
       <div>
         <CustomButton
@@ -142,7 +154,8 @@ const TagCard = ({
             <b>Created:</b> {formatDateToDDMMMYYYYWithTime(tag.createdDate)}
           </span>
           <span>
-            <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(tag.updatedDate)}
+            <b>Last updated:</b>{" "}
+            {formatDateToDDMMMYYYYWithTime(tag.updatedDate)}
           </span>
         </div>
       </div>
@@ -235,62 +248,54 @@ const TagCard = ({
       </div>
 
       {tag.children && tag.children.length > 0 && (
-        <div
-          style={styles.descriptionStyle}
-        >
+        <div style={styles.descriptionStyle}>
           <b>Child Tags:-</b> <br />
           {populateChildren(tag.children)}
         </div>
       )}
 
       {tag.linkedTopics && tag.linkedTopics.length > 0 && (
-        <div
-          style={styles.descriptionStyle}
-        >
+        <div style={styles.descriptionStyle}>
           <b>Linked Topics:-</b> <br />
-          {populateLinkedItems(tag.linkedTopics,TagLinkedItemType.topic)}
+          {populateLinkedItems(tag.linkedTopics, TagLinkedItemType.topic)}
         </div>
       )}
 
       {tag.linkedSections && tag.linkedSections.length > 0 && (
-        <div
-          style={styles.descriptionStyle}
-        >
+        <div style={styles.descriptionStyle}>
           <b>Linked Topic Sections:-</b> <br />
-          {populateLinkedItems(tag.linkedSections,TagLinkedItemType.topicSection)}
+          {populateLinkedItems(
+            tag.linkedSections,
+            TagLinkedItemType.topicSection
+          )}
         </div>
       )}
 
       {tag.linkedTasks && tag.linkedTasks.length > 0 && (
-        <div
-          style={styles.descriptionStyle}
-        >
+        <div style={styles.descriptionStyle}>
           <b>Linked Tasks:-</b> <br />
-          {populateLinkedItems(tag.linkedTasks,TagLinkedItemType.task)}
+          {populateLinkedItems(tag.linkedTasks, TagLinkedItemType.task)}
         </div>
       )}
 
-      {showDescr &&
+      {showDescr && (
         <div
           style={{
             border: "1px solid #999", // Grey border
             padding: "2px 5px", // Adjust padding as needed
             borderRadius: "4px",
             marginBottom: "10px",
-            width: '77vw',
-            overflow: 'auto'
-          }}>
+            width: "77vw",
+            overflow: "auto",
+          }}
+        >
           <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
-          {tag.description && !tag.smartContent && ReactHtmlParser(tag.description || "")}
+          {tag.description &&
+            !tag.smartContent &&
+            ReactHtmlParser(tag.description || "")}
           {tag.smartContent && <SmartPreviewer data={tag.smartContent} />}
         </div>
-      }
-
-
-
-
-
-
+      )}
 
       <div>
         <CustomButton
@@ -304,7 +309,7 @@ const TagCard = ({
         </CustomButton>
       </div>
     </>
-  )
+  );
 };
 
 const styles = {
@@ -341,14 +346,15 @@ const styles = {
     padding: "2px 5px", // Adjust padding as needed
     borderRadius: "4px",
     marginBottom: "10px",
-  }
+  },
 };
 
-const TagLinkedItemType={
-  topic:'topic',
-  task:'task',
-  topicSection:'topic-section'
-}
+const TagLinkedItemType = {
+  topic: "topic",
+  task: "task",
+  topicSection: "topic-section",
+};
 
 export default TagCard;
-export {TagLinkedItemType};
+export { TagLinkedItemType };
+

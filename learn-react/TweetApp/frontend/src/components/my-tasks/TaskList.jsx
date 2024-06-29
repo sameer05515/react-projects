@@ -31,7 +31,7 @@ const TaskList = ({ tasks, itemsPerRow = 3, onEditTask, onViewTask, tags=[] }) =
       <div style={containerStyle} key={i}>
         {rowTasks.map((task) => (
           <div style={taskItemStyle} key={task.uniqueId}>
-            {/* <strong>Title:</strong> {task.title}<br />
+            {/* <strong>Name:</strong> {task.name}<br />
             <div>{ReactHtmlParser(task.description || "")}</div>
             <strong>Status:</strong> {task.taskStatus}<br />
             <strong>Total linked tasks:</strong> {task.linkedTasks?task.linkedTasks.length:0}<br /> */}

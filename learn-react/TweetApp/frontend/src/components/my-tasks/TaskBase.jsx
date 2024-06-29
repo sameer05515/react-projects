@@ -100,7 +100,7 @@ const ListTasks = () => {
                                     }}
                                     onClick={() => handleLinkSelection(t)}
                                 >
-                                    {t.title}
+                                    {t.name}
                                 </span>
                                 {getTasksJSX(t.children)}
                             </li>
@@ -340,7 +340,7 @@ const AddSubTaskComp = () => {
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",
-        title: task && task.title ? task.title : "",
+        name: task && task.name ? task.name : "",
         description: task && task.description ? task.description : "",
         parentId: task && task.parentId ? task.parentId : "",
         linkedTasks: task && task.linkedTasks ? task.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs

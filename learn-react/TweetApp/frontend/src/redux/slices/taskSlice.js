@@ -85,7 +85,9 @@ const prepareTasksQueue = (list, prevQueue = []) => {
         ...queue,
         {
           uniqueId: t.uniqueId,
-          title: t.title,
+          name: t.name,          
+          title: getNameWithAncestors(t),
+          ancestors: t.ancestors,
           children: t.children,
           _id: t._id,
         },

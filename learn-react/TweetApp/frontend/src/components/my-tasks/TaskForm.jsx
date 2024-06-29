@@ -15,7 +15,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",
-        title: task && task.title ? task.title : "",
+        name: task && task.name ? task.name : "",
         description: task && task.description ? task.description : "",
         parentId: task && task.parentId ? task.parentId : "",
         taskStatus: task ? task.taskStatus : "",
@@ -102,13 +102,13 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
                 <h3>{task && task._id && task.uniqueId ? "Edit Task" : "Add Task"}</h3>
                 {/* <pre>{`provided task object: ${JSON.stringify(task)}`}</pre> <br /> */}
                 <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-                    <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>Title</label>
+                    <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Title</label>
                     <input
                         type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Title"
-                        value={formData.title}
+                        id="name"
+                        name="name"
+                        placeholder="Name"
+                        value={formData.name}
                         onChange={handleInputChange}
                         style={{ width: "90%" }}
                     />

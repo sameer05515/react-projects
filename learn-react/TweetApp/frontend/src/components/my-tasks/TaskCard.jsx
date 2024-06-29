@@ -127,7 +127,7 @@ const TaskCard = ({
           </FloatingButton>
         </div>
         <div>
-          <h2>{task.title}</h2>
+          <h2>{task.name}</h2>
           <div style={styles.datesStyle}>
             <span style={{ marginRight: "10px" }}>
               <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
@@ -207,7 +207,7 @@ const TaskCard = ({
             <ul>
               {task.children.map((t) => (
                 <li key={t.uniqueId}>
-                  <span onClick={() => onChildTaskClick(t)}>{t.title}</span>
+                  <span onClick={() => onChildTaskClick(t)}>{t.name}</span>
                 </li>
               ))}
             </ul>

@@ -207,7 +207,7 @@ const TagCard = ({
               {pinnedTopics.map((t) => (
                 <li style={styles.liStyles} key={t.uniqueId}>
                   <HoverableSpan onClick={() => onChildTopicClick({uniqueId: t.linkedUniqueId})}>
-                    {t.title}
+                    {t.name}
                   </HoverableSpan>
                 </li>
               ))}

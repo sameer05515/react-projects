@@ -181,7 +181,7 @@ const ListTopics = () => {
 const SearchRouterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const taskFormStyle = {};
+    const topicFormStyle = {};
     // const url = `${BACKEND_APPLICATION_BASE_URL}/topics/search`;
     // const [options, setOptions] = useState({});
     // const { data, loading, error, refetch } = useDataFetching(url, options, false);
@@ -272,7 +272,7 @@ const SearchRouterPage = () => {
     return (
         <>
             <h1>Search</h1>
-            <div style={taskFormStyle}>
+            <div style={topicFormStyle}>
                 <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
                     <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>
                         Title
@@ -357,13 +357,13 @@ const ViewTopic = () => {
         refetch: sectionsRefetch,
     } = useDataFetching(sectionFetchUrl);
     const availableTags = useSelector(selectAllFlatTags);
-    const topics = useSelector(selectAllFlatTopics);
+    // const topics = useSelector(selectAllFlatTopics);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
     const [pinnedTopics, setPinnedTopics] = useState([]);
     const [isPinned, setIsPinned] = useState(false);
     
-    const tasks = useSelector(selectAllFlatTopics);
+    const topics = useSelector(selectAllFlatTopics);
 
     const nextTopicUniqueId= useSelector(selectNextTopicUniqueId);
     const prevTopicUniqueId= useSelector(selectPrevTopicUniqueId);
@@ -404,9 +404,9 @@ const ViewTopic = () => {
         if (
             id &&
             pinnedItems &&
-            tasks &&
+            topics &&
             pinnedItems.length > 0 &&
-            tasks.length > 0
+            topics.length > 0
         ) {
             let pinnedTopicsList = pinnedItems.filter(
                 (pi) => pi.linkedItemType === "topic" && pi.softDelete === false
@@ -415,7 +415,7 @@ const ViewTopic = () => {
                 ? pinnedTopicsList.map((pit) => ({
                     ...pit,
                     title:
-                        tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
+                        topics.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
                 }))
                 : [];
             setPinnedTopics((prev) => [...pinnedTopicsList]);
@@ -424,7 +424,7 @@ const ViewTopic = () => {
                     pinnedTopicsList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
             );
         }
-    }, [id, tasks, pinnedItems]);
+    }, [id, topics, pinnedItems]);
 
     useEffect(() => {
         //if (id && sectionId) {
@@ -474,15 +474,15 @@ const ViewTopic = () => {
         // dispatch(setSelectedTopicUniqueId(nextTopicId));
     };
     const handleAddSubTask = (item) => {
-        // console.log(`Subtask will be added soon for id : ${id}`);
+        // console.log(`Subtopic will be added soon for id : ${id}`);
         navigate(`/topic-mgmt/${id}/add-sub-topic`);
     };
     const handleChildTaskClick = (item) => {
-        // console.log(`moving to subtask having : ${JSON.stringify(item)}`);
+        // console.log(`moving to subtopic having : ${JSON.stringify(item)}`);
         navigate(`/topic-mgmt/${item?.uniqueId}`);
     };
     const handleMoveAnotherParent = (item) => {
-        // console.log(`moving to subtask having : ${JSON.stringify(item)}`);
+        // console.log(`moving to subtopic having : ${JSON.stringify(item)}`);
         navigate(`/topic-mgmt/${id}/move-parent`);
     };
     const handlePinTopic = (item, isPinned) => {
@@ -618,12 +618,12 @@ const AddSubTopicComp = () => {
     // const treeStructuredTasks = useSelector((state) => state.topics.data);
     const { id } = useParams();
 
-    // const tasks = prepareTasksQueue(treeStructuredTasks);
-    const tasks = useSelector((state) => state.topics.flatData);
+    // const topics = prepareTasksQueue(treeStructuredTasks);
+    const topics = useSelector(selectAllFlatTopics);
 
-    const topic = tasks?.find((t) => t.uniqueId === id);
+    const topic = topics?.find((t) => t.uniqueId === id);
 
-    const taskOptions = tasks
+    const topicOptions = topics
         .filter((t) => t.uniqueId !== topic.uniqueId)
         .map((t) => ({
             value: t.uniqueId, // Assuming topic have unique IDs
@@ -652,13 +652,13 @@ const AddSubTopicComp = () => {
 
     const handleSaveTask = () => {
         // console.log(
-        //     `Going to save: taskId: ${topic._id} , formData : ${JSON.stringify(
+        //     `Going to save: topicId: ${topic._id} , formData : ${JSON.stringify(
         //         formData
         //     )}`
         // );
         if (topic && topic.uniqueId) {
             // If a topic is provided, it's an update
-            // dispatch(updateTopic({ taskId: topic._id, taskData: { children: formData.children } }));
+            // dispatch(updateTopic({ topicId: topic._id, topicData: { children: formData.children } }));
             dispatch(
                 updateTopic({
                     ...{ children: formData.children },
@@ -672,7 +672,7 @@ const AddSubTopicComp = () => {
         navigate(-1);
     };
 
-    const handleCreateNewSubtask = () => {
+    const handleCreateNewSubtopic = () => {
         navigate({
             pathname: `/topic-mgmt/create`,
             search: createSearchParams({
@@ -681,29 +681,29 @@ const AddSubTopicComp = () => {
         });
     };
 
-    const taskFormStyle = {};
+    const topicFormStyle = {};
 
     return (
         <>
-            {/* {`Either create and add as subtask of ${id}`} <br />
+            {/* {`Either create and add as subtopic of ${id}`} <br />
             {`my selected topic : ${JSON.stringify(topic)}`} <br /> */}
             {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
             <div>
-                <CustomButton onClick={handleCreateNewSubtask}>
+                <CustomButton onClick={handleCreateNewSubtopic}>
                     Create new Sub-Topic
                 </CustomButton>
             </div>
 
-            {/* {`Or select existing subtasks from list.`} */}
+            {/* {`Or select existing subtopics from list.`} */}
 
-            <div style={taskFormStyle}>
+            <div style={topicFormStyle}>
                 <div>
                     <label htmlFor="tags">Add Existing Topics:</label>
                     <Select
                         isMulti
-                        name="tasks"
-                        options={taskOptions}
-                        value={taskOptions.filter(
+                        name="topics"
+                        options={topicOptions}
+                        value={topicOptions.filter(
                             (t) =>
                                 formData.children.includes(t.value) &&
                                 t.value !== formData.uniqueId
@@ -727,12 +727,12 @@ const MoveToAnotherTopicParent = () => {
     // const treeStructuredTasks = useSelector((state) => state.topics.data);
     const { id } = useParams();
 
-    // const tasks = prepareTasksQueue(treeStructuredTasks);
-    const tasks = useSelector((state) => state.topics.flatData);
+    // const topics = prepareTasksQueue(treeStructuredTasks);
+    const topics = useSelector(selectAllFlatTopics);
 
-    const topic = tasks?.find((t) => t.uniqueId === id);
+    const topic = topics?.find((t) => t.uniqueId === id);
 
-    const taskOptions = tasks
+    const topicOptions = topics
         .filter((t) => t.uniqueId !== topic.uniqueId)
         .filter((t) => !t.ancestors.map((a) => a.uniqueId).includes(topic.uniqueId))
         .map((t) => ({
@@ -765,13 +765,13 @@ const MoveToAnotherTopicParent = () => {
 
     const handleSaveTask = () => {
         // console.log(
-        //     `Going to save: taskId: ${topic._id} , formData : ${JSON.stringify(
+        //     `Going to save: topicId: ${topic._id} , formData : ${JSON.stringify(
         //         formData
         //     )}`
         // );
         if (topic && topic.uniqueId) {
             // If a topic is provided, it's an update
-            // dispatch(updateTopic({ taskId: topic._id, taskData: { children: formData.children } }));
+            // dispatch(updateTopic({ topicId: topic._id, topicData: { children: formData.children } }));
             dispatch(
                 updateTopic({
                     ...{ parentId: formData.parentId },
@@ -785,30 +785,30 @@ const MoveToAnotherTopicParent = () => {
         navigate(-1);
     };
 
-    const taskFormStyle = {};
+    const topicFormStyle = {};
 
     const [selectedOption] = useState("");
 
     return (
         <>
-            {/* {`Either create and add as subtask of ${id}`} <br />
+            {/* {`Either create and add as subtopic of ${id}`} <br />
             {`my selected topic : ${JSON.stringify(topic)}`} <br /> */}
             {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
             {/* <div>
-                <CustomButton onClick={handleCreateNewSubtask}>Create new Sub-Topic</CustomButton>
+                <CustomButton onClick={handleCreateNewSubtopic}>Create new Sub-Topic</CustomButton>
             </div> */}
 
-            {/* {`Or select existing subtasks from list.`} */}
+            {/* {`Or select existing subtopics from list.`} */}
 
-            <div style={taskFormStyle}>
+            <div style={topicFormStyle}>
                 <p>{topic?.title}</p>
                 <div>
                     <label htmlFor="tags">Add Existing Topics:</label>
                     <Select
-                        name="tasks"
-                        options={taskOptions}
+                        name="topics"
+                        options={topicOptions}
                         defaultValue={selectedOption}
-                        // value={taskOptions.filter((t) => t.value === formData.uniqueId)}
+                        // value={topicOptions.filter((t) => t.value === formData.uniqueId)}
                         onChange={handleTaskSelect}
                     />
                 </div>
@@ -826,7 +826,7 @@ const CreateSectionRouterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const treeStructuredTasks = useSelector((state) => state.topics.data);
-    const topics = useSelector((state) => state.topics.flatData);
+    const topics = useSelector(selectAllFlatTopics);
     const { id } = useParams();
     const [formData] = useState({
         name: "",
@@ -838,8 +838,8 @@ const CreateSectionRouterPage = () => {
 
     useEffect(() => {
         if (topics && topics.length > 0) {
-            // const tasks = prepareTasksQueue(treeStructuredTasks);
-            // console.log(`CreateSectionRouterPage: JSON.stringify(tasks, null, 2): ${JSON.stringify(tasks, null, 2)}`)
+            // const topics = prepareTasksQueue(treeStructuredTasks);
+            // console.log(`CreateSectionRouterPage: JSON.stringify(topics, null, 2): ${JSON.stringify(topics, null, 2)}`)
             const topic = topics?.find((t) => t.uniqueId === id);
             setSelectedTopic((pre) => ({ ...topic }));
         }
@@ -872,7 +872,7 @@ const EditSectionRouterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const treeStructuredTasks = useSelector((state) => state.topics.data);
-    const topics = useSelector((state) => state.topics.flatData);
+    const topics = useSelector(selectAllFlatTopics);
     const { id, sectionId } = useParams();
     const [formData] = useState({
         uniqueId: sectionId,
@@ -885,8 +885,8 @@ const EditSectionRouterPage = () => {
 
     useEffect(() => {
         if (topics && topics.length > 0) {
-            // const tasks = prepareTasksQueue(treeStructuredTasks);
-            // console.log(`CreateSectionRouterPage: JSON.stringify(tasks, null, 2): ${JSON.stringify(tasks, null, 2)}`)
+            // const topics = prepareTasksQueue(treeStructuredTasks);
+            // console.log(`CreateSectionRouterPage: JSON.stringify(topics, null, 2): ${JSON.stringify(topics, null, 2)}`)
             const topic = topics?.find((t) => t.uniqueId === id);
             setSelectedTopic((pre) => ({ ...topic }));
         }

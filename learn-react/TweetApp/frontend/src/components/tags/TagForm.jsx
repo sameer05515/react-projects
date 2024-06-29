@@ -67,12 +67,7 @@ const TagForm = ({
           <h2>{formData.uniqueId ? "Update Tag" : "Save Tag"}</h2>
         </span>
         <br />
-        {/* <pre>formData {JSON.stringify(formData, null, 2)}</pre>
-        <pre>initialValue: {JSON.stringify(initialValue, null, 2)}</pre> */}
-        {/* <span>
-          <b>Topic: </b>
-          {selectedTopic?.title || "Invalid Topic"}
-        </span> */}
+       
       </div>
       <div>
         <label htmlFor="name" style={styles.labelStyle}>

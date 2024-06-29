@@ -30,7 +30,7 @@ const taskSchema = new mongoose.Schema({
   id: { type: String, default: uuidv4, unique: true, primary: true, },
   uniqueId: { type: String, default: uuidv4, unique: true, },
   parentId: { type: String, default: '' },
-  title: String,
+  name: { type: String, required: true },
   description: String,
   createdDate: { type: Date, default: Date.now, },
   updatedDate: { type: Date, default: Date.now, },

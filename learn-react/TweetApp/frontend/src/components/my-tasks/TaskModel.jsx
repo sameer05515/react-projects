@@ -12,7 +12,7 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
   const [formData, setFormData] = useState({
     _id: task ? task._id : "",
     uniqueId: task ? task.uniqueId : "",
-    title: task ? task.title : "",
+    name: task ? task.name : "",
     description: task ? task.description : "",
     // createdDate: task ? task.createdDate : "",
     // updatedDate: task ? task.updatedDate : "",
@@ -101,9 +101,9 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
         <h3>{task ? "Edit Task" : "Add Task"}</h3>
         <input
           type="text"
-          name="title"
-          placeholder="Title"
-          value={formData.title}
+          name="name"
+          placeholder="Name"
+          value={formData.name}
           onChange={handleInputChange}
         />
         <br />

@@ -138,7 +138,7 @@ const getTagById = async (uniqueId) => {
       ancestors: [...ancestors],
       linkedTopics: [...topics],
       linkedTopicSections: [...topicSections],
-      linkedTasks: [...tasks.map(t=>({uniqueId:t.uniqueId, name: t.title}))]
+      linkedTasks: [...tasks.map(t=>({uniqueId:t.uniqueId, name: t.name}))]
     };
     return responseDTO;
   }catch (error) {

@@ -150,3 +150,34 @@ export const selectAllFlatTags = createSelector(
   selectTagsState,
   (tagsState) => tagsState.flatData
 );
+
+export const selectSelectedTagUniqueId = createSelector(
+  selectTagsState,
+  (tagsState) => tagsState.selectedTagUniqueId
+);
+
+export const selectNextTagUniqueId = createSelector(
+  [selectAllFlatTags, selectSelectedTagUniqueId],
+  (flatTagList, selectedTagUId) => {
+    const dataLength = flatTagList?.length || 0;
+    const selectedIndex = flatTagList.findIndex((tag) => tag.uniqueId === selectedTagUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
+    return flatTagList[nextIndex].uniqueId;
+  }
+);
+
+export const selectPrevTagUniqueId = createSelector(
+  [selectAllFlatTags, selectSelectedTagUniqueId],
+  (flatTagList, selectedTagUId) => {
+    const dataLength = flatTagList?.length || 0;
+    const selectedIndex = flatTagList.findIndex((tag) => tag.uniqueId === selectedTagUId);
+    if (selectedIndex < 0 ) {
+      return null
+    };
+    const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
+    return flatTagList[prevIndex].uniqueId;
+  }
+);

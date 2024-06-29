@@ -8,6 +8,9 @@ import {
     createTag,
     fetchTags,
     selectAllTreeTags,
+    selectNextTagUniqueId,
+    selectPrevTagUniqueId,
+    selectSelectedTagUniqueId,
     setSelectedTagUniqueId,
     updateTag,
 } from "../../redux/slices/tagsSlice";
@@ -52,9 +55,9 @@ const ListTags = () => {
     const status = useSelector((state) => state.tags.loading);
     const error = useSelector((state) => state.tags.error);
 
-    const selectedTagUniqueId = useSelector(
-        (state) => state.tags.selectedTagUniqueId
-    );
+    const selectedTagUniqueId = useSelector(selectSelectedTagUniqueId);
+    const nextTagUniqueId = useSelector(selectNextTagUniqueId);
+    const prevTagUniqueId = useSelector(selectPrevTagUniqueId);
 
     const selectedElementRef = useRef(null);
     useEffect(() => {
@@ -170,8 +173,20 @@ const ViewTag = () => {
     const { id } = useParams();
     const url = `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`;
     const { data, loading, error, refetch } = useDataFetching(url);
-    const [searchParams] = useSearchParams();
-    const sectionId = searchParams.get("sectionId");
+    // const [searchParams] = useSearchParams();
+    // const sectionId = searchParams.get("sectionId");
+
+    const selectedTagUniqueId = useSelector(selectSelectedTagUniqueId);
+    const nextTagUniqueId = useSelector(selectNextTagUniqueId);
+    const prevTagUniqueId = useSelector(selectPrevTagUniqueId);
+
+    useEffect(() => {
+        if (id) {
+            refetch();
+            dispatch(setSelectedTagUniqueId(id));
+            // handleTopicTraversal(0);
+        }
+    }, [id, dispatch]);
 
     const handleEdit = (item) => {
         navigate(`/tags/${data.uniqueId}/edit`, { state: { data } });
@@ -219,13 +234,15 @@ const ViewTag = () => {
         navigate(`/tags/${id}/move-parent`);
     };
 
-    useEffect(() => {
-        if (id) {
-            refetch();
-            dispatch(setSelectedTagUniqueId(id));
-            // handleTopicTraversal(0);
+    const handleTagTraversal = (increment) => {        
+        if (increment === 1 && nextTagUniqueId) {
+            navigate(`/tags/${nextTagUniqueId}`);
+        } else if (increment === -1 && prevTagUniqueId) {
+            navigate(`/tags/${prevTagUniqueId}`);
         }
-    }, [id, dispatch]);
+    };
+
+    
     return data ? (
         <TagCard
             onAddSubTag={() => addChildTag(id)}
@@ -235,6 +252,7 @@ const ViewTag = () => {
             onLinkedItemClick={handleLinkSelection}
             onChildTagClick={handleChildTagClick}
             onMoveAnotherParent={handleMoveAnotherParent}
+            onTagTraversal={handleTagTraversal}
         />
     ) : (
         <>No data found for given tag id : {id}</>

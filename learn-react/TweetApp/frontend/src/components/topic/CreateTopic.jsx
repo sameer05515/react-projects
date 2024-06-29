@@ -69,7 +69,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
 
   const tagOptions = availableTags.map((tag) => ({
     value: tag.uniqueId, // Assuming tags have unique IDs
-    label: tag.name, // Display tag names in the dropdown
+    label: tag.title, // Display tag names in the dropdown
   }));
 
   const handleSaveTopic = (event) => {

@@ -261,11 +261,11 @@ const TagCard = ({
         </div>
       )}
 
-      {tag.linkedSections && tag.linkedSections.length > 0 && (
+      {tag.linkedTopicSections && tag.linkedTopicSections.length > 0 && (
         <div style={styles.descriptionStyle}>
           <b>Linked Topic Sections:-</b> <br />
           {populateLinkedItems(
-            tag.linkedSections,
+            tag.linkedTopicSections,
             TagLinkedItemType.topicSection
           )}
         </div>

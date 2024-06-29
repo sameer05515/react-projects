@@ -3,13 +3,18 @@ import CustomButton from "../../common/components/CustomButton";
 import { SmartEditor } from "../../common/components/SmartEditor";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
+import Select from 'react-select';
 
 const TopicSectionForm = ({
   formData: initialValue,
   selectedTopic,
-  onSubmit = () => {},
-  onCancel: handleCancel = () => {},
+  onSubmit = () => { },
+  onCancel: handleCancel = () => { },
 }) => {
+  const dispatch = useDispatch();
+  const flatTagList = useSelector(selectAllFlatTags);
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
 
@@ -42,6 +47,10 @@ const TopicSectionForm = ({
       textOutputType: "",
       textInputType: "",
     },
+    tags:
+      initialValue?.tags && initialValue.tags.length > 0
+        ? initialValue.tags
+        : [],
   });
 
   const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${initialValue.linkedTopicUniqueId}/sections/${initialValue.uniqueId}`;
@@ -51,6 +60,7 @@ const TopicSectionForm = ({
     // error: sectionsFetchError,
     refetch: sectionsRefetch,
   } = useDataFetching(sectionFetchUrl);
+
   useEffect(() => {
     if (initialValue.linkedTopicUniqueId && initialValue.uniqueId) {
       sectionsRefetch();
@@ -64,6 +74,13 @@ const TopicSectionForm = ({
     }
   }, [sectionsData]);
 
+  useEffect(() => {
+    // Fetch available tags when the component mounts
+    // You should dispatch an action to retrieve the tags from your API
+    // For example: dispatch(fetchTags());
+    dispatch(fetchTags());
+  }, [dispatch]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -76,6 +93,18 @@ const TopicSectionForm = ({
   const handleSmartEditorError = (error) => {
     setSmartEditorError(error);
   };
+
+  const handleTagSelect = (selectedTags) => {
+    // Extract the tag values and store them in the 'tags' property of the topic data
+    setFormData({ ...formData, tags: selectedTags.map((tag) => tag.value) });
+  };
+
+
+
+  const tagOptions = flatTagList.map((tag) => ({
+    value: tag.uniqueId, // Assuming tags have unique IDs
+    label: tag.title, // Display tag names in the dropdown
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -116,6 +145,17 @@ const TopicSectionForm = ({
           initialValue={formData.smartContent}
           onChange={handleSmartEditorChange}
           onError={handleSmartEditorError}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="tags">Add Tags:</label>
+        <Select
+          isMulti
+          name="tags"
+          options={tagOptions}
+          value={tagOptions.filter((tag) => formData.tags.includes(tag.value))}
+          onChange={handleTagSelect}
         />
       </div>
 

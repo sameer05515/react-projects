@@ -10,7 +10,9 @@ import DynamicDataRenderer from "../../common/components/DynamicDataRenderer";
 // import { Breadcrumbs } from "./TopicBase";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import { SmartPreviewer } from "../../common/components/SmartEditor";
-import Breadcrumbs, { BreadcrumbItemType } from "../../common/components/GlobalBreadcrumb";
+import Breadcrumbs, {
+  BreadcrumbItemType,
+} from "../../common/components/GlobalBreadcrumb";
 
 const TopicCard = ({
   topic,
@@ -19,14 +21,14 @@ const TopicCard = ({
   selectedSectionId = null,
   topicSections = [],
   pinnedTopics = [],
-  isPinned=false,
+  isPinned = false,
   onEdit = () => { },
   onTopicTraversal = () => { },
   onAddSubTopic = () => { },
   onChildTopicClick = () => { },
   onMoveAnotherParent = () => { },
   onAncestorClick = () => { },
-  onPinTopic= ()=>{},
+  onPinTopic = () => { },
   onAddSection = () => {
     alert("Functionality will be added soon!");
   },
@@ -36,8 +38,8 @@ const TopicCard = ({
   onTopicSectionClick = () => {
     alert("Topic section click callback not provided.");
   },
-  onLinkedTagSelection=()=>{},
-  onBaseSpanClick=()=>{}
+  onLinkedTagSelection = () => { },
+  onBaseSpanClick = () => { },
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = topic.tags?.map((uniqueId) =>
@@ -79,15 +81,15 @@ const TopicCard = ({
     onMoveAnotherParent(topic);
   };
 
-  const handlePinTopic= (isPinned)=>{
-    onPinTopic(topic,isPinned);
-  }
+  const handlePinTopic = (isPinned) => {
+    onPinTopic(topic, isPinned);
+  };
 
   const handleAncestorClick = (ancestor) => {
     onAncestorClick(ancestor);
   };
 
-  const handleLinkedTagSelection=(linkedTagUID)=>{
+  const handleLinkedTagSelection = (linkedTagUID) => {
     onLinkedTagSelection(linkedTagUID);
   };
 
@@ -234,7 +236,7 @@ const TopicCard = ({
           style={{ ...tagStyle, marginRight: "10px" }}
           onClick={() => handlePinTopic(isPinned)}
         >
-          {isPinned?'Un-Pin':'Pin'} topic
+          {isPinned ? "Un-Pin" : "Pin"} topic
         </CustomButton>
 
         <FloatingButton
@@ -242,14 +244,18 @@ const TopicCard = ({
           buttonText={"Show Pinned Topics"}
         >
           <div style={{ padding: "10px" }}>
-            <b>List of all pinned Topics:-</b> 
+            <b>List of all pinned Topics:-</b>
           </div>
           {pinnedTopics && pinnedTopics.length > 0 && (
             // <DynamicDataRenderer data={pinnedTopics} />
             <ul style={styles.ulStyle}>
               {pinnedTopics.map((t) => (
                 <li style={styles.liStyles} key={t.uniqueId}>
-                  <HoverableSpan onClick={() => onChildTopicClick({uniqueId: t.linkedUniqueId})}>
+                  <HoverableSpan
+                    onClick={() =>
+                      onChildTopicClick({ uniqueId: t.linkedUniqueId })
+                    }
+                  >
                     {t.title}
                   </HoverableSpan>
                 </li>
@@ -281,83 +287,61 @@ const TopicCard = ({
       )}
 
       {topic.children && topic.children.length > 0 && (
-        <div
-          style={styles.descriptionStyle}
-        >
+        <div style={styles.descriptionStyle}>
           <b>Child Topics:-</b> <br />
           {populateChildren(topic.children)}
         </div>
       )}
 
-      {showDescr &&
+      {showDescr && (
         <div
           style={{
             border: "1px solid #999", // Grey border
             padding: "2px 5px", // Adjust padding as needed
             borderRadius: "4px",
             marginBottom: "10px",
-            width: '77vw',
-            overflow: 'auto'
-          }}>
+            width: "77vw",
+            overflow: "auto",
+          }}
+        >
           <b>{topic.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
-          {topic.description && !topic.smartContent && ReactHtmlParser(topic.description || "")}
+          {topic.description &&
+            !topic.smartContent &&
+            ReactHtmlParser(topic.description || "")}
           {topic.smartContent && <SmartPreviewer data={topic.smartContent} />}
         </div>
-      }
+      )}
       {filteredTags.map(
         (tag) =>
           tag && (
-            <HoverableSpan style={tagStyle} key={tag._id}  onClick={()=>handleLinkedTagSelection(tag.uniqueId)}>
+            <HoverableSpan
+              style={tagStyle}
+              key={tag._id}
+              onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+            >
               {tag.title}
             </HoverableSpan>
           )
       )}
 
       {topicSections && topicSections.length > 0 && (
-        <div
-          style={styles.topicSectionsStyle}
-        >
+        <div style={styles.topicSectionsStyle}>
           <b>Sections:-</b> <br />
           <ol>
             {topicSections.map((ts) => (
-              <li
-                key={ts.uniqueId}
-                style={{
-                  border: "1px solid #999", // Grey border
-                  padding: "2px 5px", // Adjust padding as needed
-                  borderRadius: "4px",
-                  marginBottom: "10px",
-                }}
-              >
-                <span ref={
-                  selectedSectionId === ts.uniqueId
-                    ? selectedElementRef
-                    : null
-                }>
-                  <h3>{ts.name}</h3>
-                </span>
-
-                <div style={{ margin: "10px 0" }}>
-                  <CustomButton
-                    style={{ ...tagStyle, marginRight: "10px" }}
-                    onClick={() => onEditSection(ts.uniqueId)}
-                  >
-                    Edit
-                  </CustomButton>
-                  <CustomButton style={{ ...tagStyle, marginRight: "10px" }}> Move up</CustomButton>
-                  <CustomButton style={{ ...tagStyle, marginRight: "10px" }}> Move down</CustomButton>
-                </div>
-
-                <SmartPreviewer data={ts.smartContent} />
-
-                {/* <pre>{`${JSON.stringify(ts.smartContent, null, 2)}`}</pre> */}
-              </li>
+              <TopicSectionCard
+                data={ts}
+                tags={tags}
+                selectedElementRef={selectedElementRef}
+                selectedSectionId={selectedSectionId}
+                tagStyle={tagStyle}
+                onEditSection={onEditSection}
+                onLinkedTagSelection={handleLinkedTagSelection}
+              />
             ))}
           </ol>
         </div>
       )}
-
-
 
       <div>
         <CustomButton
@@ -370,6 +354,92 @@ const TopicCard = ({
           Next
         </CustomButton>
       </div>
+    </>
+  );
+};
+
+const TopicSectionCard = ({
+  data: ts,
+  tags = [],
+  selectedElementRef,
+  selectedSectionId,
+  tagStyle,
+  onEditSection = () => { },
+  onLinkedTagSelection = () => { },
+}) => {
+  const handleLinkedTagSelection = (linkedTagUID) => {
+    onLinkedTagSelection(linkedTagUID);
+  };
+
+  const filteredTags =
+    ts?.tags?.map((uniqueId) =>
+      tags.find((tag) => tag.uniqueId === uniqueId)
+    ) || [];
+
+  return (
+    <>
+      <li
+        key={ts.uniqueId}
+        style={{
+          border: "1px solid #999", // Grey border
+          padding: "2px 5px", // Adjust padding as needed
+          borderRadius: "4px",
+          marginBottom: "10px",
+        }}
+      >
+        <span
+          ref={selectedSectionId === ts.uniqueId ? selectedElementRef : null}
+        >
+          <h3>{ts.name}</h3>
+        </span>
+
+        <div style={{ margin: "10px 0" }}>
+          <CustomButton
+            style={{ ...tagStyle, marginRight: "10px" }}
+            onClick={() => onEditSection(ts.uniqueId)}
+          >
+            Edit
+          </CustomButton>
+          <CustomButton style={{ ...tagStyle, marginRight: "10px" }}>
+            {" "}
+            Move up
+          </CustomButton>
+          <CustomButton style={{ ...tagStyle, marginRight: "10px" }}>
+            {" "}
+            Move down
+          </CustomButton>
+        </div>
+
+        <SmartPreviewer data={ts.smartContent} />
+
+        {filteredTags && filteredTags.length > 0 && (
+          <div
+            style={{
+              backgroundColor: "lemonchiffon",
+              border: "1px solid #999", // Grey border
+              padding: "2px 5px", // Adjust padding as needed
+              borderRadius: "4px",
+              marginBottom: "10px",
+            }}
+          >
+            <b>Tags:-</b> <br />
+            {filteredTags.map(
+              (tag) =>
+                tag && (
+                  <HoverableSpan
+                    style={{...styles.tagStyle, margin:'5px'}}
+                    key={tag._id}
+                    onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+                  >
+                    {tag.title}
+                  </HoverableSpan>
+                )
+            )}
+          </div>
+        )}
+
+        {/* <pre>{`${JSON.stringify(ts.smartContent, null, 2)}`}</pre> */}
+      </li>
     </>
   );
 };
@@ -408,7 +478,7 @@ const styles = {
     padding: "2px 5px", // Adjust padding as needed
     borderRadius: "4px",
     marginBottom: "10px",
-  }
+  },
 };
 
 export default TopicCard;

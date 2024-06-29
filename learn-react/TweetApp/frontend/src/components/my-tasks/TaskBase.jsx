@@ -279,7 +279,7 @@ const ViewTaskComp = () => {
         }
     };
 
-    const handlePinTopic = (item, isPinned) => {
+    const handlePinTask = (item, isPinned) => {
         dispatch(upsertPinnedItem({
             "linkedUniqueId": item.uniqueId,
             "linkedItemType": "task",
@@ -307,7 +307,7 @@ const ViewTaskComp = () => {
                 onTaskTraversal={handleTaskTraversal}
                 onAddSubTask={handleAddSubTask}
                 onChildTaskClick={handleChildTaskClick}
-                onPinTopic={handlePinTopic}
+                onPinTask={handlePinTask}
             />:<>No task data found for id: {id}</>}
         </>
     );

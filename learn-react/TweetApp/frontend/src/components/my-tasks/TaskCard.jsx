@@ -36,7 +36,7 @@ const TaskCard = ({
   );
 
   const handleEdit = () => {
-    // console.log(`Edit : ${JSON.stringify(topic)}`);
+    // console.log(`Edit : ${JSON.stringify(task)}`);
     // console.log(`typeof onEdit: ${typeof onEdit}`);
     onEdit(task);
   };
@@ -49,7 +49,7 @@ const TaskCard = ({
     onAddSubTask(task);
   };
 
-  const handlePinTopic = (isPinned) => {
+  const handlePinTask = (isPinned) => {
     onPinTask(task, isPinned);
   }
 
@@ -96,17 +96,17 @@ const TaskCard = ({
 
           <CustomButton
             style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={() => handlePinTopic(isPinned)}
+            onClick={() => handlePinTask(isPinned)}
           >
-            {isPinned ? 'Un-Pin' : 'Pin'} topic
+            {isPinned ? 'Un-Pin' : 'Pin'} task
           </CustomButton>
 
           <FloatingButton
             buttonStyle={{ ...styles.tagStyle, marginRight: "10px" }}
-            buttonText={"Show Pinned Topics"}
+            buttonText={"Show Pinned Tasks"}
           >
             <div style={{ padding: "10px" }}>
-              <b>List of all pinned Topics:-</b>
+              <b>List of all pinned Tasks:-</b>
             </div>
             {pinnedTasks && pinnedTasks.length > 0 && (
               // <DynamicDataRenderer data={pinnedTasks} />

@@ -185,19 +185,16 @@ const EditTaskComp = () => {
         return <div>Error: {error.message}</div>;
     }
     return (
-        <>
-            {/* <span>
-                Edit Task: id: {id}: parentId : {parentId}
-            </span> */}
-            <br />
-            <TaskForm
+        <>       
+            
+            {data ? <TaskForm
                 task={data}
                 onSave={() => {
                     dispatch(fetchTasks());
                     navigate(-1);
                 }}
                 onCancelEdit={() => navigate(`/task-mgmt/${id}`)}
-            />
+            /> : <>No data found for id : {id}</>}
         </>
     );
 };

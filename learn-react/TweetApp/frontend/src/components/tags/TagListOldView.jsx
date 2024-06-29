@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTags, createTag, updateTag } from "../../redux/slices/tagsSlice";
+import { fetchTags, createTag, updateTag, selectAllTreeTags } from "../../redux/slices/tagsSlice";
 import TagsCreate from "./TagsCreate"; // Import the TagsCreate componenthe createTag and updateTag actions
 
 function TagList() {
-  const tags = useSelector((state) => state.tags.data);
+  const tags = useSelector(selectAllTreeTags);
   const loading = useSelector((state) => state.tags.loading);
   const error = useSelector((state) => state.tags.error);
   const dispatch = useDispatch();

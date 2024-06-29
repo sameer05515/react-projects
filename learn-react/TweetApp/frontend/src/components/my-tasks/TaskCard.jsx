@@ -132,8 +132,7 @@ const TaskCard = ({
               <b>Created:</b> {formatDateToDDMMMYYYYWithTime(task.createdDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
-              <b>Last updated:</b>{" "}
-              {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
+              <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
               <strong>Unique ID:</strong> {task.uniqueId}
@@ -182,7 +181,7 @@ const TaskCard = ({
               (tag) =>
                 tag && (
                   <span style={styles.tagStyle} key={tag._id}>
-                    {tag.name}
+                    {tag.title}
                   </span>
                 )
             )}

@@ -10,7 +10,7 @@ import {
 import ViewSwitcher from "../../common/components/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import {
     createTopicSection,
     fetchTopics,
@@ -353,7 +353,7 @@ const ViewTopic = () => {
         // error: sectionsFetchError,
         refetch: sectionsRefetch,
     } = useDataFetching(sectionFetchUrl);
-    const availableTags = useSelector((state) => state.tags.data);
+    const availableTags = useSelector(selectAllFlatTags);
     const topics = useSelector((state) => state.topics.data);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 

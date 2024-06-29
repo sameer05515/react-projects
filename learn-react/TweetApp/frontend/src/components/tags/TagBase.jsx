@@ -7,6 +7,7 @@ import TooltipSpan from "../../common/components/TooltipSpan";
 import {
     createTag,
     fetchTags,
+    selectAllTreeTags,
     setSelectedTagUniqueId,
     updateTag,
 } from "../../redux/slices/tagsSlice";
@@ -47,7 +48,7 @@ const TagBase = () => {
 const ListTags = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const tags = useSelector((state) => state.tags.data);
+    const tags = useSelector(selectAllTreeTags);
     const status = useSelector((state) => state.tags.loading);
     const error = useSelector((state) => state.tags.error);
 

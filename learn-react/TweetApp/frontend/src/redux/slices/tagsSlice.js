@@ -1,5 +1,5 @@
 // tagsSlice.js
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 
 // Create an async thunk to fetch tags
@@ -55,6 +55,49 @@ export const updateTag = createAsyncThunk(
   }
 );
 
+const getNameWithAncestors = (topic) => {
+  if (!topic) {
+      return "";
+  }
+  let ancestorNames = [];
+  let currentAncestor = topic.ancestors?.find(
+      (ancestor) => !ancestor.parentId
+  )||null;
+  while (currentAncestor) {
+      ancestorNames.push(currentAncestor.name);
+      currentAncestor = topic.ancestors.find(
+          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
+      );
+  }
+  ancestorNames.push(topic.name);
+  const fullyQualifiedName = ancestorNames.join(" / ");
+  return fullyQualifiedName;
+};
+
+const prepareTagsQueue = (list, prevQueue = []) => {
+  let queue = [...prevQueue];
+  
+  if (list && list.length > 0) {
+      list.forEach((t) => {
+          queue = [
+              ...queue,
+              {
+                  uniqueId: t.uniqueId,
+                  name: t.name,
+                  title: getNameWithAncestors(t),
+                  ancestors: t.ancestors,
+                  children: t.children,
+                  _id: t._id,
+              },
+          ];
+          const childQ = prepareTagsQueue(t.children, []);
+          queue = [...queue, ...childQ];
+      });
+  }
+  // console.log(JSON.stringify(queue, null, 2));
+  return queue;
+};
+
 const tagsSlice = createSlice({
   name: "tags",
   initialState: {
@@ -81,7 +124,8 @@ const tagsSlice = createSlice({
       })
       .addCase(fetchTags.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;
+        state.data = action.payload;        
+        state.flatData = prepareTagsQueue(action.payload);
       })
       .addCase(fetchTags.rejected, (state, action) => {
         state.loading = "rejected";
@@ -93,3 +137,16 @@ const tagsSlice = createSlice({
 export default tagsSlice.reducer;
 // Export the reducer and actions
 export const { setSelectedTagUniqueId,setSearchString } = tagsSlice.actions;
+
+/* ============== Selectors ======================*/
+const selectTagsState = (state) => state.tags;
+
+export const selectAllTreeTags = createSelector(
+  selectTagsState,
+  (tagsState) => tagsState.data
+);
+
+export const selectAllFlatTags = createSelector(
+  selectTagsState,
+  (tagsState) => tagsState.flatData
+);

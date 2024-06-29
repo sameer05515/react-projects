@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { formatDateToDDMMMYYYY } from "../../common/commonService";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { fetchTopics } from "../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic";
 import TopicCard from "./TopicCard";
@@ -13,7 +13,7 @@ function ListTopicsByCreatedDate() {
   const error = useSelector((state) => state.topics.error);
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
-  const availableTags = useSelector((state) => state.tags.data);
+  const availableTags = useSelector(selectAllFlatTags);
 
   const [editTopic, setEditTopic] = useState(null);
   const [startDate, setStartDate] = useState(""); // Start date for date range filter

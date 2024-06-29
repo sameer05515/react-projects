@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
 import { taskStatusList } from "../../common/globalConstants";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { saveTask, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();
-    const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
+    const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
     const tasks = useSelector((state) => state.tasks.data);
     const [formData, setFormData] = useState({
         _id: task && task._id ? task._id : "",
@@ -33,7 +33,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
 
     const tagOptions = availableTags.map((tag) => ({
         value: tag.uniqueId, // Assuming tags have unique IDs
-        label: tag.name, // Display tag names in the dropdown
+        label: tag.title, // Display tag names in the dropdown
     }));
 
     const statusOptions = taskStatusList.map((status) => ({

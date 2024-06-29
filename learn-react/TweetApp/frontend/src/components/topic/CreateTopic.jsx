@@ -3,14 +3,14 @@ import ReactHtmlParser from "react-html-parser";
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select'; // Import the Select component from react-select
 import { SmartEditor } from '../../common/components/SmartEditor';
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { createTopic, updateTopic } from '../../redux/slices/topicSlice';
 import CustomButton from '../../common/components/CustomButton';
 
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   const dispatch = useDispatch();
-  const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
+  const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
 
   const [topicData, setTopicData] = useState({
     name: topic ? topic.name : '',

@@ -161,16 +161,6 @@ const topicSlice = createSlice({
   reducers: {
     setSelectedTopicUniqueId: (state, action) => {
       state.selectedTopicUniqueId = action.payload;
-      // const dataLength= state.data.length;
-      // if(state.data && dataLength>0){
-      //   const selectedIndex = state.data.findIndex(t=>t.uniqueId===state.selectedTopicUniqueId);
-      //   // console.log(`[setSelectedTopicUniqueId]: selectedIndex: ${selectedIndex}, action.payload: ${action.payload}`);
-      //   // console.log(`[setSelectedTopicUniqueId]: dataLength: ${dataLength}`);
-      //   const nextIndex=((selectedIndex+dataLength+1)%dataLength);
-      //   const prevIndex=((selectedIndex+dataLength-1)%dataLength);
-      //   state.selectedTopicTraversal.nextTopicUniqueId=state.data[nextIndex].uniqueId;
-      //   state.selectedTopicTraversal.prevTopicUniqueId=state.data[prevIndex].uniqueId;
-      // }
     },
     setSearchString:(state, action)=>{
       state.searchString = action.payload;

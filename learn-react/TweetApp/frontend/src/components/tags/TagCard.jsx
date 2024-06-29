@@ -234,7 +234,7 @@ const TagCard = ({
         <div
           style={styles.descriptionStyle}
         >
-          <b>Child Topics:-</b> <br />
+          <b>Child Tags:-</b> <br />
           {populateChildren(tag.children)}
         </div>
       )}

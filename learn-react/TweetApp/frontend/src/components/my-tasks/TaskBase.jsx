@@ -11,7 +11,7 @@ import Select from 'react-select'; // Import the Select component from react-sel
 import ViewSwitcher from "../../common/components/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { fetchTasks, setSelectedTaskUniqueId, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 import TaskCard from "./TaskCard";
@@ -210,7 +210,7 @@ const ViewTaskComp = () => {
     const { id } = useParams();
     const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
     const { data, loading, error, refetch } = useDataFetching(url);
-    const availableTags = useSelector((state) => state.tags.data);
+    const availableTags = useSelector(selectAllFlatTags);
     const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
     const tasks = useSelector((state) => state.tasks.flatData);

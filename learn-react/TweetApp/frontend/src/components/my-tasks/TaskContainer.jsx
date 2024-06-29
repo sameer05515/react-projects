@@ -8,12 +8,12 @@ import { useSelector, useDispatch } from "react-redux";
 import TaskSearch from "./TaskSearch";
 import CustomButton from "../../common/components/CustomButton";
 
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 
 const TaskContainer = () => {
 
   const dispatch = useDispatch();
-  const availableTags = useSelector((state) => state.tags.data);
+  const availableTags = useSelector(selectAllFlatTags);
   
 
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);

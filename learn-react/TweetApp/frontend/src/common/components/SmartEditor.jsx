@@ -79,8 +79,6 @@ const SmartEditor = ({
 
     const [showPreview, setShowPreview] = useState(previewIntialValue);
 
-    //const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
-
     const [formData, setFormData] = useState({
         content: initialValue && initialValue.content ? initialValue.content : "",
         textOutputType:

@@ -3,12 +3,12 @@ import CustomButton from "../../common/components/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from 'react-select'; // Import the Select component from react-select
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { useDispatch, useSelector } from 'react-redux';
 
 const TaskModel = ({ task, onSave, onCancel, tasks }) => {
   const dispatch = useDispatch();
-  const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
+  const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
   const [formData, setFormData] = useState({
     _id: task ? task._id : "",
     uniqueId: task ? task.uniqueId : "",

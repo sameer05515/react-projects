@@ -97,19 +97,22 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
 
   const handleSmartEditorError = (error) => {
     setSmartEditorError(error);
-  }
+  };
+
+  const formStyle = {};
 
   return (
-    <div>
-      {/* <form> */}
-      <div>
-        <label htmlFor="name">Name:</label>
+    <div style={formStyle}>
+      <h3>{topic && topic.uniqueId ? "Edit Topic" : "Add Topic"}</h3>
+      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+        <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Name:</label>
         <input
           type="text"
           id="name"
           name="name"
           value={topicData.name}
           onChange={handleInputChange}
+          style={{ width: "90%" }}
         />
       </div>
       <div>
@@ -140,7 +143,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         <SmartEditor initialValue={topicData.smartContent} onChange={handleSmartEditorChange} onError={handleSmartEditorError} />
       </div> */}
 
-      <div>
+      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
         <label htmlFor="occurenceDate">Date:</label>
         <input
           type="date"

@@ -94,15 +94,15 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         });
     };
 
-    const taskFormStyle = {};
+    const formStyle = {};
 
     return (
         <>
-            <div style={taskFormStyle}>
+            <div style={formStyle}>
                 <h3>{task && task._id && task.uniqueId ? "Edit Task" : "Add Task"}</h3>
                 {/* <pre>{`provided task object: ${JSON.stringify(task)}`}</pre> <br /> */}
                 <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-                    <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Title</label>
+                    <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Name</label>
                     <input
                         type="text"
                         id="name"

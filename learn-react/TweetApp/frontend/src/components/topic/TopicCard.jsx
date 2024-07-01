@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  formatDateToDDMMMYYYY,
+  formatDateToDDMMMYYYYWithTime,
   prepareQuestions,
 } from "../../common/commonService";
 import ReactHtmlParser from "react-html-parser";
@@ -176,13 +176,13 @@ const TopicCard = ({
         {/* <h1>selectedSectionId: {`${selectedSectionId}`}</h1> */}
         <div style={datesStyle}>
           <span style={{ marginRight: "10px" }}>
-            <b>Occurred:</b> {formatDateToDDMMMYYYY(topic.occurenceDate)}
+            <b>Occurred:</b> {formatDateToDDMMMYYYYWithTime(topic.occurenceDate)}
           </span>
           <span style={{ marginRight: "10px" }}>
-            <b>Created:</b> {formatDateToDDMMMYYYY(topic.createdDate)}
+            <b>Created:</b> {formatDateToDDMMMYYYYWithTime(topic.createdDate)}
           </span>
           <span>
-            <b>Last updated:</b> {formatDateToDDMMMYYYY(topic.updatedDate)}
+            <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(topic.updatedDate)}
           </span>
         </div>
       </div>

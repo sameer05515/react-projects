@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { formatDateToDDMMMYYYY } from "../../common/commonService";
+import { formatDateToDDMMMYYYYWithTime } from "../../common/commonService";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { fetchTopics, selectAllFlatTopics } from "../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic";
@@ -132,7 +132,7 @@ function ListTopicsByCreatedDate() {
           </div>
           {Object.keys(groupedTopics).map((occurenceDate) => (
             <div key={occurenceDate} style={groupStyle}>
-              <h3>{formatDateToDDMMMYYYY(occurenceDate)}</h3>
+              <h3>{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
               {groupedTopics[occurenceDate].map((topic) => (
                 <div
                   key={topic.topicId}

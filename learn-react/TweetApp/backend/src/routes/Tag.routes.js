@@ -8,6 +8,7 @@ const {
   getTagById,
   updateTagById,
   deleteTagById,
+  getTagsCountByDate,
 } = require('./Tag.service');
 
 // Create a new tag
@@ -29,6 +30,23 @@ router.get('', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get('/aggregation-results', async (req, res)=>{
+  try{
+
+    const queryType = req.query.queryType;
+    
+    if(queryType && queryType==='getTagsCountByDate'){
+      const result= await getTagsCountByDate();
+      res.json(result);
+    }else{
+      return res.status(404).json({ message: `Invalid queryType: '${queryType}'` });
+    }
+    
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
 
 // Get a tag by ID
 router.get('/:uniqueId', async (req, res) => {
@@ -68,5 +86,7 @@ router.delete('/:uniqueId', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 module.exports = router;

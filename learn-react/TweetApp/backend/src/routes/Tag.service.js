@@ -190,6 +190,28 @@ const updateTagById = async (uniqueId, tagData) => {
   // return await Tag.findOneAndUpdate({ uniqueId }, tagData, { new: true });
 };
 
+async function getTagsCountByDate() {
+  try {
+    const result = await Tag.aggregate([
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdDate" }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+    
+    return result;
+  } catch (error) {
+    throw new Error(`Failed to get tags count by date: ${error.message}`);
+  }
+}
+
 const deleteTagById = async (uniqueId) => {
   return await Tag.findOneAndRemove({ uniqueId });
 };
@@ -200,4 +222,5 @@ module.exports = {
   getTagById,
   updateTagById,
   deleteTagById,
+  getTagsCountByDate,
 };

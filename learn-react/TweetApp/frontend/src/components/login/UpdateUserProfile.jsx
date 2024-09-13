@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
-import { getUserIdFromToken } from "../../common/authService";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { getUserIdFromToken } from "../../common/service/authService";
 import CustomButton from "../../common/components/CustomButton";
 
 function UpdateUserProfile() {

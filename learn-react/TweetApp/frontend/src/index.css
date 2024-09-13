@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-/* styles.css (example) */
+
 .selected-item {
-  background-color: #3db530; /* Change this to your desired highlight color */
+  background-color: #3db530; 
 }

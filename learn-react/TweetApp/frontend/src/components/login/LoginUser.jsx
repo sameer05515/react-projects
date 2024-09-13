@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import { NavLink, useNavigate } from "react-router-dom";
-
-// const BACKEND_APPLICATION_BASE_URL1= process.env.BACKEND_APPLICATION_BASE_URL;
 
 const inputStyle = {
   width: "100%",
@@ -55,8 +53,7 @@ function LoginUser() {
 
   const handleLogin = async () => {
     try {
-      // alert(`BACKEND_APPLICATION_BASE_URL : ${BACKEND_APPLICATION_BASE_URL1} \n
-      // PORT ${process.env.PORT}`)
+
       const response = await axios.post(
         `${BACKEND_APPLICATION_BASE_URL}/api/users/login`,
         formData
@@ -68,7 +65,8 @@ function LoginUser() {
 
       // Redirect to a protected route or perform other actions
       //   history.push('/dashboard'); // Change '/dashboard' to your desired protected route
-      navigate("/tweet-base");
+      // navigate("/tweet-base");
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
       // Handle login failure, show error message, etc.

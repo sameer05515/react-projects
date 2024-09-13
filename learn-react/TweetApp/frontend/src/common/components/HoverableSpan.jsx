@@ -46,5 +46,4 @@ const HoverableSpan = ({
     </span>
   );
 };
-//"#E5E4E2"
 export default HoverableSpan;

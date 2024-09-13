@@ -3,16 +3,16 @@ import CustomButton from "../../common/components/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from 'react-select'; // Import the Select component from react-select
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { useDispatch, useSelector } from 'react-redux';
 
 const TaskModel = ({ task, onSave, onCancel, tasks }) => {
   const dispatch = useDispatch();
-  const availableTags = useSelector((state) => state.tags.data); // Assuming you have a tags slice in your Redux store
+  const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
   const [formData, setFormData] = useState({
     _id: task ? task._id : "",
     uniqueId: task ? task.uniqueId : "",
-    title: task ? task.title : "",
+    name: task ? task.name : "",
     description: task ? task.description : "",
     // createdDate: task ? task.createdDate : "",
     // updatedDate: task ? task.updatedDate : "",
@@ -40,8 +40,8 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
   }, [dispatch]);
 
   const tagOptions = availableTags.map((tag) => ({
-    value: tag.tagId, // Assuming tags have unique IDs
-    label: tag.name, // Display tag names in the dropdown
+    value: tag.uniqueId, // Assuming tags have unique IDs
+    label: tag.title, // Display tag names in the dropdown
   }));
 
   const handleTagSelect = (selectedTags) => {
@@ -101,9 +101,9 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
         <h3>{task ? "Edit Task" : "Add Task"}</h3>
         <input
           type="text"
-          name="title"
-          placeholder="Title"
-          value={formData.title}
+          name="name"
+          placeholder="Name"
+          value={formData.name}
           onChange={handleInputChange}
         />
         <br />

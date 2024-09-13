@@ -1,5 +1,5 @@
 import React from 'react'
-import ListTopicsByCreatedDate from './ListTopicsByCreatedDate'
+import ListTopicsByCreatedDate from './sub-components/ListTopicsByCreatedDate'
 
 const TopicDashboard = () => {
   return (

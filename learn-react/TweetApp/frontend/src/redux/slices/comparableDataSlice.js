@@ -1,7 +1,7 @@
 // comparableDataSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BACKEND_APPLICATION_BASE_URL } from "../../common/globalConstants";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Define the initial state
 const initialState = {

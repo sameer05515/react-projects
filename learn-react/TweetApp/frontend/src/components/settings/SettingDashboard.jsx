@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import TagList from "./tags/TagList";
+// import TagList from "../tags/TagList";
 import GoldRateCalculator from "../miscelleneous/GoldRateCalculator";
 import ComparisonContainer from "../comparisons/ComparisonContainer";
 import ComparisonTableContainer from "../comparisons/ComparisonTableContainer";
 import StudentList from "../miscelleneous/StudentList";
 import Breadcrumb2 from "../../common/components/Breadcrumb2";
+import CountFullStopLines from "../miscelleneous/CountFullStopLines";
+import DisplayData from "../miscelleneous/DisplayData";
+import {MainComponent as ArrowConnectorExample} from "../miscelleneous/ArrowConnectorExamples";
+import MiscellaneousExamples from "../miscelleneous/misc/MiscellaneousExamples";
 
 const tabButtonStyle = {
   padding: "10px",
@@ -13,17 +17,22 @@ const tabButtonStyle = {
 };
 
 const TabNames = {
-  listUsers: "tags",
+  //listUsers: "tags",
+  MiscellaneousExamples: "MiscellaneousExamples",
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
   comparisonTableContainer: "ComparisonTableContainer",
   studentListContainer: "studentListContainer",
-  breadCrumbContainer: "breadCrumbContainer"
+  breadCrumbContainer: "breadCrumbContainer",
+  CountFullStopLines:"CountFullStopLines",
+  DisplayData:"DisplayData",
+  ArrowConnectorExample: "ArrowConnectorExample",
+  
   //   updateProfile:"updateProfile"
 };
 
 function SettingDashboard() {
-  const [activeTab, setActiveTab] = useState(TabNames.listUsers);
+  const [activeTab, setActiveTab] = useState(TabNames.MiscellaneousExamples);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -54,10 +63,10 @@ function SettingDashboard() {
   ];
 
   return (
-    <div>
+    <div style={{paddingLeft:'20px'}}>
       <h2>Setting Dashboard</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <button
+      <div style={{ display: "flex", gap: "10px", paddingLeft:'10px' }}>
+        {/* <button
           style={{
             ...tabButtonStyle,
             background: activeTab === TabNames.listUsers ? "#007bff" : "white",
@@ -66,6 +75,18 @@ function SettingDashboard() {
           onClick={() => handleTabChange(TabNames.listUsers)}
         >
           Tags
+        </button> */}
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.MiscellaneousExamples ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.MiscellaneousExamples ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.MiscellaneousExamples)}
+        >
+          MiscellaneousExamples Container
         </button>
         <button
           style={{
@@ -127,6 +148,43 @@ function SettingDashboard() {
         >
           BreadCrumb Container
         </button>
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.CountFullStopLines ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.CountFullStopLines ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.CountFullStopLines)}
+        >
+          CountFullStopLines Container
+        </button>
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.DisplayData ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.DisplayData ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.DisplayData)}
+        >
+          DisplayData Container
+        </button>
+        <button
+          style={{
+            ...tabButtonStyle,
+            background:
+              activeTab === TabNames.ArrowConnectorExample ? "#007bff" : "white",
+            color:
+              activeTab === TabNames.ArrowConnectorExample ? "white" : "black",
+          }}
+          onClick={() => handleTabChange(TabNames.ArrowConnectorExample)}
+        >
+          ArrowConnectorExample Container
+        </button>
+        
         {/* <button
           style={{
             ...tabButtonStyle,
@@ -139,12 +197,16 @@ function SettingDashboard() {
         </button> */}
       </div>
       <div style={{ marginTop: "10px" }}>
-        {activeTab === TabNames.listUsers && <TagList />}
+        {/* {activeTab === TabNames.listUsers && <TagList />} */}
         {activeTab === TabNames.goldRateCalculator && <GoldRateCalculator />}
         {activeTab === TabNames.comparisonContainer && <ComparisonContainer />}
         {activeTab === TabNames.comparisonTableContainer && <ComparisonTableContainer />}
         {activeTab === TabNames.studentListContainer && <StudentList students={students} />}
         {activeTab === TabNames.breadCrumbContainer && <Breadcrumb2 />}
+        {activeTab === TabNames.CountFullStopLines && <CountFullStopLines />}
+        {activeTab === TabNames.DisplayData && <DisplayData />}        
+        {activeTab === TabNames.ArrowConnectorExample && <ArrowConnectorExample />}
+        {activeTab === TabNames.MiscellaneousExamples && <MiscellaneousExamples />}
       </div>
     </div>
   );

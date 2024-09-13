@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 
-const useDataFetching = (url, options = {}) => {
+const useDataFetching = (url, options = {}, fetchInitially=true) => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
-      // console.log(url)
+      //console.log(`fetchData: `, new Date() , url);  
+      setLoading(true);    
       const response = await fetch(url, options);
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        // throw new Error("Failed to fetch data");
+        throw new Error(`Failed to fetch data : Response Status: ${response.status}`);
       }
       const result = await response.json();
       setData(result);
@@ -22,10 +24,14 @@ const useDataFetching = (url, options = {}) => {
   };
 
   useEffect(() => {
-    fetchData();
+    if(fetchInitially && fetchInitially===true){
+      // console.log(`fetching Initially`)
+      fetchData();
+    }    
   }, []);
 
   const refetch = () => {
+    // console.log(`refetch`)
     setLoading(true);
     setError(null);
     setData(null);

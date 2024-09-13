@@ -8,6 +8,7 @@ const {
   getTagById,
   updateTagById,
   deleteTagById,
+  getTagsCountByDate,
 } = require('./Tag.service');
 
 // Create a new tag
@@ -30,10 +31,27 @@ router.get('', async (req, res) => {
   }
 });
 
+router.get('/aggregation-results', async (req, res)=>{
+  try{
+
+    const queryType = req.query.queryType;
+    
+    if(queryType && queryType==='getTagsCountByDate'){
+      const result= await getTagsCountByDate();
+      res.json(result);
+    }else{
+      return res.status(404).json({ message: `Invalid queryType: '${queryType}'` });
+    }
+    
+  }catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
 // Get a tag by ID
-router.get('/:tagId', async (req, res) => {
+router.get('/:uniqueId', async (req, res) => {
   try {
-    const tag = await getTagById(req.params.tagId);
+    const tag = await getTagById(req.params.uniqueId);
     if (!tag) {
       return res.status(404).json({ message: 'Tag not found' });
     }
@@ -44,9 +62,9 @@ router.get('/:tagId', async (req, res) => {
 });
 
 // Update a tag by ID
-router.put('/:tagId', async (req, res) => {
+router.put('/:uniqueId', async (req, res) => {
   try {
-    const tag = await updateTagById(req.params.tagId, req.body);
+    const tag = await updateTagById(req.params.uniqueId, req.body);
     if (!tag) {
       return res.status(404).json({ message: 'Tag not found' });
     }
@@ -57,9 +75,9 @@ router.put('/:tagId', async (req, res) => {
 });
 
 // Delete a tag by ID
-router.delete('/:tagId', async (req, res) => {
+router.delete('/:uniqueId', async (req, res) => {
   try {
-    const tag = await deleteTagById(req.params.tagId);
+    const tag = await deleteTagById(req.params.uniqueId);
     if (!tag) {
       return res.status(404).json({ message: 'Tag not found' });
     }
@@ -68,5 +86,7 @@ router.delete('/:tagId', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GlobalConstants from "../../common/globalConstants";
+import GlobalConstants from "../../common/constants/globalConstants";
 import EditableLabel from "../../common/components/EditableLabel";
 import { toast } from "react-toastify";
 

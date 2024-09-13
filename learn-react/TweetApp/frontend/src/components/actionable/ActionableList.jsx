@@ -1,10 +1,8 @@
 import React from 'react';
+import { formatDateToDDMMMYYYYWithTime } from '../../common/service/commonService';
 
 // Function to format a date to dd-MMM-yyyy
-const formatDateToDDMMMYYYY = (dateStr) => {
-  const options = { year: 'numeric', month: 'short', day: '2-digit' };
-  return new Date(dateStr).toLocaleDateString(undefined, options);
-};
+
 
 const ActionableList = ({ activities }) => {
   return (
@@ -26,8 +24,8 @@ const ActionableList = ({ activities }) => {
               <td>{activity.activityName}</td>
               <td>{activity.recurrence}</td>
               <td>{activity.shouldContinue}</td>
-              <td>{formatDateToDDMMMYYYY(activity.startDate)}</td>
-              <td>{formatDateToDDMMMYYYY(activity.endDate)}</td>
+              <td>{formatDateToDDMMMYYYYWithTime(activity.startDate)}</td>
+              <td>{formatDateToDDMMMYYYYWithTime(activity.endDate)}</td>
             </tr>
           ))}
         </tbody>

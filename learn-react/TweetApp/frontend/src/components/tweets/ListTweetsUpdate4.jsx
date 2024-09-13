@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./list-tweets3.css";
 import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
-import GlobalConstants from "../../common/globalConstants";
+import GlobalConstants from "../../common/constants/globalConstants";
 import Accordion from "../../common/components/Accordion";
 
 function formatTimestamp(timestamp) {

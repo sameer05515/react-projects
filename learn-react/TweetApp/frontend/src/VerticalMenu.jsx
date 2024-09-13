@@ -26,7 +26,7 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
 
   const links = [
     { linkPath: "/tweet-base", linkHeader: "Tweets" },
-    { linkPath: "/task-mgmt", linkHeader: "TaskContainer" },
+    { linkPath: "/task-mgmt", linkHeader: "Task Container" },
     { linkPath: "/user-mgmt", linkHeader: "User Mgmt" },
     { linkPath: "/resume-mgmt", linkHeader: "Resume Mgmt" },
     { linkPath: "/my-resume", linkHeader: "My Resume" },
@@ -34,6 +34,8 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
     { linkPath: "/words", linkHeader: "Words" },
     { linkPath: "/interview-mgmt", linkHeader: "Interview-Mgmt" },
     { linkPath: "/links-mgmt", linkHeader: "Links" },
+    { linkPath: "/tags", linkHeader: "Tags" },
+    { linkPath: "/memory-maps", linkHeader: "Memory Maps" },
     { linkPath: "/settings", linkHeader: "Settings" }
   ];
 

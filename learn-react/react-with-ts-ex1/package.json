@@ -1,0 +1,16 @@
+{
+  "name": "react-with-ts-ex1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile-ts":"npx tsc --outDir dist src/*.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "typescript": "^5.6.2"
+  }
+}

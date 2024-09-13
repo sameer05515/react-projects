@@ -6,33 +6,38 @@ import { useDispatch } from "react-redux";
 import {
   getUserIdFromToken,
   getUserNameFromToken,
-} from "../../common/authService";
-import { formatDateToDDMMMYYYYWithTime } from "../../common/commonService";
+} from "../../common/service/authService";
+import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import {
   activityList,
   getStatusLabelForId,
-} from "../../common/globalConstants";
+} from "../../common/constants/globalConstants";
 import { updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/CustomButton";
 import HtmlTextRendrer from "../../common/components/HtmlTextRenderer";
+import FloatingButton from "../../common/components/FloatingButton";
 
 const TaskCard = ({
   task,
   tags = [],
   showDescription = false,
+  pinnedTasks = [],
+  isPinned = false,
   onEdit = () => { },
   onTaskTraversal = () => { },
   onAddSubTask = () => { },
   onChildTaskClick = () => { },
+  onPinTask = () => { },
+  onLinkedTagSelection=()=>{}
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = task.tags?.map((tagId) =>
-    tags.find((tag) => tag.tagId === tagId)
+  const filteredTags = task.tags?.map((uniqueId) =>
+    tags.find((tag) => tag.uniqueId === uniqueId)
   );
 
   const handleEdit = () => {
-    // console.log(`Edit : ${JSON.stringify(topic)}`);
+    // console.log(`Edit : ${JSON.stringify(task)}`);
     // console.log(`typeof onEdit: ${typeof onEdit}`);
     onEdit(task);
   };
@@ -43,6 +48,14 @@ const TaskCard = ({
 
   const handleAddSubTask = () => {
     onAddSubTask(task);
+  };
+
+  const handlePinTask = (isPinned) => {
+    onPinTask(task, isPinned);
+  };
+
+  const handleLinkedTagSelection=(linkedTagUID)=>{
+    onLinkedTagSelection(linkedTagUID);
   };
 
   return (
@@ -85,9 +98,36 @@ const TaskCard = ({
           >
             Next
           </CustomButton>
+
+          <CustomButton
+            style={{ ...styles.tagStyle, marginRight: "10px" }}
+            onClick={() => handlePinTask(isPinned)}
+          >
+            {isPinned ? 'Un-Pin' : 'Pin'} task
+          </CustomButton>
+
+          <FloatingButton
+            buttonStyle={{ ...styles.tagStyle, marginRight: "10px" }}
+            buttonText={"Show Pinned Tasks"}
+          >
+            <div style={{ padding: "10px" }}>
+              <b>List of all pinned Tasks:-</b>
+            </div>
+            {pinnedTasks && pinnedTasks.length > 0 && (
+              <ul style={styles.ulStyle}>
+                {pinnedTasks.map((t) => (
+                  <li style={styles.liStyles} key={t.uniqueId}>
+                    <HoverableSpan onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}>
+                      {t.title}
+                    </HoverableSpan>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </FloatingButton>
         </div>
         <div>
-          <h2>{task.title}</h2>
+          <h2>{task.name}</h2>
           <div style={styles.datesStyle}>
             <span style={{ marginRight: "10px" }}>
               <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
@@ -96,8 +136,7 @@ const TaskCard = ({
               <b>Created:</b> {formatDateToDDMMMYYYYWithTime(task.createdDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
-              <b>Last updated:</b>{" "}
-              {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
+              <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
               <strong>Unique ID:</strong> {task.uniqueId}
@@ -145,9 +184,9 @@ const TaskCard = ({
             {filteredTags.map(
               (tag) =>
                 tag && (
-                  <span style={styles.tagStyle} key={tag._id}>
-                    {tag.name}
-                  </span>
+                  <HoverableSpan style={styles.tagStyle} key={tag._id} onClick={()=>handleLinkedTagSelection(tag.uniqueId)}>
+                    {tag.title}
+                  </HoverableSpan>
                 )
             )}
           </div>
@@ -168,7 +207,7 @@ const TaskCard = ({
             <ul>
               {task.children.map((t) => (
                 <li key={t.uniqueId}>
-                  <span onClick={() => onChildTaskClick(t)}>{t.title}</span>
+                  <span onClick={() => onChildTaskClick(t)}>{t.name}</span>
                 </li>
               ))}
             </ul>

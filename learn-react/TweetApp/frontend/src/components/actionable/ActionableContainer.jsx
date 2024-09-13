@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ActionableForm from "./ActionableForm";
 import ActionableList from './ActionableList';
 import axios from 'axios';
-import GlobalConstants from "../../common/globalConstants";
+import GlobalConstants from "../../common/constants/globalConstants";
 import CronExpressionGenerator from '../../common/components/CronExpressionGenerator';
 
 const ActionableContainer = () => {

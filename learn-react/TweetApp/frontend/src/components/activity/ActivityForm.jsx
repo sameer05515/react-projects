@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import EditActivityForm from "./EditActivityForm";
-import APPLICATION_BASE_URL from "../../common/config";
+import APPLICATION_BASE_URL from "../../common/service/config";
 
 function ActivityForm() {
   const [activityName, setActivityName] = useState("");

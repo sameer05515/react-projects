@@ -6,7 +6,9 @@ import Select from "react-select"; // Import the Select component from react-sel
 import { taskStatusList } from "../../common/constants/globalConstants";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
+import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();
@@ -16,13 +18,36 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         _id: task && task._id ? task._id : "",
         uniqueId: task && task.uniqueId ? task.uniqueId : "",
         name: task && task.name ? task.name : "",
-        description: task && task.description ? task.description : "",
+        descriptions: task && task.descriptions ? task.descriptions : [{
+            content: '',
+            textOutputType: "",
+            textInputType: "",
+        }],
         parentId: task && task.parentId ? task.parentId : "",
         taskStatus: task ? task.taskStatus : "",
         // updatedDate: task ? task.updatedDate : "",
         linkedTasks: task && task.linkedTasks ? task.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs
         tags: task && task.tags ? task.tags : [], // Set the initial tags based on the topic
     });
+
+    const [formErrors, setFormErrors] = useState([]);
+    const [smartEditorError, setSmartEditorError] = useState(null);
+
+    const validateForm = () => {
+        const errors = [];
+
+        if (!formData.name.trim()) {
+            errors.push("Name is required");
+        }
+
+        if (smartEditorError) {
+            errors.push(smartEditorError);
+        }
+
+        setFormErrors(errors);
+
+        return Object.keys(errors).length === 0;
+    };
 
     useEffect(() => {
         // Fetch available tags when the component mounts
@@ -64,8 +89,12 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         setFormData({ ...formData, description: data });
     };
 
-    const handleSaveTask = () => {
-        // console.log(`task._id : ${task._id}, task.uniqueId: ${task.uniqueId},taskStatus: ${formData.taskStatus},  taskData: ${JSON.stringify(formData)}`);
+    const handleSaveTask = (event) => {
+        event.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+
         if (task && task._id && task.uniqueId) {
             // If a topic is provided, it's an update
             dispatch(updateTask({ taskId: task._id, taskData: { ...formData } }));
@@ -94,6 +123,14 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         });
     };
 
+    const handleSmartEditorChange = (smartContent) => {
+        setFormData(prev => ({ ...prev, descriptions: [smartContent] }));
+    };
+
+    const handleSmartEditorError = (error) => {
+        setSmartEditorError(error);
+    };
+
     const formStyle = {};
 
     return (
@@ -116,14 +153,19 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
 
                 <div style={{ padding: "10px" }}>
                     <label htmlFor="description" style={{ width: "9%", fontWeight: "bold" }}>Description</label>
-                    <CKEditor
+                    {/* <CKEditor
                         id="description"
                         name="description"
                         editor={ClassicEditor}
                         data={formData.description}
                         onChange={handleEditorChange}
                         style={{ width: "90%" }}
-                    />
+                    /> */}
+                    <SmartEditor
+                        preview={false}
+                        initialValue={formData.descriptions[0]}
+                        onChange={handleSmartEditorChange}
+                        onError={handleSmartEditorError} />
                 </div>
 
                 {/* Dropdown to select linked tasks */}
@@ -159,7 +201,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
                         style={{ width: "90%" }}
                     />
                 </div>
-                <div style={{  padding: "10px" }}>
+                <div style={{ padding: "10px" }}>
                     <label htmlFor="taskStatus" style={{ width: "20%", fontWeight: "bold" }}>Select Task Status:</label>
                     <Select
                         name="taskStatus"
@@ -172,12 +214,41 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
                 {/* Add other input fields for task properties */}
                 {/* style={{ textAlign: "right", marginTop: "10px" }} */}
                 <div>
-                    <CustomButton onClick={handleSaveTask}>Save</CustomButton>
+                    {formErrors.length > 0 && (
+                        <div>
+                            {formErrors.map((error, index) => (
+                                <span key={index} style={styles.error}>
+                                    {error}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <CustomButton onClick={(event) => handleSaveTask(event)}>Save</CustomButton>
                     <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
                 </div>
+                {/* <JSONDataViewer metadata={{formData}} title="X-Ray: For provided metadata"/> */}
+                <JSONDataViewer metadata={{formData}}/>
             </div>
         </>
     );
+};
+
+const styles = {
+    error: {
+        color: "red",
+        fontSize: "14px",
+        marginTop: "5px",
+        display: "block",
+    },
+    labelStyle: {
+        width: "15%", // Set label width to 25%
+        fontWeight: "bold", // Make label text bold
+    },
+    pairedComponentStyle: {
+        width: "85%", // Set paired component width to 75%
+    },
 };
 
 export default TaskForm;

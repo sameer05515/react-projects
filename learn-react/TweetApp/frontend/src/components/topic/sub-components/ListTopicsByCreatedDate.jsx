@@ -5,7 +5,7 @@ import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
 import { fetchTopics, selectAllFlatTopics } from "../../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic";
 import TopicCard from "./TopicCard";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 function ListTopicsByCreatedDate() {
   const topics = useSelector(selectAllFlatTopics);

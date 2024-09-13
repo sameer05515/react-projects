@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../redux/slices/comparableDataSlice"; // Adjust the path
 import ComparableDataList from "./ComparableDataList"; // Adjust the path
 import SaveUpdateComparableData from "./SaveUpdateComparableData"; // Adjust the path
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 
 const ComparisonContainer = ({ additionalProp }) => {
   const dispatch = useDispatch();

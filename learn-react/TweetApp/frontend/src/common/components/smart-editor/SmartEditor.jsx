@@ -3,7 +3,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
 import React, { useEffect, useRef, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
-import CustomButton from "../CustomButton";
+import CustomButton from "../custom-button/CustomButton";
 import MarkdownComponent from "../MarkdownComponent";
 
 const inpOutp = () => {

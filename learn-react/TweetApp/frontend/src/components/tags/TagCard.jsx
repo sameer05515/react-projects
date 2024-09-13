@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
-import CustomButton from "../../common/components/CustomButton";
-import HoverableSpan from "../../common/components/HoverableSpan";
+import CustomButton from "../../common/components/custom-button/CustomButton";
+import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
 import ReactHtmlParser from "react-html-parser";
-import Breadcrumbs, {
-  BreadcrumbItemType,
-} from "../../common/components/GlobalBreadcrumb";
+import Breadcrumbs from "../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import { SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
-import JSONDataViewer from "../../common/components/JSONDataViewer";
-import Tree from "../../common/components/TreeViewer";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
+import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvider";
 
 const TagCard = ({
   tag,
@@ -22,6 +21,7 @@ const TagCard = ({
   onLinkedItemClick = () => { },
   onBaseSpanClick = () => { },
 }) => {
+  const {BreadcrumbItemType}= useGlobalServiceProvider();
   const [showDescr, setShowDescr] = useState(showDescription);
 
   const handleEdit = () => {

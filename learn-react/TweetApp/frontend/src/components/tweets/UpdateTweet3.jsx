@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GlobalConstants from "../../common/globalConstants";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../common/custom-button/CustomButton";
 
 function UpdateTweet({ tweet, onUpdate }) {
   const [content, setContent] = useState(tweet.content);
@@ -10,7 +10,7 @@ function UpdateTweet({ tweet, onUpdate }) {
 
   const handleUpdateTweet = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweet._id}`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweet._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +30,7 @@ function UpdateTweet({ tweet, onUpdate }) {
   const handleUpdateComment = async (commentId, updatedText) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweet._id}/comments/${commentId}`,
+        `${BASE_URL}/tweets/v1/${tweet._id}/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -55,7 +55,7 @@ function UpdateTweet({ tweet, onUpdate }) {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweet._id}/comments`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweet._id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ function UpdateTweet({ tweet, onUpdate }) {
 
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweet._id}/comments/${commentId}/nested`,
+        `${BASE_URL}/tweets/v1/${tweet._id}/comments/${commentId}/nested`,
         {
           method: "POST",
           headers: {

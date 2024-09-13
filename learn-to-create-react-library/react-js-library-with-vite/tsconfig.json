@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "declaration": true,
+      "emitDeclarationOnly": true,
+      "outDir": "dist",
+      "skipLibCheck": true,
+      "allowJs": true // Allow JavaScript files to be processed
+    },
+    "include": ["src/**/*"],
+    "exclude": ["dist"]
+  }
+  

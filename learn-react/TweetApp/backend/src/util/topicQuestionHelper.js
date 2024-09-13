@@ -1,8 +1,8 @@
 
 function replaceTopic(input, replacement) {
-    if (input === null || replacement === null) {
-        return null;
-    }
+    // if (input === null || replacement === null) {
+    //     return null;
+    // }
     return input.replace(/#topic#/g, `"${replacement}"`);
 }
 
@@ -105,6 +105,12 @@ function prepareWhs() {
 }
 
 function prepareQuestions(t) {
+    if(!t){
+        throw new Error("null or undefined value not allowed");
+    }
+    if(typeof t !== 'string'){
+        throw new Error("only string should be passed as argument for this function");
+    }
     const groupQList = prepareWhs();
     // console.log("========================== " + t + " =======");
     const gqArr=[];

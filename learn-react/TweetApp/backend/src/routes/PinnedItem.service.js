@@ -20,6 +20,7 @@ const upsertPinnedItem = async (pinnedItemData) => {
     } else {
         // update ka case hai
         pinnedItem.softDelete= softDelete!==null? softDelete : pinnedItem.softDelete;
+        pinnedItem.linkedItemType= linkedItemType!==null? linkedItemType : pinnedItem.linkedItemType;
         pinnedItem.updatedDate= new Date();
         return await pinnedItem.save();
 

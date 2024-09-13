@@ -1,0 +1,137 @@
+/* Styles applied to all children or descendants of playgroundContainer */
+.playgroundContainer * {
+  box-sizing: border-box;
+}
+
+.playgroundContainer {
+  font-family: 'Merriweather', serif;
+  background: linear-gradient(#31220b, #382e1b);
+  color: #f3e7d4;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Select elements specifically inside playgroundContainer */
+.playgroundContainer select {
+  appearance: none;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+}
+
+/* Label styles scoped to playgroundContainer */
+.playgroundContainer label {
+  display: block;
+  font-size: 0.85rem;
+  color: #bbe3dd;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+/* Input elements inside playgroundContainer */
+.playgroundContainer input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #07302a;
+  background: #f5f5f5;
+}
+
+/* Button styles inside playgroundContainer */
+.playgroundContainer .button,
+.playgroundContainer form button {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #338196;
+  color: white;
+  cursor: pointer;
+}
+
+.playgroundContainer .button:hover,
+.playgroundContainer form button:hover {
+  background-color: #217086;
+}
+
+/* UL and LI styles scoped to playgroundContainer */
+.playgroundContainer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  font-family: 'Handjet', sans-serif;
+}
+
+.playgroundContainer ul li {
+  background: linear-gradient(#46585d, #223338);
+  padding: 1rem;
+  border-radius: 6px;
+  color: #76bbcf;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* H1 styles specific to playgroundContainer */
+.playgroundContainer h1 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #edbf68;
+  text-shadow: 0 0 4px rgba(35, 34, 34, 0.4);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Modal styles inside playgroundContainer */
+.playgroundContainer .modal {
+  position: relative;
+  background: #d3b17b;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+}
+
+/* Cart modal specifically inside playgroundContainer */
+.playgroundContainer #cart-modal {
+  width: 80%;
+  margin: 1rem auto;
+}
+
+/* Animations applied to elements inside playgroundContainer */
+.playgroundContainer .fade-slide-in-from-top {
+  animation: fade-slide-in-from-top 0.3s ease-in-out;
+}
+
+/* Scoped keyframes */
+@keyframes fade-slide-in-from-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-in-from-right {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

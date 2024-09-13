@@ -1,5 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import GOLD_RATE from '../../common/constants/goldRate';
+
+// Year selection component
+const YearSelect = ({ label, value, onChange, options }) => (
+  <div>
+    <label>{label}</label>
+    <select value={value} onChange={onChange}>
+      <option value="">-- Select Year --</option>
+      {options}
+    </select>
+  </div>
+);
+
+// Amount input component
+const AmountInput = ({ amount, onChange }) => (
+  <div>
+    <b>Enter Amount:</b>
+    <input
+      type="text"
+      placeholder="Amount"
+      value={amount}
+      onInput={onChange}
+    />
+  </div>
+);
+
+// Display calculated target amount and formula
+const GoldRateDetails = ({ selectedYear, targetYear, targetAmount, formula }) => (
+  <div>
+    <p>Selected Year: '{selectedYear}'</p>
+    <p>Selected Target Year: '{targetYear}'</p>
+    <b>Equivalent Target Amount for year {targetYear}: </b>{targetAmount}
+    <br />
+    <b>Formula: </b> {formula}
+  </div>
+);
 
 const GoldRateCalculator = () => {
   const goldData = GOLD_RATE.data;
@@ -12,36 +47,24 @@ const GoldRateCalculator = () => {
     formula: ""
   });
 
-  useEffect(() => {
-    if (combinedState.selectedYear && combinedState.selectedTargetYear) {
-      const calculatedObj = calculateTargetAmount();
-      setCombinedState(pre => ({ ...pre, ...calculatedObj }));
-    }
-  }, [combinedState.selectedYear, combinedState.selectedTargetYear, combinedState.amount]);
+  const yearOptions = useMemo(
+    () => goldData.map((data, index) => (
+      <option key={index} value={data.year}>
+        {data.year}
+      </option>
+    )),
+    [goldData]
+  );
 
-  const handleYearChange = (event) => {
-    setCombinedState(pre => ({ ...pre, selectedYear: event.target.value }));
-  };
+  const getPriceForYear = useMemo(
+    () => (year) => {
+      const data = goldData.find((item) => item.year === year);
+      return data ? parseFloat(data.price) : 0;
+    },
+    [goldData]
+  );
 
-  const handleTargetYearChange = (event) => {
-    setCombinedState(pre => ({ ...pre, selectedTargetYear: event.target.value }));
-  };
-
-  const yearOptions = goldData.map((data, index) => (
-    <option key={index} value={data.year}>
-      {data.year}
-    </option>
-  ));
-
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    const myVal = parseFloat(value);
-    if (myVal >= 0) {
-      setCombinedState(pre => ({ ...pre, amount: myVal }));
-    }
-  };
-
-  const calculateTargetAmount = () => {
+  const calculateTargetAmount = useMemo(() => {
     const price = getPriceForYear(combinedState.selectedYear);
     const targetPrice = getPriceForYear(combinedState.selectedTargetYear);
     if (price !== 0 && targetPrice !== 0) {
@@ -52,44 +75,61 @@ const GoldRateCalculator = () => {
       const calFormula = "Invalid selection. Please choose valid years and prices.";
       return { formula: calFormula, targetAmount: 0 };
     }
+  }, [combinedState.selectedYear, combinedState.selectedTargetYear, combinedState.amount, getPriceForYear]);
+
+  useEffect(() => {
+    if (combinedState.selectedYear && combinedState.selectedTargetYear) {
+      setCombinedState((prev) => ({
+        ...prev,
+        ...calculateTargetAmount
+      }));
+    }
+  }, [combinedState.selectedYear, combinedState.selectedTargetYear, combinedState.amount, calculateTargetAmount]);
+
+  const handleYearChange = (event) => {
+    setCombinedState((prev) => ({ ...prev, selectedYear: event.target.value }));
   };
 
-  const getPriceForYear = (year) => {
-    const data = goldData.find((item) => item.year === year);
-    return data ? parseFloat(data.price) : 0;
+  const handleTargetYearChange = (event) => {
+    setCombinedState((prev) => ({ ...prev, selectedTargetYear: event.target.value }));
+  };
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    const myVal = parseFloat(value);
+    if (myVal >= 0) {
+      setCombinedState((prev) => ({ ...prev, amount: myVal }));
+    }
   };
 
   return (
     <div>
       <pre>{JSON.stringify(combinedState, null, 2)}</pre>
-      <label>Select a Year: </label>
-      <select value={combinedState.selectedYear} onChange={handleYearChange}>
-        <option value="">-- Select Year --</option>
-        {yearOptions}
-      </select>
+      
+      <YearSelect
+        label="Select a Year: "
+        value={combinedState.selectedYear}
+        onChange={handleYearChange}
+        options={yearOptions}
+      />
 
-      <label>Select a Target Year: </label>
-      <select value={combinedState.selectedTargetYear} onChange={handleTargetYearChange}>
-        <option value="">-- Select Target Year --</option>
-        {yearOptions}
-      </select>
+      <YearSelect
+        label="Select a Target Year: "
+        value={combinedState.selectedTargetYear}
+        onChange={handleTargetYearChange}
+        options={yearOptions}
+      />
 
-      <div>
-        <p>Selected Year: '{combinedState.selectedYear}'</p>
-        <p>Selected Target Year: '{combinedState.selectedTargetYear}'</p>
-        <p>Selected Price: {combinedState.amount}</p>
-      </div>
-      {combinedState.selectedYear && combinedState.selectedTargetYear && <div>
-        <b> Enter Amount for year {combinedState.selectedYear}: </b>
-        <input type='text' name="title"
-          placeholder="Amount"
-          value={combinedState.amount}
-          onInput={event => handleInputChange(event)} />
-        <br />
-        <b>Equivalent Target Amount for year {combinedState.selectedTargetYear}: </b>{combinedState.targetAmount}
-        <br />
-        <b>Formula: </b> {combinedState.formula}
-      </div>}
+      <AmountInput amount={combinedState.amount} onChange={handleInputChange} />
+
+      {combinedState.selectedYear && combinedState.selectedTargetYear && (
+        <GoldRateDetails
+          selectedYear={combinedState.selectedYear}
+          targetYear={combinedState.selectedTargetYear}
+          targetAmount={combinedState.targetAmount}
+          formula={combinedState.formula}
+        />
+      )}
     </div>
   );
 };

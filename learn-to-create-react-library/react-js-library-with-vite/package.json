@@ -1,0 +1,59 @@
+{
+  "name": "@stparap/react-js-library-with-vite",
+  "private": false,
+  "version": "1.0.3",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build-ts && vite build",
+    "build-ts": "tsc",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },  
+  "devDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@chromatic-com/storybook": "^3.2.2",
+    "@eslint/js": "^9.15.0",
+    "@storybook/addon-essentials": "^8.4.6",
+    "@storybook/addon-interactions": "^8.4.6",
+    "@storybook/addon-onboarding": "^8.4.6",
+    "@storybook/blocks": "^8.4.6",
+    "@storybook/react": "^8.4.6",
+    "@storybook/react-vite": "^8.4.6",
+    "@storybook/test": "^8.4.6",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "eslint-plugin-storybook": "^0.11.1",
+    "globals": "^15.12.0",
+    "prop-types": "^15.8.1",
+    "storybook": "^8.4.6",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.1",
+    "vite-plugin-lib-inject-css": "^2.1.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

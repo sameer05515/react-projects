@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import Details from "./sub-components/details-section/Details";
 import Playground from "./sub-components/playground-section/Playground";
 import { RelatedNodesBaseStyles as styles } from "./util/RelatedNodesBase.styles";

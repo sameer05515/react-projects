@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../common/constants/globalConstants";
 import useDataFetching from "../../../common/hooks/useDataFetching";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
-import Select from 'react-select';
+import Select from "react-select";
+import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 
 const TopicSectionForm = ({
   formData: initialValue,
   selectedTopic,
-  onSubmit = () => { },
-  onCancel: handleCancel = () => { },
+  onSubmit = () => {},
+  onCancel: handleCancel = () => {},
 }) => {
   const dispatch = useDispatch();
   const flatTagList = useSelector(selectAllFlatTags);
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
+  const [loading, setLoading] = useState(true); // New loading state
 
   const validateForm = () => {
     const errors = [];
@@ -71,6 +73,7 @@ const TopicSectionForm = ({
     if (sectionsData) {
       // alert(JSON.stringify(sectionsData))
       setFormData((pre) => ({ ...sectionsData }));
+      setLoading(false); // Loading completed
     }
   }, [sectionsData]);
 
@@ -99,8 +102,6 @@ const TopicSectionForm = ({
     setFormData({ ...formData, tags: selectedTags.map((tag) => tag.value) });
   };
 
-
-
   const tagOptions = flatTagList.map((tag) => ({
     value: tag.uniqueId, // Assuming tags have unique IDs
     label: tag.title, // Display tag names in the dropdown
@@ -112,6 +113,11 @@ const TopicSectionForm = ({
       onSubmit(formData);
     }
   };
+
+  if (loading) {
+    // Render loading state until sectionsRefetch operation is complete successfully
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -176,6 +182,9 @@ const TopicSectionForm = ({
         {formData.uniqueId ? "Update " : "Save "}Changes
       </CustomButton>
       <CustomButton onClick={handleCancel}>Cancel</CustomButton>
+
+      <br />
+      <JSONDataViewer metadata={{ formData }} />
     </div>
   );
 };

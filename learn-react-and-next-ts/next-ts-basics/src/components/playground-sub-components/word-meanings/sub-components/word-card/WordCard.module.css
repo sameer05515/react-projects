@@ -1,0 +1,43 @@
+.cardContainer {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+    margin-bottom: 16px;
+    height: 250px;
+    overflow: auto;
+  }
+  
+  .wordTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .wordType {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  .meaningsSection,
+  .examplesSection {
+    margin-bottom: 16px;
+  }
+  
+  .meaningsSection h3,
+  .examplesSection h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .meaningsSection ul,
+  .examplesSection ul {
+    padding-left: 20px;
+  }
+  
+  .meaningsSection li,
+  .examplesSection li {
+    margin-bottom: 4px;
+  }
+  

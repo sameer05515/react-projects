@@ -1,5 +1,5 @@
 import React from "react";
-import EditableLabel from "../../common/components/EditableLabel";
+import EditableLabel from "../../common/components/editable-label/EditableLabel";
 
 function NestedComment({
   tweetId,

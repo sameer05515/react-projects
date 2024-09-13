@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import generateTreeData from './treeDataGenerator';
-import RadioButtonsComponent from '../../common/components/RadioButtonsComponent';
+import RadioButtonsComponent from '../../common/components/radiobutton-component/RadioButtonsComponent';
 
 const DISPLAY_STYLE = {
     TREE: 'tree',

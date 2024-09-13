@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { getDateAsMillisecondsString } from "../../common/service/commonService";
-import CustomButton from "../../common/components/CustomButton";
-import FloatingButton from "../../common/components/FloatingButton";
-import HoverableSpan from "../../common/components/HoverableSpan";
-import Popup from "../../common/components/Popup";
-import RadioButtonsComponent from "../../common/components/RadioButtonsComponent";
+import CustomButton from "../../common/components/custom-button/CustomButton";
+import FloatingButton from "../../common/components/floating-button/FloatingButton";
+import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
+import Popup from "../../common/components/custom-popup/Popup";
+import RadioButtonsComponent from "../../common/components/radiobutton-component/RadioButtonsComponent";
 import {
     SmartEditor,
     SmartPreviewer,

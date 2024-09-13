@@ -1,0 +1,45 @@
+/* CompanyList.module.css */
+
+.companyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.companyListItem {
+  margin: 0;
+}
+
+.companyButton {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid #e0e0e0;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+}
+
+.companyButton:hover {
+  background-color: #e6e6e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.companyButton:active {
+  background-color: #dcdcdc;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.companyButton:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}

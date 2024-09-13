@@ -1,64 +1,54 @@
-import { useState, useMemo, ChangeEvent } from "react";
-import {
-  componentOptions,
-  getComponentDetails,
-  labelStyle,
-} from "./app-component-constants";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Playground from "./routes/playground/Playground";
+import NotFound from "./routes/not-found/NotFound";
+import Header from "./routes/header/Header";
+import Projects from "./routes/resumes/Projects";
+import Companies from "./routes/resumes/Companies";
+import TechStacks from "./routes/resumes/TechStacks";
+import CompanyDomain from "./routes/resumes/CompanyDomain";
+import ArchitecturalStyles from "./routes/resumes/ArchitecturalStyles";
+import Test from "./routes/test/Test";
+// import ProjectList from "./components/resumes/ProjectList";
+// import ProjectCard from "./components/resumes/ProjectCard";
+// import CompanyList from "./components/resumes/CompanyList";
+// import CompanyCard from "./components/resumes/companyCard";
+// import TechStackList from "./components/resumes/TechStackList";
+// import TechStackCard from "./components/resumes/TechStackCard";
 
-function App() {
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(
-    null
-  );
-
-  // Handle dropdown change
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedComponent(event.target.value || null);
-  };
-
-  const { DisplayComponent, displayLabel, majorRelease } = useMemo(() => {
-    const comp = getComponentDetails(selectedComponent || "");
-    const displayLabel = comp?.purpose || "";
-    const majorRelease = comp?.majorRelease || false;
-    const DisplayComponent = comp?.element || null;
-
-    return { DisplayComponent, displayLabel, majorRelease };
-  }, [selectedComponent]);
-
+const App: React.FC = () => {
   return (
-    <>
-      <label htmlFor="outputType" style={labelStyle}>
-        Select a component:
-      </label>
-      <select value={selectedComponent || ""} onChange={handleChange}>
-        <option value="" disabled>
-          Select a component
-        </option>
-        {componentOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label.replace(/_/g, " ")}
-          </option>
-        ))}
-      </select>
-      {selectedComponent && (
-        <label>
-          <b
-            style={{
-              paddingRight: "10px",
-              fontSize: "15px",
-              textTransform: "uppercase",
-            }}
-          >
-            {majorRelease ? "Major Release" : "Minor Release"}
-          </b>
-          {displayLabel ||
-            `Display label missing for selected component: ${selectedComponent}`}
-        </label>
-      )}
-
-      {/* Render the selected component */}
-      {DisplayComponent && <DisplayComponent />}
-    </>
+    <Router>
+      <div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Playground />} />
+          <Route path="/projects" element={<Projects />}>
+            {/* <Route index element={<ProjectList />} />
+            <Route path=":projectUID" element={<ProjectCard />} /> */}
+          </Route>
+          <Route path="/companies" element={<Companies />}>
+            {/* <Route index element={<CompanyList />} />
+            <Route path=":companyUID" element={<CompanyCard />} /> */}
+          </Route>
+          <Route path="/company-domains" element={<CompanyDomain />}>
+            {/* <Route index element={<TechStackList />} />
+            <Route path=":techStackUID" element={<TechStackCard />} /> */}
+          </Route>
+          <Route path="/architectural-styles" element={<ArchitecturalStyles />}>
+            {/* <Route index element={<TechStackList />} />
+            <Route path=":techStackUID" element={<TechStackCard />} /> */}
+          </Route>
+          <Route path="/tech-stacks" element={<TechStacks />}>
+            {/* <Route index element={<TechStackList />} />
+            <Route path=":techStackUID" element={<TechStackCard />} /> */}
+          </Route>
+          <Route path="/testing" element={<Test/>}/>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -3,7 +3,7 @@ import "./list-tweets3.css";
 import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/constants/globalConstants";
-import Accordion from "../../common/components/Accordion";
+import Accordion from "../../common/components/accordion/Accordion";
 
 function formatTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
@@ -40,7 +40,7 @@ function ListTweetsUpdate({
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweetId}`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ function ListTweetsUpdate({
     }
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -95,7 +95,7 @@ function ListTweetsUpdate({
     }
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}/nested/${nestedCommentId}`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested/${nestedCommentId}`,
         {
           method: "PUT",
           headers: {
@@ -123,7 +123,7 @@ function ListTweetsUpdate({
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweetId}/comments`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +153,7 @@ function ListTweetsUpdate({
 
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}/nested`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested`,
         {
           method: "POST",
           headers: {

@@ -1,0 +1,31 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mongodb_test_v2
+#      uri: mongodb://localhost:27017/mongodb_test
+      uri: mongodb://localhost:27017/mongodb_test_v2
+
+
+  config:
+    activate:
+      on-profile: prod
+
+
+server:
+  port: 8976
+
+logging:
+  pattern:
+    console: ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+
+
+
+
+

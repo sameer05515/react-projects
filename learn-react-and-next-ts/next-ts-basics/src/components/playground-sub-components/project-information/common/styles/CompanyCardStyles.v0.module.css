@@ -1,0 +1,42 @@
+.companyCard {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.companyTitle {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.companyDetails {
+  margin-bottom: 8px;
+}
+
+.companyDetails strong {
+  font-weight: 600;
+}
+
+.aboutCompany {
+  margin-top: 12px;
+}
+
+.aboutCompany ul {
+  padding-left: 16px;
+}
+
+.aboutCompany li {
+  margin-bottom: 4px;
+}
+
+.companyWebsite a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.companyWebsite a:hover {
+  text-decoration: underline;
+}

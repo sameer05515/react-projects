@@ -4,4 +4,28 @@ spring:
       host: localhost
       port: 27017
       database: mongodb_test_v2
+      #      uri: mongodb://localhost:27017/mongodb_test
       uri: mongodb://localhost:27017/mongodb_test_v2
+
+  config:
+    #    activate:
+    #      on-profile: prod  # Use this if you want to activate profiles conditionally
+    import:
+      - application_prod.yml
+      - application_version1.0.0.yml
+
+  profiles:
+    #    active: prod  # This would activate 'prod' profile
+    #    active: default  # Uncomment to activate 'default' profile
+    active: version1.0.0  # Active profile is set to 'version1.0.0'
+
+server:
+  port: 8976  # Set the server port to 8976
+
+logging:
+  pattern:
+    console: ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}  # Custom logging pattern for console output
+  level:
+    org:
+      springframework:
+        security: DEBUG  # Enable DEBUG level logging for Spring Security

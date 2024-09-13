@@ -10,6 +10,20 @@ import Breadcrumbs, { BreadcrumbItemType } from "../../../common/components/Glob
 import Tree from "../../../common/components/TreeViewer";
 import ToggleablePanel from "../../../common/components/ToggleablePanel";
 
+// Utility function to format date
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Kolkata',
+    timeZoneName: 'short',
+  }).format(date);
+};
+
 const QuestionCard = ({
   question,
   categoryId,
@@ -59,6 +73,12 @@ const QuestionCard = ({
             <HtmlTextRendrer htmlString={question.heading} />
           </h2>
           <RatingComponent rating={question.rating} />
+          {/* <time dateTime={question.updatedDate}>{question.updatedDate}</time> */}
+          <div>
+            <b>Last Updated:</b> <time dateTime={question.updatedDate}>
+              {formatDate(question.updatedDate)}
+            </time>
+          </div>
 
           <div style={{ ...styles.datesStyle }}>
             <b>Tags: </b> {filteredTags?.length > 0 ? "" : "No tags added yet!"}

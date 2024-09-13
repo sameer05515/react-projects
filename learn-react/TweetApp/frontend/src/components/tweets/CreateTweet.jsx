@@ -12,7 +12,7 @@ function CreateTweet({ onTweetCreated }) {
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL}/tweets`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

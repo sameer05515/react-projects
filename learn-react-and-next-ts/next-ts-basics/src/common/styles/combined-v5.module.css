@@ -1,0 +1,631 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Handjet:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+.component-selection-section {
+  width: 90%;
+  max-width: 40rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #540ebc;
+  color: #f0f8f1;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.component-selection-section label {
+  display: block;
+  font-size: 0.85rem;
+  color: #bbe3dd;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.component-selection-section select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #486560;
+  background-color: #daedea;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #07302a;
+}
+
+.component-selection-section .nav-button {
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+/* Base styles for the select element */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  /* overflow-x: auto; */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Hide default select styles */
+.custom-select select {
+  display: none; /* Hide default select box */
+  height: 50px;
+}
+
+/* Custom styles for the select container */
+.custom-select .select-selected {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Styles for the selected option */
+.custom-select .select-selected:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333;
+  transform: translateY(-50%);
+}
+
+/* Styles for the dropdown options container */
+.custom-select .select-items {
+  position: absolute;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1;
+  display: none; /* Hidden by default */
+  top: 100%;
+  left: 0;
+}
+
+/* Styles for each dropdown option */
+.custom-select .select-items div {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Hover state for dropdown options */
+.custom-select .select-items div:hover {
+  background-color: #ddd;
+}
+
+/* Selected option style */
+.custom-select .select-items div.selected {
+  background-color: #ddd;
+  color: #333;
+}
+
+/* Show dropdown on click */
+.custom-select .select-items.show {
+  display: block;
+}
+
+/**======================================================================*/
+
+.main {
+  width: 90%;
+  /* max-width: 40rem; */
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #d58d1f;
+  color: #f0f8f1;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.main > img {
+  display: block;
+  width: 8rem;
+  height: 8rem;
+  object-fit: contain;
+  margin: 2rem auto;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #a1ecfb;
+}
+
+/* Label Styles */
+/* .label {
+  display: block;
+  font-size: 0.85rem;
+  color: #bbe3dd;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+} */
+
+/* Input Fields */
+/* .input {
+  display: block;
+  font: inherit;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #486560;
+  background-color: #daedea;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #07302a;
+} */
+
+/* Button Styles */
+/* .button {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #338196;
+  background-color: #338196;
+  color: white;
+  cursor: pointer;
+} */
+
+/* .button:hover,
+.button:active {
+  background-color: #217086;
+  border-color: #217086;
+} */
+
+/* .form button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #f7e596;
+  border: none;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: bold;
+  color: #3a4346;
+  cursor: pointer;
+} */
+
+/* .form button:hover {
+  background-color: #f9e175;
+} */
+
+/* Infobox Styles */
+.infobox {
+  margin: 2rem 0;
+  padding: 0.5rem;
+  /* text-align: center; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  font-size: 0.85rem;
+  border-radius: 4px;
+  /* min-height: 50px; */
+  height: 200px;
+  overflow: auto;
+}
+
+/* Custom scrollbar styles */
+.infobox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.infobox::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.infobox::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.infobox::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.infobox-display-label {
+  white-space: pre-wrap;
+}
+
+.infobox-hint {
+  border: 1px solid #96f5f7;
+  color: #96f5f7;
+}
+
+.infobox-warning.warning--low {
+  border: 1px solid #f6d84f;
+  color: crimson;
+}
+
+.infobox-warning.warning--medium {
+  border: 1px solid #f9a73b;
+  color: yellow;
+}
+
+.infobox-warning.warning--high {
+  border: 1px solid #f97373;
+  color: red;
+}
+
+/* Additional Styles */
+/* #add-timer {
+  max-width: 20rem;
+  margin: 3rem auto;
+  text-align: center;
+} */
+
+/* Blog Styles */
+/* #blog-posts ul {
+  list-style: none;
+  margin: 2rem auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 2rem;
+} */
+
+/* #blog-posts li {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #333;
+} */
+
+/* #blog-posts h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  color: #9c9aa0;
+} */
+
+/* #blog-posts p {
+  margin: 1rem 0 0 0;
+  font-size: 1.1rem;
+  color: #9f98ae;
+  text-transform: capitalize;
+} */
+
+/* Loading and Error Styles */
+/* #loading-fallback {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 3rem auto;
+} */
+
+/* #error {
+  border: 1px solid #ff0055;
+  color: #e6a4ba;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+} */
+
+/* #error h1 {
+  margin: 0;
+  font-size: 1.5rem;
+} */
+
+/* #error p {
+  margin: 0;
+} */
+
+/**Post styles*/
+.post-item-card {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #9c7eee;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  animation: animate-in 1s ease-out forwards;
+}
+
+.post-item-card-author {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #543280;
+  margin: 0;
+  word-break: break-all;
+  text-transform: uppercase;
+}
+
+.post-item-card-body {
+  white-space: pre-wrap;
+  font-size: 1.25rem;
+  margin: 0.25rem 0 0 0;
+  color: #593884;
+  font-style: italic;
+  word-break: break-all;
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.post-list-container {
+  list-style: none;
+  max-width: 50rem;
+  margin: 1rem auto;
+  padding: 1rem 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 30%);
+  justify-content: center;
+}
+
+/** Post module form styles*/
+
+.post-module-form {
+  background-color: #6233b9;
+  padding: 1rem;
+  width: 20rem;
+  margin: 2rem auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-module-form label {
+  display: block;
+  margin-bottom: 0.05rem;
+  color: #eadbfb;
+  font-weight: bold;
+}
+
+.post-module-form input,
+.post-module-form textarea {
+  display: block;
+  width: 90%;
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #c4a9e4;
+  color: #28262c;
+}
+
+.post-module-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.post-module-form-actions button {
+  cursor: pointer;
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #34036c;
+  color: #e5d5f7;
+}
+
+.post-module-form-actions button:hover {
+  background-color: #23014a;
+}
+
+.post-module-form-actions button[type="button"] {
+  background-color: transparent;
+}
+
+.post-module-form-actions button[type="button"]:hover {
+  color: #d1bee6;
+}
+
+/** Modal overlay*/
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  overflow: hidden;
+  z-index: 2; /* Make sure it's above the backdrop */
+  background-color: #fff; /* Modal background color */
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666; /* Adjust the color as needed */
+  transition: color 0.3s ease;
+}
+
+.modalCloseButton:hover {
+  color: #ff5c5c; /* Color on hover */
+}
+
+.modalCloseButton:focus {
+  outline: none;
+}
+
+
+/**Main header*/
+.main-header {
+  /* padding: 2rem 10%; */
+  margin: 2rem 10%;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ece1fa;
+}
+
+.main-header-logo {
+  font-size: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  color: #ece1fa;
+}
+
+.main-header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #a990fb;
+  color: #2a2630;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.main-header-button:hover {
+  background-color: #8c6cf7;
+}
+
+/**TestComponentV2 styles*/
+.testComponentV2 {
+  /* width: 100%; */
+  /* max-width: 600px; */
+  margin: 20px auto;
+  padding: 20px;
+  /* background-color: #f5f5f5; */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* font-family: Arial, sans-serif; */
+  /* color: #333; */
+}
+
+.testComponentV2 h1 {
+  font-size: 24px;
+  font-weight: bold;
+  /* color: #4a90e2; */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.testComponentV2 label {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.testComponentV2 input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.testComponentV2 button {
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.testComponentV2 button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.testComponentV2 div {
+  margin-top: 20px;
+}
+
+.testComponentV2 p {
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.testComponentV2 p.error {
+  color: red;
+}
+
+/**
+* 
+## ########################################################################################################3
+
+                              Project Dashboard Styles
+
+* ## ########################################################################################################3
+*
+**/
+
+/** ============== Company Card Styles ============= */
+
+.projectDashboard-CompanyCard {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  /* background-color: #f9f9f9; */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.projectDashboard-CompanyCard-CompanyTitle {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.projectDashboard-CompanyCard-CompanyDetails {
+  margin-bottom: 8px;
+}
+
+.projectDashboard-CompanyCard-CompanyDetails strong {
+  font-weight: 600;
+}
+
+.projectDashboard-CompanyCard-aboutCompany {
+  margin-top: 12px;
+}
+
+.projectDashboard-CompanyCard-aboutCompany ul {
+  padding-left: 16px;
+}
+
+.projectDashboard-CompanyCard-aboutCompany li {
+  margin-bottom: 4px;
+}
+
+.projectDashboard-CompanyCard-companyWebsite a {
+  color: #1fe729;
+  text-decoration: none;
+}
+
+.projectDashboard-CompanyCard-companyWebsite a:hover {
+  text-decoration: underline;
+}

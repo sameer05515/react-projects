@@ -86,6 +86,7 @@ import TagBase, {
 import ToggleableIcon from "./common/components/ToggleableIcon";
 import TwoNodeComponentV5_3 from "./components/topic/sub-components/TwoNodeComponentV5.3";
 import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
+import Welcome from "./Welcome";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -172,7 +173,8 @@ function App() {
                 </>
               ) : (
                 <>
-                  Welcome Bro!!
+                  {/* Welcome Bro!! */}
+                  <Welcome/>
                   {/* <HorizontalMenu
                     isAuthenticated={isAuthenticated}
                     handleLogout={handleLogout}

@@ -1,0 +1,24 @@
+.container {
+    padding-left: 20px;
+    margin: 5px 0;
+    border-left: 1px solid #ccc;
+  }
+  
+  .node {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .toggleButton {
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    color: green;
+  }
+  
+  .nodeName {
+    font-size: 14px;
+    color: #333;
+  }
+  

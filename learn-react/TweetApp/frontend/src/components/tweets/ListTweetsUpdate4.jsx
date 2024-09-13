@@ -40,7 +40,7 @@ function ListTweetsUpdate({
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweetId}`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ function ListTweetsUpdate({
     }
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -95,7 +95,7 @@ function ListTweetsUpdate({
     }
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}/nested/${nestedCommentId}`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested/${nestedCommentId}`,
         {
           method: "PUT",
           headers: {
@@ -123,7 +123,7 @@ function ListTweetsUpdate({
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/${tweetId}/comments`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +153,7 @@ function ListTweetsUpdate({
 
     try {
       const response = await fetch(
-        `${BASE_URL}/tweets/${tweetId}/comments/${commentId}/nested`,
+        `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested`,
         {
           method: "POST",
           headers: {

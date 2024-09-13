@@ -1,0 +1,32 @@
+/* CompanyList.module.css */
+
+.companyList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .companyListItem {
+    margin: 10px 0;
+  }
+  
+  .companyButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .companyButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .companyButton:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.6);
+  }
+  

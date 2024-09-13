@@ -14,7 +14,8 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mongod
 
 const docRoutes = require('./routes/doc.routes')
 
-const tweetRoutes = require("./routes/Tweet.routes"); // Import the tweets routes
+const tweetRoutesV1 = require("./routes/Tweet.v1.routes"); // Import the tweets routes
+const tweetRoutesV2 = require("./routes/Tweet.v2.routes");
 const activityRoutes = require('./routes/Activity.routes');
 const tasksRouter = require('./routes/Task.routes');
 const userRoutes = require('./routes/User.routes'); // Import the user registration router
@@ -55,7 +56,8 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
-app.use("/tweets", tweetRoutes);
+app.use("/tweets/v1", tweetRoutesV1);
+app.use("/tweets/v2", tweetRoutesV2);
 app.use('/activities', activityRoutes);
 app.use('/tasks', tasksRouter);
 app.use('/api/users', userRoutes);

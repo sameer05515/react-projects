@@ -9,17 +9,48 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     const menuStyle = {
-        backgroundColor: "#333",
+        backgroundColor: "#2C3E50",
         color: "white",
+        padding: "10px 0",
+        borderRadius: "5px",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     };
 
     const selectedLinkStyle = {
-        color: "white",
-        fontSize: "18px",
+        color: "#FFC107",
+        fontSize: "15px",
+        fontWeight: "bold",
     };
 
     const listItemStyle = {
-        padding: "3px",
+        padding: "8px 15px",
+        fontSize: "10px",
+        transition: "background-color 0.3s ease, color 0.3s ease",
+    };
+
+    const linkStyle = {
+        color: "#ECF0F1",
+        textDecoration: "none",
+    };
+
+    const listItemHoverStyle = {
+        backgroundColor: "#34495E",
+        borderRadius: "5px",
+    };
+
+    const buttonStyle = {
+        backgroundColor: "#E74C3C",
+        color: "white",
+        border: "none",
+        padding: "8px 16px",
+        borderRadius: "5px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        transition: "background-color 0.3s ease",
+    };
+
+    const buttonHoverStyle = {
+        backgroundColor: "#C0392B",
     };
 
     const isPathActive = (path) => {
@@ -51,16 +82,25 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
     }, [dispatch]);
 
     return (
-        <div>
+        <div style={{ marginBottom: "20px" }}>
             <CollapsibleMenu isCollapsed={isCollapsed}>
                 <ul style={{ listStyle: "none", ...menuStyle }}>
                     {links
                         .filter((l) => l.isModule)
                         .map(({ linkPath, linkHeader }, idx) => (
-                            <li key={`linkPath_${idx + 100}`} style={listItemStyle}>
+                            <li
+                                key={`linkPath_${idx + 100}`}
+                                style={{
+                                    ...listItemStyle,
+                                    ...(isPathActive(linkPath()) ? listItemHoverStyle : {}),
+                                }}
+                            >
                                 <NavLink
                                     to={linkPath()}
-                                    style={isPathActive(linkPath()) ? selectedLinkStyle : {}}
+                                    style={{
+                                        ...linkStyle,
+                                        ...(isPathActive(linkPath()) ? selectedLinkStyle : {}),
+                                    }}
                                 >
                                     <span onClick={() => handleLinkClick(linkHeader)}>
                                         {linkHeader}
@@ -73,13 +113,9 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
                         <li style={{ ...listItemStyle, marginLeft: "auto" }}>
                             <button
                                 onClick={handleLogout}
-                                style={{
-                                    backgroundColor: "red",
-                                    color: "white",
-                                    border: "none",
-                                    padding: "5px 10px",
-                                    cursor: "pointer",
-                                }}
+                                style={{ ...buttonStyle }}
+                                onMouseEnter={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
+                                onMouseLeave={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
                             >
                                 Logout
                             </button>

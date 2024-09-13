@@ -19,6 +19,7 @@ import Popup from "../../common/components/Popup";
 import CustomButton from "../../common/components/CustomButton";
 import MarkdownComponent from "../../common/components/MarkdownComponent";
 import { toast } from "react-toastify";
+import { SkeletonTextType } from "./util/constants";
 
 // Define styles in a JSON object
 const styles = {
@@ -143,6 +144,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
         uniqueId: initialFormData?.uniqueId || "",
         name: initialFormData?.name || "",
         skeleton: initialFormData?.skeleton || "",
+        skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
     });
 
     const handleRightClick = (event, selectedMap) => {
@@ -369,7 +371,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     };
 
     const refreshSkeleton = (treeData = []) => {
-        if (!treeData || !Array.isArray(treeData) || treeData.length == 0) {
+        if (!treeData || !Array.isArray(treeData) || treeData.length === 0) {
             return;
         }
 
@@ -655,6 +657,7 @@ const AddChildrenOrSiblingsNodesPopup = ({
                         placeholder="Enter children names"
                         value={formData.text}
                         onChange={handleInputChange}
+                        rows={10}
                         style={{ width: "90%" }}
                     />
                 </div>

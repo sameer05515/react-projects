@@ -6,7 +6,7 @@ const TweetBase = () => {
   const [tweets, setTweets] = useState([]);
   const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
   const refreshTweets = () => {
-    fetch(`${BASE_URL}/tweets`)
+    fetch(`${BASE_URL}/tweets/v1`)
       .then((response) => response.json())
       .then((data) => setTweets(data))
       .catch((error) => console.error("Error fetching tweets:", error));

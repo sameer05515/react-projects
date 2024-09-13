@@ -1,0 +1,76 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .dropdown {
+    position: relative; /* Make this relative so the options align with the button */
+    width: 200px; /* Same width as the button */
+  }
+  
+  .dropdownButton {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: 100%; /* Full width of dropdown */
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+  }
+  
+  .dropdownButton::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #555;
+  }
+  
+  .options {
+    position: absolute;
+    top: 100%; /* Position just below the dropdown button */
+    left: 0; /* Align to the left of the dropdown */
+    right: 0; /* Make the options box the same width as the button */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px; /* Set maximum height */
+    overflow-y: auto; /* Enable scrolling */
+     /* z-index: 1000; Ensure dropdown appears above other elements */
+  }
+  
+  .option {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .option:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .selectedText {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  /* Style scrollbar */
+  .options::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .options::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 10px;
+  }
+  

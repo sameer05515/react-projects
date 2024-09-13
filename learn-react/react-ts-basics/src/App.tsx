@@ -2,6 +2,7 @@ import { useState, useMemo, ChangeEvent } from "react";
 import {
   componentOptions,
   getComponentDetails,
+  getNextNthOption,
   labelStyle,
 } from "./app-component-constants";
 
@@ -15,14 +16,24 @@ function App() {
     setSelectedComponent(event.target.value || null);
   };
 
-  const { DisplayComponent, displayLabel, majorRelease } = useMemo(() => {
-    const comp = getComponentDetails(selectedComponent || "");
-    const displayLabel = comp?.purpose || "";
-    const majorRelease = comp?.majorRelease || false;
-    const DisplayComponent = comp?.element || null;
+  const { DisplayComponent, displayLabel, majorRelease, moduleName, expCAPLI } =
+    useMemo(() => {
+      const comp = getComponentDetails(selectedComponent || "");
+      const DisplayComponent = comp?.element || null;
+      const displayLabel = comp?.purpose || "";
+      const majorRelease = comp?.majorRelease || false;
+      const moduleName = comp?.module || null;
+      const expCAPLI =
+        comp?.experimentalComponentAsPerLearningImplementation || false;
 
-    return { DisplayComponent, displayLabel, majorRelease };
-  }, [selectedComponent]);
+      return {
+        DisplayComponent,
+        displayLabel,
+        majorRelease,
+        moduleName,
+        expCAPLI,
+      };
+    }, [selectedComponent]);
 
   return (
     <>
@@ -40,7 +51,44 @@ function App() {
         ))}
       </select>
       {selectedComponent && (
-        <label>
+        <span style={{ padding: "10px", fontWeight: "bolder" }}>
+          <span
+            style={{ padding: "10px", cursor: "pointer" }}
+            title="Previous Component"
+            onClick={() => {
+              setSelectedComponent(
+                (prev) => getNextNthOption(prev || "", -1)?.value || null
+              );
+            }}
+          >
+            {"<<"}
+          </span>
+          <span
+            style={{ padding: "10px", cursor: "pointer" }}
+            title="Next Component"
+            onClick={() => {
+              setSelectedComponent(
+                (prev) => getNextNthOption(prev || "", 1)?.value || null
+              );
+            }}
+          >
+            {">>"}
+          </span>
+        </span>
+      )}
+      {selectedComponent && (
+        <div style={{ whiteSpace: "pre-wrap" }}>
+          Module:{" "}
+          <b
+            style={{
+              paddingRight: "15px",
+              fontSize: "15px",
+              textTransform: "uppercase",
+            }}
+          >
+            {moduleName ? moduleName : "Missing Module name"}
+          </b> <br />
+          Experimental Component: {expCAPLI ? "Yes " : "No "} <br />
           <b
             style={{
               paddingRight: "10px",
@@ -49,10 +97,10 @@ function App() {
             }}
           >
             {majorRelease ? "Major Release" : "Minor Release"}
-          </b>
+          </b> <br />
           {displayLabel ||
             `Display label missing for selected component: ${selectedComponent}`}
-        </label>
+        </div>
       )}
 
       {/* Render the selected component */}

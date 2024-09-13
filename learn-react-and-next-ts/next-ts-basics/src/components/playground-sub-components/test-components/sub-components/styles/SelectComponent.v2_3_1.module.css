@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+.select {
+  width: 200px;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  appearance: none; /* Hide native dropdown appearance */
+  -webkit-appearance: none; /* Safari */
+  -moz-appearance: none; /* Firefox */
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+}
+
+/* Custom dropdown arrow */
+.select::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #555;
+}
+
+/* Max height for select dropdown */
+.select {
+  overflow-y: auto;
+  max-height: 50px; /* Limit the height of dropdown options */
+}
+
+/* Optional: Style the scrollbars for the dropdown */
+.select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.select::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 10px;
+}
+
+.select::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.selectedText {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}

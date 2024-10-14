@@ -18,7 +18,7 @@ import CustomButton from "../../common/components/CustomButton";
 import HtmlTextRendrer from "../../common/components/HtmlTextRenderer";
 import FloatingButton from "../../common/components/FloatingButton";
 import ToggleablePanel from "../../common/components/ToggleablePanel";
-import { SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
+import { SmartEditor, SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
 
 const TaskCard = ({
   task,
@@ -254,8 +254,31 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
   const [formData, setFormData] = useState({
     uniqueId: null,
     type: "comment",
-    description: "",
+    description: {
+      content: '',
+      textOutputType: "",
+      textInputType: "",
+    },
   });
+
+  const [formErrors, setFormErrors] = useState([]);
+  const [smartEditorError, setSmartEditorError] = useState(null);
+
+  const validateForm = () => {
+    const errors = [];
+
+    // if (!formData.name.trim()) {
+    //   errors.push("Name is required");
+    // }
+
+    if (smartEditorError) {
+      errors.push(smartEditorError);
+    }
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
 
   const handleEditorChange = (event, editor) => {
     const data = editor.getData();
@@ -268,7 +291,19 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
     }
   };
 
+  const handleSmartEditorChange = (smartContent) => {
+    setFormData(prev => ({ ...prev, description: smartContent }));
+  };
+
+  const handleSmartEditorError = (error) => {
+    setSmartEditorError(error);
+  };
+
   const saveNewComment = () => {
+
+    if (!validateForm()) {
+      return;
+    }
 
     if (formData?.uniqueId && formData?.uniqueId.trim().length > 0) {
       // update case
@@ -357,13 +392,30 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
                     {formData?.uniqueId ? "Edit " : "New "} comment
                   </label>
                   <div>
-                    <CKEditor
+                    {/* <CKEditor
                       id="description"
                       name="description"
                       editor={ClassicEditor}
                       data={formData.description}
                       onChange={handleEditorChange}
-                    />
+                    /> */}
+                    <SmartEditor
+                      preview={false}
+                      initialValue={formData.description}
+                      onChange={handleSmartEditorChange}
+                      onError={handleSmartEditorError} />
+                  </div>
+
+                  <div>
+                    {formErrors.length > 0 && (
+                      <div>
+                        {formErrors.map((error, index) => (
+                          <span key={index} style={styles.error}>
+                            {error}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <CustomButton
@@ -492,6 +544,12 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
 };
 
 const styles = {
+  error: {
+    color: "red",
+    fontSize: "14px",
+    marginTop: "5px",
+    display: "block",
+  },
   activityStyle: {
     //backgroundColor: "blue", // Grey background color
     //border: "1px solid #999", // Grey border

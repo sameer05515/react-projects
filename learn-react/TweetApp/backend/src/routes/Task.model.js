@@ -1,6 +1,7 @@
 // models/Task.js
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
+const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
 
 // const activitySchema = new mongoose.Schema({
 //   uniqueId: { type: String, default: uuidv4, unique: true },
@@ -19,7 +20,14 @@ const activitySchema = new mongoose.Schema({
   type: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
   updatedDate: { type: Date, default: Date.now },
-  description: { type: String, required: true },
+  description: {
+    type: smartContentSchema,
+    required: false,
+  },
+  // descr: {
+  //   type: smartContentSchema,
+  //   required: false,
+  // },
   userDetails: {
     id: { type: String, required: true },
     name: { type: String, required: true }
@@ -31,7 +39,8 @@ const taskSchema = new mongoose.Schema({
   uniqueId: { type: String, default: uuidv4, unique: true, },
   parentId: { type: String, default: '' },
   name: { type: String, required: true },
-  description: String,
+  // description: { type: String, required: false },
+  descriptions: [smartContentSchema],
   createdDate: { type: Date, default: Date.now, },
   updatedDate: { type: Date, default: Date.now, },
   tags: [String],

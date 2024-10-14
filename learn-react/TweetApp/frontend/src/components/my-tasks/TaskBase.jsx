@@ -255,28 +255,6 @@ const ViewTaskComp = () => {
     const nextTaskUniqueId = useSelector(selectNextTaskUniqueId);
     const prevTaskUniqueId = useSelector(selectPrevTaskUniqueId);
 
-    // const { nextTaskUniqueId, prevTaskUniqueId } = useSelector(
-    //     (state) => {
-    //         const flatList = [...state.tasks.flatData];
-    //         const selectedTaskUniqueId = state.tasks.selectedTaskUniqueId;
-    //         let nextTaskUniqueId = null;
-    //         let prevTaskUniqueId = null;
-    //         if (flatList && flatList.length > 0 && selectedTaskUniqueId) {
-    //             const dataLength = flatList.length;
-    //             const selectedIndex = flatList.findIndex(
-    //                 (t) => t.uniqueId === selectedTaskUniqueId
-    //             );
-    //             const nextIndex = (selectedIndex + dataLength + 1) % dataLength;
-    //             const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
-    //             nextTaskUniqueId =
-    //                 flatList[nextIndex].uniqueId;
-    //             prevTaskUniqueId =
-    //                 flatList[prevIndex].uniqueId;
-    //         }
-    //         return { nextTaskUniqueId, prevTaskUniqueId };
-    //     }
-    // );
-
     useEffect(() => {
         dispatch(fetchTags());
         dispatch(fetchPinnedItems());

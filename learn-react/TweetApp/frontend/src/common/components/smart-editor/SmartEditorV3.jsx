@@ -31,13 +31,13 @@ const inputOutputMapping = {
     SKELETON: { textOutputType: availableOutputTypes.SKELETON, textInputType: availableInputTypes.textArea },
 };
 
-const getKeyName = (textOutputType, textInputType) => 
+const getKeyName = (textOutputType, textInputType) =>
     Object.keys(inputOutputMapping).find(
         key => inputOutputMapping[key].textOutputType === textOutputType &&
-               inputOutputMapping[key].textInputType === textInputType
+            inputOutputMapping[key].textInputType === textInputType
     ) || "HTML_OUTPUT_FROM_RAW_TEXT";
 
-const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
+const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => { }, onError = () => { } }) => {
     const textareaRef = useRef(null);
 
     const [selectedOutputType, setSelectedOutputType] = useState(
@@ -137,7 +137,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
 
             {showPreview && <SmartPreviewer data={formData} />}
             {/* <JSONDataViewer metadata={formData} title="VandanaKiMaaKaBhosda"/> */}
-            
+
         </div>
     );
 };
@@ -177,7 +177,7 @@ const SmartPreviewer = ({ data }) => {
         }
         if (textOutputType === availableOutputTypes.SKELETON && content) {
             const { data: skeletonData, isValid, message } = buildTree(content);
-            if (!isValid) setErrorMessage(message||'Missing error message');
+            if (!isValid) setErrorMessage(message || 'Missing error message');
             else setResultData([...addUniqueIdsToTree(skeletonData)]);
         }
     }, [content, textOutputType]);
@@ -193,9 +193,13 @@ const SmartPreviewer = ({ data }) => {
                     <span style={{ color: "red" }}>{errorMessage}</span>
                 </div>
             )}
-            {textOutputType === availableOutputTypes.SKELETON && resultData && resultData.length>0 &&  (
+            {textOutputType === availableOutputTypes.SKELETON && resultData && resultData.length > 0 && (
                 <>
-                    <Tree data={resultData} expandAll={true}/>
+                    <Tree data={resultData} expandAll={true} renderNode={(node) => (
+                        <MarkdownComponent
+                            markdownText={node.name || "**tree node name is missing!**"}
+                        />
+                    )} />
                     <span style={{ color: "red" }}>{errorMessage}</span>
                     {/* <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview"/> */}
                 </>

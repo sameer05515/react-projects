@@ -37,7 +37,7 @@ async function verifyTagUpdates() {
 
 // Main function to run all steps sequentially
 async function main() {
-    await mongoose.connect('mongodb://localhost:27017/mongodb_test', {
+    await mongoose.connect('mongodb://localhost:27017/mongodb_testiii', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });

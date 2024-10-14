@@ -1,24 +1,23 @@
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useState } from "react";
-import ReactHtmlParser from "react-html-parser";
 import { useDispatch } from "react-redux";
+import CustomButton from "../../common/components/CustomButton";
+import FloatingButton from "../../common/components/FloatingButton";
+import HoverableSpan from "../../common/components/HoverableSpan";
+import ToggleablePanel from "../../common/components/ToggleablePanel";
+import {
+  SmartEditor,
+  SmartPreviewer,
+} from "../../common/components/smart-editor/SmartEditorV3";
+import {
+  activityList,
+  getStatusLabelForId,
+} from "../../common/constants/globalConstants";
 import {
   getUserIdFromToken,
   getUserNameFromToken,
 } from "../../common/service/authService";
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
-import HoverableSpan from "../../common/components/HoverableSpan";
-import {
-  activityList,
-  getStatusLabelForId,
-} from "../../common/constants/globalConstants";
 import { updateTask } from "../../redux/slices/taskSlice";
-import CustomButton from "../../common/components/CustomButton";
-import HtmlTextRendrer from "../../common/components/HtmlTextRenderer";
-import FloatingButton from "../../common/components/FloatingButton";
-import ToggleablePanel from "../../common/components/ToggleablePanel";
-import { SmartEditor, SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
 
 const TaskCard = ({
   task,
@@ -31,7 +30,7 @@ const TaskCard = ({
   onAddSubTask = () => { },
   onChildTaskClick = () => { },
   onPinTask = () => { },
-  onLinkedTagSelection = () => { }
+  onLinkedTagSelection = () => { },
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = task.tags?.map((uniqueId) =>
@@ -105,7 +104,7 @@ const TaskCard = ({
             style={{ ...styles.tagStyle, marginRight: "10px" }}
             onClick={() => handlePinTask(isPinned)}
           >
-            {isPinned ? 'Un-Pin' : 'Pin'} task
+            {isPinned ? "Un-Pin" : "Pin"} task
           </CustomButton>
 
           <FloatingButton
@@ -119,7 +118,11 @@ const TaskCard = ({
               <ul style={styles.ulStyle}>
                 {pinnedTasks.map((t) => (
                   <li style={styles.liStyles} key={t.uniqueId}>
-                    <HoverableSpan onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}>
+                    <HoverableSpan
+                      onClick={() =>
+                        onChildTaskClick({ uniqueId: t.linkedUniqueId })
+                      }
+                    >
                       {t.title}
                     </HoverableSpan>
                   </li>
@@ -138,7 +141,8 @@ const TaskCard = ({
               <b>Created:</b> {formatDateToDDMMMYYYYWithTime(task.createdDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
-              <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
+              <b>Last updated:</b>{" "}
+              {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
             </span>
             <span style={{ marginRight: "10px" }}>
               <strong>Unique ID:</strong> {task.uniqueId}
@@ -170,13 +174,14 @@ const TaskCard = ({
             {/* <b>Descriptions:-</b> <br />
             {ReactHtmlParser(task.description || "")} */}
             <ToggleablePanel showContent={true} title={"Descriptions:-"}>
-              {
-                task.descriptions?.map((descr, idx) => (
-                  <ToggleablePanel showContent={task.descriptions.length === 1} title={`Decription # ${idx + 1}`}>
-                    <SmartPreviewer data={descr} />
-                  </ToggleablePanel>
-                ))
-              }
+              {task.descriptions?.map((descr, idx) => (
+                <ToggleablePanel
+                  showContent={task.descriptions.length === 1}
+                  title={`Decription # ${idx + 1}`}
+                >
+                  <SmartPreviewer data={descr} />
+                </ToggleablePanel>
+              ))}
             </ToggleablePanel>
           </div>
         )}
@@ -195,7 +200,11 @@ const TaskCard = ({
             {filteredTags.map(
               (tag) =>
                 tag && (
-                  <HoverableSpan style={styles.tagStyle} key={tag._id} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
+                  <HoverableSpan
+                    style={styles.tagStyle}
+                    key={tag._id}
+                    onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+                  >
                     {tag.title}
                   </HoverableSpan>
                 )
@@ -255,7 +264,7 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
     uniqueId: null,
     type: "comment",
     description: {
-      content: '',
+      content: "",
       textOutputType: "",
       textInputType: "",
     },
@@ -292,7 +301,7 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
   };
 
   const handleSmartEditorChange = (smartContent) => {
-    setFormData(prev => ({ ...prev, description: smartContent }));
+    setFormData((prev) => ({ ...prev, description: smartContent }));
   };
 
   const handleSmartEditorError = (error) => {
@@ -300,7 +309,6 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
   };
 
   const saveNewComment = () => {
-
     if (!validateForm()) {
       return;
     }
@@ -403,7 +411,8 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
                       preview={false}
                       initialValue={formData.description}
                       onChange={handleSmartEditorChange}
-                      onError={handleSmartEditorError} />
+                      onError={handleSmartEditorError}
+                    />
                   </div>
 
                   <div>
@@ -483,7 +492,10 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
                     }}
                   >
                     {/* <HtmlTextRendrer htmlString={activity.description} /> */}
-                    <ToggleablePanel showContent={true} title={`Activity # ${idxx + 1}`}>
+                    <ToggleablePanel
+                      showContent={true}
+                      title={`Activity # ${idxx + 1}`}
+                    >
                       <SmartPreviewer data={activity.description} />
                     </ToggleablePanel>
                     {activity.userDetails.id === getUserIdFromToken() && (

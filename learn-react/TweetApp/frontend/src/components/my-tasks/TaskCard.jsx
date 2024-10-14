@@ -19,239 +19,6 @@ import {
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
 import { updateTask } from "../../redux/slices/taskSlice";
 
-const TaskCard = ({
-  task,
-  tags = [],
-  showDescription = false,
-  pinnedTasks = [],
-  isPinned = false,
-  onEdit = () => { },
-  onTaskTraversal = () => { },
-  onAddSubTask = () => { },
-  onChildTaskClick = () => { },
-  onPinTask = () => { },
-  onLinkedTagSelection = () => { },
-}) => {
-  const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = task.tags?.map((uniqueId) =>
-    tags.find((tag) => tag.uniqueId === uniqueId)
-  );
-
-  const handleEdit = () => {
-    // console.log(`Edit : ${JSON.stringify(task)}`);
-    // console.log(`typeof onEdit: ${typeof onEdit}`);
-    onEdit(task);
-  };
-  const traverseTask = (increment = 0) => {
-    // console.log(`Soon task will traverse and show data with increment: ${increment}`);
-    onTaskTraversal(increment);
-  };
-
-  const handleAddSubTask = () => {
-    onAddSubTask(task);
-  };
-
-  const handlePinTask = (isPinned) => {
-    onPinTask(task, isPinned);
-  };
-
-  const handleLinkedTagSelection = (linkedTagUID) => {
-    onLinkedTagSelection(linkedTagUID);
-  };
-
-  return (
-    <>
-      <div>
-        <div>
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={() => traverseTask(-1)}
-          >
-            Previous
-          </CustomButton>
-
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={handleEdit}
-          >
-            Edit
-          </CustomButton>
-          {!showDescr && (
-            <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
-              onClick={() => setShowDescr(true)}
-            >
-              Show Description
-            </CustomButton>
-          )}
-          {showDescr && (
-            <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
-              onClick={() => setShowDescr(false)}
-            >
-              Hide Description
-            </CustomButton>
-          )}
-
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={() => traverseTask(1)}
-          >
-            Next
-          </CustomButton>
-
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={() => handlePinTask(isPinned)}
-          >
-            {isPinned ? "Un-Pin" : "Pin"} task
-          </CustomButton>
-
-          <FloatingButton
-            buttonStyle={{ ...styles.tagStyle, marginRight: "10px" }}
-            buttonText={"Show Pinned Tasks"}
-          >
-            <div style={{ padding: "10px" }}>
-              <b>List of all pinned Tasks:-</b>
-            </div>
-            {pinnedTasks && pinnedTasks.length > 0 && (
-              <ul style={styles.ulStyle}>
-                {pinnedTasks.map((t) => (
-                  <li style={styles.liStyles} key={t.uniqueId}>
-                    <HoverableSpan
-                      onClick={() =>
-                        onChildTaskClick({ uniqueId: t.linkedUniqueId })
-                      }
-                    >
-                      {t.title}
-                    </HoverableSpan>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </FloatingButton>
-        </div>
-        <div>
-          <h2>{task.name}</h2>
-          <div style={styles.datesStyle}>
-            <span style={{ marginRight: "10px" }}>
-              <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
-            </span>
-            <span style={{ marginRight: "10px" }}>
-              <b>Created:</b> {formatDateToDDMMMYYYYWithTime(task.createdDate)}
-            </span>
-            <span style={{ marginRight: "10px" }}>
-              <b>Last updated:</b>{" "}
-              {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
-            </span>
-            <span style={{ marginRight: "10px" }}>
-              <strong>Unique ID:</strong> {task.uniqueId}
-            </span>
-            <span style={{ marginRight: "10px" }}>
-              <strong>Parent ID:</strong> {task.parentId}
-            </span>
-          </div>
-        </div>
-        <div style={{ margin: "10px 0" }}>
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={handleAddSubTask}
-          >
-            Add sub task
-          </CustomButton>
-        </div>
-
-        {showDescr && (
-          <div
-            style={{
-              backgroundColor: "cornsilk",
-              border: "1px solid #999", // Grey border
-              padding: "2px 5px", // Adjust padding as needed
-              borderRadius: "4px",
-              marginBottom: "10px",
-            }}
-          >
-            {/* <b>Descriptions:-</b> <br />
-            {ReactHtmlParser(task.description || "")} */}
-            <ToggleablePanel showContent={true} title={"Descriptions:-"}>
-              {task.descriptions?.map((descr, idx) => (
-                <ToggleablePanel
-                  showContent={task.descriptions.length === 1}
-                  title={`Decription # ${idx + 1}`}
-                >
-                  <SmartPreviewer data={descr} />
-                </ToggleablePanel>
-              ))}
-            </ToggleablePanel>
-          </div>
-        )}
-
-        {filteredTags && filteredTags.length > 0 && (
-          <div
-            style={{
-              backgroundColor: "lemonchiffon",
-              border: "1px solid #999", // Grey border
-              padding: "2px 5px", // Adjust padding as needed
-              borderRadius: "4px",
-              marginBottom: "10px",
-            }}
-          >
-            <b>Tags:-</b> <br />
-            {filteredTags.map(
-              (tag) =>
-                tag && (
-                  <HoverableSpan
-                    style={styles.tagStyle}
-                    key={tag._id}
-                    onClick={() => handleLinkedTagSelection(tag.uniqueId)}
-                  >
-                    {tag.title}
-                  </HoverableSpan>
-                )
-            )}
-          </div>
-        )}
-
-        {task.children && task.children.length > 0 && (
-          <div
-            style={{
-              backgroundColor: "lightgoldenrodyellow",
-              border: "1px solid #999", // Grey border
-              padding: "2px 5px", // Adjust padding as needed
-              borderRadius: "4px",
-              marginBottom: "10px",
-            }}
-          >
-            <b>Child Tasks:-</b> <br />
-            {/* {task.children && task.children.length > 0 && ( */}
-            <ul>
-              {task.children.map((t) => (
-                <li key={t.uniqueId}>
-                  <span onClick={() => onChildTaskClick(t)}>{t.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <ActivityComp task={task} />
-
-        <div>
-          <CustomButton
-            style={{ ...styles.tagStyle, marginRight: "10px" }}
-            onClick={() => traverseTask(-1)}
-          >
-            Previous
-          </CustomButton>
-          <CustomButton style={styles.tagStyle} onClick={() => traverseTask(1)}>
-            Next
-          </CustomButton>
-        </div>
-      </div>
-    </>
-  );
-};
-
 const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
   const dispatch = useDispatch();
   const [selectedActivity, setSelectedActivity] = useState(activityList[1]);
@@ -259,7 +26,6 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
   const [tActivities, setTActivities] = useState(
     task?.activities ? task.activities : []
   );
-  // const [selectedtActivity, setSelectedtActivity] = useState(null);
   const [formData, setFormData] = useState({
     uniqueId: null,
     type: "comment",
@@ -269,35 +35,16 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
       textInputType: "",
     },
   });
-
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
 
   const validateForm = () => {
     const errors = [];
-
-    // if (!formData.name.trim()) {
-    //   errors.push("Name is required");
-    // }
-
     if (smartEditorError) {
       errors.push(smartEditorError);
     }
-
     setFormErrors(errors);
-
     return Object.keys(errors).length === 0;
-  };
-
-  const handleEditorChange = (event, editor) => {
-    const data = editor.getData();
-    setFormData({ ...formData, description: data });
-  };
-
-  const handleSpanClick = (clickedItem) => {
-    if (clickedItem.active) {
-      setSelectedActivity(clickedItem);
-    }
   };
 
   const handleSmartEditorChange = (smartContent) => {
@@ -314,18 +61,11 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
     }
 
     if (formData?.uniqueId && formData?.uniqueId.trim().length > 0) {
-      // update case
       let activityToBeUpdated = tActivities?.find(
         (a) => a.uniqueId === formData.uniqueId
       );
       activityToBeUpdated.description = formData.description;
-      // setTActivities((prev)=>{
-      //   let activityToBeUpdated= prev?.find(a=> a.uniqueId===formData.uniqueId);
-      //   activityToBeUpdated.description= formData.description;
-      //   return prev;
-      // })
     } else {
-      // save case
       setTActivities((prev) => [
         ...prev,
         {
@@ -359,231 +99,350 @@ const ActivityComp = ({ task, onTaskActivitiesEdit = () => { } }) => {
     );
 
     setShowForm(false);
-
-    // setSelectedtActivity(null);
-    setFormData((prev) => {
-      return {
-        uniqueId: "",
-        type: "comment",
-        description: "",
-      };
-    });
+    setFormData({ uniqueId: "", type: "comment", description: "" });
   };
 
   const populateDetails = () => {
     if (selectedActivity.id === "1") {
-      return (
-        <>
-          <div>
-            <div>list of all histories</div>
-          </div>
-        </>
-      );
+      return <div>list of all histories</div>;
     } else if (selectedActivity.id === "2") {
       return (
         <>
-          <div>
-            {/* <div>list of old comments</div> */}
-            {!showForm && (
+          {!showForm && (
+            <CustomButton
+              style={styles.tagStyle}
+              onClick={() => setShowForm(true)}
+            >
+              Add new comment
+            </CustomButton>
+          )}
+
+          {showForm && (
+            <>
+              <label htmlFor="description">
+                {formData?.uniqueId ? "Edit " : "New "} comment
+              </label>
+              <SmartEditor
+                preview={false}
+                initialValue={formData.description}
+                onChange={handleSmartEditorChange}
+                onError={handleSmartEditorError}
+              />
+
+              {formErrors.length > 0 && (
+                <div>
+                  {formErrors.map((error, index) => (
+                    <span key={index} style={styles.error}>
+                      {error}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <CustomButton style={styles.tagStyle} onClick={saveNewComment}>
+                {formData?.uniqueId ? "Edit " : "Save "}
+              </CustomButton>
               <CustomButton
                 style={styles.tagStyle}
-                onClick={() => setShowForm(true)}
+                onClick={() => {
+                  setShowForm(false);
+                  setFormData({
+                    uniqueId: "",
+                    type: "comment",
+                    description: "",
+                  });
+                }}
               >
-                Add new comment
+                Cancel
               </CustomButton>
-            )}
-
-            {showForm && (
-              <>
-                <div>
-                  <label htmlFor="description">
-                    {formData?.uniqueId ? "Edit " : "New "} comment
-                  </label>
-                  <div>
-                    {/* <CKEditor
-                      id="description"
-                      name="description"
-                      editor={ClassicEditor}
-                      data={formData.description}
-                      onChange={handleEditorChange}
-                    /> */}
-                    <SmartEditor
-                      preview={false}
-                      initialValue={formData.description}
-                      onChange={handleSmartEditorChange}
-                      onError={handleSmartEditorError}
-                    />
-                  </div>
-
-                  <div>
-                    {formErrors.length > 0 && (
-                      <div>
-                        {formErrors.map((error, index) => (
-                          <span key={index} style={styles.error}>
-                            {error}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <CustomButton
-                      style={styles.tagStyle}
-                      onClick={saveNewComment}
-                    >
-                      {formData?.uniqueId ? "Edit " : "Save "}
-                    </CustomButton>
-
-                    <CustomButton
-                      style={styles.tagStyle}
-                      onClick={() => {
-                        setShowForm(false);
-                        // setSelectedtActivity(null);
-                        setFormData((prev) => {
-                          return {
-                            uniqueId: "",
-                            type: "comment",
-                            description: "",
-                          };
-                        });
-                      }}
-                    >
-                      Cancel
-                    </CustomButton>
-                  </div>
+            </>
+          )}
+          {tActivities &&
+            tActivities.length > 0 &&
+            tActivities.map((activity, idxx) => (
+              <div key={activity.uniqueId} style={styles.activityCard}>
+                <div style={styles.datesStyle}>
+                  <strong style={styles.userName}>
+                    {activity.userDetails.name}
+                  </strong>
+                  <span style={styles.dateSpan}>
+                    <strong>Created:</strong>{" "}
+                    {formatDateToDDMMMYYYYWithTime(activity.createdDate)}
+                  </span>
+                  <span>
+                    <strong>Updated:</strong>{" "}
+                    {formatDateToDDMMMYYYYWithTime(activity.updatedDate)}
+                  </span>
                 </div>
-              </>
-            )}
-            {tActivities &&
-              tActivities.length > 0 &&
-              tActivities.map((activity, idxx) => (
-                <div
-                  style={{
-                    backgroundColor: "yellow",
-                    border: "1px solid #999", // Grey border
-                    padding: "2px 5px", // Adjust padding as needed
-                    borderRadius: "4px",
-                    marginBottom: "10px",
-                    marginTop: "10px",
-                  }}
-                  key={activity.uniqueId}
+                <ToggleablePanel
+                  showContent={true}
+                  title={`Activity # ${idxx + 1}`}
                 >
-                  <div style={styles.datesStyle}>
-                    <strong style={{ fontSize: "15px", marginRight: "10px" }}>
-                      {activity.userDetails.name}
-                    </strong>
-                    <span style={{ marginRight: "10px" }}>
-                      <strong>Created:</strong>{" "}
-                      {formatDateToDDMMMYYYYWithTime(activity.createdDate)}
-                    </span>
-                    <span>
-                      <strong>Updated:</strong>{" "}
-                      {formatDateToDDMMMYYYYWithTime(activity.updatedDate)}
-                    </span>
-                  </div>
-
-                  <div
-                    style={{
-                      //backgroundColor: "yellow",
-                      //border: "1px solid #999", // Grey border
-                      padding: "10px 10px", // Adjust padding as needed
-                      //borderRadius: "4px",
-                      marginBottom: "10px",
+                  <SmartPreviewer data={activity.description} />
+                </ToggleablePanel>
+                {activity.userDetails.id === getUserIdFromToken() && (
+                  <CustomButton
+                    style={styles.tagStyle}
+                    onClick={() => {
+                      setShowForm(true);
+                      setFormData({ ...activity });
                     }}
                   >
-                    {/* <HtmlTextRendrer htmlString={activity.description} /> */}
-                    <ToggleablePanel
-                      showContent={true}
-                      title={`Activity # ${idxx + 1}`}
-                    >
-                      <SmartPreviewer data={activity.description} />
-                    </ToggleablePanel>
-                    {activity.userDetails.id === getUserIdFromToken() && (
-                      <CustomButton
-                        style={styles.tagStyle}
-                        onClick={() => {
-                          setShowForm(true);
-                          setFormData((prev) => {
-                            return {
-                              ...activity,
-                            };
-                          });
-                        }}
-                      >
-                        Edit
-                      </CustomButton>
-                    )}
-                  </div>
-                </div>
-              ))}
-          </div>
+                    Edit
+                  </CustomButton>
+                )}
+              </div>
+            ))}
         </>
       );
     }
   };
 
   return (
-    <>
-      <div
-        style={{
-          backgroundColor: "lightgoldenrodyellow",
-          border: "1px solid #999", // Grey border
-          padding: "2px 5px", // Adjust padding as needed
-          borderRadius: "4px",
-          marginBottom: "10px",
-        }}
-      >
-        <b>Activity</b> <br />
-        {/* {JSON.stringify(formData)} */}
-        <div>
-          Show
-          {activityList.map((a) => (
-            <HoverableSpan
-              key={a.id}
-              style={styles.activityStyle}
-              isSelected={selectedActivity.id === a.id}
-              isHoverable={a.active}
-              onClick={() => handleSpanClick(a)}
-            >
-              <b>{a.label}</b>
-            </HoverableSpan>
-          ))}
-        </div>
-        {populateDetails()}
+    <div style={styles.activityContainer}>
+      <b>Activity</b> <br />
+      <div>
+        Show
+        {activityList.map((a) => (
+          <HoverableSpan
+            key={a.id}
+            style={styles.activityStyle}
+            isSelected={selectedActivity.id === a.id}
+            isHoverable={a.active}
+            onClick={() => setSelectedActivity(a)}
+          >
+            <b>{a.label}</b>
+          </HoverableSpan>
+        ))}
       </div>
+      {populateDetails()}
+    </div>
+  );
+};
+
+const TaskCard = ({
+  task,
+  tags = [],
+  showDescription = false,
+  pinnedTasks = [],
+  isPinned = false,
+  onEdit = () => { },
+  onTaskTraversal = () => { },
+  onAddSubTask = () => { },
+  onChildTaskClick = () => { },
+  onPinTask = () => { },
+  onLinkedTagSelection = () => { },
+}) => {
+  const [showDescr, setShowDescr] = useState(showDescription);
+  const filteredTags = task.tags?.map((uniqueId) =>
+    tags.find((tag) => tag.uniqueId === uniqueId)
+  );
+
+  const handleTraverse = (increment) => onTaskTraversal(increment);
+  const handleDescriptionToggle = () => setShowDescr((prev) => !prev);
+  const handlePinTask = () => onPinTask(task, isPinned);
+  const handleLinkedTagSelection = (linkedTagUID) =>
+    onLinkedTagSelection(linkedTagUID);
+
+  return (
+    <>
+      <TaskButtons
+        onEdit={() => onEdit(task)}
+        showDescr={showDescr}
+        handleDescriptionToggle={handleDescriptionToggle}
+        handleTraverse={handleTraverse}
+        handlePinTask={handlePinTask}
+        isPinned={isPinned}
+        pinnedTasks={pinnedTasks}
+        onChildTaskClick={onChildTaskClick}
+      />
+
+      <TaskDetails task={task} />
+
+      <CustomButton style={styles.tagStyle} onClick={() => onAddSubTask(task)}>
+        Add sub task
+      </CustomButton>
+
+      {showDescr && <TaskDescription task={task} />}
+
+      {filteredTags.length > 0 && (
+        <TaskTags
+          tags={filteredTags}
+          handleLinkedTagSelection={handleLinkedTagSelection}
+        />
+      )}
+
+      {task.children?.length > 0 && (
+        <TaskChildren
+          children={task.children}
+          onChildTaskClick={onChildTaskClick}
+        />
+      )}
+
+      <ActivityComp task={task} />
     </>
   );
 };
 
+// Extracted components
+const TaskButtons = ({
+  onEdit,
+  showDescr,
+  handleDescriptionToggle,
+  handleTraverse,
+  handlePinTask,
+  isPinned,
+  pinnedTasks,
+  onChildTaskClick,
+}) => (
+  <div>
+    <CustomButton style={styles.tagStyle} onClick={() => handleTraverse(-1)}>
+      Previous
+    </CustomButton>
+    <CustomButton style={styles.tagStyle} onClick={onEdit}>
+      Edit
+    </CustomButton>
+    <CustomButton style={styles.tagStyle} onClick={handleDescriptionToggle}>
+      {showDescr ? "Hide Description" : "Show Description"}
+    </CustomButton>
+    <CustomButton style={styles.tagStyle} onClick={() => handleTraverse(1)}>
+      Next
+    </CustomButton>
+    <CustomButton style={styles.tagStyle} onClick={handlePinTask}>
+      {isPinned ? "Un-Pin" : "Pin"} task
+    </CustomButton>
+
+    <FloatingButton
+      buttonStyle={styles.tagStyle}
+      buttonText={"Show Pinned Tasks"}
+    >
+      <div style={{ padding: "10px" }}>
+        <b>List of all pinned Tasks:</b>
+      </div>
+      {pinnedTasks.length > 0 && (
+        <ul style={styles.ulStyle}>
+          {pinnedTasks.map((t) => (
+            <li style={styles.liStyles} key={t.uniqueId}>
+              <HoverableSpan
+                onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}
+              >
+                {t.title}
+              </HoverableSpan>
+            </li>
+          ))}
+        </ul>
+      )}
+    </FloatingButton>
+  </div>
+);
+
+const TaskDetails = ({ task }) => (
+  <div>
+    <h2>{task.name}</h2>
+    <div style={styles.datesStyle}>
+      <span>
+        <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
+      </span>
+      <span>
+        <b>Created:</b> {formatDateToDDMMMYYYYWithTime(task.createdDate)}
+      </span>
+      <span>
+        <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(task.updatedDate)}
+      </span>
+      <span>
+        <strong>Unique ID:</strong> {task.uniqueId}
+      </span>
+      <span>
+        <strong>Parent ID:</strong> {task.parentId}
+      </span>
+    </div>
+  </div>
+);
+
+const TaskDescription = ({ task }) => (
+  <div style={styles.descriptionStyle}>
+    <ToggleablePanel showContent={true} title={"Descriptions:"}>
+      {task.descriptions?.map((descr, idx) => (
+        <ToggleablePanel
+          showContent={task.descriptions.length === 1}
+          title={`Description # ${idx + 1}`}
+          key={idx}
+        >
+          <SmartPreviewer data={descr} />
+        </ToggleablePanel>
+      ))}
+    </ToggleablePanel>
+  </div>
+);
+
+const TaskTags = ({ tags, handleLinkedTagSelection }) => (
+  <div style={styles.tagContainerStyle}>
+    <b>Tags:</b>
+    {tags.map(
+      (tag) =>
+        tag && (
+          <HoverableSpan
+            style={styles.tagStyle}
+            key={tag._id}
+            onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+          >
+            {tag.title}
+          </HoverableSpan>
+        )
+    )}
+  </div>
+);
+
+const TaskChildren = ({ children, onChildTaskClick }) => (
+  <div style={styles.childrenContainerStyle}>
+    <b>Child Tasks:</b>
+    <ul>
+      {children.map((t) => (
+        <li key={t.uniqueId}>
+          <span onClick={() => onChildTaskClick(t)}>{t.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
+  error: { color: "red", fontSize: "14px", marginTop: "5px", display: "block" },
   activityStyle: {
-    //backgroundColor: "blue", // Grey background color
-    //border: "1px solid #999", // Grey border
-    padding: "2px 5px", // Adjust padding as needed
-    fontSize: "12px", // Small font size
-    borderRadius: "4px", // Rounded corners
+    padding: "2px 5px",
+    fontSize: "12px",
+    borderRadius: "4px",
     marginRight: "10px",
     marginLeft: "10px",
   },
   tagStyle: {
-    backgroundColor: "#ccc", // Grey background color
-    border: "1px solid #999", // Grey border
-    padding: "2px 5px", // Adjust padding as needed
-    fontSize: "12px", // Small font size
-    borderRadius: "4px", // Rounded corners
+    backgroundColor: "#ccc",
+    border: "1px solid #999",
+    padding: "2px 5px",
+    fontSize: "12px",
+    borderRadius: "4px",
     marginRight: "10px",
   },
-  datesStyle: {
-    // padding: "10px", // Adjust padding as needed
-    fontSize: "12px", // Small font size
-    borderRadius: "4px", // Rounded corners
-    // margin: "10px",
+  datesStyle: { fontSize: "12px", borderRadius: "4px" },
+  descriptionStyle: {
+    backgroundColor: "cornsilk",
+    border: "1px solid #999",
+    padding: "2px 5px",
+    borderRadius: "4px",
+    marginBottom: "10px",
+  },
+  tagContainerStyle: {
+    backgroundColor: "lemonchiffon",
+    border: "1px solid #999",
+    padding: "2px 5px",
+    borderRadius: "4px",
+    marginBottom: "10px",
+  },
+  childrenContainerStyle: {
+    backgroundColor: "lightgoldenrodyellow",
+    border: "1px solid #999",
+    padding: "2px 5px",
+    borderRadius: "4px",
+    marginBottom: "10px",
   },
 };
 

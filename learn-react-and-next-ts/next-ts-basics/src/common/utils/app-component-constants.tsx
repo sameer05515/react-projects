@@ -58,6 +58,7 @@ import GraphNodesViewerDashboardV1_0_0 from "@/components/playground-sub-compone
 import SPPTableDashboardV1_0_0 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_0";
 import SPPTableDashboardV1_0_1 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_1";
 import SPPTableDashboardV1_0_2 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_2";
+import SPPTableDashboardV1_0_3 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_3";
 
 export enum ComponentModules {
   TestingPurpose = "Testing Purpose",
@@ -904,6 +905,49 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
             - [Planned] - Support responsive design to ensure table works across different devices.
             - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
             - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+
+            - [Planned] - Render SPPTable (V1_0_2) from generated JSON Data from yaml text, entered in text area.
+
+            - [Planned] - Testing various scenarios and put their results
+              - [Completed]: [V1_0_2]: - If null or undefined ComparisonDataType data passed, SPPTable should show an error message
+              - [Planned] - Identify more error scenarios and fix them
+    `,
+    majorRelease: false,
+    module: ComponentModules.NewComponentDesign_SPPTable,
+  },
+  SPPTableDashboardV1_0_3:{
+    element: SPPTableDashboardV1_0_3,
+    purpose: `
+        ACHIEVEMENTS AT A GLANCE IN THIS VERSION
+        - Rendered dynamic yaml text to 'SPPTableV1_0_2', post transforming it to JSON
+
+
+        Tasks status in current version 'SPPTableV1_0_2' :
+            - [Completed][V1_0_0] - Implement a basic table component.
+            - [Planned] - Enhance it further to meet the specified targets.
+              - [Planned] - Common Components Extraction
+                - [Completed]: [V1_0_0]: TableHeaderV1_0_0: A reusable component for rendering table headers.
+                - [Completed]: [V1_0_0]: TableRowV1_0_0: A reusable component for rendering each row.
+                - [Planned] TableCell: A reusable component for rendering each row.
+              - [Planned][V1_0_0] - Styles: A separate object for holding the common styles. 
+                - [Completed][V1_0_0] created a file 'reusable-comparison-component/common/styles/styles_v1_0_0.tsx'
+                - [Planned] - create styles object for subsequent component evolution
+              - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
+                - [Completed][V1_0_0] - Data extracted and put to a common 'reusable-comparison-component/common/data/data_v1_0_0.tsx' file
+                - [Completed]: [V1_0_1]: - upgraded to 'data_v1_0_1.tsx' to hold multiple difference objects. changed hardcoded 'ArrayList' and 'LinkedList' headers to general 'left' and 'right' in 'CDRowItemType' type
+                - [Completed]: [V1_0_2]: - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
+                - [Completed]: [V1_0_2]: - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+            - [Planned] - Add a context, to pass common configurations. This way we can refrain from uneccesary 'prop-drilling'
+              - [Completed]: [V1_0_2]: Added initial version of context support.
+              - [Planned]: Explore more areas where context can be useful
+            - [Planned] - Add support for validation in editable cells (optional).
+            - [Planned] - Include export and import options for the table data (optional).
+            - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            - [Planned] - Support responsive design to ensure table works across different devices.
+            - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+
+            - [Planned] - Render SPPTable (V1_0_2) from generated JSON Data from yaml text, entered in text area.
 
             - [Planned] - Testing various scenarios and put their results
               - [Completed]: [V1_0_2]: - If null or undefined ComparisonDataType data passed, SPPTable should show an error message

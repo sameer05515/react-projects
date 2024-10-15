@@ -12,39 +12,171 @@ export type ComparisonDataType<T> = {
   differences: CDRowItemType<T>[];
 };
 
-// Sample comparison data for String vs StringBuffer vs StringBuilder
-export const comparisonData: ComparisonDataType<string> = {
-  uniqueId: "1",
-  title: "Comparison: String vs StringBuffer vs StringBuilder",
-  headers: ["String", "StringBuffer", "StringBuilder"],
+/** Generalized comparison data for "ArrayList vs LinkedList" */
+const comparison_ArrayListVSLinkedList: ComparisonDataType<string> = {
+  uniqueId: "Comparison_ArrayListVSLinkedList",
+  title: "Comparison: ArrayList vs LinkedList",
+  headers: ["ArrayList", "LinkedList"],
   differences: [
     {
-      aspect: "Mutability",
-      values: ["Immutable", "Mutable", "Mutable"],
+      aspect: "Underlying Data Structure",
+      values: ["Resizable array", "Doubly linked list"],
     },
     {
-      aspect: "Thread Safety",
+      aspect: "Access Time (get())",
       values: [
-        "Thread-safe by default",
-        "Thread-safe, synchronized methods",
-        "Not thread-safe",
+        "O(1) - Fast random access due to direct indexing",
+        "O(n) - Sequential access is required",
       ],
     },
     {
-      aspect: "Performance",
+      aspect: "Insertion Time (add())",
       values: [
-        "Slower for multiple concatenations",
-        "Slower due to synchronization overhead",
-        "Faster in single-threaded environments",
+        "O(n) - Requires shifting elements when inserting in the middle or beginning",
+        "O(1) - Efficient insertion at the beginning or middle",
+      ],
+    },
+    {
+      aspect: "Deletion Time (remove())",
+      values: [
+        "O(n) - Requires shifting elements when removing from the middle or beginning",
+        "O(1) - Efficient removal from the beginning or middle",
+      ],
+    },
+    {
+      aspect: "Memory Usage",
+      values: [
+        "Less memory overhead as it only stores the elements",
+        "More memory overhead due to storing node pointers",
       ],
     },
     {
       aspect: "Use Case",
       values: [
-        "For constant, unchanging string values",
-        "For multi-threaded string manipulations",
-        "For single-threaded, high-performance string manipulations",
+        "Better for frequent access operations",
+        "Better for frequent insertion and deletion operations",
       ],
     },
   ],
 };
+
+/** Generalized comparison data for "Set vs List" */
+const comparison_SetVSList: ComparisonDataType<string> = {
+  uniqueId: "Comparison_SetVSList",
+  title: "Comparison: Set vs List",
+  headers: ["Set", "List"],
+  differences: [
+    {
+      aspect: "Duplicates",
+      values: ["No duplicates allowed", "Allows duplicates"],
+    },
+    {
+      aspect: "Order",
+      values: ["No guaranteed order", "Maintains insertion order"],
+    },
+    {
+      aspect: "Access Time",
+      values: [
+        "O(1) on average with HashSet, O(log n) with TreeSet",
+        "O(n) for LinkedList, O(1) for ArrayList",
+      ],
+    },
+    {
+      aspect: "Use Case",
+      values: [
+        "Good when uniqueness of elements is needed",
+        "Good when you need to maintain an ordered collection of elements",
+      ],
+    },
+  ],
+};
+
+/** Generalized comparison data for "Spring vs Spring Boot" */
+const comparison_SpringVSSpringBoot: ComparisonDataType<string> = {
+  uniqueId: "Comparison_SpringVSSpringBoot",
+  title: "Comparison: Spring vs Spring Boot",
+  headers: ["Spring", "Spring Boot"],
+  differences: [
+    {
+      aspect: "Setup",
+      values: [
+        "Requires manual setup and configuration",
+        "Provides auto-configuration to simplify setup",
+      ],
+    },
+    {
+      aspect: "Development Speed",
+      values: [
+        "Slower due to boilerplate and configuration",
+        "Faster due to embedded server and defaults",
+      ],
+    },
+    {
+      aspect: "Project Structure",
+      values: [
+        "Requires separate server and manual dependency management",
+        "Provides an embedded server and simplifies dependency management",
+      ],
+    },
+    {
+      aspect: "Use Case",
+      values: [
+        "Good for large-scale, complex applications with custom configurations",
+        "Ideal for microservices and rapid development with minimal configuration",
+      ],
+    },
+  ],
+};
+
+/** Sample comparison data for String vs StringBuffer vs StringBuilder */
+const comparison_String_VS_StringBuffer_VS_StringBuilder: ComparisonDataType<string> =
+  {
+    uniqueId: "Comparison_String_VS_StringBuffer_VS_StringBuilder",
+    title: "Comparison: String vs StringBuffer vs StringBuilder",
+    headers: ["String", "StringBuffer", "StringBuilder"],
+    differences: [
+      {
+        aspect: "Mutability",
+        values: ["Immutable", "Mutable", "Mutable"],
+      },
+      {
+        aspect: "Thread Safety",
+        values: [
+          "Thread-safe by default",
+          "Thread-safe, synchronized methods",
+          "Not thread-safe",
+        ],
+      },
+      {
+        aspect: "Performance",
+        values: [
+          "Slower for multiple concatenations",
+          "Slower due to synchronization overhead",
+          "Faster in single-threaded environments",
+        ],
+      },
+      {
+        aspect: "Use Case",
+        values: [
+          "For constant, unchanging string values",
+          "For multi-threaded string manipulations",
+          "For single-threaded, high-performance string manipulations",
+        ],
+      },
+    ],
+  };
+
+/**
+ * Generalized comparison data for
+ * 1. "ArrayList vs LinkedList",
+ * 2. "Set vs List",
+ * 3. "Spring vs Spring Boot", and
+ * 4. "String vs StringBuffer vs StringBuilder"
+ *
+ */
+export const comparisonData: ComparisonDataType<string>[] = [
+  { ...comparison_ArrayListVSLinkedList },
+  { ...comparison_SetVSList },
+  { ...comparison_SpringVSSpringBoot },
+  { ...comparison_String_VS_StringBuffer_VS_StringBuilder },
+];

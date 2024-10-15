@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { comparisonData, ComparisonDataType } from "../common/data/data_v1_0_2";
 import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
 import Form, {
-    type CustomFormV6Handle,
+  type CustomFormV6Handle,
 } from "@/components/common/custom-form/CustomFormV4.2";
 import FormError from "@/components/common/custom-form/form-errors-display/FormError";
 import TexArea from "@/components/common/custom-text-area/CustomTexArea";
@@ -32,6 +32,8 @@ const NewPost = (props: NewPostProps) => {
   const validate = (data: PostProps) => {
     const errors: string[] = [];
     if (!data?.yamlText?.trim()) errors.push("Please provide a valid yamlText");
+
+    
 
     setFormErrors(errors);
     return errors.length === 0;
@@ -72,24 +74,12 @@ const NewPost = (props: NewPostProps) => {
 
 // Usage example
 const SPPTableDashboardV1_0_3 = () => {
-  const [currIndex, setCurrIndex] = useState(0);
   const [data, setData] = useState<ComparisonDataType<string> | null>(null);
   return (
-    <>
-      <div>
-        <CustomButton
-          onClick={() =>
-            setCurrIndex((prev) => (prev + 1) % comparisonData.length)
-          }
-        >
-          Next
-        </CustomButton>
-
-        <NewPost onSubmit={() => {}} onReset={() => {}} />
-
-        {data && <SPPTableV1_0_2 data={data} />}
-      </div>
-    </>
+    <div>
+      <NewPost onSubmit={() => {}} onReset={() => {}} />
+      {data && <SPPTableV1_0_2 data={data} />}
+    </div>
   );
 };
 

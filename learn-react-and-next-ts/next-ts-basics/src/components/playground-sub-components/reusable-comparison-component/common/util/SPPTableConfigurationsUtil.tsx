@@ -10,6 +10,7 @@ import {
   
   interface SharedData<T> {
     errors: string[];
+    isValidData: boolean;
     validatedData: ComparisonDataType<T> | null;
   }
   
@@ -20,6 +21,7 @@ import {
   /** Initial shared data (use type parameter T) */
   const createInitialSharedData = <T,>(): SharedData<T> => ({
     errors: [],
+    isValidData:false,
     validatedData: null,
   });
   

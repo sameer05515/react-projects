@@ -12,6 +12,7 @@ export type ComparisonDataType = {
   differences: CDRowItemType[];
 };
 
+// Generalized comparison data for "ArrayList vs LinkedList"
 const comparison_ArrayListVSLinkedList: ComparisonDataType = {
   uniqueId: "Comparison_ArrayListVSLinkedList",
   title: "Comparison: ArrayList vs LinkedList",
@@ -51,6 +52,8 @@ const comparison_ArrayListVSLinkedList: ComparisonDataType = {
   ],
 };
 
+
+// Generalized comparison data for "Set vs List"
 const comparison_SetVSList: ComparisonDataType = {
   uniqueId: "Comparison_SetVSList",
   title: "Comparison: Set vs List",
@@ -80,6 +83,7 @@ const comparison_SetVSList: ComparisonDataType = {
   ],
 };
 
+// Generalized comparison data for "Spring vs Spring Boot"
 const comparison_SpringVSSpringBoot: ComparisonDataType = {
   uniqueId: "Comparison_SpringVSSpringBoot",
   title: "Comparison: Spring vs Spring Boot",

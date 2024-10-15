@@ -4,6 +4,7 @@ import {
     useEffect,
     useState,
     ReactNode,
+    useMemo,
   } from "react";
   import { ComparisonDataType } from "../data/data_v1_0_2";
   
@@ -17,7 +18,7 @@ import {
   }
   
   /** Initial shared data (use type parameter T) */
-  const initialSharedData = <T,>(): SharedData<T> => ({
+  const createInitialSharedData = <T,>(): SharedData<T> => ({
     errors: [],
     validatedData: null,
   });
@@ -37,21 +38,16 @@ import {
     children,
     data,
   }: SharedConfigurationsProviderProps<T>) => {
-    const [sharedData, setSharedData] = useState<SharedData<T>>(initialSharedData<T>());
+    const initialSharedData = useMemo(() => createInitialSharedData<T>(), []);
+  
+    const [sharedData, setSharedData] = useState<SharedData<T>>(initialSharedData);
   
     useEffect(() => {
-      if (!data) {
-        setSharedData((prev) => ({
-          ...prev,
-          errors: ["Null or undefined data provided. Table rendering not possible!!"],
-        }));
-      } else {
-        setSharedData((prev) => ({
-          ...prev,
-          validatedData: data,
-          errors: [],
-        }));
-      }
+      setSharedData((prev) => ({
+        ...prev,
+        errors: data ? [] : ["Null or undefined data provided. Table rendering not possible!!"],
+        validatedData: data || null,
+      }));
     }, [data]);
   
     return (

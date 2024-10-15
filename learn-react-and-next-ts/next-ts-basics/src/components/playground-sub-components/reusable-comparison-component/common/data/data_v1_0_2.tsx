@@ -180,3 +180,72 @@ export const comparisonData: ComparisonDataType<string>[] = [
   { ...comparison_SpringVSSpringBoot },
   { ...comparison_String_VS_StringBuffer_VS_StringBuilder },
 ];
+
+
+const yaml1=`
+uniqueId: "Comparison_HashMapVSHashTable"
+title: "Comparison: HashMap vs HashTable"
+headers:
+  - HashMap
+  - HashTable
+rowData:
+  - aspect: "Null Keys/Values"
+    values:
+      - "Allows one null key and multiple null values"
+      - "Does not allow null keys or null values"
+  - aspect: "Thread-Safety"
+    values:
+      - "Not thread-safe; must be synchronized externally"
+      - "Thread-safe; synchronized methods"
+  - aspect: "Performance"
+    values:
+      - "Faster due to lack of synchronization overhead"
+      - "Slower due to synchronization"
+  - aspect: "Fail-Fast Iterators"
+    values:
+      - "Yes, iterators are fail-fast"
+      - "No, iterators are not fail-fast"
+  - aspect: "Usage in Concurrent Applications"
+    values:
+      - "Not suitable without external synchronization"
+      - "Can be used in concurrent applications"
+  - aspect: "Preferred Use Case"
+    values:
+      - "When you don’t need synchronization for faster performance"
+      - "When thread-safety is required"
+
+`
+
+const yaml2=`
+uniqueId: "Comparison_HashMapVSHashTable"
+title: "Comparison: HashMap vs HashTable"
+headers:
+  - HashMap
+  - HashTable
+rowData:
+  - aspect: "Null Keys/Values"
+    values:
+      - "Allows one null key and multiple null values"
+      - "Does not allow null keys or null values"
+  - aspect: "Thread-Safety"
+    values:
+      - "Not thread-safe; must be synchronized externally"
+      - "Thread-safe; synchronized methods"
+  - aspect: "Performance"
+    values:
+      - "Faster due to lack of synchronization overhead"
+      - "Slower due to synchronization"
+  - aspect: "Fail-Fast Iterators"
+    values:
+      - "Yes, iterators are fail-fast"
+      - "No, iterators are not fail-fast"
+  - aspect: "Usage in Concurrent Applications"
+    values:
+      - "Not suitable without external synchronization"
+      - "Can be used in concurrent applications"
+  - aspect: "Preferred Use Case"
+    values:
+      - "When you don’t need synchronization for faster performance"
+      - "When thread-safety is required"
+
+`

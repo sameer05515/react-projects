@@ -65,25 +65,25 @@ export enum ComponentModules {
   TestingPurpose_CheckStreamingResponse = "Testing Purpose: Check Streaming Response",
   TestingPurpose_GetDataFromJavaBackend = "Testing Purpose: Get Data From Java Backend",
   TestingPurpose_WordMeaningManagement_Revive_Vocab_Khajana = "Testing Purpose: Word Meaning Management: Revive Vocab Khajana",
-  TestingPurpose_TreeViewer_Usage="Testing Purpose: TreeViewer Usage",
-  TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility="TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility",
-  TestingPurpose_GraphNodesViewer_Usage="Testing Purpose: GraphNodes Viewer_Usage",
+  TestingPurpose_TreeViewer_Usage = "Testing Purpose: TreeViewer Usage",
+  TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility = "TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility",
+  TestingPurpose_GraphNodesViewer_Usage = "Testing Purpose: GraphNodes Viewer_Usage",
   ReactPoster = "React Poster",
   DataFetching = "Data Fetching",
   FuturePurpose = "Future Purpose",
   MyCompaniesAndProjectsExplorer = "To collect all My (personal and official) Projects Information",
-  NewComponentDesign_SPPTable= "New Component Design: SPPTable"
+  NewComponentDesign_SPPTable = "New Component Design: SPPTable",
 }
 
-export interface ComponentModuleDetails{
+export interface ComponentModuleDetails {
   module: ComponentModules;
-  overallPurpose: string;  
+  overallPurpose: string;
 }
 
-const moduleWithPurposes:ComponentModuleDetails[]=[
+const moduleWithPurposes: ComponentModuleDetails[] = [
   {
-    module:ComponentModules.NewComponentDesign_SPPTable,
-    overallPurpose:`
+    module: ComponentModules.NewComponentDesign_SPPTable,
+    overallPurpose: `
         ================================================================
 
         Overall Target:
@@ -99,7 +99,7 @@ const moduleWithPurposes:ComponentModuleDetails[]=[
         ================================================================
 
         Tasks status in before version 'SPPTableV1_1_0' :
-            [Commpleted] - Implement a basic table component.
+            [Completed] - Implement a basic table component.
             [Planned] - Enhance it further to meet the specified targets.
               - [Planned] - Common Components Extraction
                 TableHeader: A reusable component for rendering table headers.
@@ -116,9 +116,9 @@ const moduleWithPurposes:ComponentModuleDetails[]=[
 
         ================================================================
 
-    `
-  }
-]
+    `,
+  },
+];
 
 // Define a type for the structure of componentMapWithPurposes
 export interface ComponentDetails {
@@ -782,8 +782,7 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
     element: TreeViewerDashboard,
     purpose: "Fetching data with fetchGeneric hook and Tree component",
     majorRelease: false,
-    module:
-      ComponentModules.TestingPurpose_TreeViewer_Usage,
+    module: ComponentModules.TestingPurpose_TreeViewer_Usage,
   },
   TreeViewerDashboardV2: {
     element: TreeViewerDashboardV2,
@@ -797,32 +796,30 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
         };
     `,
     majorRelease: false,
-    module:
-      ComponentModules.TestingPurpose_TreeViewer_Usage,
+    module: ComponentModules.TestingPurpose_TreeViewer_Usage,
   },
-  TreeViewerDashboardV3:{
+  TreeViewerDashboardV3: {
     element: TreeViewerDashboardV3,
     purpose: "Fetching graph QL data from resume-service",
     majorRelease: false,
-    module:
-      ComponentModules.TestingPurpose_TreeViewer_Usage,
+    module: ComponentModules.TestingPurpose_TreeViewer_Usage,
   },
-  TreeViewerDashboardV4_0_1:{
-    element:TreeViewerDashboardV4_0_1,
+  TreeViewerDashboardV4_0_1: {
+    element: TreeViewerDashboardV4_0_1,
     purpose: "Create a utility to guess type of given value",
     majorRelease: false,
     module:
       ComponentModules.TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility,
   },
-  TreeViewerDashboardV4_0_2:{
-    element:TreeViewerDashboardV4_0_2,
+  TreeViewerDashboardV4_0_2: {
+    element: TreeViewerDashboardV4_0_2,
     purpose: "Optimized version of TreeViewerDashboardV4_0_1",
     majorRelease: false,
     module:
       ComponentModules.TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility,
   },
-  TreeViewerDashboardV4_0_3:{
-    element:TreeViewerDashboardV4_0_3,
+  TreeViewerDashboardV4_0_3: {
+    element: TreeViewerDashboardV4_0_3,
     purpose: `
     Enhance ment for TreeViewerDashboardV4_0_2 and type-inference-util-V1_0_1.tsx
 
@@ -832,63 +829,100 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
     module:
       ComponentModules.TestingPurpose_TreeViewer_Usage_With_Type_inference_Utility,
   },
-  GraphNodesViewerDashboardV1_0_0:{
-    element:GraphNodesViewerDashboardV1_0_0,
-    purpose:`
+  GraphNodesViewerDashboardV1_0_0: {
+    element: GraphNodesViewerDashboardV1_0_0,
+    purpose: `
     To create a universal component to show nodes in previous/next way
 
     [Planned]:
       - Create graph data from tree data, for sample
     `,
     majorRelease: false,
-    module:
-      ComponentModules.TestingPurpose_GraphNodesViewer_Usage,
+    module: ComponentModules.TestingPurpose_GraphNodesViewer_Usage,
   },
-  SPPTableDashboardV1_0_0:{
-    element:SPPTableDashboardV1_0_0,
-    purpose:`
+  SPPTableDashboardV1_0_0: {
+    element: SPPTableDashboardV1_0_0,
+    purpose: `
         Tasks status in current version 'SPPTableV1_0_0' :
-            [Commpleted] - Implement a basic table component.
-            [Planned] - Enhance it further to meet the specified targets.
+            - [Completed][V1_0_0] - Implement a basic table component.
+            - [Planned] - Enhance it further to meet the specified targets.
               - [Planned] - Common Components Extraction
-                TableHeader: A reusable component for rendering table headers.
-                TableRow: A reusable component for rendering each row.
-                TableCell: A reusable component for rendering each row.
-              - [Planned] - Styles: A separate object for holding the common styles.
+                - [Completed][V1_0_0] TableHeaderV1_0_0: A reusable component for rendering table headers.
+                - [Completed][V1_0_0] TableRowV1_0_0: A reusable component for rendering each row.
+                - [Planned] TableCell: A reusable component for rendering each row.
+              - [Planned][V1_0_0] - Styles: A separate object for holding the common styles. 
+                - [Completed][V1_0_0] created a file 'reusable-comparison-component/common/styles/styles_v1_0_0.tsx'
+                - [Planned] - create styles object for subsequent component evolution
               - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
-            [Planned] - Add support for validation in editable cells (optional).
-            [Planned] - Include export and import options for the table data (optional).
-            [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
-            [Planned] - Support responsive design to ensure table works across different devices.
-            [Planned] - Allow table data to be stored and retrieved via local storage or external API.
-            [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+                - [Completed][V1_0_0] - Data extracted and put to a common 'reusable-comparison-component/common/data/data_v1_0_0.tsx' file
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+            - [Planned] - Add support for validation in editable cells (optional).
+            - [Planned] - Include export and import options for the table data (optional).
+            - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            - [Planned] - Support responsive design to ensure table works across different devices.
+            - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
     `,
     majorRelease: false,
-    module:
-      ComponentModules.NewComponentDesign_SPPTable,
+    module: ComponentModules.NewComponentDesign_SPPTable,
   },
-  SPPTableDashboardV1_0_1:{
-    element:SPPTableDashboardV1_0_1,
-    purpose:`
-    Tasks status in current version 'SPPTableV1_0_1' :
-        [Planned] - Enhance it further to meet the specified targets.
-          - [Planned] - Common Components Extraction
-            TableHeader: A reusable component for rendering table headers.
-            TableRow: A reusable component for rendering each row.
-            TableCell: A reusable component for rendering each row.
-          - [Planned] - Styles: A separate object for holding the common styles.
-          - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
-        [Planned] - Add support for validation in editable cells (optional).
-        [Planned] - Include export and import options for the table data (optional).
-        [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
-        [Planned] - Support responsive design to ensure table works across different devices.
-        [Planned] - Allow table data to be stored and retrieved via local storage or external API.
-        [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
-`,
-majorRelease: false,
-module:
-  ComponentModules.NewComponentDesign_SPPTable,
-  }
+  SPPTableDashboardV1_0_1: {
+    element: SPPTableDashboardV1_0_1,
+    purpose: `
+        Tasks status in current version 'SPPTableV1_0_1' :
+            - [Completed][V1_0_0] - Implement a basic table component.
+            - [Planned] - Enhance it further to meet the specified targets.
+              - [Planned] - Common Components Extraction
+                - [Completed][V1_0_0] TableHeaderV1_0_0: A reusable component for rendering table headers.
+                - [Completed][V1_0_0] TableRowV1_0_0: A reusable component for rendering each row.
+                - [Planned] TableCell: A reusable component for rendering each row.
+              - [Planned][V1_0_0] - Styles: A separate object for holding the common styles. 
+                - [Completed][V1_0_0] created a file 'reusable-comparison-component/common/styles/styles_v1_0_0.tsx'
+                - [Planned] - create styles object for subsequent component evolution
+              - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
+                - [Completed][V1_0_0] - Data extracted and put to a common 'reusable-comparison-component/common/data/data_v1_0_0.tsx' file
+                - [Completed][V1_0_1] - upgraded to 'data_v1_0_1.tsx' to hold multiple difference objects. changed hardcoded 'ArrayList' and 'LinkedList' headers to general 'left' and 'right' in 'CDRowItemType' type
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+            - [Planned] - Add support for validation in editable cells (optional).
+            - [Planned] - Include export and import options for the table data (optional).
+            - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            - [Planned] - Support responsive design to ensure table works across different devices.
+            - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+    `,
+    majorRelease: false,
+    module: ComponentModules.NewComponentDesign_SPPTable,
+  },
+  SPPTableDashboardV1_0_2:{
+    element: SPPTableDashboardV1_0_1,
+    purpose: `
+        Tasks status in current version 'SPPTableV1_0_1' :
+            - [Completed][V1_0_0] - Implement a basic table component.
+            - [Planned] - Enhance it further to meet the specified targets.
+              - [Planned] - Common Components Extraction
+                - [Completed][V1_0_0] TableHeaderV1_0_0: A reusable component for rendering table headers.
+                - [Completed][V1_0_0] TableRowV1_0_0: A reusable component for rendering each row.
+                - [Planned] TableCell: A reusable component for rendering each row.
+              - [Planned][V1_0_0] - Styles: A separate object for holding the common styles. 
+                - [Completed][V1_0_0] created a file 'reusable-comparison-component/common/styles/styles_v1_0_0.tsx'
+                - [Planned] - create styles object for subsequent component evolution
+              - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
+                - [Completed][V1_0_0] - Data extracted and put to a common 'reusable-comparison-component/common/data/data_v1_0_0.tsx' file
+                - [Completed][V1_0_1] - upgraded to 'data_v1_0_1.tsx' to hold multiple difference objects. changed hardcoded 'ArrayList' and 'LinkedList' headers to general 'left' and 'right' in 'CDRowItemType' type
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
+                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+            - [Planned] - Add support for validation in editable cells (optional).
+            - [Planned] - Include export and import options for the table data (optional).
+            - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            - [Planned] - Support responsive design to ensure table works across different devices.
+            - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+    `,
+    majorRelease: false,
+    module: ComponentModules.NewComponentDesign_SPPTable,
+  },
 };
 
 // Completed componentMapWithPurposes
@@ -976,7 +1010,9 @@ export const getComponentDetails = (
   key: string
 ): ComponentDetails & { componentLabel: string } => {
   const details = componentMapWithPurposes[key];
-  const moduleWithPurpose= moduleWithPurposes.find(m=>m.module===details?.module);
+  const moduleWithPurpose = moduleWithPurposes.find(
+    (m) => m.module === details?.module
+  );
 
   let componentLabel = getLabelForKey(key) || "Please Select a component";
 
@@ -984,10 +1020,13 @@ export const getComponentDetails = (
     ...details,
     majorRelease: details?.majorRelease ?? false, // Assign default if undefined
     // experimentalComponentAsPerLearningImplementation:
-    //   details?.experimentalComponentAsPerLearningImplementation ?? false,    
+    //   details?.experimentalComponentAsPerLearningImplementation ?? false,
     experimentalComponentAsPerLearningImplementation:
       isExperimentalComponent(details),
     componentLabel,
-    purpose: (moduleWithPurpose?.overallPurpose||'') + '\n'+ (details?.purpose||'')
+    purpose:
+      (moduleWithPurpose?.overallPurpose || "") +
+      "\n" +
+      (details?.purpose || ""),
   };
 };

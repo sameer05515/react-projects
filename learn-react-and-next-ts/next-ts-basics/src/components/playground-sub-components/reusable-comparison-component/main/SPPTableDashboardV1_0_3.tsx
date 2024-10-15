@@ -1,6 +1,6 @@
 import CustomButton from "@/components/common/custom-button/CustomButtonV1_0_0";
 import { useRef, useState } from "react";
-import { comparisonData, ComparisonDataType } from "../common/data/data_v1_0_2";
+import { ComparisonDataType } from "../common/data/data_v1_0_2";
 import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
 import Form, {
   type CustomFormV6Handle,
@@ -10,30 +10,27 @@ import TexArea from "@/components/common/custom-text-area/CustomTexArea";
 import { useGlobalStyles } from "@/common/hooks/useGlobalStyles";
 import yaml from "js-yaml";
 
-// Define the response type
-interface LoadYAMLResponse {
-  jsonData: unknown;
+// Define the response type with generics
+interface LoadYAMLResponse<T> {
+  jsonData: T | null;
   isError: boolean;
   errorMessage: string | null;
 }
 
-const loadYAMLData = (yamlText: string): LoadYAMLResponse => {
+const loadYAMLData = <T,>(yamlText: string): LoadYAMLResponse<T> => {
   try {
-    const jsonData = yaml.load(yamlText);
+    const jsonData = yaml.load(yamlText) as T;
     console.log(jsonData);
-
     return {
       jsonData,
       isError: false,
       errorMessage: null,
     };
   } catch (e: any) {
-    // Catch all types of errors from js-yaml and return a structured error message
     console.error(e);
     const error = e.mark
       ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
       : `Error parsing YAML: ${e.message}`;
-
     return {
       jsonData: null,
       isError: true,
@@ -51,6 +48,24 @@ type YAMLProcessorFormProps = {
   onReset: () => void;
 };
 
+// Additional validation for YAML structure
+const validateYAMLStructure = (
+  data: any
+): data is ComparisonDataType<string> => {
+  if (
+    typeof data.uniqueId !== "string" ||
+    typeof data.title !== "string" ||
+    !Array.isArray(data.headers) ||
+    !Array.isArray(data.rowData)
+  ) {
+    return false;
+  }
+  return data.rowData.every(
+    (row: any) =>
+      typeof row.aspect === "string" && Array.isArray(row.values)
+  );
+};
+
 const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   const {
     GLOBAL_APPLICATION_STYLES: {
@@ -62,31 +77,35 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   const customFormRef = useRef<CustomFormV6Handle>(null);
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
-  const validate = (data: FormResponseProps): {valid:boolean} => {
+  const validate = (data: FormResponseProps): { valid: boolean } => {
     const errors: string[] = [];
     const trimmedYAMLText = data.yamlText?.trim();
 
     if (!trimmedYAMLText) {
-      errors.push("Please provide a valid yamlText");
+      errors.push("Please provide a valid YAML text.");
     } else {
-      const { errorMessage, isError, jsonData } = loadYAMLData(trimmedYAMLText);
+      const { errorMessage, isError, jsonData } = loadYAMLData<
+        ComparisonDataType<string>
+      >(trimmedYAMLText);
       if (isError) {
-        errors.push(errorMessage || "Error occurred while parsing given YAML text");
+        errors.push(errorMessage || "Error occurred while parsing the YAML text.");
+      } else if (!validateYAMLStructure(jsonData)) {
+        errors.push("The YAML structure is not valid for comparison data.");
       }
     }
 
     setFormErrors(errors);
-    return {valid:errors.length === 0};
+    return { valid: errors.length === 0 };
   };
 
   const handleSubmit = (rawdata: unknown) => {
     const data = rawdata as FormResponseProps;
-    const {valid}=validate(data);
+    const { valid } = validate(data);
     if (valid) {
-      console.log("[NewPostWithCustomFormV3]: Valid: ", JSON.stringify(data));
+      console.log("[YAMLProcessorForm]: Valid data:", JSON.stringify(data));
       onSubmit(data);
     } else {
-      console.log("[NewPostWithCustomFormV3]: Invalid: ", JSON.stringify(data));
+      console.log("[YAMLProcessorForm]: Invalid data:", JSON.stringify(data));
     }
   };
 
@@ -115,15 +134,18 @@ const SPPTableDashboardV1_0_3 = () => {
   const [data, setData] = useState<ComparisonDataType<string> | null>(null);
 
   const handleFormSubmit = (formData: FormResponseProps) => {
-    const parsedData = loadYAMLData(formData.yamlText);
-    if (!parsedData.isError) {
-      setData(parsedData.jsonData as ComparisonDataType<string>);
+    const parsedData = loadYAMLData<ComparisonDataType<string>>(formData.yamlText);
+    if (!parsedData.isError && validateYAMLStructure(parsedData.jsonData)) {
+      setData(parsedData.jsonData);
     }
   };
 
   return (
     <div>
-      <YAMLProcessorForm onSubmit={handleFormSubmit} onReset={() => setData(null)} />
+      <YAMLProcessorForm
+        onSubmit={handleFormSubmit}
+        onReset={() => setData(null)}
+      />
       {data && <SPPTableV1_0_2 data={data} />}
     </div>
   );

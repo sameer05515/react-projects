@@ -8,8 +8,17 @@ import TableHeader from "../table-header/TableHeaderV1_0_1";
 import TableRow from "../table-row/TableRowV1_0_1";
 
 // Reusable Comparison Component (handles N items)
-const SPPTableV1_0_2 = ({ data }: { data: ComparisonDataType<string> }) => (
-  <SharedConfigurationsProvider data={data}>
+const SPPTableV1_0_2 = ({
+  data,
+  rowValueValidator,
+}: {
+  data: ComparisonDataType<string>;
+  rowValueValidator?: (rowValue: string) => boolean;
+}) => (
+  <SharedConfigurationsProvider
+    data={data}
+    rowValueValidator={rowValueValidator}
+  >
     <AppContainerComponent />
   </SharedConfigurationsProvider>
 );

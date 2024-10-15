@@ -27,7 +27,8 @@ const createInitialSharedData = <T,>(): SharedData<T> => ({
 
 /** Validate the structure of ComparisonDataType */
 const validateDataStructure = <T,>(
-  data: ComparisonDataType<T> | null
+  data: ComparisonDataType<T> | null,
+  rowValueValidator?: (rowValue: T) => boolean
 ): boolean => {
   if (null === data) return false;
   // Additional checks for the structure validity
@@ -38,7 +39,11 @@ const validateDataStructure = <T,>(
     Array.isArray(data.headers) &&
     Array.isArray(data.rowData) &&
     data.rowData.every(
-      (row) => typeof row.aspect === "string" && Array.isArray(row.values)
+      (row) =>
+        typeof row.aspect === "string" &&
+        Array.isArray(row.values) &&
+        (!rowValueValidator ||
+          row.values.every((rowVal) => rowValueValidator(rowVal)))
     )
   );
 };
@@ -51,12 +56,14 @@ const SharedConfigurationsContext = createContext<
 interface SharedConfigurationsProviderProps<T> {
   children: ReactNode;
   data: ComparisonDataType<T> | null;
+  rowValueValidator?: (rowValue: T) => boolean;
 }
 
 // Ensure the provider is correctly typed with generic T
 const SharedConfigurationsProvider = <T,>({
   children,
   data,
+  rowValueValidator
 }: SharedConfigurationsProviderProps<T>) => {
   const initialSharedData = useMemo(() => createInitialSharedData<T>(), []);
 
@@ -70,7 +77,7 @@ const SharedConfigurationsProvider = <T,>({
       errors.push(
         "Null or undefined data provided. Table rendering not possible!"
       );
-    } else if (!validateDataStructure(data)) {
+    } else if (!validateDataStructure(data, rowValueValidator)) {
       errors.push("The provided data structure is invalid.");
     }
 

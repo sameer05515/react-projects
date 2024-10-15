@@ -61,8 +61,7 @@ const validateYAMLStructure = (
     return false;
   }
   return data.rowData.every(
-    (row: any) =>
-      typeof row.aspect === "string" && Array.isArray(row.values)
+    (row: any) => typeof row.aspect === "string" && Array.isArray(row.values)
   );
 };
 
@@ -84,11 +83,12 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
     if (!trimmedYAMLText) {
       errors.push("Please provide a valid YAML text.");
     } else {
-      const { errorMessage, isError, jsonData } = loadYAMLData<
-        ComparisonDataType<string>
-      >(trimmedYAMLText);
+      const { errorMessage, isError, jsonData } =
+        loadYAMLData<ComparisonDataType<string>>(trimmedYAMLText);
       if (isError) {
-        errors.push(errorMessage || "Error occurred while parsing the YAML text.");
+        errors.push(
+          errorMessage || "Error occurred while parsing the YAML text."
+        );
       } else if (!validateYAMLStructure(jsonData)) {
         errors.push("The YAML structure is not valid for comparison data.");
       }
@@ -134,7 +134,9 @@ const SPPTableDashboardV1_0_3 = () => {
   const [data, setData] = useState<ComparisonDataType<string> | null>(null);
 
   const handleFormSubmit = (formData: FormResponseProps) => {
-    const parsedData = loadYAMLData<ComparisonDataType<string>>(formData.yamlText);
+    const parsedData = loadYAMLData<ComparisonDataType<string>>(
+      formData.yamlText
+    );
     if (!parsedData.isError && validateYAMLStructure(parsedData.jsonData)) {
       setData(parsedData.jsonData);
     }
@@ -146,7 +148,7 @@ const SPPTableDashboardV1_0_3 = () => {
         onSubmit={handleFormSubmit}
         onReset={() => setData(null)}
       />
-      {data && <SPPTableV1_0_2 data={data} />}
+      {data && <SPPTableV1_0_2 data={data} rowValueValidator={(rv) => typeof rv==='string'} />}
     </div>
   );
 };

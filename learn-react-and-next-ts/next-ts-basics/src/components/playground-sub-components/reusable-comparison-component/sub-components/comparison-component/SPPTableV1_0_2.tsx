@@ -18,22 +18,28 @@ const AppContainerComponent = () => {
   const {
     sharedData: { errors, validatedData: data },
   } = useSharedConfigurations<string>();
+
   if (errors.length > 0) {
     return (
       <>
-        {errors.map((error) => (
-          <div style={{ color: "red" }}>{error}</div>
+        {errors.map((error, index) => (
+          <div key={index} style={{ color: "red" }}>
+            {error}
+          </div>
         ))}
       </>
     );
   }
+
+  if (!data) return null; // Safe return if no data is provided
+
   return (
     <>
-      <h1>{data?.title}</h1>
+      <h1>{data.title}</h1>
       <table style={styles.table}>
-        <TableHeader headers={data?.headers || []} />
+        <TableHeader headers={data.headers || []} />
         <tbody>
-          {data?.rowData.map((item, index) => (
+          {data.rowData.map((item, index) => (
             <TableRow key={index} aspect={item.aspect} values={item.values} />
           ))}
         </tbody>

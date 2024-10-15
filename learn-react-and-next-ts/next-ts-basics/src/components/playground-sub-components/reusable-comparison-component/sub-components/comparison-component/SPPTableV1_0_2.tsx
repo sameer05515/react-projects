@@ -10,7 +10,7 @@ const SPPTableV1_0_2 = ({ data }: { data: ComparisonDataType<string> }) => (
     <table style={styles.table}>
       <TableHeader headers={data.headers} />
       <tbody>
-        {data.differences.map((item, index) => (
+        {data.rowData.map((item, index) => (
           <TableRow key={index} aspect={item.aspect} values={item.values} />
         ))}
       </tbody>

@@ -9,7 +9,7 @@ export type ComparisonDataType<T> = {
   uniqueId: string;
   title: string;
   headers: string[]; // Headers for N items
-  differences: CDRowItemType<T>[];
+  rowData: CDRowItemType<T>[];
 };
 
 /** Generalized comparison data for "ArrayList vs LinkedList" */
@@ -17,7 +17,7 @@ const comparison_ArrayListVSLinkedList: ComparisonDataType<string> = {
   uniqueId: "Comparison_ArrayListVSLinkedList",
   title: "Comparison: ArrayList vs LinkedList",
   headers: ["ArrayList", "LinkedList"],
-  differences: [
+  rowData: [
     {
       aspect: "Underlying Data Structure",
       values: ["Resizable array", "Doubly linked list"],
@@ -65,7 +65,7 @@ const comparison_SetVSList: ComparisonDataType<string> = {
   uniqueId: "Comparison_SetVSList",
   title: "Comparison: Set vs List",
   headers: ["Set", "List"],
-  differences: [
+  rowData: [
     {
       aspect: "Duplicates",
       values: ["No duplicates allowed", "Allows duplicates"],
@@ -96,7 +96,7 @@ const comparison_SpringVSSpringBoot: ComparisonDataType<string> = {
   uniqueId: "Comparison_SpringVSSpringBoot",
   title: "Comparison: Spring vs Spring Boot",
   headers: ["Spring", "Spring Boot"],
-  differences: [
+  rowData: [
     {
       aspect: "Setup",
       values: [
@@ -134,7 +134,7 @@ const comparison_String_VS_StringBuffer_VS_StringBuilder: ComparisonDataType<str
     uniqueId: "Comparison_String_VS_StringBuffer_VS_StringBuilder",
     title: "Comparison: String vs StringBuffer vs StringBuilder",
     headers: ["String", "StringBuffer", "StringBuilder"],
-    differences: [
+    rowData: [
       {
         aspect: "Mutability",
         values: ["Immutable", "Mutable", "Mutable"],

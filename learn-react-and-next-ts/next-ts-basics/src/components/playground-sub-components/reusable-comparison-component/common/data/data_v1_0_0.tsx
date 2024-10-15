@@ -5,11 +5,13 @@ export type CDRowItemType = {
 };
 
 export type ComparisonDataType = {
+  title: string;
   differences: CDRowItemType[];
 };
 
 // Sample JSON data for comparison
 export const comparisonData: ComparisonDataType = {
+  title: "Comparison: ArrayList vs LinkedList",
   differences: [
     {
       aspect: "Underlying Data Structure",

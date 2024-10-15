@@ -1,4 +1,4 @@
-import { ComparisonDataType } from "../../common/data/data_v1_0_0";
+import { ComparisonDataType } from "../../common/data/data_v1_0_1";
 import { styles } from "../../common/styles/styles_v1_0_1";
 import TableHeader from "../table-header/TableHeaderV1_0_0";
 import TableRow from "..//table-row/TableRowV1_0_0";

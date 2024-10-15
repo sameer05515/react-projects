@@ -246,10 +246,13 @@ const ActivityComp = ({ task }) => {
   };
 
   const saveComment = () => {
-    if (!validateForm()) return;
+    if (!validateForm()) { 
+      console.log('Some validation occureed')
+      return;
+    }
 
     const newActivity = {
-      uniqueId: formData.uniqueId || Date.now().toString(),
+      uniqueId: formData.uniqueId || '',
       type: "comment",
       description: formData.description,
       userDetails: {
@@ -276,7 +279,7 @@ const ActivityComp = ({ task }) => {
     dispatch(
       updateTask({
         taskId: task._id,
-        taskData: { activities: updatedActivities },
+        taskData: { ...task,  activities: updatedActivities },
       })
     );
 

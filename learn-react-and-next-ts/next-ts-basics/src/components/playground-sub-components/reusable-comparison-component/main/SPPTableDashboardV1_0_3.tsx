@@ -1,12 +1,11 @@
 import CustomButton from "@/components/common/custom-button/CustomButtonV1_0_0";
 import { useRef, useState } from "react";
-import { comparisonData } from "../common/data/data_v1_0_2";
+import { comparisonData, ComparisonDataType } from "../common/data/data_v1_0_2";
 import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
 import Form, {
-  type CustomFormV6Handle,
+    type CustomFormV6Handle,
 } from "@/components/common/custom-form/CustomFormV4.2";
 import FormError from "@/components/common/custom-form/form-errors-display/FormError";
-import Input from "@/components/common/custom-input/CustomInputV3";
 import TexArea from "@/components/common/custom-text-area/CustomTexArea";
 import { useGlobalStyles } from "@/common/hooks/useGlobalStyles";
 
@@ -62,10 +61,10 @@ const NewPost = (props: NewPostProps) => {
       <TexArea id="new-post-body" label="Text" name="yamlText" />
       <FormError formErrors={formErrors} />
       <div className={postModuleFormActions}>
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleCancel}>
+        <CustomButton type="submit">Save</CustomButton>
+        <CustomButton type="button" onClick={handleCancel}>
           Reset
-        </button>
+        </CustomButton>
       </div>
     </Form>
   );
@@ -74,6 +73,7 @@ const NewPost = (props: NewPostProps) => {
 // Usage example
 const SPPTableDashboardV1_0_3 = () => {
   const [currIndex, setCurrIndex] = useState(0);
+  const [data, setData] = useState<ComparisonDataType<string> | null>(null);
   return (
     <>
       <div>
@@ -85,9 +85,9 @@ const SPPTableDashboardV1_0_3 = () => {
           Next
         </CustomButton>
 
-        <NewPost onSubmit={()=>{}} onReset={()=>{}}/>
+        <NewPost onSubmit={() => {}} onReset={() => {}} />
 
-        <SPPTableV1_0_2 data={comparisonData[currIndex]} />
+        {data && <SPPTableV1_0_2 data={data} />}
       </div>
     </>
   );

@@ -1,10 +1,8 @@
-import { type ComparisonDataStyle } from "../../common/data/data_v1_0_0";
+import { type ComparisonDataType } from "../../common/data/data_v1_0_0";
 import { thStyle, tdStyle } from "../../common/styles/styles_v1_0_0";
 
-
-
 // Reusable Comparison Component
-const SPPTableV1_0_0 = ({ data }: { data: ComparisonDataStyle }) => {
+const SPPTableV1_0_0 = ({ data }: { data: ComparisonDataType }) => {
   return (
     <table style={{ width: "100%", borderCollapse: "collapse" }}>
       <thead>

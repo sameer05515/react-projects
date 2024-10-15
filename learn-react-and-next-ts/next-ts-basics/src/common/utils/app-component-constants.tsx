@@ -83,6 +83,8 @@ const moduleWithPurposes:ComponentModuleDetails[]=[
   {
     module:ComponentModules.NewComponentDesign_SPPTable,
     overallPurpose:`
+        ================================================================
+        
         Overall Target:
             Target version: SPPTableV1_1_0
             Expectations:
@@ -93,6 +95,24 @@ const moduleWithPurposes:ComponentModuleDetails[]=[
                     - Provide customizable table styles (e.g., header color, border style, etc.).
                     - Support for sorting and filtering rows based on column values.
         
+        ================================================================
+
+        Tasks status in before version 'SPPTableV1_1_0' :
+            [Commpleted] - Implement a basic table component.
+            [Planned] - Enhance it further to meet the specified targets.
+              - [Planned] - Common Components Extraction
+                TableHeader: A reusable component for rendering table headers.
+                TableRow: A reusable component for rendering each row.
+                TableCell: A reusable component for rendering each row.
+              - [Planned] - Styles: A separate object for holding the common styles.
+              - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
+            [Planned] - Add support for validation in editable cells (optional).
+            [Planned] - Include export and import options for the table data (optional).
+            [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            [Planned] - Support responsive design to ensure table works across different devices.
+            [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+
         ================================================================
 
     `

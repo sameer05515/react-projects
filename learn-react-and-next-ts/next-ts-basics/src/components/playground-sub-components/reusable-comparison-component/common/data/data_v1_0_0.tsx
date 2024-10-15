@@ -1,4 +1,4 @@
-export type ComparisonDataStyle = {
+export type ComparisonDataType = {
   differences: {
     aspect: string;
     ArrayList: string;
@@ -7,7 +7,7 @@ export type ComparisonDataStyle = {
 };
 
 // Sample JSON data for comparison
-export const comparisonData: ComparisonDataStyle = {
+export const comparisonData: ComparisonDataType = {
   differences: [
     {
       aspect: "Underlying Data Structure",

@@ -222,15 +222,17 @@ const componentMapWithPurposes = {
         element: SPPTableV1_0_0,
         purpose: `
         Target:
-            1. Create a reusable comparison table component:
-                - The user can provide data in a specific format, which will be rendered as a table.
-                - The user can edit individual cells.
-                - Each editable cell can contain markdown text for formatting.
-                - Provide customizable table styles (e.g., header color, border style, etc.).
-                - Support for sorting and filtering rows based on column values.
+            Target version: SPPTableV1_1_0
+            Expectations:
+                1. Create a reusable comparison table component:
+                    - The user can provide data in a specific format, which will be rendered as a table.
+                    - The user can edit individual cells.
+                    - Each editable cell can contain markdown text for formatting.
+                    - Provide customizable table styles (e.g., header color, border style, etc.).
+                    - Support for sorting and filtering rows based on column values.
     
         Tasks:
-            [Planned] - Implement a basic table component.
+            [Commpleted] - Implement a basic table component.
             [Planned] - Enhance it further to meet the specified targets.
             [Planned] - Add support for validation in editable cells (optional).
             [Planned] - Include export and import options for the table data (optional).

@@ -113,7 +113,7 @@ async function updateTask(taskId, updatedTask) {
             throw new Error("Task not found");
         }
         const { parentId, name, descriptions, tags, linkedTasks, taskStatus, activities } = updatedTask;
-        console.log("activities: ", activities)
+        // console.log("activities: ", activities);
         task.parentId = parentId || task.parentId;
         task.name = name || task.name;
         task.descriptions = descriptions || task.descriptions;

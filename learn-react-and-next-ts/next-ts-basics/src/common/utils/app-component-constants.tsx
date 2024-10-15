@@ -896,6 +896,8 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
                 - [Completed]: [V1_0_2]: - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
                 - [Completed]: [V1_0_2]: - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
             - [Planned] - Add a context, to pass common configurations. This way we can refrain from uneccesary 'prop-drilling'
+              - [Completed]: [V1_0_2]: Added initial version of context support.
+              - [Planned]: Explore more areas where context can be useful
             - [Planned] - Add support for validation in editable cells (optional).
             - [Planned] - Include export and import options for the table data (optional).
             - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.

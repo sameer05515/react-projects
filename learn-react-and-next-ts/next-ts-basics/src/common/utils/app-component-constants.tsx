@@ -55,6 +55,7 @@ import TreeViewerDashboardV4_0_1 from "@/components/playground-sub-components/tr
 import TreeViewerDashboardV4_0_2 from "@/components/playground-sub-components/tree-viewer/main/TreeViewerDashboardV4_0_2";
 import TreeViewerDashboardV4_0_3 from "@/components/playground-sub-components/tree-viewer/main/TreeViewerDashboardV4_0_3";
 import GraphNodesViewerDashboardV1_0_0 from "@/components/playground-sub-components/graph-viewer/main/GraphNodesViewerDashboardV1_0_0";
+import SPPTableDashboardV1_0_0 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_0";
 
 export enum ComponentModules {
   TestingPurpose = "Testing Purpose",
@@ -70,7 +71,33 @@ export enum ComponentModules {
   DataFetching = "Data Fetching",
   FuturePurpose = "Future Purpose",
   MyCompaniesAndProjectsExplorer = "To collect all My (personal and official) Projects Information",
+  NewComponentDesign_SPPTable= "New Component Design: SPPTable"
 }
+
+export interface ComponentModuleDetails{
+  module: ComponentModules;
+  overallPurpose: string;  
+}
+
+const moduleWithPurposes:ComponentModuleDetails[]=[
+  {
+    module:ComponentModules.NewComponentDesign_SPPTable,
+    overallPurpose:`
+        Overall Target:
+            Target version: SPPTableV1_1_0
+            Expectations:
+                1. Create a reusable comparison table component:
+                    - The user can provide data in a specific format, which will be rendered as a table.
+                    - The user can edit individual cells.
+                    - Each editable cell can contain markdown text for formatting.
+                    - Provide customizable table styles (e.g., header color, border style, etc.).
+                    - Support for sorting and filtering rows based on column values.
+        
+        ================================================================
+
+    `
+  }
+]
 
 // Define a type for the structure of componentMapWithPurposes
 export interface ComponentDetails {
@@ -795,6 +822,29 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
     majorRelease: false,
     module:
       ComponentModules.TestingPurpose_GraphNodesViewer_Usage,
+  },
+  SPPTableDashboardV1_0_0:{
+    element:SPPTableDashboardV1_0_0,
+    purpose:`
+        Tasks status in current version 'SPPTableV1_0_0' :
+            [Commpleted] - Implement a basic table component.
+            [Planned] - Enhance it further to meet the specified targets.
+              - [Planned] - Common Components Extraction
+                TableHeader: A reusable component for rendering table headers.
+                TableRow: A reusable component for rendering each row.
+                TableCell: A reusable component for rendering each row.
+              - [Planned] - Styles: A separate object for holding the common styles.
+              - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
+            [Planned] - Add support for validation in editable cells (optional).
+            [Planned] - Include export and import options for the table data (optional).
+            [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            [Planned] - Support responsive design to ensure table works across different devices.
+            [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+    `,
+    majorRelease: false,
+    module:
+      ComponentModules.NewComponentDesign_SPPTable,
   }
 };
 
@@ -883,6 +933,7 @@ export const getComponentDetails = (
   key: string
 ): ComponentDetails & { componentLabel: string } => {
   const details = componentMapWithPurposes[key];
+  const moduleWithPurpose= moduleWithPurposes.find(m=>m.module===details?.module);
 
   let componentLabel = getLabelForKey(key) || "Please Select a component";
 
@@ -890,9 +941,10 @@ export const getComponentDetails = (
     ...details,
     majorRelease: details?.majorRelease ?? false, // Assign default if undefined
     // experimentalComponentAsPerLearningImplementation:
-    //   details?.experimentalComponentAsPerLearningImplementation ?? false,
+    //   details?.experimentalComponentAsPerLearningImplementation ?? false,    
     experimentalComponentAsPerLearningImplementation:
       isExperimentalComponent(details),
     componentLabel,
+    purpose: (moduleWithPurpose?.overallPurpose||'') + '\n'+ (details?.purpose||'')
   };
 };

@@ -12,7 +12,7 @@ import yaml from "js-yaml";
 
 // Define the response type
 interface LoadYAMLResponse {
-  jsonData: any;
+  jsonData: unknown;
   isError: boolean;
   errorMessage: string | null;
 }
@@ -42,16 +42,16 @@ const loadYAMLData = (yamlText: string): LoadYAMLResponse => {
   }
 };
 
-export type PostProps = {
+export type FormResponseProps = {
   yamlText: string;
 };
 
-type NewPostProps = {
-  onSubmit: (formData: PostProps) => void;
+type YAMLProcessorFormProps = {
+  onSubmit: (formData: FormResponseProps) => void;
   onReset: () => void;
 };
 
-const NewPost = ({ onSubmit, onReset }: NewPostProps) => {
+const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   const {
     GLOBAL_APPLICATION_STYLES: {
       "post-module-form": postModuleForm,
@@ -62,7 +62,7 @@ const NewPost = ({ onSubmit, onReset }: NewPostProps) => {
   const customFormRef = useRef<CustomFormV6Handle>(null);
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
-  const validate = (data: PostProps): boolean => {
+  const validate = (data: FormResponseProps): boolean => {
     const errors: string[] = [];
     const trimmedYAMLText = data.yamlText?.trim();
 
@@ -80,7 +80,7 @@ const NewPost = ({ onSubmit, onReset }: NewPostProps) => {
   };
 
   const handleSubmit = (rawdata: unknown) => {
-    const data = rawdata as PostProps;
+    const data = rawdata as FormResponseProps;
     if (validate(data)) {
       console.log("[NewPostWithCustomFormV3]: Valid: ", JSON.stringify(data));
       onSubmit(data);
@@ -113,7 +113,7 @@ const NewPost = ({ onSubmit, onReset }: NewPostProps) => {
 const SPPTableDashboardV1_0_3 = () => {
   const [data, setData] = useState<ComparisonDataType<string> | null>(null);
 
-  const handleFormSubmit = (formData: PostProps) => {
+  const handleFormSubmit = (formData: FormResponseProps) => {
     const parsedData = loadYAMLData(formData.yamlText);
     if (!parsedData.isError) {
       setData(parsedData.jsonData as ComparisonDataType<string>);
@@ -122,7 +122,7 @@ const SPPTableDashboardV1_0_3 = () => {
 
   return (
     <div>
-      <NewPost onSubmit={handleFormSubmit} onReset={() => setData(null)} />
+      <YAMLProcessorForm onSubmit={handleFormSubmit} onReset={() => setData(null)} />
       {data && <SPPTableV1_0_2 data={data} />}
     </div>
   );

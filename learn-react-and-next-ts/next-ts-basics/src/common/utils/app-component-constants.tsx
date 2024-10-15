@@ -57,6 +57,7 @@ import TreeViewerDashboardV4_0_3 from "@/components/playground-sub-components/tr
 import GraphNodesViewerDashboardV1_0_0 from "@/components/playground-sub-components/graph-viewer/main/GraphNodesViewerDashboardV1_0_0";
 import SPPTableDashboardV1_0_0 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_0";
 import SPPTableDashboardV1_0_1 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_1";
+import SPPTableDashboardV1_0_2 from "@/components/playground-sub-components/reusable-comparison-component/main/SPPTableDashboardV1_0_2";
 
 export enum ComponentModules {
   TestingPurpose = "Testing Purpose",
@@ -896,7 +897,7 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
     module: ComponentModules.NewComponentDesign_SPPTable,
   },
   SPPTableDashboardV1_0_2:{
-    element: SPPTableDashboardV1_0_1,
+    element: SPPTableDashboardV1_0_2,
     purpose: `
         Tasks status in current version 'SPPTableV1_0_1' :
             - [Completed][V1_0_0] - Implement a basic table component.
@@ -911,8 +912,9 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
               - [Planned] - Extract data and keep in a seperate tsx file for re-usability purpose
                 - [Completed][V1_0_0] - Data extracted and put to a common 'reusable-comparison-component/common/data/data_v1_0_0.tsx' file
                 - [Completed][V1_0_1] - upgraded to 'data_v1_0_1.tsx' to hold multiple difference objects. changed hardcoded 'ArrayList' and 'LinkedList' headers to general 'left' and 'right' in 'CDRowItemType' type
-                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
-                - [Planned] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+                - [Completed][V1_0_2] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and 2-Item Comparisons
+                - [Completed][V1_0_2] - Generic CDRowItemType<T> and Generic ComparisonDataType<T> to support 'Generic row value' and N-Item Comparisons
+            - [Planned] - Add a context, to pass common configurations. This way we can refrain from uneccesary 'prop-drilling'
             - [Planned] - Add support for validation in editable cells (optional).
             - [Planned] - Include export and import options for the table data (optional).
             - [Planned] - Add row and column operations like adding/removing rows or columns dynamically.

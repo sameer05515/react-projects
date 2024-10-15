@@ -8,6 +8,39 @@ import Form, {
 import FormError from "@/components/common/custom-form/form-errors-display/FormError";
 import TexArea from "@/components/common/custom-text-area/CustomTexArea";
 import { useGlobalStyles } from "@/common/hooks/useGlobalStyles";
+import yaml from "js-yaml";
+
+// Define the response type
+interface LoadYAMLResponse {
+  jsonData: any;
+  isError: boolean;
+  errorMessage: string | null;
+}
+
+const loadYAMLData = (yamlText: string): LoadYAMLResponse => {
+  try {
+    const jsonData = yaml.load(yamlText);
+    console.log(jsonData);
+
+    return {
+      jsonData: jsonData,
+      isError: false,
+      errorMessage: null,
+    };
+  } catch (e: any) {
+    // Use 'any' since js-yaml can throw different error types
+    console.error(e);
+    const error = e.mark
+      ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
+      : `Error parsing YAML: ${e.message}`;
+
+    return {
+      jsonData: null,
+      isError: true, // Set this to true since there was an error
+      errorMessage: error,
+    };
+  }
+};
 
 export type PostProps = {
   yamlText: string;
@@ -31,10 +64,18 @@ const NewPost = (props: NewPostProps) => {
 
   const validate = (data: PostProps) => {
     const errors: string[] = [];
-    if (!data?.yamlText?.trim()) errors.push("Please provide a valid yamlText");
-
-    
-
+    if (!data?.yamlText?.trim()) {
+      errors.push("Please provide a valid yamlText");
+    } else if (data?.yamlText?.trim()) {
+      const { errorMessage, isError } = loadYAMLData(
+        data?.yamlText?.trim()
+      );
+      if (isError) {
+        errors.push(
+          errorMessage || "Error occured while parsing given YAML text"
+        );
+      }
+    }
     setFormErrors(errors);
     return errors.length === 0;
   };

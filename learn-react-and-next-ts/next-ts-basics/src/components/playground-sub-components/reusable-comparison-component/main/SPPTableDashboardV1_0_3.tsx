@@ -62,26 +62,27 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   const customFormRef = useRef<CustomFormV6Handle>(null);
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
-  const validate = (data: FormResponseProps): boolean => {
+  const validate = (data: FormResponseProps): {valid:boolean} => {
     const errors: string[] = [];
     const trimmedYAMLText = data.yamlText?.trim();
 
     if (!trimmedYAMLText) {
       errors.push("Please provide a valid yamlText");
     } else {
-      const { errorMessage, isError } = loadYAMLData(trimmedYAMLText);
+      const { errorMessage, isError, jsonData } = loadYAMLData(trimmedYAMLText);
       if (isError) {
         errors.push(errorMessage || "Error occurred while parsing given YAML text");
       }
     }
 
     setFormErrors(errors);
-    return errors.length === 0;
+    return {valid:errors.length === 0};
   };
 
   const handleSubmit = (rawdata: unknown) => {
     const data = rawdata as FormResponseProps;
-    if (validate(data)) {
+    const {valid}=validate(data);
+    if (valid) {
       console.log("[NewPostWithCustomFormV3]: Valid: ", JSON.stringify(data));
       onSubmit(data);
     } else {

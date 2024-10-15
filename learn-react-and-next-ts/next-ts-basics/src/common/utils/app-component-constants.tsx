@@ -899,7 +899,7 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
   SPPTableDashboardV1_0_2:{
     element: SPPTableDashboardV1_0_2,
     purpose: `
-        Tasks status in current version 'SPPTableV1_0_1' :
+        Tasks status in current version 'SPPTableV1_0_2' :
             - [Completed][V1_0_0] - Implement a basic table component.
             - [Planned] - Enhance it further to meet the specified targets.
               - [Planned] - Common Components Extraction

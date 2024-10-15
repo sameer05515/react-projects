@@ -1,7 +1,7 @@
 import CustomButton from "@/components/common/custom-button/CustomButtonV1_0_0";
+import { useState } from "react";
 import { comparisonData } from "../common/data/data_v1_0_2";
 import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
-import { useState } from "react";
 
 // Usage example
 const SPPTableDashboardV1_0_2 = () => {

@@ -21,13 +21,13 @@ const AppContainerComponent = () => {
 
   if (errors.length > 0) {
     return (
-      <>
+      <div style={errorContainerStyle}>
         {errors.map((error, index) => (
-          <div key={index} style={{ color: "red" }}>
+          <div key={index} style={errorMessageStyle}>
             {error}
           </div>
         ))}
-      </>
+      </div>
     );
   }
 
@@ -46,6 +46,22 @@ const AppContainerComponent = () => {
       </table>
     </>
   );
+};
+
+// Error container style
+const errorContainerStyle = {
+  backgroundColor: "#ffe5e5",
+  border: "1px solid #ff4d4d",
+  borderRadius: "5px",
+  padding: "15px",
+  margin: "20px 0",
+  color: "#ff4d4d",
+};
+
+// Individual error message style
+const errorMessageStyle = {
+  marginBottom: "10px",
+  fontWeight: "bold",
 };
 
 export default SPPTableV1_0_2;

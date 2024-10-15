@@ -1,9 +1,11 @@
+export type CDRowItemType = {
+  aspect: string;
+  ArrayList: string;
+  LinkedList: string;
+};
+
 export type ComparisonDataType = {
-  differences: {
-    aspect: string;
-    ArrayList: string;
-    LinkedList: string;
-  }[];
+  differences: CDRowItemType[];
 };
 
 // Sample JSON data for comparison

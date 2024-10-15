@@ -1,13 +1,7 @@
-import {
-    ComparisonDataType
-} from "../../common/data/data_v1_0_0";
+import { ComparisonDataType } from "../../common/data/data_v1_0_0";
 import { styles } from "../../common/styles/styles_v1_0_1";
 import TableHeader from "../table-header/TableHeaderV1_0_0";
 import TableRow from "..//table-row/TableRowV1_0_0";
-
-
-
-
 
 // Reusable Comparison Component
 const SPPTableV1_0_1 = ({ data }: { data: ComparisonDataType }) => (
@@ -21,4 +15,4 @@ const SPPTableV1_0_1 = ({ data }: { data: ComparisonDataType }) => (
   </table>
 );
 
-export default SPPTableV1_0_1
+export default SPPTableV1_0_1;

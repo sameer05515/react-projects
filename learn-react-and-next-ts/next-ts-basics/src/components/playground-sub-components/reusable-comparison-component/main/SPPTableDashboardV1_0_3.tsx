@@ -23,12 +23,12 @@ const loadYAMLData = (yamlText: string): LoadYAMLResponse => {
     console.log(jsonData);
 
     return {
-      jsonData: jsonData,
+      jsonData,
       isError: false,
       errorMessage: null,
     };
   } catch (e: any) {
-    // Use 'any' since js-yaml can throw different error types
+    // Catch all types of errors from js-yaml and return a structured error message
     console.error(e);
     const error = e.mark
       ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
@@ -36,7 +36,7 @@ const loadYAMLData = (yamlText: string): LoadYAMLResponse => {
 
     return {
       jsonData: null,
-      isError: true, // Set this to true since there was an error
+      isError: true,
       errorMessage: error,
     };
   }
@@ -51,7 +51,7 @@ type NewPostProps = {
   onReset: () => void;
 };
 
-const NewPost = (props: NewPostProps) => {
+const NewPost = ({ onSubmit, onReset }: NewPostProps) => {
   const {
     GLOBAL_APPLICATION_STYLES: {
       "post-module-form": postModuleForm,
@@ -62,20 +62,19 @@ const NewPost = (props: NewPostProps) => {
   const customFormRef = useRef<CustomFormV6Handle>(null);
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
-  const validate = (data: PostProps) => {
+  const validate = (data: PostProps): boolean => {
     const errors: string[] = [];
-    if (!data?.yamlText?.trim()) {
+    const trimmedYAMLText = data.yamlText?.trim();
+
+    if (!trimmedYAMLText) {
       errors.push("Please provide a valid yamlText");
-    } else if (data?.yamlText?.trim()) {
-      const { errorMessage, isError } = loadYAMLData(
-        data?.yamlText?.trim()
-      );
+    } else {
+      const { errorMessage, isError } = loadYAMLData(trimmedYAMLText);
       if (isError) {
-        errors.push(
-          errorMessage || "Error occured while parsing given YAML text"
-        );
+        errors.push(errorMessage || "Error occurred while parsing given YAML text");
       }
     }
+
     setFormErrors(errors);
     return errors.length === 0;
   };
@@ -84,19 +83,16 @@ const NewPost = (props: NewPostProps) => {
     const data = rawdata as PostProps;
     if (validate(data)) {
       console.log("[NewPostWithCustomFormV3]: Valid: ", JSON.stringify(data));
-      props.onSubmit(data);
+      onSubmit(data);
     } else {
-      console.log(
-        "[NewPostWithCustomFormV3]: In-Valid: ",
-        JSON.stringify(data)
-      );
+      console.log("[NewPostWithCustomFormV3]: Invalid: ", JSON.stringify(data));
     }
   };
 
   const handleCancel = () => {
     customFormRef.current?.clear();
     setFormErrors([]);
-    props.onReset();
+    onReset();
   };
 
   return (
@@ -113,12 +109,20 @@ const NewPost = (props: NewPostProps) => {
   );
 };
 
-// Usage example
+// Main Dashboard Component
 const SPPTableDashboardV1_0_3 = () => {
   const [data, setData] = useState<ComparisonDataType<string> | null>(null);
+
+  const handleFormSubmit = (formData: PostProps) => {
+    const parsedData = loadYAMLData(formData.yamlText);
+    if (!parsedData.isError) {
+      setData(parsedData.jsonData as ComparisonDataType<string>);
+    }
+  };
+
   return (
     <div>
-      <NewPost onSubmit={() => {}} onReset={() => {}} />
+      <NewPost onSubmit={handleFormSubmit} onReset={() => setData(null)} />
       {data && <SPPTableV1_0_2 data={data} />}
     </div>
   );

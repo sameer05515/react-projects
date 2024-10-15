@@ -11,7 +11,7 @@ const SPPTableDashboardV1_0_2 = () => {
       <div>
         <CustomButton
           onClick={() =>
-            setCurrIndex((prev) => (prev + 1) % (comparisonData.length+1))
+            setCurrIndex((prev) => (prev + 1) % (comparisonData.length))
           }
         >
           Next

@@ -902,9 +902,10 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
             - [Planned] - Support responsive design to ensure table works across different devices.
             - [Planned] - Allow table data to be stored and retrieved via local storage or external API.
             - [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
-            
+
             - [Planned] - Testing various scenarios and put their results
-              - [Planned] - If null or undefined ComparisonDataType data passed, SPPTable should show an error message
+              - [Completed]: [V1_0_2]: - If null or undefined ComparisonDataType data passed, SPPTable should show an error message
+              - [Planned] - Identify more error scenarios and fix them
     `,
     majorRelease: false,
     module: ComponentModules.NewComponentDesign_SPPTable,

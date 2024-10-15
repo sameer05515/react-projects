@@ -29,6 +29,7 @@ import SpinExample from "./sub-components/animation/SpinExample";
 import FlipExample from "./sub-components/animation/FlipExample";
 import FlipExampleV3 from "./sub-components/animation/FlipExampleV3";
 import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
+import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 
 
 const componentMapWithPurposes = {
@@ -216,7 +217,30 @@ const componentMapWithPurposes = {
     FlipExampleV3:{
         element:FlipExampleV3,
         purpose:"FlipExampleV3"
+    },
+    SPPTableV1_0_0: {
+        element: SPPTableV1_0_0,
+        purpose: `
+        Target:
+            1. Create a reusable comparison table component:
+                - The user can provide data in a specific format, which will be rendered as a table.
+                - The user can edit individual cells.
+                - Each editable cell can contain markdown text for formatting.
+                - Provide customizable table styles (e.g., header color, border style, etc.).
+                - Support for sorting and filtering rows based on column values.
+    
+        Tasks:
+            [Planned] - Implement a basic table component.
+            [Planned] - Enhance it further to meet the specified targets.
+            [Planned] - Add support for validation in editable cells (optional).
+            [Planned] - Include export and import options for the table data (optional).
+            [Planned] - Add row and column operations like adding/removing rows or columns dynamically.
+            [Planned] - Support responsive design to ensure table works across different devices.
+            [Planned] - Allow table data to be stored and retrieved via local storage or external API.
+            [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+        `
     }
+    
 };
 
 

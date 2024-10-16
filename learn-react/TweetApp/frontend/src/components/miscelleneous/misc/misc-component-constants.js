@@ -358,4 +358,73 @@ const styles = {
 // const componentOptions = generateOptions(componentMapFromPurpose);
 const componentOptions = generateOptionsV1(componentMapWithPurposes);
 
+export const getNextNthOption = (
+    // arr: Array<Record<string, any>>,
+    selected,
+    n
+  ) => {
+    const selectedIndex = componentOptions.findIndex(
+      (option) => option.value === selected
+    );
+  
+    if (selectedIndex === -1) return null;
+  
+    const nextIndex = (selectedIndex + n) % componentOptions.length;
+  
+    // Ensure the index is positive if the result is negative
+    const validNextIndex =
+      nextIndex < 0 ? componentOptions.length + nextIndex : nextIndex;
+  
+    return componentOptions[validNextIndex];
+  };
+  
+  // Placeholder styles and inputOutputMapping (not provided in the original code)
+  export const labelStyle = { marginRight: "10px" };
+  
+  const isExperimentalComponent = (details) => {
+    if (!details) return false;
+  
+    const isExperimental =
+      details.experimentalComponentAsPerLearningImplementation;
+  
+    if (isExperimental !== undefined) {
+      return isExperimental;
+    }
+  
+    return (
+      details.module === ComponentModules.TestingPurpose ||
+      details.module ===
+        ComponentModules.TestingPurpose_LearningHooksAndGenerics ||
+      details.module ===
+        ComponentModules.TestingPurpose_SelectBoxStyleFineTuning ||
+      details.module === ComponentModules.MyCompaniesAndProjectsExplorer
+    );
+  };
+  
+  export const getComponentDetails = (
+    key
+  ) => {
+    const details = componentMapWithPurposes[key];
+    const moduleWithPurpose = moduleWithPurposes.find(
+      (m) => m.module === details?.module
+    );
+  
+    let componentLabel = getLabelForKey(key) || "Please Select a component";
+  
+    return {
+      ...details,
+      module: details?.module || ComponentModules.TestingPurpose,
+      majorRelease: details?.majorRelease ?? false, // Assign default if undefined
+      // experimentalComponentAsPerLearningImplementation:
+      //   details?.experimentalComponentAsPerLearningImplementation ?? false,
+      experimentalComponentAsPerLearningImplementation:
+        isExperimentalComponent(details),
+      componentLabel,
+      purpose:
+        (moduleWithPurpose?.overallPurpose || "") +
+        "\n" +
+        (details?.purpose || ""),
+    };
+  };
+
 export { componentMapFromPurpose as componentMap, componentOptions, styles };

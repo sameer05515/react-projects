@@ -4,28 +4,48 @@ import {
   componentOptions,
   getComponentDetails,
   getNextNthOption,
-  styles
 } from "./misc-component-constants";
 import ButtonGroup from "../../../common/components/button/ButtonGroup";
 import ToggleablePanel from "../../../common/components/ToggleablePanel";
 
-// Reusable SelectInput Component
-const SelectInput = ({ options, onChange, placeholder, defaultValue }) => (
+// styles.js - Extracted styles
+export const customStyles = {
+  select: {
+    container: (base) => ({
+      ...base,
+      border: "1px solid #ddd",
+      borderRadius: "4px",
+      padding: "5px",
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: "#888",
+      fontStyle: "italic",
+    }),
+  },
+  buttonContainer: {
+    padding: "5px",
+    gap: "5px",
+  },
+  componentInfo: {
+    padding: "5px",
+    fontSize: "14px",
+    fontFamily: "Arial, sans-serif",
+  },
+};
+
+
+
+const SelectInput = ({ options, onChange, placeholder, value }) => (
   <Select
     options={options}
     onChange={onChange}
-    styles={{
-      container: (base) => ({ ...base, ...styles.select }),
-      placeholder: (base) => ({
-        ...base,
-        color: "#888",
-        fontStyle: "italic",
-      }),
-    }}
+    styles={customStyles.select}
     placeholder={placeholder}
-    defaultValue={defaultValue}
+    value={value}
   />
 );
+
 
 const MiscellaneousExamples = () => {
   const [selectedComponent, setSelectedComponent] = useState("SPPTableV1_0_0");
@@ -33,10 +53,6 @@ const MiscellaneousExamples = () => {
   const handleChange = (selectedOption) => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);
   };
-
-  // const DisplayComponent = useMemo(() => {
-  //   return componentMap[selectedComponent] || null;
-  // }, [selectedComponent]);
 
   const {
     DisplayComponent,
@@ -47,21 +63,13 @@ const MiscellaneousExamples = () => {
     componentLabel,
   } = useMemo(() => {
     const comp = getComponentDetails(selectedComponent || "");
-    const DisplayComponent = comp?.element || null;
-    const displayLabel = comp?.purpose || "";
-    const majorRelease = comp?.majorRelease || false;
-    const moduleName = comp?.module || null;
-    const expCAPLI =
-      comp?.experimentalComponentAsPerLearningImplementation || false;
-    const componentLabel = comp?.componentLabel || "";
-
     return {
-      DisplayComponent,
-      displayLabel,
-      majorRelease,
-      moduleName,
-      expCAPLI,
-      componentLabel,
+      DisplayComponent: comp?.element || null,
+      displayLabel: comp?.purpose || "",
+      majorRelease: comp?.majorRelease || false,
+      moduleName: comp?.module || null,
+      expCAPLI: comp?.experimentalComponentAsPerLearningImplementation || false,
+      componentLabel: comp?.componentLabel || "",
     };
   }, [selectedComponent]);
 
@@ -85,14 +93,16 @@ const MiscellaneousExamples = () => {
             title: "Next",
             onClick: () => {
               setSelectedComponent(
-                (prev) => getNextNthOption(prev || "", -1)?.value || null
+                (prev) => getNextNthOption(prev || "", 1)?.value || null
               );
             },
           },
         ]}
       />
+
       <h4><b>Selected Component</b>: {componentLabel}</h4>
-      <div style={{ padding: "5px", gap: "5px" }}>
+
+      <div style={customStyles.buttonContainer}>
         <SelectInput
           options={componentOptions}
           onChange={handleChange}
@@ -100,31 +110,25 @@ const MiscellaneousExamples = () => {
           value={componentOptions.find(opt => opt.value === selectedComponent)}
         />
       </div>
-      <ToggleablePanel title="Details" showContent={true}>
-        <>
-          {selectedComponent && (
-            <div>
-              Module:
-              <b >
-                {moduleName ? moduleName : "Missing Module name"}
-              </b>
-              <br />
-              Experimental Component: {expCAPLI ? "Yes " : "No "} <br />
-              <b >
-                {majorRelease ? "Major Release" : "Minor Release"}
-              </b>
-              <br />
-              <pre style={{whiteSpace:'pre-wrap'}}>
-                {displayLabel ||
-                  `Display label missing for selected component: ${selectedComponent}`}
-              </pre>
-            </div>
-          )}
-        </>
+
+      <ToggleablePanel title="Details" showContent={false}>
+        {selectedComponent && (
+          <div style={customStyles.componentInfo}>
+            Module: <b>{moduleName || "Missing Module name"}</b>
+            <br />
+            Experimental Component: {expCAPLI ? "Yes " : "No "} <br />
+            <b>{majorRelease ? "Major Release" : "Minor Release"}</b>
+            <br />
+            <pre style={{ whiteSpace: "pre-wrap" }}>
+              {displayLabel || `Display label missing for selected component: ${selectedComponent}`}
+            </pre>
+          </div>
+        )}
       </ToggleablePanel>
-      <div style={{ padding: "5px", gap: "5px" }}>
+
+      {/* <div style={customStyles.buttonContainer}> */}
         {DisplayComponent && <DisplayComponent />}
-      </div>
+      {/* </div> */}
     </>
   );
 };

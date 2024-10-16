@@ -249,3 +249,87 @@ rowData:
       - "When thread-safety is required"
 
 `
+
+const yaml3_valid=`
+uniqueId: "Comparison_AbstractionVsEncapsulation"
+title: "Comparison: Abstraction vs Encapsulation"
+headers:
+  - Abstraction
+  - Encapsulation
+rowData:
+  - aspect: "Definition"
+    values:
+      - |
+        **Abstraction** focuses on hiding the implementation details and showing only the essential features of the object. 
+        It allows focusing on what the object does rather than how it does it.
+      - |
+        **Encapsulation** is about bundling the data (variables) and the methods (functions) that operate on the data into a single unit or class. 
+        It also restricts access to the data by exposing only what is necessary.
+  - aspect: "Purpose"
+    values:
+      - |
+        **Abstraction** is used to reduce complexity by hiding unnecessary details and allowing the programmer to focus on high-level operations.
+      - |
+        **Encapsulation** is used to protect the data from unwanted access and modification, ensuring controlled interaction with object properties.
+  - aspect: "Focus"
+    values:
+      - |
+        **Abstraction** focuses on the outside view of an object or what the object represents.
+      - |
+        **Encapsulation** focuses on how the object performs its operations and protects its data.
+  - aspect: "Implementation"
+    values:
+      - |
+        **Abstraction** is implemented using abstract classes or interfaces, which declare methods without providing their implementation.
+      - |
+        **Encapsulation** is implemented using access modifiers such as \`private\`, \`protected\`, and \`public\` to control access to the class members.
+  - aspect: "Real-World Example"
+    values:
+      - |
+        **Abstraction**: When you use a coffee machine, you only need to know how to select a coffee type and press a button, 
+        without understanding the internal process.
+      - |
+        **Encapsulation**: A real-world example would be a capsule in medicine, which contains the necessary components, 
+        but hides them from direct access.
+  - aspect: "Use Case"
+    values:
+      - |
+        **Abstraction**: Useful when you want to create a blueprint for multiple objects that share common functionality.
+      - |
+        **Encapsulation**: Useful when you need to protect an object's integrity by controlling access to its internal state.
+
+`;
+
+const yaml3_invalid=`
+uniqueId: "Comparison_AbstractionVsEncapsulation"
+title: "Comparison: Abstraction vs Encapsulation"
+headers:
+  - Abstraction
+  - Encapsulation
+rowData:
+  - aspect: "Definition"
+    values: |
+      - **Abstraction** focuses on hiding the implementation details and showing only the essential features of the object. It allows focusing on what the object does rather than how it does it.
+      - **Encapsulation** is about bundling the data (variables) and the methods (functions) that operate on the data into a single unit or class. It also restricts access to the data by exposing only what is necessary.
+  - aspect: "Purpose"
+    values: |
+      - **Abstraction** is used to reduce complexity by hiding unnecessary details and allowing the programmer to focus on high-level operations.
+      - **Encapsulation** is used to protect the data from unwanted access and modification, ensuring controlled interaction with object properties.
+  - aspect: "Focus"
+    values: |
+      - **Abstraction** focuses on the outside view of an object or what the object represents.
+      - **Encapsulation** focuses on how the object performs its operations and protects its data.
+  - aspect: "Implementation"
+    values: |
+      - **Abstraction** is implemented using abstract classes or interfaces, which declare methods without providing their implementation.
+      - **Encapsulation** is implemented using access modifiers such as \`private\`, \`protected\`, and \`public\` to control access to the class members.
+  - aspect: "Real-World Example"
+    values: |
+      - **Abstraction**: When you use a coffee machine, you only need to know how to select a coffee type and press a button, without understanding the internal process.
+      - **Encapsulation**: A real-world example would be a capsule in medicine, which contains the necessary components, but hides them from direct access.
+  - aspect: "Use Case"
+    values: |
+      - **Abstraction**: Useful when you want to create a blueprint for multiple objects that share common functionality.
+      - **Encapsulation**: Useful when you need to protect an object's integrity by controlling access to its internal state.
+
+`;

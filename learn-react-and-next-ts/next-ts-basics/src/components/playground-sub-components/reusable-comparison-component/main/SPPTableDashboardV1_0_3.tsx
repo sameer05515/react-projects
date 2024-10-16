@@ -1,14 +1,14 @@
+import { useGlobalStyles } from "@/common/hooks/useGlobalStyles";
 import CustomButton from "@/components/common/custom-button/CustomButtonV1_0_0";
-import { useRef, useState } from "react";
-import { ComparisonDataType } from "../common/data/data_v1_0_2";
-import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
 import Form, {
   type CustomFormV6Handle,
 } from "@/components/common/custom-form/CustomFormV4.2";
-import FormError from "@/components/common/custom-form/form-errors-display/FormError";
+import FormError from "@/components/common/custom-form/form-errors-display/FormErrorV3";
 import TexArea from "@/components/common/custom-text-area/CustomTexArea";
-import { useGlobalStyles } from "@/common/hooks/useGlobalStyles";
 import yaml from "js-yaml";
+import { useRef, useState } from "react";
+import { ComparisonDataType } from "../common/data/data_v1_0_2";
+import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
 
 // Define the response type with generics
 interface LoadYAMLResponse<T> {
@@ -90,7 +90,7 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
           errorMessage || "Error occurred while parsing the YAML text."
         );
       } else if (!validateYAMLStructure(jsonData)) {
-        errors.push("The YAML structure is not valid for comparison data.");
+        errors.push("The YAML structure is not valid for comparison data."+"\n"+JSON.stringify(jsonData, null, 2));
       }
     }
 
@@ -116,15 +116,16 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   };
 
   return (
-    <Form onSave={handleSubmit} className={postModuleForm} ref={customFormRef}>
+    <Form onSave={handleSubmit} className={postModuleForm} style={{width: '90%'}} ref={customFormRef}>
       <TexArea id="new-post-body" label="Text" name="yamlText" />
-      <FormError formErrors={formErrors} />
       <div className={postModuleFormActions}>
         <CustomButton type="submit">Save</CustomButton>
         <CustomButton type="button" onClick={handleCancel}>
           Reset
         </CustomButton>
       </div>
+      
+      <FormError formErrors={formErrors} />
     </Form>
   );
 };

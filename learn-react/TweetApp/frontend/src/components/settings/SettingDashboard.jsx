@@ -18,7 +18,7 @@ const tabButtonStyle = {
 
 const TabNames = {
   //listUsers: "tags",
-  MiscellaneousExamples: "MiscellaneousExamples",
+  // MiscellaneousExamples: "MiscellaneousExamples",
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
   comparisonTableContainer: "ComparisonTableContainer",
@@ -32,7 +32,7 @@ const TabNames = {
 };
 
 function SettingDashboard() {
-  const [activeTab, setActiveTab] = useState(TabNames.MiscellaneousExamples);
+  const [activeTab, setActiveTab] = useState(TabNames.goldRateCalculator);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -76,7 +76,7 @@ function SettingDashboard() {
         >
           Tags
         </button> */}
-        <button
+        {/* <button
           style={{
             ...tabButtonStyle,
             background:
@@ -87,7 +87,7 @@ function SettingDashboard() {
           onClick={() => handleTabChange(TabNames.MiscellaneousExamples)}
         >
           MiscellaneousExamples Container
-        </button>
+        </button> */}
         <button
           style={{
             ...tabButtonStyle,
@@ -206,7 +206,7 @@ function SettingDashboard() {
         {activeTab === TabNames.CountFullStopLines && <CountFullStopLines />}
         {activeTab === TabNames.DisplayData && <DisplayData />}        
         {activeTab === TabNames.ArrowConnectorExample && <ArrowConnectorExample />}
-        {activeTab === TabNames.MiscellaneousExamples && <MiscellaneousExamples />}
+        {/* {activeTab === TabNames.MiscellaneousExamples && <MiscellaneousExamples />} */}
       </div>
     </div>
   );

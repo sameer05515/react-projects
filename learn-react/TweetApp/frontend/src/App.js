@@ -87,6 +87,7 @@ import ToggleableIcon from "./common/components/ToggleableIcon";
 import TwoNodeComponentV5_3 from "./components/topic/sub-components/TwoNodeComponentV5.3";
 import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
 import Welcome from "./Welcome";
+import PlaygroundBase from "./components/apna-playground/PlaygroundBase";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -370,6 +371,10 @@ function App() {
           <Route path="/node_story_v1" element={<RelatedNodesBaseV1 />}>
             <Route path=":id" element={<ViewNode />} />
           </Route>
+
+          {/** ----- Apna Playground ---------------------------- */}
+          <Route path="/apna-playground" element={<PlaygroundBase/>}/>
+          
         </Route>
 
         {/** ----- LOGIN/ LOGOUT ---------------------- */}

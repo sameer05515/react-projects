@@ -31,6 +31,12 @@ import FlipExampleV3 from "./sub-components/animation/FlipExampleV3";
 import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 
+export const ComponentModules = {
+    TestingPurpose : "Testing Purpose",    
+    MyCompaniesAndProjectsExplorer : "To collect all My (personal and official) Projects Information",
+    NewComponentDesign_SPPTable : "New Component Design: SPPTable",
+  }
+
 
 const componentMapWithPurposes = {
     MyTest: {

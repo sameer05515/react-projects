@@ -33,11 +33,18 @@ import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTa
 
 export const ComponentModules = {
     TestingPurpose: "Testing Purpose",
-    MyCompaniesAndProjectsExplorer: "To collect all My (personal and official) Projects Information",
+    MyCompaniesAndProjectsExplorer:
+        "To collect all My (personal and official) Projects Information",
     NewComponentDesign_SPPTable: "New Component Design: SPPTable",
-}
+    Upgrade_MemoryMaps_component_to_MemoryMapsV1_1_0:
+        "[MILESTONE_1]: Upgrade MemoryMaps component to MemoryMapsV1_1_0",
+};
 
 const moduleWithPurposes = [
+    {
+        module: ComponentModules.TestingPurpose,
+        overallPurpose:" Build and test new testing components"
+    },
     {
         module: ComponentModules.NewComponentDesign_SPPTable,
         overallPurpose: `
@@ -56,16 +63,28 @@ const moduleWithPurposes = [
           ================================================================
       `,
     },
-];
+    {
+        module: ComponentModules.Upgrade_MemoryMaps_component_to_MemoryMapsV1_1_0,
+        overallPurpose:`
+        ==========================================================
 
+        Overall Target:
+            Target version: MemoryMapsV1_1_0
+            Expectations:
+                1. [MILESTONE_1]: Upgrade MemoryMaps component to MemoryMapsV1_1_0
+        ===========================================================
+        `
+    }
+];
 
 const componentMapWithPurposes = {
     MyTest: {
         element: () => <>I am just to test</>,
-        purpose: "To check if we can pass a dynamic functional component as Argument."
+        purpose:
+            "To check if we can pass a dynamic functional component as Argument.",
     },
     NonExistingComponent: {
-        purpose: "Purpose less, ghumantu bhotiya"
+        purpose: "Purpose less, ghumantu bhotiya",
     },
     BirdListV1: {
         element: BirdListV1,
@@ -73,7 +92,7 @@ const componentMapWithPurposes = {
         
         When you right-click on a bird name, a floating popup appears with options to edit, delete, or rename. 
         
-        For now, the selected option logs a message to the console.`
+        For now, the selected option logs a message to the console.`,
     },
     BirdListV2: {
         element: BirdListV2,
@@ -81,7 +100,7 @@ const componentMapWithPurposes = {
         refactored version of BirdListV1 component, renamed to BirdListV2,
         
         with common functionalities extracted into separate components for better maintainability and readability
-        `
+        `,
     },
     BirdListV3: {
         element: BirdListV3,
@@ -89,7 +108,7 @@ const componentMapWithPurposes = {
         refactored version of BirdListV2 component, renamed to BirdListV3,
         
         refactored code with styles extracted
-        `
+        `,
     },
     BirdListV4: {
         element: BirdListV4,
@@ -97,68 +116,68 @@ const componentMapWithPurposes = {
         a refactored version of BirdListV3 and PopupMenu components, 
         
         with styles extracted and popupOptions prop implemented
-        `
+        `,
     },
     LanguageSelectorV1: {
         element: LanguageSelectorV1,
         purpose: `I want to learn, to draw arrows between my currently selected node 
         
-        with its previous and next nodes`
+        with its previous and next nodes`,
     },
     LanguageSelectorV2: {
         element: LanguageSelectorV2,
         purpose: `Enhancement of LanguageSelectorV1. 
         To draw arrows between the nodes (languages, countries, and idioms) in a React component,
-         we can use the react-archer library,`
+         we can use the react-archer library,`,
     },
     LanguageSelectorV3: {
         element: LanguageSelectorV3,
         purpose: `Enhancement of LanguageSelectorV2. 
         Here's an updated version of your component where each language, country, and idiom is treated as a separate node. 
         The react-archer library is used to draw arrows connecting the language to its related countries and idioms, 
-        with countries positioned to the left and idioms to the right,`
+        with countries positioned to the left and idioms to the right,`,
     },
     LanguageSelectorV2_1: {
         element: LanguageSelectorV2_1,
         purpose: `Enhancement of LanguageSelectorV2. 
         To draw arrows between the nodes (languages, countries, and idioms) in a React component,
-         we can use the react-archer library,`
+         we can use the react-archer library,`,
     },
     LanguageSelectorV2_1_1: {
         element: LanguageSelectorV2_1_1,
         purpose: `Enhancement of LanguageSelectorV2. 
         To draw arrows between the nodes (languages, countries, and idioms) in a React component,
-         we can use the react-archer library,`
+         we can use the react-archer library,`,
     },
     LanguageSelectorV2_1_2: {
         element: LanguageSelectorV2_1_2,
         purpose: `Enhancement of LanguageSelectorV2. 
         To draw arrows between the nodes (languages, countries, and idioms) in a React component,
-         we can use the react-archer library,`
+         we can use the react-archer library,`,
     },
     LanguageSelectorV2_1_2_1: {
         element: LanguageSelectorV2_1_2_1,
         purpose: `Enhancement of LanguageSelectorV2. 
         To draw arrows between the nodes (languages, countries, and idioms) in a React component,
-         we can use the react-archer library,`
+         we can use the react-archer library,`,
     },
     TwoNodeComponent: {
         element: TwoNodeComponent,
         purpose: `React component that creates two nodes in a column, 
         with an arrow connecting the top node to the bottom node. 
-        The arrow will only be shown when the top node is hovered over, using react-archer.`
+        The arrow will only be shown when the top node is hovered over, using react-archer.`,
     },
     TwoNodeComponentV2: {
         element: TwoNodeComponentV2,
         purpose: `Enhancement of React TwoNodeComponent, 
         with an arrow connecting the top node to the bottom node. 
-        The arrow relation name will only be shown when the top node is hovered over, using react-archer.`
+        The arrow relation name will only be shown when the top node is hovered over, using react-archer.`,
     },
     TwoNodeComponentV3: {
         element: TwoNodeComponentV3,
         purpose: `Enhancement of React TwoNodeComponentV2, 
         with an arrow connecting the top node to the bottom node. 
-        The arrow relation name will only be shown when the top node is hovered over, using react-archer.`
+        The arrow relation name will only be shown when the top node is hovered over, using react-archer.`,
     },
     TwoNodeComponentV4: {
         element: TwoNodeComponentV4,
@@ -168,7 +187,7 @@ const componentMapWithPurposes = {
         you can indeed attach a mouseEnter and mouseLeave event handler to that div to control the 
         visibility of the label directly when hovering over it. 
         
-        This allows you to show the label only when hovering over the arrow's label itself.`
+        This allows you to show the label only when hovering over the arrow's label itself.`,
     },
     TwoNodeComponentV5: {
         element: TwoNodeComponentV5,
@@ -179,71 +198,71 @@ const componentMapWithPurposes = {
             3. **Style Handling**: The hover logic is now encapsulated within the \`HoverLabel\` component, making it more reusable and easier to manage.
 
             This setup makes the components more modular and easier to reuse or extend in the future.
-        `
+        `,
     },
     TwoNodeComponentV5_1: {
         element: TwoNodeComponentV5_1,
         purpose: `
         Enhancement of React TwoNodeComponentV5
-        `
+        `,
     },
     TwoNodeComponentV5_2: {
         element: TwoNodeComponentV5_2,
         purpose: `
         Enhancement of React TwoNodeComponentV5_1
-        `
+        `,
     },
     TwoNodeComponentV5_3: {
         element: TwoNodeComponentV5_3,
-        purpose: "A try to render dynamic data"
+        purpose: "A try to render dynamic data",
     },
     UseNavigationExampleComponent: {
         element: UseNavigationExampleComponent,
-        purpose: "A try to centralise routing"
+        purpose: "A try to centralise routing",
     },
     MonthList: {
         element: MonthList,
-        purpose: "To learn drag and drop, so that I could enhance user experience"
+        purpose: "To learn drag and drop, so that I could enhance user experience",
     },
     TreeList: {
         element: TreeList,
-        purpose: "Dnd in a Tree"
+        purpose: "Dnd in a Tree",
     },
     TreeListV2: {
         element: TreeListV2,
-        purpose: "Enhancement of TreeList. Dnd in a Tree"
+        purpose: "Enhancement of TreeList. Dnd in a Tree",
     },
     TreeListV3: {
         element: TreeListV3,
-        purpose: "Enhancement of TreeListV2. Dnd in a Tree"
+        purpose: "Enhancement of TreeListV2. Dnd in a Tree",
     },
     TreeListV4: {
         element: TreeListV4,
-        purpose: "Enhancement of TreeListV3. Dnd in a Tree"
+        purpose: "Enhancement of TreeListV3. Dnd in a Tree",
     },
     KeyframeAnimationDemo: {
         element: KeyframeAnimationDemo,
-        purpose: "KeyframeAnimationDemo"
+        purpose: "KeyframeAnimationDemo",
     },
     ParallaxScroll: {
         element: ParallaxScroll,
-        purpose: "ParallaxScroll"
+        purpose: "ParallaxScroll",
     },
     SpinExample: {
         element: SpinExample,
-        purpose: "SpinExample"
+        purpose: "SpinExample",
     },
     FlipExample: {
         element: FlipExample,
-        purpose: "FlipExample"
+        purpose: "FlipExample",
     },
     FlipExampleV2: {
         element: FlipExampleV2,
-        purpose: "FlipExampleV2"
+        purpose: "FlipExampleV2",
     },
     FlipExampleV3: {
         element: FlipExampleV3,
-        purpose: "FlipExampleV3"
+        purpose: "FlipExampleV3",
     },
     SPPTableV1_0_0: {
         element: SPPTableV1_0_0,
@@ -267,17 +286,20 @@ const componentMapWithPurposes = {
             [Planned] - Support responsive design to ensure table works across different devices.
             [Planned] - Allow table data to be stored and retrieved via local storage or external API.
             [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
-        `
-    }
-
+        `,
+    },
 };
 
-
 // Completed componentMapWithPurposes
-const componentMapFromPurpose = Object.keys(componentMapWithPurposes).reduce((acc, key) => {
-    acc[key] = componentMapWithPurposes[key].element || (() => <h2>No component found for: '{key}'</h2>);
-    return acc;
-}, {});
+const componentMapFromPurpose = Object.keys(componentMapWithPurposes).reduce(
+    (acc, key) => {
+        acc[key] =
+            componentMapWithPurposes[key].element ||
+            (() => <h2>No component found for: '{key}'</h2>);
+        return acc;
+    },
+    {}
+);
 
 // Common method to generate options
 const generateOptions = (obj) => {
@@ -290,7 +312,7 @@ const generateOptions = (obj) => {
 const getLabelForKey = (key) => {
     const compu = componentMapWithPurposes[key];
     return key && compu
-        ? `${key} - {${compu.module||ComponentModules.TestingPurpose}, ${compu.majorRelease ? "Major Release" : "Minor Release"
+        ? `${key} - {${compu.module || ComponentModules.TestingPurpose}, ${compu.majorRelease ? "Major Release" : "Minor Release"
         }}`
         : "";
 };

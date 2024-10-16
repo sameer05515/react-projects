@@ -166,6 +166,7 @@ const MemoryMapList = () => {
                     style={styles.detailsContainer}
                     onClick={() => setPopupVisible(false)}
                 >
+                    <h4>{selectedMemoryMap?.name}</h4>
                     {!selectedMemoryMap?.skeleton ? (
                         <>
                             This section will show the skeleton by default. Later on, based on

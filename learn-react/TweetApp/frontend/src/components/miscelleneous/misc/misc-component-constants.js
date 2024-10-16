@@ -32,10 +32,31 @@ import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 
 export const ComponentModules = {
-    TestingPurpose : "Testing Purpose",    
-    MyCompaniesAndProjectsExplorer : "To collect all My (personal and official) Projects Information",
-    NewComponentDesign_SPPTable : "New Component Design: SPPTable",
-  }
+    TestingPurpose: "Testing Purpose",
+    MyCompaniesAndProjectsExplorer: "To collect all My (personal and official) Projects Information",
+    NewComponentDesign_SPPTable: "New Component Design: SPPTable",
+}
+
+const moduleWithPurposes = [
+    {
+        module: ComponentModules.NewComponentDesign_SPPTable,
+        overallPurpose: `
+          ================================================================
+  
+          Overall Target:
+              Target version: SPPTableV1_1_0
+              Expectations:
+                  1. Create a reusable comparison table component:
+                      - The user can provide data in a specific format, which will be rendered as a table.
+                      - The user can edit individual cells.
+                      - Each editable cell can contain markdown text for formatting.
+                      - Provide customizable table styles (e.g., header color, border style, etc.).
+                      - Support for sorting and filtering rows based on column values.
+          
+          ================================================================
+      `,
+    },
+];
 
 
 const componentMapWithPurposes = {
@@ -172,57 +193,57 @@ const componentMapWithPurposes = {
         Enhancement of React TwoNodeComponentV5_1
         `
     },
-    TwoNodeComponentV5_3:{
+    TwoNodeComponentV5_3: {
         element: TwoNodeComponentV5_3,
         purpose: "A try to render dynamic data"
     },
-    UseNavigationExampleComponent:{
-        element:UseNavigationExampleComponent,
+    UseNavigationExampleComponent: {
+        element: UseNavigationExampleComponent,
         purpose: "A try to centralise routing"
     },
-    MonthList:{
+    MonthList: {
         element: MonthList,
-        purpose:"To learn drag and drop, so that I could enhance user experience"
+        purpose: "To learn drag and drop, so that I could enhance user experience"
     },
-    TreeList:{
+    TreeList: {
         element: TreeList,
-        purpose:"Dnd in a Tree"
+        purpose: "Dnd in a Tree"
     },
-    TreeListV2:{
+    TreeListV2: {
         element: TreeListV2,
-        purpose:"Enhancement of TreeList. Dnd in a Tree"
+        purpose: "Enhancement of TreeList. Dnd in a Tree"
     },
-    TreeListV3:{
+    TreeListV3: {
         element: TreeListV3,
-        purpose:"Enhancement of TreeListV2. Dnd in a Tree"
+        purpose: "Enhancement of TreeListV2. Dnd in a Tree"
     },
-    TreeListV4:{
+    TreeListV4: {
         element: TreeListV4,
-        purpose:"Enhancement of TreeListV3. Dnd in a Tree"
+        purpose: "Enhancement of TreeListV3. Dnd in a Tree"
     },
-    KeyframeAnimationDemo:{
-        element:KeyframeAnimationDemo,
-        purpose:"KeyframeAnimationDemo"
+    KeyframeAnimationDemo: {
+        element: KeyframeAnimationDemo,
+        purpose: "KeyframeAnimationDemo"
     },
-    ParallaxScroll:{
-        element:ParallaxScroll,
-        purpose:"ParallaxScroll"
+    ParallaxScroll: {
+        element: ParallaxScroll,
+        purpose: "ParallaxScroll"
     },
-    SpinExample:{
-        element:SpinExample,
-        purpose:"SpinExample"
+    SpinExample: {
+        element: SpinExample,
+        purpose: "SpinExample"
     },
-    FlipExample:{
-        element:FlipExample,
-        purpose:"FlipExample"
+    FlipExample: {
+        element: FlipExample,
+        purpose: "FlipExample"
     },
-    FlipExampleV2:{
-        element:FlipExampleV2,
-        purpose:"FlipExampleV2"
+    FlipExampleV2: {
+        element: FlipExampleV2,
+        purpose: "FlipExampleV2"
     },
-    FlipExampleV3:{
-        element:FlipExampleV3,
-        purpose:"FlipExampleV3"
+    FlipExampleV3: {
+        element: FlipExampleV3,
+        purpose: "FlipExampleV3"
     },
     SPPTableV1_0_0: {
         element: SPPTableV1_0_0,
@@ -248,7 +269,7 @@ const componentMapWithPurposes = {
             [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
         `
     }
-    
+
 };
 
 
@@ -263,6 +284,22 @@ const generateOptions = (obj) => {
     return Object.keys(obj).map((key) => ({
         value: key,
         label: key,
+    }));
+};
+
+const getLabelForKey = (key) => {
+    const compu = componentMapWithPurposes[key];
+    return key && compu
+        ? `${key} - {${compu.module||ComponentModules.TestingPurpose}, ${compu.majorRelease ? "Major Release" : "Minor Release"
+        }}`
+        : "";
+};
+
+const generateOptionsV1 = (obj) => {
+    return Object.keys(obj).map((key, idx) => ({
+        id: `id_${idx + 1}`,
+        value: key,
+        label: getLabelForKey(key),
     }));
 };
 
@@ -296,6 +333,7 @@ const styles = {
     },
 };
 
-const componentOptions = generateOptions(componentMapFromPurpose);
+// const componentOptions = generateOptions(componentMapFromPurpose);
+const componentOptions = generateOptionsV1(componentMapWithPurposes);
 
 export { componentMapFromPurpose as componentMap, componentOptions, styles };

@@ -918,8 +918,9 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
   SPPTableDashboardV1_0_3:{
     element: SPPTableDashboardV1_0_3,
     purpose: `
-        ACHIEVEMENTS AT A GLANCE IN THIS VERSION
-        - Rendering dynamic yaml text to 'SPPTableV1_0_2', post transforming it to JSON
+        ACHIEVEMENTS AT A GLANCE: IN THIS VERSION
+        - Created basic setup to perform Rendering dynamic yaml text to 'SPPTableV1_0_2', post transforming it to JSON
+        - Added basic validation for generated json from 'yaml-text processing'
 
 
         Tasks status in current dashboard version 'SPPTableDashboard[V1_0_3]' (with 'SPPTableV1_0_2') :

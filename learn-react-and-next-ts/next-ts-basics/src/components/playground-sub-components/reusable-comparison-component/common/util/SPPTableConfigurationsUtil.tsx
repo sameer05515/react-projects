@@ -75,10 +75,10 @@ const SharedConfigurationsProvider = <T,>({
 
     if (!data) {
       errors.push(
-        "Null or undefined data provided. Table rendering not possible!"
+        "[SharedConfigurationsProvider]: [Datavalidation]: Null or undefined data provided. Table rendering not possible!"
       );
     } else if (!validateDataStructure(data, rowValueValidator)) {
-      errors.push("The provided data structure is invalid.");
+      errors.push("[SharedConfigurationsProvider]: [Datavalidation]: The provided data structure is invalid.");
     }
 
     const isValidData = errors.length === 0 && validateDataStructure(data);

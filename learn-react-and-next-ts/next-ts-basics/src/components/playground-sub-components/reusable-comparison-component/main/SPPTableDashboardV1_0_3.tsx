@@ -119,7 +119,7 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
     <Form onSave={handleSubmit} className={postModuleForm} style={{width: '90%'}} ref={customFormRef}>
       <TexArea id="new-post-body" label="Text" name="yamlText" />
       <div className={postModuleFormActions}>
-        <CustomButton type="submit">Save</CustomButton>
+        <CustomButton type="submit">Apply</CustomButton>
         <CustomButton type="button" onClick={handleCancel}>
           Reset
         </CustomButton>

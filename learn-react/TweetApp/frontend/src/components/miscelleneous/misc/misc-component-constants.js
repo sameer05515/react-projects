@@ -38,12 +38,47 @@ export const ComponentModules = {
     NewComponentDesign_SPPTable: "New Component Design: SPPTable",
     Upgrade_MemoryMaps_component_to_MemoryMapsV1_1_0:
         "[MILESTONE_1]: Upgrade MemoryMaps component to MemoryMapsV1_1_0",
+    Upgrade_SmartEditorV3_component_to_SmartEditorV4:
+        "Upgrade: SmartEditorV3 component to SmartEditorV4",
 };
 
 const moduleWithPurposes = [
     {
         module: ComponentModules.TestingPurpose,
-        overallPurpose:" Build and test new testing components"
+        overallPurpose: " Build and test new testing components"
+    },
+    {
+        module: ComponentModules.Upgrade_SmartEditorV3_component_to_SmartEditorV4,
+        overallPurpose:`
+        ================================================================
+  
+        Overall Target:
+            Target version: SmartEditorV4
+                Expectations:
+                    1. Create a reusable SmartEditorV4 component:
+                        - The user can input a text, either from a textarea or a CKEditor ( or via a SkeletonEditor, actual implementation can be varied) .
+                        - Input text can be previewed as
+                            - raw text (visible in a 'p'),
+                            - html,
+                            - yaml,
+                            - markdown-text,
+                            - TIS-text (tabbed indented string format) visible in
+                                - raw text format,
+                                - JSON format,
+                                - with TreeViewer ,
+                            - YAML-Text visible in raw-text format, 
+                                - raw text format,
+                                - JSON format,
+                                - with TreeViewer ,
+                    2. Proper Error handling should be taken care
+                    3. Documented artifact for
+                        - Existing functionality and bugs/issues of SmartEditorV3
+                        - Bug-fixes done in SmartEditorV4
+                        - List of new functionality introduced in SmartEditorV4
+
+          
+        ================================================================
+        `
     },
     {
         module: ComponentModules.NewComponentDesign_SPPTable,
@@ -65,7 +100,7 @@ const moduleWithPurposes = [
     },
     {
         module: ComponentModules.Upgrade_MemoryMaps_component_to_MemoryMapsV1_1_0,
-        overallPurpose:`
+        overallPurpose: `
         ==========================================================
 
         Overall Target:
@@ -362,69 +397,69 @@ export const getNextNthOption = (
     // arr: Array<Record<string, any>>,
     selected,
     n
-  ) => {
+) => {
     const selectedIndex = componentOptions.findIndex(
-      (option) => option.value === selected
+        (option) => option.value === selected
     );
-  
+
     if (selectedIndex === -1) return null;
-  
+
     const nextIndex = (selectedIndex + n) % componentOptions.length;
-  
+
     // Ensure the index is positive if the result is negative
     const validNextIndex =
-      nextIndex < 0 ? componentOptions.length + nextIndex : nextIndex;
-  
+        nextIndex < 0 ? componentOptions.length + nextIndex : nextIndex;
+
     return componentOptions[validNextIndex];
-  };
-  
-  // Placeholder styles and inputOutputMapping (not provided in the original code)
-  export const labelStyle = { marginRight: "10px" };
-  
-  const isExperimentalComponent = (details) => {
+};
+
+// Placeholder styles and inputOutputMapping (not provided in the original code)
+export const labelStyle = { marginRight: "10px" };
+
+const isExperimentalComponent = (details) => {
     if (!details) return false;
-  
+
     const isExperimental =
-      details.experimentalComponentAsPerLearningImplementation;
-  
+        details.experimentalComponentAsPerLearningImplementation;
+
     if (isExperimental !== undefined) {
-      return isExperimental;
+        return isExperimental;
     }
-  
+
     return (
-      details.module === ComponentModules.TestingPurpose ||
-      details.module ===
+        details.module === ComponentModules.TestingPurpose ||
+        details.module ===
         ComponentModules.TestingPurpose_LearningHooksAndGenerics ||
-      details.module ===
+        details.module ===
         ComponentModules.TestingPurpose_SelectBoxStyleFineTuning ||
-      details.module === ComponentModules.MyCompaniesAndProjectsExplorer
+        details.module === ComponentModules.MyCompaniesAndProjectsExplorer
     );
-  };
-  
-  export const getComponentDetails = (
+};
+
+export const getComponentDetails = (
     key
-  ) => {
+) => {
     const details = componentMapWithPurposes[key];
     const moduleWithPurpose = moduleWithPurposes.find(
-      (m) => m.module === details?.module
+        (m) => m.module === details?.module
     );
-  
+
     let componentLabel = getLabelForKey(key) || "Please Select a component";
-  
+
     return {
-      ...details,
-      module: details?.module || ComponentModules.TestingPurpose,
-      majorRelease: details?.majorRelease ?? false, // Assign default if undefined
-      // experimentalComponentAsPerLearningImplementation:
-      //   details?.experimentalComponentAsPerLearningImplementation ?? false,
-      experimentalComponentAsPerLearningImplementation:
-        isExperimentalComponent(details),
-      componentLabel,
-      purpose:
-        (moduleWithPurpose?.overallPurpose || "") +
-        "\n" +
-        (details?.purpose || ""),
+        ...details,
+        module: details?.module || ComponentModules.TestingPurpose,
+        majorRelease: details?.majorRelease ?? false, // Assign default if undefined
+        // experimentalComponentAsPerLearningImplementation:
+        //   details?.experimentalComponentAsPerLearningImplementation ?? false,
+        experimentalComponentAsPerLearningImplementation:
+            isExperimentalComponent(details),
+        componentLabel,
+        purpose:
+            (moduleWithPurpose?.overallPurpose || "") +
+            "\n" +
+            (details?.purpose || ""),
     };
-  };
+};
 
 export { componentMapFromPurpose as componentMap, componentOptions, styles };

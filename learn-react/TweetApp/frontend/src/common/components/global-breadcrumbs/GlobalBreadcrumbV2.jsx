@@ -3,7 +3,7 @@ import HoverableSpan from "../hoverable-span/HoverableSpan";
 import { useSelector } from "react-redux";
 import { selectSelectedModuleName } from "../../../redux/slices/breadcrumbSlice";
 import { useNavigate } from "react-router-dom";
-import JSONDataViewer from "../JSONDataViewer";
+import JSONDataViewer from "../json-data-viewer/JSONDataViewer";
 
 const GlobalBreadcrumbV2 = ({
 }) => {

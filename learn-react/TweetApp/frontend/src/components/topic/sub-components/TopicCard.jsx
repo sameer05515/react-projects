@@ -12,7 +12,7 @@ import HoverableSpan from "../../../common/components/hoverable-span/HoverableSp
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import Tree from "../../../common/components/TreeViewer";
-import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 
 const TopicCard = ({

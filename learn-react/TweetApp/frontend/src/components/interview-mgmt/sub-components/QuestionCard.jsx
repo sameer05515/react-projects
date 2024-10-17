@@ -1,6 +1,5 @@
 import React from "react";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
-import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
@@ -8,7 +7,7 @@ import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
 import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import Tree from "../../../common/components/TreeViewer";
-import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 
 // Utility function to format date
@@ -72,7 +71,8 @@ const QuestionCard = ({
           </div> */}
           <h2>
             <b>Question: </b>
-            <HtmlTextRendrer htmlString={question.heading} />
+            {/* <HtmlTextRendrer htmlString={question.heading} /> */}
+            {question.heading}
           </h2>
           <RatingComponent rating={question.rating} />
           {/* <time dateTime={question.updatedDate}>{question.updatedDate}</time> */}

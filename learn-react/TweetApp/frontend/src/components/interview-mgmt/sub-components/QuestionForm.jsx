@@ -7,7 +7,7 @@ import { SmartEditor } from "../../../common/components/smart-editor/SmartEditor
 import {
   createQuestion, updateQuestion
 } from "../../../redux/slices/interviewMgmtSlice";
-import JSONDataViewer from "../../../common/components/JSONDataViewer";
+import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
 const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {

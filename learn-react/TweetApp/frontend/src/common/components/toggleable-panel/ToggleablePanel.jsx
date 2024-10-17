@@ -1,29 +1,28 @@
-import React, { useState } from "react";
-import ToggleableIcon from "./ToggleableIcon";
+import React, { useState } from 'react'
+import ToggleableIcon from '../toggleable-icon/ToggleableIcon';
 
-// Reusable component to view JSON data with a toggle option
-const JSONDataViewer = ({ step = "", title = "", metadata = [], initialValueToShowMetadata = false }) => {
+const ToggleablePanel = ({ title = "", children, showContent: initialValueToShowMetadata = false }) => {
     const [showMetadata, setShowMetadata] = useState(initialValueToShowMetadata);
 
     const toggleMetadataVisibility = () => setShowMetadata(prev => !prev);
-
     return (
         <div>
-            <span style={styles.title}>
-                {step && `Step: ${step} - `}{title}
-            </span>
             <ToggleableIcon
                 isContentVisible={showMetadata}
-                label={step ? "Step output" : ""}
                 onToggle={toggleMetadataVisibility}
+                additionalStyleForIcon={{fontWeight: 'bold', }}
             />
-            {showMetadata && (
+            <span style={styles.title}>
+                {title}
+            </span>
+            
+            {showMetadata && children && (
                 <div style={styles.metadataContainer}>
-                    <pre>{JSON.stringify(metadata, null, 2)}</pre>
+                    {children}
                 </div>
             )}
         </div>
-    );
+    )
 };
 
 const styles = {
@@ -31,7 +30,7 @@ const styles = {
         fontWeight: 'bold',
     },
     metadataContainer: {
-        maxHeight: "200px",
+        //maxHeight: "200px",
         maxWidth: "90vw",
         overflow: "auto",
         padding: "10px",
@@ -43,4 +42,4 @@ const styles = {
     },
 };
 
-export default JSONDataViewer;
+export default ToggleablePanel

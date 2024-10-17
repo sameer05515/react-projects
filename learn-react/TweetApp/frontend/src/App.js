@@ -57,7 +57,7 @@ import WordList from "./components/words/WordList";
 // import "./styles/nav-styles.css";
 // import TagList from "./components/tags/TagList";
 import HorizontalMenu from "./HorizontalMenu";
-import JSONDataViewer from "./common/components/JSONDataViewer";
+import JSONDataViewer from "./common/components/json-data-viewer/JSONDataViewer";
 import GlobalBreadcrumbV2 from "./common/components/global-breadcrumbs/GlobalBreadcrumbV2";
 import { AddUpdateSkeletonForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeleton";
 import {
@@ -83,7 +83,7 @@ import TagBase, {
   SearchTagRouterPage,
   ViewTag,
 } from "./components/tags/TagBase";
-import ToggleableIcon from "./common/components/ToggleableIcon";
+import ToggleableIcon from "./common/components/toggleable-icon/ToggleableIcon";
 import TwoNodeComponentV5_3 from "./components/topic/sub-components/TwoNodeComponentV5.3";
 import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
 import Welcome from "./Welcome";

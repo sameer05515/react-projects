@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { addUniqueIdsToTree } from "../../util/id-adder-util";
 import { buildTree } from "../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../custom-button/CustomButton";
-import JSONDataViewer from "../JSONDataViewer";
+import JSONDataViewer from "../json-data-viewer/JSONDataViewer";
 import MarkdownComponent from "../MarkdownComponent";
 import Tree from "../TreeViewer";
 

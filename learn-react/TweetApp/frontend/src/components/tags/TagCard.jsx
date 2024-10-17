@@ -5,7 +5,7 @@ import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan"
 import ReactHtmlParser from "react-html-parser";
 import Breadcrumbs from "../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import { SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
-import JSONDataViewer from "../../common/components/JSONDataViewer";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 import Tree from "../../common/components/TreeViewer";
 import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvider";
 

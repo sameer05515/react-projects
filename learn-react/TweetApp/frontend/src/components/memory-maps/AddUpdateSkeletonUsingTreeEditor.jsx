@@ -12,8 +12,8 @@ import {
     addUniqueIdsToTree,
     processTreeNodes,
 } from "../../common/util/id-adder-util";
-import ToggleablePanel from "../../common/components/ToggleablePanel";
-import JSONDataViewer from "../../common/components/JSONDataViewer";
+import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 import PopupMenuV3 from "../miscelleneous/misc/sub-components/PopupMenuV3";
 import Popup from "../../common/components/Popup";
 import CustomButton from "../../common/components/custom-button/CustomButton";

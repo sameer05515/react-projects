@@ -1,6 +1,6 @@
 import React from 'react'
 import MiscellaneousExamples from '../miscelleneous/misc/MiscellaneousExamples'
-import ToggleablePanel from '../../common/components/ToggleablePanel'
+import ToggleablePanel from '../../common/components/toggleable-panel/ToggleablePanel'
 
 const PlaygroundBase = () => {
   return (

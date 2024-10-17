@@ -8,9 +8,9 @@ import {
   SmartPreviewerV4,
 } from "../../../../common/components/smart-editor/SmartEditorV4_unstable";
 import { smartPreviewerDataArray as smartPreviewerData, observations } from "../common/data";
-import ToggleablePanel from "../../../../common/components/ToggleablePanel";
+import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
-import JSONDataViewer from "../../../../common/components/JSONDataViewer";
+import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 
 const SmartEditorV4Dashboard_V1_0_0 = () => {
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);

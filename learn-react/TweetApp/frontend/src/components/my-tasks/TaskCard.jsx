@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../common/components/floating-button/FloatingButton";
 import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
-import ToggleablePanel from "../../common/components/ToggleablePanel";
 import {
   SmartEditor,
   SmartPreviewer,
 } from "../../common/components/smart-editor/SmartEditorV3";
+import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import {
   activityList,
   getStatusLabelForId,

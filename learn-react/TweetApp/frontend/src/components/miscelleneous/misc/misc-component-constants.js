@@ -30,6 +30,7 @@ import FlipExample from "./sub-components/animation/FlipExample";
 import FlipExampleV3 from "./sub-components/animation/FlipExampleV3";
 import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
+import SmartEditorV4Dashboard_V1_0_0 from "../../apna-playground/main/SmartEditorV4Dashboard_V1_0_0";
 
 export const ComponentModules = {
     TestingPurpose: "Testing Purpose",
@@ -49,7 +50,7 @@ const moduleWithPurposes = [
     },
     {
         module: ComponentModules.Upgrade_SmartEditorV3_component_to_SmartEditorV4,
-        overallPurpose:`
+        overallPurpose: `
         ================================================================
   
         Overall Target:
@@ -108,6 +109,11 @@ const moduleWithPurposes = [
                       - Each editable cell can contain markdown text for formatting.
                       - Provide customizable table styles (e.g., header color, border style, etc.).
                       - Support for sorting and filtering rows based on column values.
+
+          Note:- 
+                This Module's development is now being developed in 'next-ts-basics' project. 
+                Please refer board of 'next-ts-basics' project.
+                Reasons for why it is moved will be published accordingly.
           
           ================================================================
       `,
@@ -335,8 +341,32 @@ const componentMapWithPurposes = {
             [Planned] - Support responsive design to ensure table works across different devices.
             [Planned] - Allow table data to be stored and retrieved via local storage or external API.
             [Planned] - Add cell-level formatting options such as font style, text alignment, and background color.
+
+        Note:- This Module's development is now being developed in 'next-ts-basics' project. Please refer board of 'next-ts-basics' project.
         `,
     },
+    SmartEditorV4Dashboard_V1_0_0: {
+        element: SmartEditorV4Dashboard_V1_0_0,
+        purpose: `
+        ACHIEVEMENTS / EFFORTS: AT A GLANCE: IN THIS VERSION
+        - working for creating basic setup for
+            Rendering different format of text by using 'SmartEditorV3'
+
+        - Below are observations for 'SmartEditorV3'
+            functionalities
+                TBD
+            limitations
+                TBD
+            Potential Bugs and possible improvements
+                TBD
+
+        Tasks status in current dashboard version 'SmartEditorV4Dashboard[V1_0_0]' (with 'SmartEditorV3') :
+        - [Planned]: Understand and document current functionalities, limitations , bugs and possible improvements of 'SmartEditorV3'
+
+        `,
+        isExperimentalComponent: true,
+        module: ComponentModules.Upgrade_SmartEditorV3_component_to_SmartEditorV4
+    }
 };
 
 // Completed componentMapWithPurposes

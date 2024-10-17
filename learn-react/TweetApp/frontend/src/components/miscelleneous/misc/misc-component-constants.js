@@ -349,7 +349,7 @@ const componentMapWithPurposes = {
     SmartEditorV4Dashboard_V1_0_0: {
         element: SmartEditorV4Dashboard_V1_0_0,
         purpose: `
-        ACHIEVEMENTS / EFFORTS: AT A GLANCE: IN THIS VERSION
+        [ACHIEVEMENTS / EFFORTS]: AT A GLANCE: IN THIS VERSION
         - working for creating basic setup for
             Rendering different format of text by using 'SmartEditorV3'
 
@@ -361,7 +361,7 @@ const componentMapWithPurposes = {
             Potential Bugs and possible improvements
                 TBD
 
-        Tasks status in current dashboard version 'SmartEditorV4Dashboard[V1_0_0]' (with 'SmartEditorV3') :
+        [TASKS STATUS]: in current dashboard version 'SmartEditorV4Dashboard[V1_0_0]' (with 'SmartEditorV3') :
         - [Planned]: Understand and document current functionalities, limitations , bugs and possible improvements of 'SmartEditorV3'
 
         `,

@@ -344,6 +344,7 @@ const componentMapWithPurposes = {
 
         Note:- This Module's development is now being developed in 'next-ts-basics' project. Please refer board of 'next-ts-basics' project.
         `,
+        module: ComponentModules.NewComponentDesign_SPPTable,
     },
     SmartEditorV4Dashboard_V1_0_0: {
         element: SmartEditorV4Dashboard_V1_0_0,

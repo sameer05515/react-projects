@@ -100,7 +100,7 @@ const MiscellaneousExamples = () => {
         ]}
       />
 
-      <h4><b>Selected Component</b>: {componentLabel}</h4>
+      <div><b>Selected Component</b>: {componentLabel}</div>
 
       <div style={customStyles.buttonContainer}>
         <SelectInput

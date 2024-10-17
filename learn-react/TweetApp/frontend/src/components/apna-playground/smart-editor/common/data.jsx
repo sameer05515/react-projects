@@ -1,13 +1,14 @@
-export const smartPreviewerDataArray=[
+export const smartPreviewerDataArray = [
     {
-        id:'data_to_render_TIS_text',
-        title:'data to render TIS text',
-        expectation:`
-        1. Both SmartEditorV3 and SmartEditorV4[_unstable] should successfully parse the string
+        id: 'render_with_valid_TIS_text',
+        title: 'data to render with valid TIS text',
+        expectation: `
+        1. [Completed]: [Passed]: [Should Parse valid TIS]: - Both SmartEditorV3 and SmartEditorV4[_unstable] should successfully parse the string and render with help of their respective SmartPreviewer(s)
             Note: 'SmartEditorV4[_unstable]' (will be referred as 'SmartEditorV4' in susequent discussion)
+        2. [Planned]: [TBD]: []: - 
         `,
-        data:{
-            content:`
+        data: {
+            content: `
 
    
             Project repository  
@@ -59,8 +60,38 @@ export const smartPreviewerDataArray=[
                     error 404 page to show error message for unsupported resources
                     a centralised popup to show error/success/warning messages
             `,
-            textOutputType:'skeleton',
-            textInputType:'TextArea'
+            textOutputType: 'skeleton',
+            textInputType: 'TextArea'
+        }
+    },
+    {
+        id: 'show_errors_with_invalid_TIS_text',
+        title: 'data to show errors with invalid TIS text',
+        expectation: `
+        1. [Passed]: [Should show errors for invalid TIS]: Both SmartEditorV3 and SmartEditorV4[_unstable] should successfully parse the string and render with help of their respective SmartPreviewer(s)
+            Note: 'SmartEditorV4[_unstable]' (will be referred as 'SmartEditorV4' in susequent discussion)
+        `,
+        data: {
+            content: `
+                    root
+                child
+            grandchild
+                child2
+                    grandchild2
+        `,
+            textOutputType: 'skeleton',
+            textInputType: 'TextArea'
         }
     }
-]
+];
+
+export const observations = `
+[Functionalities: FUNCNLTY] / [limitations: LIMTNS] / [Potential Bugs: PB] - In SmartEditorV3
+    - [FUNCNLTY]: 'SmartEditorV3' can parse valid TIS and show errors for invalid TIS
+    - [LIMTNS]: 'SmartEditorV3' is not reflecting changed value of data, being recalculated on 'Next' button click
+        - Verifying this limitation with normal textarea component, if it can reflect changes
+        - verified with normal text area, it is reflecting changed value of data
+[Possible Improvements: PI]: In SmartEditorV4
+    - [Planned]: [PI]- SmartEditorV4 should reflect changed value of data
+
+`

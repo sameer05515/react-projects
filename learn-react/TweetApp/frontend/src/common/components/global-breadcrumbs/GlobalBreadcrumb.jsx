@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HoverableSpan from "./HoverableSpan";
+import HoverableSpan from "../HoverableSpan";
 
 export const BreadcrumbItemType={
     TOPIC:{name:'TOPICS', basePageURL:'/topic-mgmt'},

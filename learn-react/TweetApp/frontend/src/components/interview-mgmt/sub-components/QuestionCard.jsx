@@ -6,9 +6,10 @@ import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEdi
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
-import Breadcrumbs, { BreadcrumbItemType } from "../../../common/components/GlobalBreadcrumb";
+import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import Tree from "../../../common/components/TreeViewer";
 import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 
 // Utility function to format date
 const formatDate = (dateString) => {
@@ -35,6 +36,7 @@ const QuestionCard = ({
   onLinkedTagSelection = () => { }
 }) => {
   const { availableTags, refreshCategoryTree } = useInterviewMgmt();
+  const {BreadcrumbItemType}= useGlobalServiceProvider();
 
   const filteredTags = question?.tags?.map((uniqueId) =>
     availableTags.find((tag) => tag.uniqueId === uniqueId)

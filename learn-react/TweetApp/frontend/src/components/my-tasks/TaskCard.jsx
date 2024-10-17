@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import FloatingButton from "../../common/components/FloatingButton";
+import FloatingButton from "../../common/components/floating-button/FloatingButton";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import ToggleablePanel from "../../common/components/ToggleablePanel";
 import {

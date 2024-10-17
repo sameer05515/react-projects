@@ -5,8 +5,8 @@ import {
 } from "../../../common/service/commonService";
 import ReactHtmlParser from "react-html-parser";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
-import FloatingButton from "../../../common/components/FloatingButton";
-import DynamicDataRenderer from "../../../common/components/DynamicDataRenderer";
+import FloatingButton from "../../../common/components/floating-button/FloatingButton";
+import DynamicDataRenderer from "../../../common/components/dynamic-data-renderer/DynamicDataRenderer";
 // import { Breadcrumbs } from "./TopicBase";
 import HoverableSpan from "../../../common/components/HoverableSpan";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";

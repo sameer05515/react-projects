@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditableLabel from "../../common/components/EditableLabel"; // Import the EditableLabel component
+import EditableLabel from "../../common/components/editable-label/EditableLabel"; // Import the EditableLabel component
 
 function CreateComment({ tweetId, handleAddComment }) {
   const [newCommentText, setNewCommentText] = useState(""); // State to hold the new comment text

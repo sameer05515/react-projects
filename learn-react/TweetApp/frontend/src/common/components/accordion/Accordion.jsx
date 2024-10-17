@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Accordion.css";
-import EditableLabel from "../EditableLabel";
+import EditableLabel from "../editable-label/EditableLabel";
 
 function Accordion({ title, children, isExpanded }) {
   const [isOpen, setIsOpen] = useState(isExpanded);

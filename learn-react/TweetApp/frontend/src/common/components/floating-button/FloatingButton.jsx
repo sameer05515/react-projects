@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "./custom-button/CustomButton";
+import CustomButton from "../custom-button/CustomButton";
 
 const FloatingButton = ({
   buttonStyle = {},

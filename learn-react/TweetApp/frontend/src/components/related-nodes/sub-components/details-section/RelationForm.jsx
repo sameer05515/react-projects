@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import Select from "react-select";
 import JSONPreview from "../common/JSONPreview";
-import CustomCheckbox from "../../../../common/components/CustomCheckbox";
+import CustomCheckbox from "../../../../common/components/custom-checkbox/CustomCheckbox";
 import {
     generateOptions,
     RELATION_DIRECTION_TYPES

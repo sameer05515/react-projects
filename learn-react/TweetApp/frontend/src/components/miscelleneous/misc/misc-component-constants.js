@@ -30,7 +30,7 @@ import FlipExample from "./sub-components/animation/FlipExample";
 import FlipExampleV3 from "./sub-components/animation/FlipExampleV3";
 import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
-import SmartEditorV4Dashboard_V1_0_0 from "../../apna-playground/main/SmartEditorV4Dashboard_V1_0_0";
+import SmartEditorV4Dashboard_V1_0_0 from "../../apna-playground/smart-editor/main/SmartEditorV4Dashboard_V1_0_0";
 
 export const ComponentModules = {
     TestingPurpose: "Testing Purpose",
@@ -351,7 +351,10 @@ const componentMapWithPurposes = {
         purpose: `
         [ACHIEVEMENTS / EFFORTS]: AT A GLANCE: IN THIS VERSION
         - working for creating basic setup for
-            Rendering different format of text by using 'SmartEditorV3'
+            Rendering different format of text by using 'SmartEditorV3' and 'SmartEditorV4[_unstable]'
+                Note : Unstable tag will be removed, once component will be groomed properly.
+            Compare the results and match output with 'expectation' mentioned in the provided ''
+
 
         - Below are observations for 'SmartEditorV3'
             functionalities
@@ -363,6 +366,8 @@ const componentMapWithPurposes = {
 
         [TASKS STATUS]: in current dashboard version 'SmartEditorV4Dashboard[V1_0_0]' (with 'SmartEditorV3') :
         - [Planned]: Understand and document current functionalities, limitations , bugs and possible improvements of 'SmartEditorV3'
+        - [Planned]: Paralelly fix/acknowledge changes in snapshot version 'SmartEditorV4[_unstable]'.
+
 
         `,
         isExperimentalComponent: true,
@@ -501,9 +506,10 @@ export const getComponentDetails = (
             isExperimentalComponent(details),
         componentLabel,
         purpose:
-            (moduleWithPurpose?.overallPurpose || "") +
-            "\n" +
-            (details?.purpose || ""),
+            (details?.purpose || "") + "\n" +
+            (moduleWithPurpose?.overallPurpose || "")
+
+        ,
     };
 };
 

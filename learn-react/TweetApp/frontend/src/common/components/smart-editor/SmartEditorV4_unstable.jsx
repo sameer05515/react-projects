@@ -274,4 +274,4 @@ const SmartPreviewer = ({ data }) => {
     );
 };
 
-export { SmartEditor as SmartEditorV3, SmartPreviewer as SmartPreviewerV3 };
+export { SmartEditor as SmartEditorV4, SmartPreviewer as SmartPreviewerV4 };

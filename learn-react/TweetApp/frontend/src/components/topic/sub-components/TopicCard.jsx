@@ -11,7 +11,7 @@ import DynamicDataRenderer from "../../../common/components/dynamic-data-rendere
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
-import Tree from "../../../common/components/TreeViewer";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 

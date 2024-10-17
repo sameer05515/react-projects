@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import CustomButton from "./custom-button/CustomButton";
+import CustomButton from "../custom-button/CustomButton";
 import TooltipSpan from "./TooltipSpan";
 
 // Sample treeList data

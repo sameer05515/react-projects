@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import MarkdownComponent from "../../../common/components/MarkdownComponent";
-import Tree from "../../../common/components/TreeViewer";
+import MarkdownComponent from "../../../common/components/markdown-component/MarkdownComponent";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
 import { buildTree } from "../../../common/util/indentation-based-string-parser-to-tree-data";
 import {

@@ -6,8 +6,8 @@ import { getDateAsMillisecondsString } from "../../common/service/commonService"
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../common/components/floating-button/FloatingButton";
 import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
-import Popup from "../../common/components/Popup";
-import RadioButtonsComponent from "../../common/components/RadioButtonsComponent";
+import Popup from "../../common/components/custom-popup/Popup";
+import RadioButtonsComponent from "../../common/components/radiobutton-component/RadioButtonsComponent";
 import {
     SmartEditor,
     SmartPreviewer,

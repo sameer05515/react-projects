@@ -1,5 +1,5 @@
 import React from "react";
-import RatingComponent from "../../../common/components/RatingComponent";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";

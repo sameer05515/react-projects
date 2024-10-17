@@ -8,7 +8,7 @@ import {
     useSearchParams,
 } from "react-router-dom";
 import Select from "react-select"; // Import the Select component from react-select
-import ViewSwitcher from "../../common/components/ViewSwitcher";
+import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
@@ -30,7 +30,7 @@ import {
     fetchPinnedItems,
     upsertPinnedItem,
 } from "../../redux/slices/pinnedItemSlice";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 
 const TaskBase = () => {
     const [selectedView, setSelectedView] = useState("list");

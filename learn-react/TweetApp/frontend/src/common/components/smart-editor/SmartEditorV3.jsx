@@ -6,8 +6,8 @@ import { addUniqueIdsToTree } from "../../util/id-adder-util";
 import { buildTree } from "../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../custom-button/CustomButton";
 import JSONDataViewer from "../json-data-viewer/JSONDataViewer";
-import MarkdownComponent from "../MarkdownComponent";
-import Tree from "../TreeViewer";
+import MarkdownComponent from "../markdown-component/MarkdownComponent";
+import Tree from "../tree-viewer/TreeViewer";
 
 const availableOutputTypes = {
     HTML: "html",

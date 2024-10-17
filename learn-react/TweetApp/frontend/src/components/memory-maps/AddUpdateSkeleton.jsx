@@ -5,7 +5,7 @@ import {
     fetchMemoryMaps,
     updateMemoryMapForGivenSkeleton,
 } from "../../redux/slices/memoryMapSlice";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 import { buildTree } from "../../common/util/indentation-based-string-parser-to-tree-data";
 import TextDiffViewer from "./diff/TextDiffViewerV2";
 import { addUniqueIdsToTree } from "../../common/util/id-adder-util";

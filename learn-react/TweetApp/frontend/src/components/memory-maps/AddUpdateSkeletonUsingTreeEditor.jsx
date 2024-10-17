@@ -5,7 +5,7 @@ import {
     fetchMemoryMaps,
     updateMemoryMapForGivenSkeleton,
 } from "../../redux/slices/memoryMapSlice";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 import { buildTree } from "../../common/util/indentation-based-string-parser-to-tree-data";
 import TextDiffViewer from "./diff/TextDiffViewerV2";
 import {
@@ -15,9 +15,9 @@ import {
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 import PopupMenuV3 from "../miscelleneous/misc/sub-components/PopupMenuV3";
-import Popup from "../../common/components/Popup";
+import Popup from "../../common/components/custom-popup/Popup";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import MarkdownComponent from "../../common/components/MarkdownComponent";
+import MarkdownComponent from "../../common/components/markdown-component/MarkdownComponent";
 import { toast } from "react-toastify";
 import { SkeletonTextType } from "./util/constants";
 

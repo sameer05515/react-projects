@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ViewSwitcher from '../../common/components/ViewSwitcher';
+import ViewSwitcher from '../../common/components/view-switcher/ViewSwitcher';
 
 const ListView = ({ students }) => {
   return (

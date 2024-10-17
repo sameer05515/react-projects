@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import JSONDataViewer from "./json-data-viewer/JSONDataViewer";
+import JSONDataViewer from "../json-data-viewer/JSONDataViewer";
 
 const styles = {
   container: {

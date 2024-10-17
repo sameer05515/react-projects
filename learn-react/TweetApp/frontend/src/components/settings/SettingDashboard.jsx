@@ -4,11 +4,10 @@ import GoldRateCalculator from "../miscelleneous/GoldRateCalculator";
 import ComparisonContainer from "../comparisons/ComparisonContainer";
 import ComparisonTableContainer from "../comparisons/ComparisonTableContainer";
 import StudentList from "../miscelleneous/StudentList";
-import Breadcrumb2 from "../../common/components/Breadcrumb2";
+import Breadcrumb2 from "../../common/components/breadcrumbs/Breadcrumb2";
 import CountFullStopLines from "../miscelleneous/CountFullStopLines";
 import DisplayData from "../miscelleneous/DisplayData";
 import {MainComponent as ArrowConnectorExample} from "../miscelleneous/ArrowConnectorExamples";
-import MiscellaneousExamples from "../miscelleneous/misc/MiscellaneousExamples";
 
 const tabButtonStyle = {
   padding: "10px",

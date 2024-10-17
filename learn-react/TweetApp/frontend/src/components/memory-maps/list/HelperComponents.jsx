@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ButtonGroup from "../../../common/components/button/ButtonGroup";
+import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import Tree from "../../../common/components/TreeViewer";
 import {
     fetchMemoryMaps,

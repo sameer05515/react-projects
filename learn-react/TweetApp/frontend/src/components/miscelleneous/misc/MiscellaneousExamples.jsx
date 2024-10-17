@@ -5,7 +5,7 @@ import {
   getComponentDetails,
   getNextNthOption,
 } from "./misc-component-constants";
-import ButtonGroup from "../../../common/components/button/ButtonGroup";
+import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import ToggleablePanel from "../../../common/components/ToggleablePanel";
 
 // styles.js - Extracted styles

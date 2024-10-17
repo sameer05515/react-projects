@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import ButtonGroup from "../../common/components/button/ButtonGroup";
+import ButtonGroup from "../../common/components/button-group/ButtonGroup";
 import Tree from "../../common/components/TreeViewer";
 
 import {

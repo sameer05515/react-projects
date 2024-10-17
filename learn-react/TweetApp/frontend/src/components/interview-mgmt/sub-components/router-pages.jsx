@@ -20,7 +20,7 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import QuestionCard from "./QuestionCard";
 import QuestionForm from "./QuestionForm";
 import AnswerForm from "./AnswerForm";
-import ButtonGroup from "../../../common/components/button/ButtonGroup";
+import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import Select from "react-select";
 
 const CategoryList = () => {

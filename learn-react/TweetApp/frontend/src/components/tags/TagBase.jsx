@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TagListOldView from "./TagListOldView";
 import ViewSwitcher from "../../common/components/ViewSwitcher";
 import { useDispatch, useSelector } from "react-redux";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import TooltipSpan from "../../common/components/TooltipSpan";
 import {
     createTag,

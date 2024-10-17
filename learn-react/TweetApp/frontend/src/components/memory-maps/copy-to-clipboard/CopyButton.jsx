@@ -1,6 +1,6 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 const styles = {
     container: {

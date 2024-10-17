@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GlobalConstants from "../../common/globalConstants";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "../common/custom-button/CustomButton";
 
 function UpdateTweet({ tweet, onUpdate }) {
   const [content, setContent] = useState(tweet.content);

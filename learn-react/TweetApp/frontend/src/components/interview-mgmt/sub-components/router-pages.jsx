@@ -7,7 +7,7 @@ import {
     useParams,
     useSearchParams,
 } from "react-router-dom";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../../common/components/HoverableSpan";
 import Tree from "../../../common/components/TreeViewer";
 import useDataFetching from "../../../common/hooks/useDataFetching";

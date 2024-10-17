@@ -4,7 +4,7 @@ import yaml from "js-yaml";
 import React, { useEffect, useRef, useState } from "react";
 import { addUniqueIdsToTree } from "../../util/id-adder-util";
 import { buildTree } from "../../util/indentation-based-string-parser-to-tree-data";
-import CustomButton from "../CustomButton";
+import CustomButton from "../custom-button/CustomButton";
 import JSONDataViewer from "../JSONDataViewer";
 import MarkdownComponent from "../MarkdownComponent";
 import Tree from "../TreeViewer";

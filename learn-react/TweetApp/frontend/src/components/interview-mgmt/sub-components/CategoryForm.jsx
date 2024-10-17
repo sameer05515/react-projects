@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartEditor } from "../../../common/components/SmartEditor";
 import {

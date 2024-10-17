@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
 
 const TagForm = ({

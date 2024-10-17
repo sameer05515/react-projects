@@ -8,7 +8,7 @@ import {
     useSearchParams,
 } from "react-router-dom";
 import Select from "react-select";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import TooltipSpan from "../../common/components/TooltipSpan";
 import ViewSwitcher from "../../common/components/ViewSwitcher";

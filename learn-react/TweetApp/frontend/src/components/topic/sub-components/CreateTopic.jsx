@@ -9,7 +9,7 @@ import {
   fetchTopics,
   updateTopic,
 } from "../../../redux/slices/topicSlice";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   const dispatch = useDispatch();

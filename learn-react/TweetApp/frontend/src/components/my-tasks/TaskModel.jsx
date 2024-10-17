@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from 'react-select'; // Import the Select component from react-select

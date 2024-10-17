@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../common/constants/globalConstants";
 import useDataFetching from "../../../common/hooks/useDataFetching";

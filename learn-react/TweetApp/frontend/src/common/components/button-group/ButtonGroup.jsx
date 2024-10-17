@@ -1,5 +1,5 @@
 import React from "react";
-import CustomButton from "../CustomButton";
+import CustomButton from "../custom-button/CustomButton";
 
 const defaultStyles = {
     container: { flex: 1, overflow: "auto",

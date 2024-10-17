@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import CollapsibleMenu from "./common/components/CollapsibleMenu";
+import CollapsibleMenu from "./common/components/collapsible-menu/CollapsibleMenu";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setSelectedModuleName } from "./redux/slices/breadcrumbSlice";

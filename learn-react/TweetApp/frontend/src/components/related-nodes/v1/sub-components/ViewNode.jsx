@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ArcherContainer, ArcherElement } from "react-archer";
 import { useParams } from "react-router-dom";
-import CustomButton from "../../../../common/components/CustomButton";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
 import {
     JSONPreview,

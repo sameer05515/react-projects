@@ -6,7 +6,7 @@ import Select from "react-select"; // Import the Select component from react-sel
 import { taskStatusList } from "../../common/constants/globalConstants";
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {

@@ -4,7 +4,7 @@ import {
   prepareQuestions,
 } from "../../../common/service/commonService";
 import ReactHtmlParser from "react-html-parser";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../../common/components/FloatingButton";
 import DynamicDataRenderer from "../../../common/components/DynamicDataRenderer";
 // import { Breadcrumbs } from "./TopicBase";

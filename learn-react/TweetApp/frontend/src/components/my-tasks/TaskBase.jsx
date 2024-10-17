@@ -22,7 +22,7 @@ import {
     setSelectedTaskUniqueId,
     updateTask,
 } from "../../redux/slices/taskSlice";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import TaskCard from "./TaskCard";
 import TaskContainer from "./TaskContainer";
 import TaskForm from "./TaskForm";

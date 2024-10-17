@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../common/components/HoverableSpan";
 import ReactHtmlParser from "react-html-parser";
 import Breadcrumbs, {

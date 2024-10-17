@@ -3,7 +3,7 @@ import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import { styles } from "../common/util";
-import CustomButton from "../../../common/components/CustomButton";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 import ToggleablePanel from "../../../common/components/ToggleablePanel";
 
 const tagStyle = {

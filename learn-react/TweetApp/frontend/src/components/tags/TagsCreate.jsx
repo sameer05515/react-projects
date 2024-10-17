@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createTag, updateTag } from '../../redux/slices/tagsSlice';
-import CustomButton from '../../common/components/CustomButton';
+import CustomButton from '../../common/components/custom-button/CustomButton';
 
 function TagsCreate({ tag, onCancelEdit }) {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import IconComponent from './IconComponent';
+import IconComponent from '../IconComponent';
 
 const CustomButton = ({ onClick,iconName,title, children, style={} }) => {
   const [isHovered, setIsHovered] = useState(false);

@@ -1,5 +1,5 @@
 import React from "react";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 // import ReactHtmlParser from "react-html-parser";
 import TaskCard from "./TaskCard";
 

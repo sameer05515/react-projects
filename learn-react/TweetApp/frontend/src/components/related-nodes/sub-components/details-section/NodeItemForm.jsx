@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "../../../../common/components/CustomButton";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../../../common/components/FloatingButton";
 import Select from "react-select";
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";

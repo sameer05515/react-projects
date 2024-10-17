@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import WysiwygEditor from "../../common/components/WysiwygEditor";
 
 const StepIndicator = ({ currentStep, totalSteps }) => {

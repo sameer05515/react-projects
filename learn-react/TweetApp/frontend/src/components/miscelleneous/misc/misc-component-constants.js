@@ -76,7 +76,21 @@ const moduleWithPurposes = [
                         - Bug-fixes done in SmartEditorV4
                         - List of new functionality introduced in SmartEditorV4
 
-          
+            Brainstorming:
+                1. Why this change needed?
+                    - Reason 1:- Due to introduction of 'TIS format', 'MemoryMapSkeleton' and 'TreeView' components
+                        - Current 'SmartEditorV3' can only take a raw text in TIS format and render into a Tree Structure.
+                            - Although, this is working well. But, to edit TIS format text, again we need to manually edit in text-area. However, this same operation (editing a TIS text) is done interactively, in 'AddUpdateSkeletonUsingTreeEditor' with use of TreeView and PopupMenu3 to edit a 'MemoryMapSkeleton' (in MemoryMaps mmodule). 
+                                However current 'MemoryMapSkeleton' and 'MemoryMapSkeleton' are limited to render only a single line.
+                                    This is because, in backend the TIS text is saved as raw string.
+                                Due to this limitation, difficulty has been observed in below use cases
+                                    a). [Problem Statement]: #1:  User can not save a multi-line text in a node
+                                        -[Workaround]: As a workaround, User has to break all his thoughts into multiple lines
+                                            If user wants to save a multi-line text, (say, code or configurations), then he has to compromise with its ( multi-line text's ) look and feel.
+                                        - [Possible solution]: Since, in backend, TIS is saved as string, we can directly convert the TIS to equivalent YAML text.
+                                            At time of edit or render existing TIS (which would be then in YAML format), there will be change
+                                                Parse the text from YAML to JSON (in place of, existing 'TIS to JSON' parsing) and then render with help of 'TreeView' component.
+                                                    Note: In current version of TreeView, we can pass our custom renderers via its 'renderNode' prop
         ================================================================
         `
     },

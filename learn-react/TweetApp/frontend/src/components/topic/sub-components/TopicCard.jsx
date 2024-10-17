@@ -8,7 +8,7 @@ import CustomButton from "../../../common/components/custom-button/CustomButton"
 import FloatingButton from "../../../common/components/floating-button/FloatingButton";
 import DynamicDataRenderer from "../../../common/components/dynamic-data-renderer/DynamicDataRenderer";
 // import { Breadcrumbs } from "./TopicBase";
-import HoverableSpan from "../../../common/components/HoverableSpan";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import Tree from "../../../common/components/TreeViewer";

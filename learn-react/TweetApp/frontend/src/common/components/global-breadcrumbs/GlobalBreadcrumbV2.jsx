@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HoverableSpan from "../HoverableSpan";
+import HoverableSpan from "../hoverable-span/HoverableSpan";
 import { useSelector } from "react-redux";
 import { selectSelectedModuleName } from "../../../redux/slices/breadcrumbSlice";
 import { useNavigate } from "react-router-dom";

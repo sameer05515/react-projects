@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import HoverableSpan from "../../common/components/HoverableSpan";
+import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
 import ReactHtmlParser from "react-html-parser";
 import Breadcrumbs from "../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import { SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";

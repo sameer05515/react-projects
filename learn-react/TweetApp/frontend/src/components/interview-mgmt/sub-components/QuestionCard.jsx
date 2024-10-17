@@ -1,5 +1,5 @@
 import React from "react";
-import HoverableSpan from "../../../common/components/HoverableSpan";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";

@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import Select from "react-select";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import HoverableSpan from "../../common/components/HoverableSpan";
+import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
 import TooltipSpan from "../../common/components/TooltipSpan";
 import ViewSwitcher from "../../common/components/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";

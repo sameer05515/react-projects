@@ -8,6 +8,7 @@ import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();
@@ -227,6 +228,8 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
                     <CustomButton onClick={(event) => handleSaveTask(event)}>Save</CustomButton>
                     <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
                 </div>
+                {/* <JSONDataViewer metadata={{formData}} title="X-Ray: For provided metadata"/> */}
+                <JSONDataViewer metadata={{formData}}/>
             </div>
         </>
     );

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ToggleableIcon from "../toggleable-icon/ToggleableIcon";
 
+const Default_Title_For_JSONDataViewer = "X-Ray: For provided metadata {Please customize title, if needed!}"
+
 // Reusable component to view JSON data with a toggle option
 const JSONDataViewer = ({ step = "", title = "", metadata = [], initialValueToShowMetadata = false }) => {
     const [showMetadata, setShowMetadata] = useState(initialValueToShowMetadata);
@@ -10,7 +12,7 @@ const JSONDataViewer = ({ step = "", title = "", metadata = [], initialValueToSh
     return (
         <div>
             <span style={styles.title}>
-                {step && `Step: ${step} - `}{title}
+                {step && `Step: ${step} - `}{title || Default_Title_For_JSONDataViewer}
             </span>
             <ToggleableIcon
                 isContentVisible={showMetadata}

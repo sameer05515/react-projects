@@ -92,6 +92,13 @@ export const observations = `
         - Verifying this limitation with normal textarea component, if it can reflect changes
         - verified with normal text area, it is reflecting changed value of data
 [Possible Improvements: PI]: In SmartEditorV4
-    - [Planned]: [PI]- SmartEditorV4 should reflect changed value of data
+    - [Marked-Sev5]: [PI]: [To be done later]:- SmartEditorV4 should reflect changed value of data
+        - [Workaround]: Mostly we close the form once save/edit/upsert operation get completed. 
+            Hence this PI is marked as 'Sev5' (lowest) sevierity.
+            Can work on this issue later. Currently focusing on rendering TIS to JSON and finally to Skeleton
+    - [Planned]: prop 'renderNode' for SmartEditor as well as SmartPreviewer, to render tree data
+    - [Planned]: Add option for 'YAML to Skeleton' inside 'SmartEditorV4'
+        -[Planned]: Add also logic to first parse yaml, then, pass this data to TreeViewer
+        -[Planned]: Add temporary button to copy tree data as yaml text
 
 `

@@ -136,7 +136,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
             )}
 
             {showPreview && <SmartPreviewer data={formData} />}
-            {/* <JSONDataViewer metadata={formData} title="VandanaKiMaaKaBhosda"/> */}
+            {/* <JSONDataViewer metadata={{formData, initialValue}} title="X-Ray: formData"/> */}
 
         </div>
     );

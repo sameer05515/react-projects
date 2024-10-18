@@ -52,6 +52,13 @@ const moduleWithPurposes = [
         module: ComponentModules.Upgrade_SmartEditorV3_component_to_SmartEditorV4,
         overallPurpose: `
         ================================================================
+
+        ######
+            [Abbreviations used]: 
+                SE- SmartEditorV3
+                SP- SmartPreviewerV4
+                
+        #######
   
         Overall Target:
             Target version: SmartEditorV4
@@ -362,11 +369,21 @@ const componentMapWithPurposes = {
             limitations
                 TBD
             Potential Bugs and possible improvements
-                TBD
+                -[PB/PI]: [Planned]: - Few fieldNames and constant names like 'availableOutputTypes' or 'availableInputTypes' or 'inputOutputMapping' looks confusing in 'SmartEditorV3'
+                    We should think to change the variable names, as well as values of fields, such as 
+                        'availableOutputTypes' to 'smartEditorOutputTypes' or 'SE_Output_Formats'
+                        'availableInputTypes' to 'smartEditorInputTypes' or 'SE_Input_Tools_Options'
+                    Also we should create a separate options for 'SmartPreviewerV3'.
+                    [Explaination: For this change-request]: Now we have multiple format and tools, in which a 'SmartEditorV3' can take input and use tools to edit text and then output a result text.
+                    
 
         [TASKS STATUS]: in current dashboard version 'SmartEditorV4Dashboard[V1_0_0]' (with 'SmartEditorV3') :
         - [Planned]: Understand and document current functionalities, limitations , bugs and possible improvements of 'SmartEditorV3'
         - [Planned]: Paralelly fix/acknowledge changes in snapshot version 'SmartEditorV4[_unstable]'.
+        - [Planned]: Create a list for: 
+            - 'Input-formats' in which SE can take input via 'initialValue' props
+            - 'Input-Tools' currently used by SE : For sake of quickness, 'TextArea' and 'CKEditor'
+            - 'Input-formats' in which SP can take input via 'initialValue' props 
 
 
         `,

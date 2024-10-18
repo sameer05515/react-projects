@@ -86,6 +86,13 @@ export const smartPreviewerDataArray = [
 ];
 
 export const observations = `
+################################
+[Incomplete: TBD]
+1. PlainText ---> SE will use TextArea, by default ---> output as PlainText and pass to SP ---> SP will render it with '<p>' element
+2. PlainText
+
+###################################
+
 [Functionalities: FUNCNLTY] / [limitations: LIMTNS] / [Potential Bugs: PB] - In SmartEditorV3
     - [FUNCNLTY]: 'SmartEditorV3' can parse valid TIS and show errors for invalid TIS
     - [LIMTNS]: 'SmartEditorV3' is not reflecting changed value of data, being recalculated on 'Next' button click

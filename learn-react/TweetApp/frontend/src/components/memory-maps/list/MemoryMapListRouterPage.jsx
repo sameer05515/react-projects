@@ -15,6 +15,10 @@ import { Header } from "./HelperComponents";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
 import { styles } from "./util";
 import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
+import {
+    SmartPreviewer,
+    availableOutputTypes as SupportedTextFormats,
+} from "../../../common/components/smart-editor/SmartEditorV3";
 
 const MemoryMapList = () => {
     const dispatch = useDispatch();
@@ -45,12 +49,11 @@ const MemoryMapList = () => {
         dispatch(fetchMemoryMaps());
     }, [dispatch]);
 
-    useEffect(()=>{
-        if(memoryMapDataToBeViewed){
-            setSelectedMemoryMap(()=>({...memoryMapDataToBeViewed}))
+    useEffect(() => {
+        if (memoryMapDataToBeViewed) {
+            setSelectedMemoryMap(() => ({ ...memoryMapDataToBeViewed }));
         }
-
-    },[memoryMapDataToBeViewed])
+    }, [memoryMapDataToBeViewed]);
 
     useEffect(() => {
         if (selectedElementRef.current) {
@@ -81,29 +84,35 @@ const MemoryMapList = () => {
     };
 
     const handleAddUpdateSkeleton = () => {
-        navigate(`/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton`, {
-            state: { data: selectedMemoryMap },
-        });
+        navigate(
+            `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton`,
+            {
+                state: { data: selectedMemoryMap },
+            }
+        );
     };
 
     const handleAddUpdateSkeletonUsingTreeEditor = () => {
-        navigate(`/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton-v2`, {
-            state: { data: selectedMemoryMap },
-        });
+        navigate(
+            `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton-v2`,
+            {
+                state: { data: selectedMemoryMap },
+            }
+        );
     };
 
     const handleMemoryMapSelection = (selectedMap) => {
         if (!selectedMap) return;
         // setSelectedMemoryMap(() => ({ ...selectedMap }));
         navigate(`/memory-maps/${selectedMap.uniqueId}`, {
-            state:{data: selectedMap}
-        })
+            state: { data: selectedMap },
+        });
     };
 
     const getTreeDataFromSelectedSkeleton = () => {
         if (!selectedMemoryMap?.skeleton) return [];
         const { data: treeData } = buildTree(selectedMemoryMap.skeleton);
-        return addUniqueIdsToTree(treeData,"", false);
+        return addUniqueIdsToTree(treeData, "", false);
     };
 
     const popupOptions = [
@@ -119,13 +128,13 @@ const MemoryMapList = () => {
     ];
 
     const filteredMemoryMaps = () => {
-        const result= searchString
+        const result = searchString
             ? memoryMaps?.filter(({ name }) =>
                 name.toLowerCase().includes(searchString.toLowerCase())
             ) || []
             : memoryMaps;
-        
-        const calculatedData= addUniqueIdsToTree(result, "", false);
+
+        const calculatedData = addUniqueIdsToTree(result, "", false);
         // console.log('Filtered data calculated', JSON.stringify(calculatedData[0]));
         return calculatedData;
     };
@@ -148,7 +157,9 @@ const MemoryMapList = () => {
                                     node={node}
                                     isSelected={selectedMemoryMap?.uniqueId === node.uniqueId}
                                     // onMemoryMapSelection={setSelectedMemoryMap}
-                                    onMemoryMapSelection={(node)=>handleMemoryMapSelection(node)}
+                                    onMemoryMapSelection={(node) =>
+                                        handleMemoryMapSelection(node)
+                                    }
                                     onItemRightClick={handleRightClick}
                                 />
                                 <span
@@ -166,7 +177,16 @@ const MemoryMapList = () => {
                     style={styles.detailsContainer}
                     onClick={() => setPopupVisible(false)}
                 >
-                    <h4>{selectedMemoryMap?.name}</h4>
+                    {/* <h4>{selectedMemoryMap?.name}</h4> */}
+                    <h4>
+                        <SmartPreviewer
+                            data={{
+                                content: selectedMemoryMap?.name || "",
+                                textOutputType: SupportedTextFormats.MARKDOWN,
+                            }}
+                        //markdownStyles={{ fontSize: '10px' }}
+                        />
+                    </h4>
                     {!selectedMemoryMap?.skeleton ? (
                         <>
                             This section will show the skeleton by default. Later on, based on

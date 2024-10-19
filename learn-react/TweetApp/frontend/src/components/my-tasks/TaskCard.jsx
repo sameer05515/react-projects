@@ -6,6 +6,7 @@ import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan"
 import {
   SmartEditor,
   SmartPreviewer,
+  availableOutputTypes as SupportedTextFormats,
 } from "../../common/components/smart-editor/SmartEditorV3";
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import {
@@ -139,7 +140,14 @@ const TaskButtons = ({
 
 const TaskDetails = ({ task }) => (
   <div>
-    <h2>{task.name}</h2>
+    <SmartPreviewer
+      data={{
+        content: task?.name || "",
+        textOutputType: SupportedTextFormats.MARKDOWN,
+      }}
+      markdownStyles={{ fontSize: '20px' }}
+    />
+
     <div style={styles.datesStyle}>
       <span>
         <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
@@ -246,13 +254,13 @@ const ActivityComp = ({ task }) => {
   };
 
   const saveComment = () => {
-    if (!validateForm()) { 
-      console.log('Some validation occureed')
+    if (!validateForm()) {
+      console.log("Some validation occureed");
       return;
     }
 
     const newActivity = {
-      uniqueId: formData.uniqueId || '',
+      uniqueId: formData.uniqueId || "",
       type: "comment",
       description: formData.description,
       userDetails: {
@@ -279,7 +287,7 @@ const ActivityComp = ({ task }) => {
     dispatch(
       updateTask({
         taskId: task._id,
-        taskData: { ...task,  activities: updatedActivities },
+        taskData: { ...task, activities: updatedActivities },
       })
     );
 
@@ -314,10 +322,7 @@ const ActivityComp = ({ task }) => {
             {formatDateToDDMMMYYYYWithTime(activity.updatedDate)}
           </span>
         </div>
-        <ToggleablePanel
-          showContent={true}
-          title={`Activity #${idx + 1}`}
-        >
+        <ToggleablePanel showContent={true} title={`Activity #${idx + 1}`}>
           <SmartPreviewer data={activity.description} />
         </ToggleablePanel>
         {activity.userDetails.id === getUserIdFromToken() && (

@@ -3,7 +3,7 @@
 export type TechStackProps = {
   name: string;
   type: "FRONTEND" | "BACKEND" | "FE_BE_BOTH" | "DEVOPS" | "DATABASE";
-  dependency: TechStackProps[];
+  dependsOn: TechStackProps[];
 };
 
 export enum ArchitecturalStyles {

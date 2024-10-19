@@ -1,89 +1,89 @@
 import { TechStackProps } from "../types/data-type-definitions";
 
-/** ============== Backend Dependencies ========================== */ 
+/** ============== Backend Dependencies ========================== */
 export const Java: TechStackProps = {
   name: "Java",
   type: "FE_BE_BOTH",
-  dependency: [],
+  dependsOn: [],
 };
 
 export const SpringBoot: TechStackProps = {
   name: "SpringBoot",
   type: "BACKEND",
-  dependency: [Java],
+  dependsOn: [Java],
 };
 
 export const SpringBootCloud: TechStackProps = {
   name: "SpringBootCloud",
   type: "BACKEND",
-  dependency: [SpringBoot],
+  dependsOn: [SpringBoot],
 };
 
 export const NodeJS: TechStackProps = {
   name: "NodeJS",
   type: "BACKEND",
-  dependency: [],
+  dependsOn: [],
 };
 
 // Frontend Dependencies
 export const HTML: TechStackProps = {
   name: "HTML",
   type: "FRONTEND",
-  dependency: [],
+  dependsOn: [],
 };
 export const CSS: TechStackProps = {
   name: "CSS",
   type: "FRONTEND",
-  dependency: [],
+  dependsOn: [],
 };
 export const JavaScript: TechStackProps = {
   name: "JavaScript",
   type: "FRONTEND",
-  dependency: [],
+  dependsOn: [],
 };
 export const jQuery: TechStackProps = {
-  name:"jQuery",
+  name: "jQuery",
   type: "FRONTEND",
-  dependency: [],
-}
+  dependsOn: [],
+};
 export const TypeScript: TechStackProps = {
-    name: "TypeScript",
-    type: "FRONTEND",
-    dependency: [],
-  };
+  name: "TypeScript",
+  type: "FRONTEND",
+  dependsOn: [],
+};
 export const ReactJS: TechStackProps = {
   name: "ReactJS",
   type: "FRONTEND",
-  dependency: [HTML, CSS, JavaScript, NodeJS, ],
+  dependsOn: [HTML, CSS, JavaScript, NodeJS],
 };
 
 export const NextJS: TechStackProps = {
   name: "NextJS",
   type: "FRONTEND",
-  dependency: [ReactJS],
+  dependsOn: [ReactJS],
 };
 
 export const NextJSWithTS: TechStackProps = {
   name: "NextJSWithTS",
   type: "FRONTEND",
-  dependency: [NextJS, TypeScript],
+  dependsOn: [NextJS, TypeScript],
 };
 
 export const ReactJSWithTS: TechStackProps = {
   name: "ReactJSWithTS",
   type: "FRONTEND",
-  dependency: [ReactJS, TypeScript],
+  dependsOn: [ReactJS, TypeScript],
 };
 
 // Database Dependencies
 export const MongoDB: TechStackProps = {
   name: "MongoDB",
   type: "DATABASE",
-  dependency: [],
+  dependsOn: [],
 };
 
 export const MySQL: TechStackProps = {
   name: "MySQL",
   type: "DATABASE",
-  dependency: [],
+  dependsOn: [],
 };

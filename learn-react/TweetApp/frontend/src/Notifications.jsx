@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchMemoryMapByUniqueId } from './redux/slices/memoryMapSlice';
-import { SmartPreviewer, availableOutputTypes as SupportedTextFormats, } from './common/components/smart-editor/SmartEditorV3';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchMemoryMapByUniqueId } from "./redux/slices/memoryMapSlice";
+import {
+    SmartPreviewer,
+    availableOutputTypes as SupportedTextFormats,
+} from "./common/components/smart-editor/SmartEditorV3";
 import { BACKEND_APPLICATION_BASE_URL } from "./common/constants/globalConstants";
 import useDataFetching from "./common/hooks/useDataFetching";
 
@@ -23,17 +26,24 @@ const Notifications = () => {
                 paddingTop: "5px",
             }}
         >
-
-            <h1>Notifications will be live soon!!</h1>
-            <SmartPreviewer data={{
-                content: data?.skeleton || "",
-                textOutputType: SupportedTextFormats.SKELETON,
-            }}
-                // markdownStyles={{ fontSize: "12px" }} 
+            <h1>
+                <SmartPreviewer
+                    data={{
+                        content: data?.name || "",
+                        textOutputType: SupportedTextFormats.MARKDOWN,
+                    }}
+                markdownStyles={{ fontSize: "25px" }}
                 />
-
+            </h1>
+            <SmartPreviewer
+                data={{
+                    content: data?.skeleton || "",
+                    textOutputType: SupportedTextFormats.SKELETON,
+                }}
+            // markdownStyles={{ fontSize: "12px" }}
+            />
         </div>
-    )
-}
+    );
+};
 
-export default Notifications
+export default Notifications;

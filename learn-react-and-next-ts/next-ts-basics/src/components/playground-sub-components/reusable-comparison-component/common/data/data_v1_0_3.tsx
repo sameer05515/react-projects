@@ -8,7 +8,7 @@
 // Generic Row Item Type for N comparisons
 export type CDRowItemType<CELL_VALUE_TYPE> = {
   aspect: string;
-  values: CELL_VALUE_TYPE[];
+  values: CELL_VALUE_TYPE[];  
 };
 
 // Generic Comparison Data Type for N comparisons
@@ -205,7 +205,7 @@ export const accenture_JavaUpskillingTraining_CourseContent: ComparisonDataType<
     },
     {
       aspect: "",
-      values: ["Day: 4", ["JEE Overview – MVC Framework", "Servlets and JSP"]],
+      values: ["Day: 4", ["JEE Overview - MVC Framework", "Servlets and JSP"]],
     },
     {
       aspect: "",
@@ -214,7 +214,7 @@ export const accenture_JavaUpskillingTraining_CourseContent: ComparisonDataType<
         [
           "JSP/Servlet Scope Objects",
           "Session Management in Servlet/JSP",
-          "AJAX – sample demo",
+          "AJAX - sample demo",
         ],
       ],
     },
@@ -234,8 +234,10 @@ export const accenture_JavaUpskillingTraining_CourseContent: ComparisonDataType<
       aspect: "",
       values: [
         "Day: 9",
-        "Spring Core - DI",
-        "Spring AOP, Logging and Transaction with Spring AOP",
+        [
+          "Spring Core - DI",
+          "Spring AOP, Logging and Transaction with Spring AOP",
+        ],
       ],
     },
     {

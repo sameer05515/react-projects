@@ -6,29 +6,32 @@ import {
   ReactNode,
   useMemo,
 } from "react";
-import { ComparisonDataType } from "../data/data_v1_0_2";
+import { ComparisonDataType } from "../data/data_v1_0_3";
 
-interface SharedData<T> {
+interface SharedData<CELL_VALUE_TYPE> {
   errors: string[];
   isValidData: boolean;
-  validatedData: ComparisonDataType<T> | null;
+  validatedData: ComparisonDataType<CELL_VALUE_TYPE> | null;  
+  renderCell?: (cellValue: CELL_VALUE_TYPE) => ReactNode;
 }
 
-interface SharedConfigurationsContextType<T> {
-  sharedData: SharedData<T>;
+interface SharedConfigurationsContextType<CELL_VALUE_TYPE> {
+  sharedData: SharedData<CELL_VALUE_TYPE>;
 }
 
 /** Initial shared data (use type parameter T) */
-const createInitialSharedData = <T,>(): SharedData<T> => ({
+const createInitialSharedData = <
+  CELL_VALUE_TYPE,
+>(): SharedData<CELL_VALUE_TYPE> => ({
   errors: [],
   isValidData: false,
   validatedData: null,
 });
 
 /** Validate the structure of ComparisonDataType */
-const validateDataStructure = <T,>(
-  data: ComparisonDataType<T> | null,
-  rowValueValidator?: (rowValue: T) => boolean
+const validateDataStructure = <CELL_VALUE_TYPE,>(
+  data: ComparisonDataType<CELL_VALUE_TYPE> | null,
+  rowValueValidator?: (rowValue: CELL_VALUE_TYPE) => boolean
 ): boolean => {
   if (null === data) return false;
   // Additional checks for the structure validity
@@ -53,22 +56,27 @@ const SharedConfigurationsContext = createContext<
   SharedConfigurationsContextType<any> | undefined
 >(undefined);
 
-interface SharedConfigurationsProviderProps<T> {
+interface SharedConfigurationsProviderProps<CELL_VALUE_TYPE> {
   children: ReactNode;
-  data: ComparisonDataType<T> | null;
-  rowValueValidator?: (rowValue: T) => boolean;
+  data: ComparisonDataType<CELL_VALUE_TYPE> | null;
+  rowValueValidator?: (rowValue: CELL_VALUE_TYPE) => boolean;
+  renderCell?: (cellValue: CELL_VALUE_TYPE) => ReactNode;
 }
 
 // Ensure the provider is correctly typed with generic T
-const SharedConfigurationsProvider = <T,>({
+const SharedConfigurationsProvider = <CELL_VALUE_TYPE,>({
   children,
   data,
-  rowValueValidator
-}: SharedConfigurationsProviderProps<T>) => {
-  const initialSharedData = useMemo(() => createInitialSharedData<T>(), []);
+  rowValueValidator,
+  renderCell
+}: SharedConfigurationsProviderProps<CELL_VALUE_TYPE>) => {
+  const initialSharedData = useMemo(
+    () => createInitialSharedData<CELL_VALUE_TYPE>(),
+    []
+  );
 
   const [sharedData, setSharedData] =
-    useState<SharedData<T>>(initialSharedData);
+    useState<SharedData<CELL_VALUE_TYPE>>(initialSharedData);
 
   useEffect(() => {
     const errors: string[] = [];
@@ -78,7 +86,9 @@ const SharedConfigurationsProvider = <T,>({
         "[SharedConfigurationsProvider]: [Datavalidation]: Null or undefined data provided. Table rendering not possible!"
       );
     } else if (!validateDataStructure(data, rowValueValidator)) {
-      errors.push("[SharedConfigurationsProvider]: [Datavalidation]: The provided data structure is invalid.");
+      errors.push(
+        "[SharedConfigurationsProvider]: [Datavalidation]: The provided data structure is invalid."
+      );
     }
 
     const isValidData = errors.length === 0 && validateDataStructure(data);
@@ -87,6 +97,7 @@ const SharedConfigurationsProvider = <T,>({
       errors,
       isValidData,
       validatedData: isValidData ? data : null,
+      renderCell
     });
   }, [data]);
 
@@ -98,14 +109,16 @@ const SharedConfigurationsProvider = <T,>({
 };
 
 // Custom hook to use shared configurations and data
-const useSharedConfigurations = <T,>(): SharedConfigurationsContextType<T> => {
+const useSharedConfigurations = <
+  CELL_VALUE_TYPE,
+>(): SharedConfigurationsContextType<CELL_VALUE_TYPE> => {
   const context = useContext(SharedConfigurationsContext);
   if (!context) {
     throw new Error(
       "useSharedConfigurations must be used within a SharedConfigurationsProvider"
     );
   }
-  return context as SharedConfigurationsContextType<T>;
+  return context as SharedConfigurationsContextType<CELL_VALUE_TYPE>;
 };
 
 export { SharedConfigurationsProvider, useSharedConfigurations };

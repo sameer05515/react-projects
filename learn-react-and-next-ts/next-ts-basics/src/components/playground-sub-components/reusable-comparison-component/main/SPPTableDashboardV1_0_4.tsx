@@ -8,7 +8,7 @@ import TexArea from "@/components/common/custom-text-area/CustomTexArea";
 import yaml from "js-yaml";
 import { useRef, useState } from "react";
 import { ComparisonDataType } from "../common/data/data_v1_0_2";
-import SPPTableV1_0_2 from "../sub-components/comparison-component/SPPTableV1_0_2";
+import SPPTableV1_0_3 from "../sub-components/comparison-component/SPPTableV1_0_3";
 import { accenture_JavaUpskillingTraining_CourseContent } from "../common/data/data_v1_0_3";
 
 // Define the response type with generics
@@ -91,7 +91,11 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
           errorMessage || "Error occurred while parsing the YAML text."
         );
       } else if (!validateYAMLStructure(jsonData)) {
-        errors.push("The YAML structure is not valid for comparison data."+"\n"+JSON.stringify(jsonData, null, 2));
+        errors.push(
+          "The YAML structure is not valid for comparison data." +
+            "\n" +
+            JSON.stringify(jsonData, null, 2)
+        );
       }
     }
 
@@ -117,7 +121,12 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
   };
 
   return (
-    <Form onSave={handleSubmit} className={postModuleForm} style={{width: '90%'}} ref={customFormRef}>
+    <Form
+      onSave={handleSubmit}
+      className={postModuleForm}
+      style={{ width: "90%" }}
+      ref={customFormRef}
+    >
       <TexArea id="new-post-body" label="Text" name="yamlText" />
       <div className={postModuleFormActions}>
         <CustomButton type="submit">Apply</CustomButton>
@@ -125,7 +134,7 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
           Reset
         </CustomButton>
       </div>
-      
+
       <FormError formErrors={formErrors} />
     </Form>
   );
@@ -133,7 +142,9 @@ const YAMLProcessorForm = ({ onSubmit, onReset }: YAMLProcessorFormProps) => {
 
 // Main Dashboard Component
 const SPPTableDashboardV1_0_4 = () => {
-  const [data, setData] = useState<ComparisonDataType<string|string[]> | null>(accenture_JavaUpskillingTraining_CourseContent);
+  const [data, setData] = useState<ComparisonDataType<
+    string | string[]
+  > | null>(accenture_JavaUpskillingTraining_CourseContent);
 
   const handleFormSubmit = (formData: FormResponseProps) => {
     const parsedData = loadYAMLData<ComparisonDataType<string>>(
@@ -144,13 +155,38 @@ const SPPTableDashboardV1_0_4 = () => {
     }
   };
 
+  const renderCellValue = (cellValue: string | string[]) => (
+    <>
+      {typeof cellValue === "string" ? (
+        <b>{cellValue}</b>
+      ) : (
+        cellValue.map((cv, idx) => (
+          <span key={`id_${idx + 1}`}>
+            <b>{cv}</b>
+            <hr />
+          </span>
+        ))
+      )}
+    </>
+  );
+
   return (
     <div>
       <YAMLProcessorForm
         onSubmit={handleFormSubmit}
         onReset={() => setData(null)}
       />
-      {data && <SPPTableV1_0_2 data={data} rowValueValidator={(rv) => typeof rv==='string'} />}
+      {data && (
+        <SPPTableV1_0_3
+          data={data}
+          renderCell={renderCellValue}
+          rowValueValidator={(rv) =>
+            typeof rv === "string" ||
+            (Array.isArray(rv) &&
+              rv.every((rvVal) => typeof rvVal === "string"))
+          }
+        />
+      )}
     </div>
   );
 };

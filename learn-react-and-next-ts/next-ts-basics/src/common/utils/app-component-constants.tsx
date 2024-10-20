@@ -967,15 +967,29 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
     element: SPPTableDashboardV1_0_4,
     purpose:`
     ACHIEVEMENTS / EFFORTS AT A GLANCE: IN THIS VERSION
+    - [Note]: SPPTableDashboardV1_0_4 is not completely done and currently unsable.
+      - Stopping all development, Enhancement and bug-fixes, untill Next order from CEO of SPP International Pvt Ltd.
     - Rendering first table having heterogeneous row data, either of type string or array of string
+    - created 'reusable-comparison-component/sub-components/table-row/TableRowV1_0_2.tsx' component, which supports
+      -  generic cell value type
+      - an optional renderCell function, recieved from Context, to allow calling component of 'SPPTableV1_0_3' (i.e SPPTableDashboard[V1_0_4]) to pass a custom-cell-renderer.
+    - updated 'SPPTableConfigurationsUtil.tsx' to support recieving 'an optional renderCell function' and passing it to 'sharedData'
+    - Revamping (or Re-organizing) the 'Task Status Dashboard' to present a more professional appearance and provide a clearer representation of progress.
     
-    Tasks status in current dashboard version 'SPPTableDashboard[V1_0_3]' (with 'SPPTableV1_0_2') :
-        - [Completed]: [V1_0_0]: - Implement a basic table component.
+    Tasks status in current dashboard version 'SPPTableDashboard[V1_0_4]' (with 'SPPTableV1_0_3') :
+        - [Planned]: Create targetted 'SPPTableV1_1_0' component
+          -[Completed]: [V1_0_0]: - Implement a basic table component.
         - [Planned]: - Enhance it further to meet the specified targets.
           - [Planned]: - Common Components Extraction
-            - [Completed]: [V1_0_0]: TableHeaderV1_0_0: A reusable component for rendering table headers.
-            - [Completed]: [V1_0_0]: TableRowV1_0_0: A reusable component for rendering each row.
-            - [Planned]: TableCell: A reusable component for rendering each row.
+            - [Planned]: [TableHeader]: A reusable component for rendering table headers.
+              - [Completed]: [V1_0_0]: [TableHeaderV1_0_0]: A reusable component for rendering table headers.
+              - [Planned]: 
+            - [Planned]: [TableRow]: A reusable component for rendering each row. 
+              - [Completed]: [V1_0_0]: [TableRowV1_0_0]: A reusable component for rendering each row, containing 'aspect', 'left' and 'right' fields (with string data)
+              - [Planned]: Also 'TableRow' should support rendering data to N ( N>1 and N === no of header value provided ) columns 
+              - [Planned]: should support rendering cellValue data, other than string too.              
+              - []
+            - [Planned]: [TableCell]: A reusable component for rendering each row.
           - [Planned]: [V1_0_0]: - Styles: A separate object for holding the common styles. 
             - [Completed]: [V1_0_0]: created a file 'reusable-comparison-component/common/styles/styles_v1_0_0.tsx'
             - [Planned]: - create styles object for subsequent component evolution
@@ -996,7 +1010,7 @@ const componentMapWithPurposes: Record<string, ComponentDetails> = {
 
         - [Planned]: - Render SPPTableV1_0_2 from generated JSON Data from yaml text, entered in text area.
           - [Completed]: [V1_0_3]: - basic setup done for below
-            - [Completed]: [V1_0_3]: -created 'YAMLProcessorFormV1_0_0' component , it takes text from text area. then it validates and returns an equivalent JSON equivalent, with help of 'loadYAMLDataV1_0_0.tsx'
+            - [Completed]: [V1_0_3]: - created 'YAMLProcessorFormV1_0_0' component , it takes text from text area. then it validates and returns an equivalent JSON equivalent, with help of 'loadYAMLDataV1_0_0.tsx'
           - [Planned] - make this 'yaml-text to json transformation process' more generic and reusable in subsequent versions
 
         - [Planned]: - Testing various scenarios and put their results

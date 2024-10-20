@@ -1,15 +1,15 @@
 // Generic Row Item Type for N comparisons
-export type CDRowItemType<T> = {
+export type CDRowItemType<CELL_VALUE_TYPE> = {
   aspect: string;
-  values: T[];
+  values: CELL_VALUE_TYPE[];
 };
 
 // Generic Comparison Data Type for N comparisons
-export type ComparisonDataType<T> = {
+export type ComparisonDataType<CELL_VALUE_TYPE> = {
   uniqueId: string;
   title: string;
   headers: string[]; // Headers for N items
-  rowData: CDRowItemType<T>[];
+  rowData: CDRowItemType<CELL_VALUE_TYPE>[];
 };
 
 /** Generalized comparison data for "ArrayList vs LinkedList" */
@@ -181,8 +181,7 @@ export const comparisonData: ComparisonDataType<string>[] = [
   { ...comparison_String_VS_StringBuffer_VS_StringBuilder },
 ];
 
-
-const yaml1=`
+const yaml1 = `
 uniqueId: "Comparison_HashMapVSHashTable"
 title: "Comparison: HashMap vs HashTable"
 headers:
@@ -214,9 +213,9 @@ rowData:
       - "When you don’t need synchronization for faster performance"
       - "When thread-safety is required"
 
-`
+`;
 
-const yaml2=`
+const yaml2 = `
 uniqueId: "Comparison_HashMapVSHashTable"
 title: "Comparison: HashMap vs HashTable"
 headers:
@@ -248,9 +247,9 @@ rowData:
       - "When you don’t need synchronization for faster performance"
       - "When thread-safety is required"
 
-`
+`;
 
-const yaml3_valid=`
+const yaml3_valid = `
 uniqueId: "Comparison_AbstractionVsEncapsulation"
 title: "Comparison: Abstraction vs Encapsulation"
 headers:
@@ -300,7 +299,7 @@ rowData:
 
 `;
 
-const yaml3_invalid=`
+const yaml3_invalid = `
 uniqueId: "Comparison_AbstractionVsEncapsulation"
 title: "Comparison: Abstraction vs Encapsulation"
 headers:

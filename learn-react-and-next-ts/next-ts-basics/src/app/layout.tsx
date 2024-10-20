@@ -31,6 +31,13 @@ export default function RootLayout({
         {/* <div>
           <Link href={`/`}>Home</Link> <br />
         </div> */}
+        <h1 style={{ color: "red" }}>
+          Halting (or Stopping) all development, enhancements, and bug fixes
+          until further (or next) instructions from the CEO of SPP International
+          Pvt Ltd. <br />
+          Please refer below link for details: <a href="http://" target="_blank" rel="noopener noreferrer"></a>
+        </h1>
+
         {children}
       </body>
     </html>

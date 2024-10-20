@@ -59,6 +59,7 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
     };
 
     const links = [
+        { linkHeader: "Notifications", linkPath: () =>  "/notifications", isModule: true },
         { linkHeader: "Apna Playground", linkPath: () => "/apna-playground", isModule: true },
         { linkHeader: "Tweets", linkPath: () => "/tweet-base", isModule: true },
         { linkHeader: "Task Container", linkPath: () => "/task-mgmt", isModule: true },

@@ -88,6 +88,7 @@ import TwoNodeComponentV5_3 from "./components/topic/sub-components/TwoNodeCompo
 import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
 import Welcome from "./Welcome";
 import PlaygroundBase from "./components/apna-playground/PlaygroundBase";
+import Notifications from "./Notifications";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -175,7 +176,7 @@ function App() {
               ) : (
                 <>
                   {/* Welcome Bro!! */}
-                  <Welcome/>
+                  <Welcome />
                   {/* <HorizontalMenu
                     isAuthenticated={isAuthenticated}
                     handleLogout={handleLogout}
@@ -261,7 +262,7 @@ function App() {
             />
             <Route path="create" element={<CreateTopicComp />} />
             <Route path="search" element={<SearchTopicRouterPage />} />
-            <Route path="two-nodes" element={<TwoNodeComponentV5_3/>} />
+            <Route path="two-nodes" element={<TwoNodeComponentV5_3 />} />
           </Route>
 
           {/** ----- WORD-MEANING MANAGEMENT ---------------------- */}
@@ -373,14 +374,16 @@ function App() {
           </Route>
 
           {/** ----- Apna Playground ---------------------------- */}
-          <Route path="/apna-playground" element={<PlaygroundBase/>}/>
-          
+          <Route path="/apna-playground" element={<PlaygroundBase />} />
+
         </Route>
 
         {/** ----- LOGIN/ LOGOUT ---------------------- */}
 
         <Route path="/login" element={<LoginUser onLogin={handleLogin} />} />
         <Route path="/register" element={<Registration />} />
+
+        <Route path="/notifications" element={<Notifications/>} />
 
         {/** ----- NOT FOUND ---------------------- */}
 

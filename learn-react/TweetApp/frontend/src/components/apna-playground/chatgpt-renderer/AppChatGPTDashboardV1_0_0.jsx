@@ -30,6 +30,8 @@ const AppChatGPTDashboardV1_0_0 = () => {
     );
 
     useEffect(() => {
+        setLoading(true);
+        setJsonData([]);
         const fetchData = async () => {
             try {
                 await fetchJsonData(selectedFile, setJsonData);
@@ -45,6 +47,10 @@ const AppChatGPTDashboardV1_0_0 = () => {
 
     if (loading) {
         return <>Loading .......</>;
+    }
+
+    if(!(Array.isArray(jsonData) && jsonData.length > 0)){
+        <p>No data available</p>
     }
 
     return (

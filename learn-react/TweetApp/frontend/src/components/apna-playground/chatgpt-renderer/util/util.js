@@ -51,6 +51,9 @@ export const fetchJsonData = async (selectedFile, setJsonData) => {
                 id: `conv_${index + 1}`,
                 uniqueId: conv.id,
                 name: conv.title,
+                current_node: conv.current_node,
+                mappingFirstValue: conv.mapping ? conv.mapping[conv.current_node] : null,
+                mapping: conv.mapping,
                 // messages: getConversationMessages(conv) || [],
                 createdOn: conv.create_time
                     ? formatUnixTimestamp(conv.create_time)

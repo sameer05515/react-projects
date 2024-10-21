@@ -2,19 +2,26 @@ import React, { useEffect, useMemo, useState, useCallback } from "react";
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import { fetchJsonData } from "./util/util";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
 
-const selectedFile = "http://localhost:5000/data/conversations-24-Sep-2024.json";
+const selectedFile =
+    "http://localhost:5000/data/conversations-24-Sep-2024.json";
 
 const AppChatGPTDashboardV1_0_0 = () => {
     const [jsonData, setJsonData] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const selectedData = useMemo(() => jsonData[selectedIndex] || null, [jsonData, selectedIndex]);
+    const selectedData = useMemo(
+        () => jsonData[selectedIndex] || null,
+        [jsonData, selectedIndex]
+    );
 
     const setNextIndex = useCallback(
         (increment) => {
-            setSelectedIndex((prev) => (prev + increment + jsonData.length) % jsonData.length);
+            setSelectedIndex(
+                (prev) => (prev + increment + jsonData.length) % jsonData.length
+            );
         },
         [jsonData.length]
     );
@@ -50,7 +57,13 @@ const AppChatGPTDashboardV1_0_0 = () => {
                 ]}
             />
             <br />
-            <JSONDataViewer metadata={{ selectedIndex, selectedData }} title="Selected Data" />
+            <JSONDataViewer
+                metadata={{ selectedIndex, selectedData }}
+                title="Selected Data"
+                initialValueToShowMetadata={true}
+            />
+
+            <Tree data={jsonData} />
         </div>
     );
 };

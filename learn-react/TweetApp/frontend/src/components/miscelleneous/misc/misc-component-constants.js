@@ -31,6 +31,7 @@ import FlipExampleV3 from "./sub-components/animation/FlipExampleV3";
 import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 import SmartEditorV4Dashboard_V1_0_0 from "../../apna-playground/smart-editor/main/SmartEditorV4Dashboard_V1_0_0";
+import AppChatGPTDashboardV1_0_0 from "../../apna-playground/chatgpt-renderer/AppChatGPTDashboardV1_0_0";
 
 export const ComponentModules = {
     TestingPurpose: "Testing Purpose",
@@ -41,6 +42,7 @@ export const ComponentModules = {
         "[MILESTONE_1]: Upgrade MemoryMaps component to MemoryMapsV1_1_0",
     Upgrade_SmartEditorV3_component_to_SmartEditorV4:
         "Upgrade: SmartEditorV3 component to SmartEditorV4",
+    Explore_and_Upgrade_ChatGPTRenderer_Project:"Explore and Upgrade: ChatGPTRenderer Project"
 };
 
 const moduleWithPurposes = [
@@ -134,6 +136,20 @@ const moduleWithPurposes = [
             Target version: MemoryMapsV1_1_0
             Expectations:
                 1. [MILESTONE_1]: Upgrade MemoryMaps component to MemoryMapsV1_1_0
+        ===========================================================
+        `
+    },
+    {
+        module:ComponentModules.Explore_and_Upgrade_ChatGPTRenderer_Project,
+        overallPurpose:`
+        ==========================================================
+
+        Overall Target:
+            Target version: TBD
+            Expectations:
+                1. [MILESTONE_1]: Explore ChatGPTRenderer Project implementation
+                2. [MILESTONE_2]: Identify area of improvements
+                3. [MILESTONE_3]: Upgrade
         ===========================================================
         `
     }
@@ -389,6 +405,14 @@ const componentMapWithPurposes = {
         `,
         isExperimentalComponent: true,
         module: ComponentModules.Upgrade_SmartEditorV3_component_to_SmartEditorV4
+    },
+    AppChatGPTDashboardV1_0_0:{
+        element: AppChatGPTDashboardV1_0_0,
+        purpose:`
+    [Planned]: Explore ChatGPT data
+        `,
+        isExperimentalComponent: true,
+        module: ComponentModules.Explore_and_Upgrade_ChatGPTRenderer_Project
     }
 };
 

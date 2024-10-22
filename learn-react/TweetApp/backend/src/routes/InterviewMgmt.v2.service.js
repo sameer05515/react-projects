@@ -173,6 +173,24 @@ const createQuestion = async (questionData) => {
     }
 };
 
+async function getAllQuestionsForReportingModule() {
+    try {
+        let selectFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            rating:1,
+        };
+        // console.log('Request came to fetch all questions');
+        const questions = await Question.find().select(selectFields);
+        return questions;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 async function getAllQuestions() {
     try {
         let selectFields = {
@@ -442,6 +460,8 @@ module.exports = {
     getQuestionByUniqueId,
     getQuestionByCategoryIdAndQuesId,
     updateQuestionByUniqueId,
+
+    getAllQuestionsForReportingModule,
 
     getQuestionsByTagId,
 

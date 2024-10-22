@@ -32,6 +32,8 @@ const pinnedItemRouter = require('./routes/PinnedItem.routes');
 const memoryMapRouter = require('./routes/MemoryMap.routes');
 const relatedNodeRouter = require('./routes/RelatedNode.routes');
 
+const consolidatedReportingRouter = require('./routes/ConsolidatedReporting.routes');
+
 // mongoose.connect("mongodb://127.0.0.1:27017/mongodb_test", {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
@@ -72,7 +74,9 @@ app.use('/intvw-mgmt/v1/categories', interviewMgmtRouter);
 app.use("/pinned-items", pinnedItemRouter);
 app.use("/intvw-mgmt/v2", interviewMgmtV2Router);
 app.use('/memory-maps', memoryMapRouter);
-app.use("/node-story", relatedNodeRouter)
+app.use("/node-story", relatedNodeRouter);
+
+app.use('/consolidated-reporting', consolidatedReportingRouter);
 
 
 // Serve Swagger documentation at /api-docs

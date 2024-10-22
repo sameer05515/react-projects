@@ -2,83 +2,45 @@ const { Category, Question, Answer } = require("./InterviewMgmt.v2.model");
 const { Topic, TopicSection } = require("./Topic.model");
 const Task = require("./Task.model");
 
-async function getAllQuestionsForReportingModule() {
+const selectFields = {
+    uniqueId: 1,
+    name: 1,
+    parentId: 1,
+    rating: 1,
+    createdDate: 1,
+    updatedDate: 1,
+    tags: 1
+};
+
+// Common logic to fetch data from any model
+async function getAllForReportingModule(Model) {
     try {
-        let selectFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            rating: 1,
-            createdDate:1,
-            updatedDate:1,
-            tags:1
-        };
-        // console.log('Request came to fetch all questions');
-        const questions = await Question.find().select(selectFields);
-        return questions?.map(q => ({
-            ...q.toObject(),
-            parentId: q.parentId || 'SUPER-ROOT'
+        const items = await Model.find().select(selectFields);
+        return items?.map(item => ({
+            ...item.toObject(),
+            parentId: item.parentId || 'SUPER-ROOT'
         })) || [];
     } catch (err) {
         console.error(err);
-        // throw err;
         return [];
     }
+}
+
+// Specific functions to fetch data for reporting
+async function getAllQuestionsForReportingModule() {
+    return getAllForReportingModule(Question);
 }
 
 async function getAllTopicsForReportingModule() {
-    try {
-        let selectFields = {
-            uniqueId: 1,
-            name: 1,
-            parentId: 1,
-            rating: 1,
-            createdDate:1,
-            updatedDate:1,
-            tags:1
-        };
-        // console.log('Request came to fetch all questions');
-        const questions = await Topic.find().select(selectFields);
-        return questions?.map(q => ({
-            ...q.toObject(),
-            parentId: q.parentId || 'SUPER-ROOT'
-        })) || [];
-    } catch (err) {
-        console.error(err);
-        // throw err;
-        return [];
-    }
+    return getAllForReportingModule(Topic);
 }
 
 async function getAllTasksForReportingModule() {
-    try {
-        let selectFields = {
-            uniqueId: 1,
-            name: 1,
-            parentId: 1,
-            rating: 1,
-            createdDate:1,
-            updatedDate:1,
-            tags:1
-        };
-        // console.log('Request came to fetch all questions');
-        const questions = await Task.find().select(selectFields);
-        return questions?.map(q => ({
-            ...q.toObject(),
-            parentId: q.parentId || 'SUPER-ROOT'
-        })) || [];
-    } catch (err) {
-        console.error(err);
-        // throw err;
-        return [];
-    }
+    return getAllForReportingModule(Task);
 }
 
-
-
-module.exports={
+module.exports = {
     getAllQuestionsForReportingModule,
     getAllTopicsForReportingModule,
     getAllTasksForReportingModule
-}
+};

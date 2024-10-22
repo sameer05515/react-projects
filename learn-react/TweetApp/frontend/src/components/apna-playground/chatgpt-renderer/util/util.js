@@ -48,19 +48,19 @@ export const fetchJsonData = async (selectedFile, setJsonData) => {
         const formattedData = data
             .filter((d) => d !== null)
             .map((conv, index) => ({
-                id: `conv_${index + 1}`,
-                uniqueId: conv.id,
-                name: conv.title,
-                current_node: conv.current_node,
+                // id: `conv_${index + 1}`,
+                // uniqueId: conv.id,
+                // name: conv.title,
+                // current_node: conv.current_node,
                 mappingFirstValue: conv.mapping ? conv.mapping[conv.current_node] : null,
-                mapping: conv.mapping,
-                // messages: getConversationMessages(conv) || [],
-                createdOn: conv.create_time
-                    ? formatUnixTimestamp(conv.create_time)
-                    : `'${conv.create_time}'`,
-                updatedOn: conv.update_time
-                    ? formatUnixTimestamp(conv.update_time)
-                    : `'${conv.update_time}'`,
+                // mapping: conv.mapping,
+                // // messages: getConversationMessages(conv) || [],
+                // createdOn: conv.create_time
+                //     ? formatUnixTimestamp(conv.create_time)
+                //     : `'${conv.create_time}'`,
+                // updatedOn: conv.update_time
+                //     ? formatUnixTimestamp(conv.update_time)
+                //     : `'${conv.update_time}'`,
             }));
 
         setJsonData(formattedData);

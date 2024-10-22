@@ -59,7 +59,17 @@ const getConversationMessages = (conversation) => {
             ) {
                 author = "Custom user info";
             }
-            messages.push({ oldId: node.id, author, text: node.message.content.parts[0] });
+            messages.push({
+                oldId: node.id,
+                author,
+                text: node.message.content.parts[0],
+                createdOn: node.create_time
+                    ? formatUnixTimestamp(node.create_time)
+                    : `'${node.create_time}'`,
+                updatedOn: node.update_time
+                    ? formatUnixTimestamp(node.update_time)
+                    : `'${node.update_time}'`,
+            });
         }
         currentNode = node.parent;
     }

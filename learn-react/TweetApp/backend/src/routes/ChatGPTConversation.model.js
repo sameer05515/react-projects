@@ -35,6 +35,7 @@ const cGPTMessagesSchema = new mongoose.Schema({
     ...baseSchema,
     oldId: String,
     rating: Number,
+    author: String,
     linkedCGPTConvId: { type: String, default: '' },
     order: { type: Number, default: 0 }
 });

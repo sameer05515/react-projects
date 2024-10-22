@@ -11,6 +11,12 @@ router.get("/", async (req, res) => {
         if('questions'===moduleName){
             const questions = await consolidatedReportingService.getAllQuestionsForReportingModule();
             responseData=questions || [];
+        }else if('topics'===moduleName){
+            const questions = await consolidatedReportingService.getAllTopicsForReportingModule();
+            responseData=questions || [];
+        }else if('tasks'===moduleName){
+            const questions = await consolidatedReportingService.getAllTasksForReportingModule();
+            responseData=questions || [];
         }
         
         res.status(201).json(responseData);

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const interviewMgmtV2Service = require("./InterviewMgmt.v2.service");
+const consolidatedReportingService = require("./ConsolidatedReporting.service");
 
 // Get all questions
 router.get("/", async (req, res) => {
@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     try {
         let responseData=[];
         if('questions'===moduleName){
-            const questions = await interviewMgmtV2Service.getAllQuestionsForReportingModule();
+            const questions = await consolidatedReportingService.getAllQuestionsForReportingModule();
             responseData=questions || [];
         }
         

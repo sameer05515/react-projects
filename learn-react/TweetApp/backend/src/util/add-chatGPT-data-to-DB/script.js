@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const { CGPTFile, CGPTConversation, CGPTMessage } = require('../../routes/ChatGPTConversation.model'); 
 const {CGPTFileNames} = require('./constants');
+const {fetchJsonData} = require('./util')
 
 const metadata = {
     dateOfExecution:'23-Oct-2023',
@@ -42,11 +43,35 @@ async function saveHardcodedChatGPTFileNames() {
         });
 
         const savedTag = await newTag.save();
+        fetchandSaveConvAndMessages(savedTag);
+
         // tagCategoryMapping[category.uniqueId] = savedTag.uniqueId;
     }
 
     // return tagCategoryMapping;
 }
+
+async function fetchandSaveConvAndMessages(savedTag){
+    const convArr=await fetchJsonData(savedTag.location);
+
+    for(const conv of convArr){
+        const newConv= new CGPTConversation({
+            uniqueId: uuidv4(),
+            name: conv.name,
+            createdDate:conv.createdOn,
+            updatedDate: conv.updatedOn,
+            descriptions: [],
+            heading: conv.name, // Assuming you want to copy smartContent
+            parentId: '', // Or whatever logic is required
+            linkedCGPTFileId: savedTag.uniqueId
+        });
+
+        const savedConv = await newConv.save();
+
+    }
+}
+
+// async function saveMessages()
 
 
 

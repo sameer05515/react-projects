@@ -2,76 +2,46 @@ const mongoose = require('mongoose');
 const uuid = require('uuid');
 const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
 
+// Base schema for common fields
+const baseSchema = {
+    uniqueId: { type: String, default: uuid.v4 },
+    name: String,
+    heading: String,
+    descriptions: [smartContentSchema],
+    parentId: { type: String, default: '' },
+    tags: [String],
+    createdDate: { type: Date, default: Date.now },
+    updatedDate: { type: Date, default: Date.now }
+};
 
+// Schema for CGPTFile
 const cGPTFileSchema = new mongoose.Schema({
-    uniqueId: { type: String, default: uuid.v4 },
-    name: String,
+    ...baseSchema,
     location: String,
-    descriptions: [smartContentSchema],
-    parentId: {
-        type: String,
-        default: ''
-    },
-    tags: [String],
-    createdDate: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedDate: {
-        type: Date,
-        default: Date.now,
-    }
+    isLatest:{type: Boolean, default:false},
 });
 
+// Schema for CGPTConversation
 const cGPTConversationSchema = new mongoose.Schema({
-    uniqueId: { type: String, default: uuid.v4 },
+    ...baseSchema,
     oldId: String,
-    name: String,
-    heading: String,
-    descriptions: [smartContentSchema],
     rating: Number,
-    parentId: {
-        type: String,
-        default: ''
-    },
     linkedCGPTFileId: { type: String, default: '' },
-    order: { type: Number, default: 0 },
-    tags: [String],
-    createdDate: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedDate: {
-        type: Date,
-        default: Date.now,
-    }
+    order: { type: Number, default: 0 }
 });
 
+// Schema for CGPTMessage
 const cGPTMessagesSchema = new mongoose.Schema({
-    uniqueId: { type: String, default: uuid.v4 },
+    ...baseSchema,
     oldId: String,
-    name: String,
-    heading: String,
-    descriptions: [smartContentSchema],
     rating: Number,
     linkedCGPTConvId: { type: String, default: '' },
-    parentId: {
-        type: String,
-        default: ''
-    },
-    order: { type: Number, default: 0 },
-    createdDate: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedDate: {
-        type: Date,
-        default: Date.now,
-    }
+    order: { type: Number, default: 0 }
 });
 
-const Category = mongoose.model('CGPTFile', cGPTFileSchema);
-const Question = mongoose.model('CGPTConversation', cGPTConversationSchema);
-const Answer = mongoose.model('CGPTMessage', cGPTMessagesSchema);
+// Models
+const CGPTFile = mongoose.model('CGPTFile', cGPTFileSchema);
+const CGPTConversation = mongoose.model('CGPTConversation', cGPTConversationSchema);
+const CGPTMessage = mongoose.model('CGPTMessage', cGPTMessagesSchema);
 
-module.exports = { Category, Question, Answer };
+module.exports = { CGPTFile, CGPTConversation, CGPTMessage };

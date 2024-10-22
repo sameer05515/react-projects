@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
-const { Category, Question } = require('../../routes/ChatGPTConversation.model'); 
+const { CGPTFile, CGPTConversation, CGPTMessage } = require('../../routes/ChatGPTConversation.model'); 
+const {CGPTFileNames} = require('./constants');
 
 const metadata = {
     dateOfExecution:'23-Oct-2023',
@@ -23,3 +24,56 @@ const metadata = {
     Raise PR and commit changes
     `
 };
+
+// 1. Save hardcoded chatGPT file names
+async function saveHardcodedChatGPTFileNames() {
+    // const tagCategoryMapping = {}; // Old Category ID -> New Tag ID
+
+    for (const category of CGPTFileNames) {
+        const newTag = new CGPTFile({
+            uniqueId: uuidv4(),
+            name: category.name,
+            location: category.location,
+            descriptions: [],
+            heading: category.name, // Assuming you want to copy smartContent
+            parentId: '', // Or whatever logic is required
+            createdDate:category.createdDate,
+            isLatest:category.isLatest
+        });
+
+        const savedTag = await newTag.save();
+        // tagCategoryMapping[category.uniqueId] = savedTag.uniqueId;
+    }
+
+    // return tagCategoryMapping;
+}
+
+
+
+
+// Main function to run all steps sequentially
+async function main() {
+    await mongoose.connect('mongodb://localhost:27017/chat_gpt_normalized_data', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    try {
+        console.log('Step 1: Save hardcoded chatGPT file names...');
+        await saveHardcodedChatGPTFileNames();
+
+        // console.log('Step 2: Updating tags in questions...');
+        // await updateTagsInQuestions(tagCategoryMapping);
+
+        // console.log('Step 3: Verifying updates...');
+        // await verifyTagUpdates();
+
+        console.log('Process completed successfully.');
+    } catch (error) {
+        console.error('Error occurred:', error);
+    } finally {
+        mongoose.connection.close();
+    }
+}
+
+main();

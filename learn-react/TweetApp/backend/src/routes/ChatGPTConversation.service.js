@@ -49,6 +49,7 @@ const getCategoryForUniqueId = async (uniqueId) => {
             linkedCGPTFileId: 1,
             createdDate: 1,
             updatedDate: 1,
+            order:1
         };
 
         const cgptFile = await CGPTFile.findOne({ uniqueId }).select(
@@ -95,6 +96,7 @@ const getCGPTFileForUIDAndConvUID = async (
             linkedCGPTFileId: 1,
             createdDate: 1,
             updatedDate: 1,
+            order:1
         };
         let selectCGPTMessageFields = {
             uniqueId: 1,
@@ -105,6 +107,7 @@ const getCGPTFileForUIDAndConvUID = async (
             linkedCGPTConvId:1,
             createdDate: 1,
             updatedDate: 1,
+            order:1
         };
         // Fetch CGPTFile document with specific uniqueId
         const cGPTFile = await CGPTFile.findOne({ uniqueId }).select(

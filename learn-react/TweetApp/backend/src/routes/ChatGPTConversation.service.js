@@ -4,68 +4,76 @@ const {
     CGPTMessage,
 } = require("./ChatGPTConversation.model");
 
+// Helper function to generate common select fields for CGPTFile, CGPTConversation, and CGPTMessage
+const generateSelectFields = (type) => {
+    const baseFields = {
+        uniqueId: 1,
+        name: 1,
+        heading: 1,
+        parentId: 1,
+        createdDate: 1,
+        updatedDate: 1,
+    };
+    
+    switch (type) {
+        case 'file':
+            return {
+                ...baseFields,
+                isLatest: 1,
+                location: 1,
+            };
+        case 'conversation':
+            return {
+                ...baseFields,
+                linkedCGPTFileId: 1,
+                order: 1,
+            };
+        case 'message':
+            return {
+                ...baseFields,
+                linkedCGPTFileId: 1,
+                linkedCGPTConvId: 1,
+                author: 1,
+                descriptions: 1,
+                order: 1,
+            };
+        default:
+            return baseFields;
+    }
+};
+
+// Helper function to find CGPTFile by uniqueId
+const findCGPTFile = async (uniqueId) => {
+    return await CGPTFile.findOne({ uniqueId }).select(generateSelectFields('file'));
+};
+
+// Get all categories (CGPTFiles)
 const getAllCategories = async () => {
     try {
-        let selectFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            isLatest: 1,
-            location: 1,
-        };
-        const categories = await CGPTFile.find().select(selectFields);
-
-        return (
-            categories?.map((c) => ({
-                ...c.toObject(),
-                latestFile: c.isLatest,
-            })) || []
-        );
+        const categories = await CGPTFile.find().select(generateSelectFields('file'));
+        return categories.map((c) => ({
+            ...c.toObject(),
+            latestFile: c.isLatest,
+        }));
     } catch (err) {
         console.error(err);
         throw err;
     }
 };
 
+// Get category for specific uniqueId
 const getCategoryForUniqueId = async (uniqueId) => {
     try {
-        let selectCGPTFileFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            isLatest: 1,
-            location: 1,
-            createdDate: 1,
-            updatedDate: 1,
-        };
+        const cgptFile = await findCGPTFile(uniqueId);
+        if (!cgptFile) throw new Error("File not found");
 
-        let selectCGPTConversationFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            linkedCGPTFileId: 1,
-            createdDate: 1,
-            updatedDate: 1,
-            order:1
-        };
-
-        const cgptFile = await CGPTFile.findOne({ uniqueId }).select(
-            selectCGPTFileFields
-        );
-        if (!cgptFile) {
-            // return res.status(404).json({ error: 'File not found' });
-            throw new Error("File not found");
-        }
         const conversations = await CGPTConversation.find({
             linkedCGPTFileId: uniqueId,
-        }).select(selectCGPTConversationFields);
+        }).select(generateSelectFields('conversation'));
 
         return {
             ...cgptFile.toObject(),
-            conversations: conversations?.map((conv) => ({ ...conv.toObject() })),
+            conversations: conversations.map((conv) => conv.toObject()),
         };
     } catch (err) {
         console.error(err);
@@ -73,171 +81,62 @@ const getCategoryForUniqueId = async (uniqueId) => {
     }
 };
 
-const getCGPTFileForUIDAndConvUID = async (
-    uniqueId,
-    convUID
-) => {
+// Get CGPTFile for uniqueId and specific conversation (convUID)
+const getCGPTFileForUIDAndConvUID = async (uniqueId, convUID) => {
     try {
-        let selectCGPTFileFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            isLatest: 1,
-            location: 1,
-            createdDate: 1,
-            updatedDate: 1,
-        };
-        let selectCGPTConversationFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            linkedCGPTFileId: 1,
-            createdDate: 1,
-            updatedDate: 1,
-            order:1
-        };
-        let selectCGPTMessageFields = {
-            uniqueId: 1,
-            name: 1,
-            heading: 1,
-            parentId: 1,
-            linkedCGPTFileId: 1,
-            linkedCGPTConvId:1,
-            createdDate: 1,
-            updatedDate: 1,
-            order:1
-        };
-        // Fetch CGPTFile document with specific uniqueId
-        const cGPTFile = await CGPTFile.findOne({ uniqueId }).select(
-            selectCGPTFileFields
-        );
-
-        if (!cGPTFile) {
-            throw new Error("CGPTFile not found");
-        }
+        const cgptFile = await findCGPTFile(uniqueId);
+        if (!cgptFile) throw new Error("CGPTFile not found");
 
         const filteredConversations = await CGPTConversation.find({
             linkedCGPTFileId: uniqueId,
-            uniqueId: convUID
-        }).select(selectCGPTConversationFields);
+            uniqueId: convUID,
+        }).select(generateSelectFields('conversation'));
 
-        const filteredMessages= await CGPTMessage.find({
+        const filteredMessages = await CGPTMessage.find({
             linkedCGPTFileId: uniqueId,
-            linkedCGPTConvId: convUID
-        }).select(selectCGPTMessageFields);
+            linkedCGPTConvId: convUID,
+        }).select(generateSelectFields('message'));
 
-        // Construct the result
-        const result = {
-            ...cGPTFile.toObject(),
-            conversations: filteredConversations?.map((conv) => ({
-                ...conv.toObject(),
-            })),
-            messages: filteredMessages?.map((msg) => ({
-                ...msg.toObject(),
-            })),
+        return {
+            ...cgptFile.toObject(),
+            conversations: filteredConversations.map((conv) => conv.toObject()),
+            messages: filteredMessages.map((msg) => msg.toObject()),
         };
-
-        return result;
     } catch (error) {
         throw new Error(`Error fetching CGPTFile: ${error.message}`);
     }
 };
 
-const getCGPTFileForUIDAndConvUIDAndMsgUID=async (uniqueId,
-    convUID, msgUID)=>{
-        try {
-            let selectCGPTFileFields = {
-                uniqueId: 1,
-                name: 1,
-                heading: 1,
-                parentId: 1,
-                isLatest: 1,
-                location: 1,
-                createdDate: 1,
-                updatedDate: 1,
-            };
-            let selectCGPTConversationFields = {
-                uniqueId: 1,
-                name: 1,
-                heading: 1,
-                parentId: 1,
-                linkedCGPTFileId: 1,
-                createdDate: 1,
-                updatedDate: 1,
-                order:1
-            };
-            let selectCGPTMessageFields = {
-                uniqueId: 1,
-                name: 1,
-                heading: 1,
-                parentId: 1,
-                linkedCGPTFileId: 1,
-                linkedCGPTConvId:1,
-                createdDate: 1,
-                updatedDate: 1,
-                author:1,
-                descriptions:1,
-                order:1
-            };
-            // Fetch CGPTFile document with specific uniqueId
-            const cGPTFile = await CGPTFile.findOne({ uniqueId }).select(
-                selectCGPTFileFields
-            );
-    
-            if (!cGPTFile) {
-                throw new Error("CGPTFile not found");
-            }
-    
-            const filteredConversations = await CGPTConversation.find({
-                linkedCGPTFileId: uniqueId,
-                uniqueId: convUID
-            }).select(selectCGPTConversationFields);
-    
-            const filteredMessages= await CGPTMessage.find({
-                linkedCGPTFileId: uniqueId,
-                linkedCGPTConvId: convUID,
-                uniqueId:msgUID
-            }).select(selectCGPTMessageFields);
-    
-            // Construct the result
-            const result = {
-                ...cGPTFile.toObject(),
-                conversations: filteredConversations?.map((conv) => ({
-                    ...conv.toObject(),
-                })),
-                messages: filteredMessages?.map((msg) => ({
-                    ...msg.toObject(),
-                })),
-            };
-    
-            return result;
-        } catch (error) {
-            throw new Error(`Error fetching CGPTFile: ${error.message}`);
-        }
+// Get CGPTFile for uniqueId, conversation (convUID), and specific message (msgUID)
+const getCGPTFileForUIDAndConvUIDAndMsgUID = async (uniqueId, convUID, msgUID) => {
+    try {
+        const cgptFile = await findCGPTFile(uniqueId);
+        if (!cgptFile) throw new Error("CGPTFile not found");
+
+        const filteredConversations = await CGPTConversation.find({
+            linkedCGPTFileId: uniqueId,
+            uniqueId: convUID,
+        }).select(generateSelectFields('conversation'));
+
+        const filteredMessages = await CGPTMessage.find({
+            linkedCGPTFileId: uniqueId,
+            linkedCGPTConvId: convUID,
+            uniqueId: msgUID,
+        }).select(generateSelectFields('message'));
+
+        return {
+            ...cgptFile.toObject(),
+            conversations: filteredConversations.map((conv) => conv.toObject()),
+            messages: filteredMessages.map((msg) => msg.toObject()),
+        };
+    } catch (error) {
+        throw new Error(`Error fetching CGPTFile: ${error.message}`);
     }
+};
 
 module.exports = {
-    // createCategory,
     getAllCategories,
     getCategoryForUniqueId,
     getCGPTFileForUIDAndConvUID,
-    getCGPTFileForUIDAndConvUIDAndMsgUID
-    // updateCategoryByUniqueId,
-
-    // createQuestion,
-    // getAllQuestions,
-    // getQuestionByUniqueId,
-    // getQuestionByCategoryIdAndQuesId,
-    // updateQuestionByUniqueId,
-
-    // getAllQuestionsForReportingModule,
-
-    // getQuestionsByTagId,
-
-    // createAnswer,
-    // updateAnswerByUniqueId,
-
-    // searchTopics
+    getCGPTFileForUIDAndConvUIDAndMsgUID,
 };

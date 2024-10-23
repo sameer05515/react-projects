@@ -34,6 +34,8 @@ const relatedNodeRouter = require('./routes/RelatedNode.routes');
 
 const consolidatedReportingRouter = require('./routes/ConsolidatedReporting.routes');
 
+const cgptRouter = require('./routes/ChatGPTConversation.routes');
+
 // mongoose.connect("mongodb://127.0.0.1:27017/mongodb_test", {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
@@ -77,6 +79,7 @@ app.use('/memory-maps', memoryMapRouter);
 app.use("/node-story", relatedNodeRouter);
 
 app.use('/consolidated-reporting', consolidatedReportingRouter);
+app.use("/cgpt",cgptRouter)
 
 
 // Serve Swagger documentation at /api-docs

@@ -27,9 +27,9 @@ async function saveHardcodedChatGPTFileNames() {
             const chatGPTFileObject = {
                 uniqueId: category.name,
                 name: category.name,
-                location: category.location,
-                descriptions: [],
                 heading: category.name,
+                location: category.location,
+                descriptions: [],                
                 parentId: "",
                 createdDate: category.createdDate,
                 isLatest: category.isLatest,

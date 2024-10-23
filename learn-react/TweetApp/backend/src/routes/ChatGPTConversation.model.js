@@ -14,35 +14,39 @@ const baseSchema = {
     updatedDate: { type: Date, default: Date.now }
 };
 
-// Schema for CGPTFile
-const cGPTFileSchema = new mongoose.Schema({
-    ...baseSchema,
-    location: String,
-    isLatest:{type: Boolean, default:false},
-});
-
-// Schema for CGPTConversation
-const cGPTConversationSchema = new mongoose.Schema({
-    ...baseSchema,
-    oldId: String,
-    rating: Number,
-    linkedCGPTFileId: { type: String, default: '' },
-    order: { type: Number, default: 0 }
-});
-
 // Schema for CGPTMessage
 const cGPTMessagesSchema = new mongoose.Schema({
     ...baseSchema,
-    oldId: String,
     rating: Number,
     author: String,
     linkedCGPTConvId: { type: String, default: '' },
     order: { type: Number, default: 0 }
 });
 
+// Schema for CGPTConversation
+const cGPTConversationSchema = new mongoose.Schema({
+    ...baseSchema,
+    rating: Number,
+    linkedCGPTFileId: { type: String, default: '' },
+    order: { type: Number, default: 0 }
+});
+
+// Schema for CGPTFile
+const cGPTFileSchema = new mongoose.Schema({
+    ...baseSchema,
+    location: String,
+    isLatest:{type: Boolean, default:false},
+    conversations:[cGPTConversationSchema],
+    messages:[cGPTMessagesSchema]
+});
+
+
+
+
+
 // Models
 const CGPTFile = mongoose.model('CGPTFile', cGPTFileSchema);
-const CGPTConversation = mongoose.model('CGPTConversation', cGPTConversationSchema);
-const CGPTMessage = mongoose.model('CGPTMessage', cGPTMessagesSchema);
+// const CGPTConversation = mongoose.model('CGPTConversation', cGPTConversationSchema);
+// const CGPTMessage = mongoose.model('CGPTMessage', cGPTMessagesSchema);
 
-module.exports = { CGPTFile, CGPTConversation, CGPTMessage };
+module.exports = { CGPTFile,/** CGPTConversation, CGPTMessage*/ };

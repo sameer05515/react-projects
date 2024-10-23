@@ -18,7 +18,8 @@ const coversationNames = {
     CONVERSATIONS_25_Aug_2024: "/data/conversations-25-Aug-2024.json",
     CONVERSATIONS_30_Aug_2024: "/data/conversations-30-Aug-2024.json",
     CONVERSATIONS_06_SEP_2024: "/data/conversations-06-Sep-2024.json",
-    CONVERSATIONS_24_SEP_2024: "/data/conversations-24-Sep-2024.json"
+    CONVERSATIONS_24_SEP_2024: "/data/conversations-24-Sep-2024.json",
+    CONVERSATIONS_23_OCT_2024: "/data/conversations-23-Oct-2024.json",
 };
 
 const LATEST_CONVERSATION_FILE =
@@ -169,6 +170,12 @@ const CGPTFileNames = [
         name: "CONVERSATIONS_24_SEP_2024",
         location: "/data/conversations-24-Sep-2024.json",
         createdDate: parseDateFromString("24-09-2024"),
+        isLatest: false
+    },
+    {
+        name: "CONVERSATIONS_23_OCT_2024",
+        location:"/data/conversations-23-Oct-2024.json",
+        createdDate: parseDateFromString("23-10-2024"),
         isLatest: true
     }
 ];

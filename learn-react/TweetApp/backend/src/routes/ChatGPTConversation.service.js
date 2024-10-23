@@ -7,23 +7,30 @@ const getAllCategories = async () => {
             name: 1,
             heading: 1,
             parentId: 1,
+            isLatest: 1,
+            location: 1
         };
         const categories = await CGPTFile.find().select(selectFields);
 
-        return categories;
+        return categories?.map(c => ({
+            ...c.toObject(),
+            latestFile: c.isLatest
+        })) || [];
     } catch (err) {
         console.error(err);
         throw err;
     }
 };
 
-const getCategoryForUniqueId=async (uniqueId)=>{
+const getCategoryForUniqueId = async (uniqueId) => {
     try {
         let selectFields = {
             uniqueId: 1,
             name: 1,
             heading: 1,
             parentId: 1,
+            isLatest: 1,
+            location: 1,
             'conversations.uniqueId': 1,  // Project uniqueId of conversations
             'conversations.name': 1       // Project name of conversations
         };

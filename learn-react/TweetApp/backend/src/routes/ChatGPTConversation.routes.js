@@ -4,7 +4,7 @@ const router = express.Router();
 const chatGPTConversation = require("./ChatGPTConversation.service");
 
 
-// Get all cgpt-files
+// Get all cgpt-files, without conversation or message info
 router.get("/f", async (req, res) => {
     try {
         const categories = await chatGPTConversation.getAllCategories();
@@ -14,7 +14,7 @@ router.get("/f", async (req, res) => {
     }
 });
 
-// Get all cgpt-file for given uniqueId
+// Get a cgpt-file for given uniqueId
 router.get("/f/:uniqueId", async (req, res) => {
     const uniqueId= req.params.uniqueId;
     try {

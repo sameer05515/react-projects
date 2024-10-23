@@ -1,58 +1,26 @@
-const mongoose = require("mongoose");
+const fs = require("fs").promises; // Use promises API for fs
 const { v4: uuidv4 } = require("uuid");
-const {
-    CGPTFile,
-    CGPTConversation,
-    CGPTMessage,
-} = require("../../routes/ChatGPTConversation.model");
 const { CGPTFileNames } = require("./constants");
 const { fetchJsonData } = require("./util");
-const fs = require("fs");
-
-const metadata = {
-    dateOfExecution: "23-Oct-2023",
-    purpose: `convert 
-    1. Raw chatGPT file names to json object and save in a file, post normalization
-    `,
-    steps: `
-    Plan of Execution
-    1. Raw chatGPT file names to json object 
-    2. normalize it
-    3. save in a file
-    4. Verify changes
-    `,
-    postChangeActivities: `
-    Make proper UI changes for the above activity
-    Raise PR and commit changes
-    `,
-};
 
 const outputFolderLocation = "D:/temp-movement/ChatGPTNormalizedData";
 
+// Function to save data to a file
 const saveToFile = async (data, fileName) => {
-    // Convert the MySQL result to JSON format
-    const jsonData = JSON.stringify(data, null, 2);
+    const jsonData = JSON.stringify(data, null, 2); // Format JSON with indentation
 
-    // Specify the output file path
     const outputFile = `${outputFolderLocation}/ND_${fileName}.json`;
-    // Write the JSON data to the output file
+
     try {
         // Write the JSON string to the file
-        await fs.writeFile(outputFile, jsonData, (writeErr) => {
-            if (writeErr) {
-                console.error("Error writing to file:", writeErr);
-            } else {
-                console.log(`Data written to ${outputFile}`);
-            }
-        });
-
+        await fs.writeFile(outputFile, jsonData);
         console.log(`File saved successfully at: ${outputFile}`);
     } catch (error) {
         console.error("Error saving file:", error);
     }
 };
 
-// 1. Save hardcoded chatGPT file names
+// 1. Save hardcoded ChatGPT file names
 async function saveHardcodedChatGPTFileNames() {
     try {
         for (const category of CGPTFileNames) {
@@ -61,31 +29,32 @@ async function saveHardcodedChatGPTFileNames() {
                 name: category.name,
                 location: category.location,
                 descriptions: [],
-                heading: category.name, // Assuming you want to copy smartContent
-                parentId: "", // Or whatever logic is required
+                heading: category.name,
+                parentId: "",
                 createdDate: category.createdDate,
                 isLatest: category.isLatest,
             };
 
-            const {conversations, messages} = await fetchandSaveConvAndMessages(category.location);
-            chatGPTFileObject.conversations=conversations;
-            chatGPTFileObject.messages=messages;
+            const { conversations, messages } = await fetchandSaveConvAndMessages(category.location);
+            chatGPTFileObject.conversations = conversations;
+            chatGPTFileObject.messages = messages;
 
             await saveToFile(chatGPTFileObject, category.name);
-
         }
     } catch (err) {
         console.error("Error in saveHardcodedChatGPTFileNames:", err);
     }
 }
 
+// Fetch and save conversations and messages
 async function fetchandSaveConvAndMessages(location) {
     let normalizedConvArr = [];
     let normalizedMessages = [];
 
     try {
         const convArr = await fetchJsonData(location);
-        let order=0;
+        let order = 0;
+
         for (const conv of convArr) {
             const newConv = {
                 uniqueId: uuidv4(),
@@ -94,16 +63,15 @@ async function fetchandSaveConvAndMessages(location) {
                 createdDate: conv.createdOn,
                 updatedDate: conv.updatedOn,
                 descriptions: [],
-                heading: conv.name, // Assuming you want to copy smartContent
-                parentId: "", // Or whatever logic is required
-                order: (++order)
-                // linkedCGPTFileId: savedTag.uniqueId,
+                heading: conv.name,
+                parentId: "",
+                order: ++order
             };
 
             normalizedConvArr.push(newConv);
-            normalizedMessages = saveMessages(newConv.uniqueId, conv.messages)
-            //   const savedConv = await newConv.save();
-            //   await saveMessages(savedConv, conv.messages);
+
+            const convMessages = saveMessages(newConv.uniqueId, conv.messages);
+            normalizedMessages.push(...convMessages); // Append messages
         }
     } catch (err) {
         console.error("Error in fetchandSaveConvAndMessages:", err);
@@ -112,10 +80,13 @@ async function fetchandSaveConvAndMessages(location) {
     return { conversations: normalizedConvArr, messages: normalizedMessages };
 }
 
+// Save messages
 function saveMessages(linkedCGPTConvId, messages) {
     let normalizedMessages = [];
+
     try {
-        let order=0;
+        let order = 0;
+
         for (const msg of messages) {
             const newMsg = {
                 uniqueId: uuidv4(),
@@ -130,30 +101,22 @@ function saveMessages(linkedCGPTConvId, messages) {
                         textInputType: "TextArea",
                     },
                 ],
-                order: (++order)
+                order: ++order
             };
 
             normalizedMessages.push(newMsg);
-
         }
     } catch (err) {
-        console.error("Error in fetchandSaveConvAndMessages:", err);
-        return [];
+        console.error("Error in saveMessages:", err);
     }
-    return normalizedMessages;
+
+    return normalizedMessages; // Return the normalized messages
 }
 
+// Main function
 async function main() {
     let processCompletedSuccessfully = false;
     try {
-        // console.log("Connecting to MongoDB...");
-        // await mongoose.connect(
-        //     "mongodb://localhost:27017/chat_gpt_normalized_data",
-        //     {
-        //         useNewUrlParser: true,
-        //         useUnifiedTopology: true,
-        //     }
-        // );
         console.log("Starting Normalization Process.");
 
         console.log("Step 1: Save hardcoded chatGPT file names...");
@@ -163,11 +126,9 @@ async function main() {
         processCompletedSuccessfully = true;
     } catch (error) {
         console.error("Error occurred:", error);
-        processCompletedSuccessfully = false;
     } finally {
-        // await mongoose.connection.close();
         console.log(
-            "MongoDB connection closed. Status: " +
+            "Normalization process completed. Status: " +
             (processCompletedSuccessfully ? "Success" : "Error")
         );
     }

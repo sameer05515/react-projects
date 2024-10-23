@@ -28,6 +28,15 @@ const generateSelectFields = (type) => {
                 linkedCGPTFileId: 1,
                 order: 1,
             };
+            case 'message-summarized':
+                return {
+                    ...baseFields,
+                    linkedCGPTFileId: 1,
+                    linkedCGPTConvId: 1,
+                    // author: 1,
+                    // descriptions: 1,
+                    order: 1,
+                };
         case 'message':
             return {
                 ...baseFields,
@@ -95,7 +104,7 @@ const getCGPTFileForUIDAndConvUID = async (uniqueId, convUID) => {
         const filteredMessages = await CGPTMessage.find({
             linkedCGPTFileId: uniqueId,
             linkedCGPTConvId: convUID,
-        }).select(generateSelectFields('message'));
+        }).select(generateSelectFields('message-summarized'));
 
         return {
             ...cgptFile.toObject(),
@@ -134,9 +143,39 @@ const getCGPTFileForUIDAndConvUIDAndMsgUID = async (uniqueId, convUID, msgUID) =
     }
 };
 
+const getConversationsForConvUID= async (convUID)=>{
+    try {
+        const filteredConversations = await CGPTConversation.find({
+            uniqueId: convUID,
+        }).select(generateSelectFields('conversation'));
+
+        return {
+            conversations: filteredConversations.map((conv) => conv.toObject()),
+        };
+    } catch (error) {
+        throw new Error(`Error fetching CGPTFile: ${error.message}`);
+    }
+}
+
+const getMessagesForMsgUID= async (msgUID)=>{
+    try {
+        const filteredMessages = await CGPTMessage.find({
+            uniqueId: msgUID,
+        }).select(generateSelectFields('message-summarized'));
+
+        return {
+            messages: filteredMessages.map((msg) => msg.toObject()),
+        };
+    } catch (error) {
+        throw new Error(`Error fetching CGPTFile: ${error.message}`);
+    }
+}
+
 module.exports = {
     getAllCategories,
     getCategoryForUniqueId,
     getCGPTFileForUIDAndConvUID,
     getCGPTFileForUIDAndConvUIDAndMsgUID,
+    getConversationsForConvUID,
+    getMessagesForMsgUID
 };

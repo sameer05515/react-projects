@@ -47,5 +47,27 @@ router.get("/f/:uniqueId/c/:convUID/m/:msgUID", async (req, res) => {
     }
 });
 
+// Get a conversations for given convUID
+router.get("/c/:convUID", async (req, res) => {
+    const {convUID}= req.params;
+    try {
+        const category = await chatGPTConversation.getConversationsForConvUID(convUID);
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get a messages for given msgUID
+router.get("/m/:msgUID", async (req, res) => {
+    const {msgUID}= req.params;
+    try {
+        const category = await chatGPTConversation.getMessagesForMsgUID(msgUID);
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 module.exports = router;

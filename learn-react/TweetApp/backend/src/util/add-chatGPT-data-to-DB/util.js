@@ -60,7 +60,7 @@ const getConversationMessages = (conversation) => {
                 author = "Custom user info";
             }
             messages.push({
-                oldId: node.id,
+                uniqueId: node.id,
                 author,
                 text: node.message.content.parts[0],
                 createdOn: node.create_time
@@ -88,8 +88,7 @@ const fetchJsonData = async (selectedFile) => {
         const formattedData = data
             .filter((d) => d !== null)
             .map((conv, index) => ({
-                id: `conv_${index + 1}`,
-                oldId: conv.id,
+                uniqueId: conv.id,
                 name: conv.title,
                 // current_node: conv.current_node,
                 // mappingFirstValue: conv.mapping ? conv.mapping[conv.current_node] : null,

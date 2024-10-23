@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const { CGPTFileNames } = require("./constants");
 const { fetchJsonData } = require("./util");
 
-const outputFolderLocation = "D:/temp-movement/ChatGPTNormalizedData";
+const outputFolderLocation = "D:/GIT/my-backup/ChatGPTNormalizedData";
 
 // Function to save data to a file
 const saveToFile = async (data, fileName) => {
@@ -57,8 +57,8 @@ async function fetchandSaveConvAndMessages(location) {
 
         for (const conv of convArr) {
             const newConv = {
-                uniqueId: uuidv4(),
-                oldId: conv.oldId,
+                // uniqueId: uuidv4(),
+                uniqueId: conv.uniqueId,
                 name: conv.name,
                 createdDate: conv.createdOn,
                 updatedDate: conv.updatedOn,
@@ -89,9 +89,9 @@ function saveMessages(linkedCGPTConvId, messages) {
 
         for (const msg of messages) {
             const newMsg = {
-                uniqueId: uuidv4(),
-                oldId: msg.oldId,
-                name: msg.oldId + "_" + linkedCGPTConvId,
+                // uniqueId: uuidv4(),
+                uniqueId: msg.uniqueId,
+                name: msg.uniqueId + "_" + linkedCGPTConvId,
                 author: msg.author,
                 linkedCGPTConvId: linkedCGPTConvId,
                 descriptions: [

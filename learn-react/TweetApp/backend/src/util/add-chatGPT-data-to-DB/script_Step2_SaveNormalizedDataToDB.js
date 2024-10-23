@@ -41,7 +41,7 @@ const readJsonFile = async (fileName) => {
 
     try {
         // Read file contents
-        const data = await fs.readFile(outputFile, "utf8");
+        const data = await fs.readFile(outputFile);
 
         // Parse the JSON data
         const jsonData = JSON.parse(data);

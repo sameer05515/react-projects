@@ -35,7 +35,7 @@ async function saveHardcodedChatGPTFileNames() {
                 isLatest: category.isLatest,
             };
 
-            const { conversations, messages } = await fetchandSaveConvAndMessages(category.location);
+            const { conversations, messages } = await fetchandSaveConvAndMessages(category.location,category.name);
             chatGPTFileObject.conversations = conversations;
             chatGPTFileObject.messages = messages;
 
@@ -47,7 +47,7 @@ async function saveHardcodedChatGPTFileNames() {
 }
 
 // Fetch and save conversations and messages
-async function fetchandSaveConvAndMessages(location) {
+async function fetchandSaveConvAndMessages(location,linkedCGPTFileId) {
     let normalizedConvArr = [];
     let normalizedMessages = [];
 
@@ -62,6 +62,7 @@ async function fetchandSaveConvAndMessages(location) {
                 name: conv.name,
                 createdDate: conv.createdOn,
                 updatedDate: conv.updatedOn,
+                linkedCGPTFileId:linkedCGPTFileId,
                 descriptions: [],
                 heading: conv.name,
                 parentId: "",
@@ -70,7 +71,7 @@ async function fetchandSaveConvAndMessages(location) {
 
             normalizedConvArr.push(newConv);
 
-            const convMessages = saveMessages(newConv.uniqueId, conv.messages);
+            const convMessages = saveMessages(newConv.uniqueId, conv.messages, linkedCGPTFileId);
             normalizedMessages.push(...convMessages); // Append messages
         }
     } catch (err) {
@@ -81,7 +82,7 @@ async function fetchandSaveConvAndMessages(location) {
 }
 
 // Save messages
-function saveMessages(linkedCGPTConvId, messages) {
+function saveMessages(linkedCGPTConvId, messages, linkedCGPTFileId) {
     let normalizedMessages = [];
 
     try {
@@ -94,6 +95,7 @@ function saveMessages(linkedCGPTConvId, messages) {
                 name: msg.uniqueId + "_" + linkedCGPTConvId,
                 author: msg.author,
                 linkedCGPTConvId: linkedCGPTConvId,
+                linkedCGPTFileId:linkedCGPTFileId,
                 descriptions: [
                     {
                         content: msg.text,

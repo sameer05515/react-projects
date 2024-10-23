@@ -25,5 +25,16 @@ router.get("/f/:uniqueId", async (req, res) => {
     }
 });
 
+// Get a cgpt-file for given uniqueId
+router.get("/f/:uniqueId/c/:convUID", async (req, res) => {
+    const {uniqueId, convUID}= req.params;
+    try {
+        const category = await chatGPTConversation.getCGPTFileWithFilteredConversationsAndMessages(uniqueId, convUID);
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 module.exports = router;

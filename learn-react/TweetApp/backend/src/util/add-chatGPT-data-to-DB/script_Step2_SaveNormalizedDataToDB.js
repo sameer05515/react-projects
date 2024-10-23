@@ -57,7 +57,7 @@ const readJsonFile = async (fileName) => {
 // 1. Save hardcoded chatGPT file names
 async function saveHardcodedChatGPTFileNames() {
     try {
-        for (const category of CGPTFileNames) {
+        for (const category of CGPTFileNames.filter(c=>c.isLatest)) {
             // const data = await readJsonFile(category.name);
             const chatGPTFileObject = {
                 uniqueId: category.name,

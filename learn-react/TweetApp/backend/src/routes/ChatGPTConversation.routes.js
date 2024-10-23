@@ -4,8 +4,8 @@ const router = express.Router();
 const chatGPTConversation = require("./ChatGPTConversation.service");
 
 
-// Get all categories
-router.get("/files", async (req, res) => {
+// Get all cgpt-files
+router.get("/f", async (req, res) => {
     try {
         const categories = await chatGPTConversation.getAllCategories();
         res.json(categories);
@@ -14,8 +14,8 @@ router.get("/files", async (req, res) => {
     }
 });
 
-// Get all categories
-router.get("/files/:uniqueId", async (req, res) => {
+// Get all cgpt-file for given uniqueId
+router.get("/f/:uniqueId", async (req, res) => {
     const uniqueId= req.params.uniqueId;
     try {
         const category = await chatGPTConversation.getCategoryForUniqueId(uniqueId);

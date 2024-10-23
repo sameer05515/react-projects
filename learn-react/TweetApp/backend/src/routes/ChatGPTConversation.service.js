@@ -1,4 +1,8 @@
-const { CGPTFile } = require("./ChatGPTConversation.model");
+const {
+    CGPTFile,
+    CGPTConversation,
+    CGPTMessage,
+} = require("./ChatGPTConversation.model");
 
 const getAllCategories = async () => {
     try {
@@ -8,14 +12,16 @@ const getAllCategories = async () => {
             heading: 1,
             parentId: 1,
             isLatest: 1,
-            location: 1
+            location: 1,
         };
         const categories = await CGPTFile.find().select(selectFields);
 
-        return categories?.map(c => ({
-            ...c.toObject(),
-            latestFile: c.isLatest
-        })) || [];
+        return (
+            categories?.map((c) => ({
+                ...c.toObject(),
+                latestFile: c.isLatest,
+            })) || []
+        );
     } catch (err) {
         console.error(err);
         throw err;
@@ -24,140 +30,110 @@ const getAllCategories = async () => {
 
 const getCategoryForUniqueId = async (uniqueId) => {
     try {
-        let selectFields = {
+        let selectCGPTFileFields = {
             uniqueId: 1,
             name: 1,
             heading: 1,
             parentId: 1,
             isLatest: 1,
             location: 1,
-            'conversations.uniqueId': 1,  // Project uniqueId of conversations
-            'conversations.name': 1,      // Project name of conversations
-            'conversations.linkedCGPTFileId': 1,
-            'conversations.order': 1,
-            'conversations.heading': 1,
+            createdDate: 1,
+            updatedDate: 1,
         };
-        const cgptFile = await CGPTFile.findOne({ uniqueId }).select(selectFields);
 
+        let selectCGPTConversationFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            linkedCGPTFileId: 1,
+            createdDate: 1,
+            updatedDate: 1,
+        };
+
+        const cgptFile = await CGPTFile.findOne({ uniqueId }).select(
+            selectCGPTFileFields
+        );
         if (!cgptFile) {
-            return res.status(404).json({ error: 'File not found' });
+            // return res.status(404).json({ error: 'File not found' });
+            throw new Error("File not found");
         }
+        const conversations = await CGPTConversation.find({
+            linkedCGPTFileId: uniqueId,
+        }).select(selectCGPTConversationFields);
 
-        return cgptFile;
+        return {
+            ...cgptFile.toObject(),
+            conversations: conversations?.map((conv) => ({ ...conv.toObject() })),
+        };
     } catch (err) {
         console.error(err);
         throw err;
     }
-}
+};
 
-
-// const getCategoryForUniqueIdAndConvUID = async (uniqueId, convUID)=>{
-//     try {
-//         let selectFields = {
-//             uniqueId: 1,
-//             name: 1,
-//             heading: 1,
-//             parentId: 1,
-//             isLatest: 1,
-//             location: 1,
-//             'conversations.uniqueId': 1,  // Project uniqueId of conversations
-//             'conversations.name': 1 ,      // Project name of conversations
-//             'conversations.linkedCGPTFileId': 1 ,
-//             'conversations.order': 1 ,
-//             'conversations.heading': 1 ,
-
-//             'messages.uniqueId': 1,  // Project uniqueId of conversations
-//             'messages.name': 1 ,      // Project name of conversations
-//             'messages.linkedCGPTConvId': 1 ,
-//             'messages.order': 1 ,
-//             'messages.heading': 1 ,
-//         };
-//         const cgptFile = await CGPTFile.findOne({ uniqueId }).select(selectFields);
-
-//         if (!cgptFile) {
-//             return res.status(404).json({ error: 'File not found' });
-//         }
-
-//         return cgptFile;
-//     } catch (err) {
-//         console.error(err);
-//         throw err;
-//     }
-// }
-
-// const getCategoryForUniqueIdAndConvUID = async (uniqueId, convUID) => {
-//     try {
-//         // Define the fields to project along with $elemMatch for conversations and messages
-//         let selectFields = {
-//             uniqueId: 1,
-//             name: 1,
-//             heading: 1,
-//             parentId: 1,
-//             isLatest: 1,
-//             location: 1,
-//             // conversations: {
-//             //     $elemMatch: { uniqueId: convUID }, // Filter conversations with convUID
-//             // },
-//             // messages: {
-//             //     $elemMatch: { linkedCGPTConvId: convUID }, // Filter messages with convUID
-//             // },
-
-//             'conversations.uniqueId': 1,  // Project uniqueId of conversations
-//             'conversations.name': 1 ,      // Project name of conversations
-//             'conversations.linkedCGPTFileId': 1 ,
-//             'conversations.order': 1 ,
-//             'conversations.heading': 1 ,
-
-//             'messages.uniqueId': 1,  // Project uniqueId of conversations
-//             'messages.name': 1 ,      // Project name of conversations
-//             'messages.linkedCGPTConvId': 1 ,
-//             'messages.order': 1 ,
-//             'messages.heading': 1 ,
-//         };
-
-//         // Query the CGPTFile with filtered conversations and messages
-//         const cgptFile = await CGPTFile.findOne({ uniqueId, "conversations.uniqueId": convUID, "messages.linkedCGPTConvId": convUID }).select(selectFields);
-
-//         if (!cgptFile) {
-//             return { error: 'File not found', status: 404 };
-//         }
-
-//         // Check if conversation was found
-//         if (!cgptFile.conversations || cgptFile.conversations.length === 0) {
-//             return { error: 'Conversation not found', status: 404 };
-//         }
-
-//         return cgptFile;
-//     } catch (err) {
-//         console.error(err);
-//         throw err;
-//     }
-// };
-
-const getCGPTFileWithFilteredConversationsAndMessages = async (uniqueId, convUID) => {
+const getCGPTFileForUIDAndConvUID = async (
+    uniqueId,
+    convUID
+) => {
     try {
+        let selectCGPTFileFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            isLatest: 1,
+            location: 1,
+            createdDate: 1,
+            updatedDate: 1,
+        };
+        let selectCGPTConversationFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            linkedCGPTFileId: 1,
+            createdDate: 1,
+            updatedDate: 1,
+        };
+        let selectCGPTMessageFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            linkedCGPTFileId: 1,
+            linkedCGPTConvId:1,
+            createdDate: 1,
+            updatedDate: 1,
+        };
         // Fetch CGPTFile document with specific uniqueId
-        const cGPTFile = await CGPTFile.findOne({ uniqueId });
+        const cGPTFile = await CGPTFile.findOne({ uniqueId }).select(
+            selectCGPTFileFields
+        );
 
         if (!cGPTFile) {
-            throw new Error('CGPTFile not found');
+            throw new Error("CGPTFile not found");
         }
 
-        // Filter conversations where uniqueId matches convUID
-        const filteredConversations = cGPTFile.conversations.filter(
-            (conversation) => conversation.uniqueId === convUID
-        );
+        const filteredConversations = await CGPTConversation.find({
+            linkedCGPTFileId: uniqueId,
+            uniqueId: convUID
+        }).select(selectCGPTConversationFields);
 
-        // Filter messages where linkedCGPTConvId matches convUID
-        const filteredMessages = cGPTFile.messages.filter(
-            (message) => message.linkedCGPTConvId === convUID
-        );
+        const filteredMessages= await CGPTMessage.find({
+            linkedCGPTFileId: uniqueId,
+            linkedCGPTConvId: convUID
+        }).select(selectCGPTMessageFields);
 
         // Construct the result
         const result = {
             ...cGPTFile.toObject(),
-            conversations: filteredConversations,
-            messages: filteredMessages
+            conversations: filteredConversations?.map((conv) => ({
+                ...conv.toObject(),
+            })),
+            messages: filteredMessages?.map((msg) => ({
+                ...msg.toObject(),
+            })),
         };
 
         return result;
@@ -166,13 +142,85 @@ const getCGPTFileWithFilteredConversationsAndMessages = async (uniqueId, convUID
     }
 };
 
-
+const getCGPTFileForUIDAndConvUIDAndMsgUID=async (uniqueId,
+    convUID, msgUID)=>{
+        try {
+            let selectCGPTFileFields = {
+                uniqueId: 1,
+                name: 1,
+                heading: 1,
+                parentId: 1,
+                isLatest: 1,
+                location: 1,
+                createdDate: 1,
+                updatedDate: 1,
+            };
+            let selectCGPTConversationFields = {
+                uniqueId: 1,
+                name: 1,
+                heading: 1,
+                parentId: 1,
+                linkedCGPTFileId: 1,
+                createdDate: 1,
+                updatedDate: 1,
+                order:1
+            };
+            let selectCGPTMessageFields = {
+                uniqueId: 1,
+                name: 1,
+                heading: 1,
+                parentId: 1,
+                linkedCGPTFileId: 1,
+                linkedCGPTConvId:1,
+                createdDate: 1,
+                updatedDate: 1,
+                author:1,
+                descriptions:1,
+                order:1
+            };
+            // Fetch CGPTFile document with specific uniqueId
+            const cGPTFile = await CGPTFile.findOne({ uniqueId }).select(
+                selectCGPTFileFields
+            );
+    
+            if (!cGPTFile) {
+                throw new Error("CGPTFile not found");
+            }
+    
+            const filteredConversations = await CGPTConversation.find({
+                linkedCGPTFileId: uniqueId,
+                uniqueId: convUID
+            }).select(selectCGPTConversationFields);
+    
+            const filteredMessages= await CGPTMessage.find({
+                linkedCGPTFileId: uniqueId,
+                linkedCGPTConvId: convUID,
+                uniqueId:msgUID
+            }).select(selectCGPTMessageFields);
+    
+            // Construct the result
+            const result = {
+                ...cGPTFile.toObject(),
+                conversations: filteredConversations?.map((conv) => ({
+                    ...conv.toObject(),
+                })),
+                messages: filteredMessages?.map((msg) => ({
+                    ...msg.toObject(),
+                })),
+            };
+    
+            return result;
+        } catch (error) {
+            throw new Error(`Error fetching CGPTFile: ${error.message}`);
+        }
+    }
 
 module.exports = {
     // createCategory,
     getAllCategories,
     getCategoryForUniqueId,
-    getCGPTFileWithFilteredConversationsAndMessages
+    getCGPTFileForUIDAndConvUID,
+    getCGPTFileForUIDAndConvUIDAndMsgUID
     // updateCategoryByUniqueId,
 
     // createQuestion,

@@ -57,8 +57,22 @@ const readJsonFile = async (fileName) => {
 // 1. Save hardcoded chatGPT file names
 async function saveHardcodedChatGPTFileNames() {
     try {
-        for (const category of CGPTFileNames.filter(d=>d.isLatest)) {
-            const data = await readJsonFile(category.name);
+        for (const category of CGPTFileNames) {
+            // const data = await readJsonFile(category.name);
+            const chatGPTFileObject = {
+                uniqueId: category.name,
+                name: category.name,
+                heading: category.name,
+                location: category.location,
+                descriptions: [],                
+                parentId: "",
+                createdDate: category.createdDate,
+                isLatest: category.isLatest,
+            };
+            const { conversations, messages } = await fetchandSaveConvAndMessages(category.location,category.name);
+            // chatGPTFileObject.conversations = conversations;
+            // chatGPTFileObject.messages = messages;
+
             const newTag = new CGPTFile({
                 // uniqueId: uuidv4(),
                 // name: category.name,
@@ -68,10 +82,12 @@ async function saveHardcodedChatGPTFileNames() {
                 // parentId: "", // Or whatever logic is required
                 // createdDate: category.createdDate,
                 // isLatest: category.isLatest,
-                ...data
+                ...chatGPTFileObject
             });
 
             const savedTag = await newTag.save();
+            await CGPTConversation.insertMany(conversations);
+            await CGPTMessage.insertMany(messages);
             // await fetchandSaveConvAndMessages(savedTag);
             console.log(`Data saved successfully at: ${savedTag.name}`);
         }
@@ -80,51 +96,73 @@ async function saveHardcodedChatGPTFileNames() {
     }
 }
 
-// async function fetchandSaveConvAndMessages(savedTag) {
-//     try {
-//         const convArr = await fetchJsonData(savedTag.location);
-//         for (const conv of convArr) {
-//             const newConv = new CGPTConversation({
-//                 uniqueId: uuidv4(),
-//                 name: conv.name,
-//                 createdDate: conv.createdOn,
-//                 updatedDate: conv.updatedOn,
-//                 descriptions: [],
-//                 heading: conv.name, // Assuming you want to copy smartContent
-//                 parentId: "", // Or whatever logic is required
-//                 linkedCGPTFileId: savedTag.uniqueId,
-//             });
-//             const savedConv = await newConv.save();
-//             await saveMessages(savedConv, conv.messages);
-//         }
-//     } catch (err) {
-//         console.error("Error in fetchandSaveConvAndMessages:", err);
-//     }
-// }
+async function fetchandSaveConvAndMessages(location,linkedCGPTFileId) {
+    let normalizedConvArr = [];
+    let normalizedMessages = [];
 
-// async function saveMessages(savedConv, messages) {
-//     try {
-//         for (const msg of messages) {
-//             const newMsg = new CGPTMessage({
-//                 uniqueId: uuidv4(),
-//                 oldId: msg.oldId,
-//                 name: msg.oldId + "_" + savedConv.uniqueId,
-//                 author: msg.author,
-//                 linkedCGPTConvId: savedConv.uniqueId,
-//                 descriptions: [
-//                     {
-//                         content: msg.text,
-//                         textOutputType: "markdown",
-//                         textInputType: "TextArea",
-//                     },
-//                 ],
-//             });
-//             await newMsg.save();
-//         }
-//     } catch (err) {
-//         console.error("Error in fetchandSaveConvAndMessages:", err);
-//     }
-// }
+    try {
+        const convArr = await fetchJsonData(location);
+        let order = 0;
+
+        for (const conv of convArr) {
+            const newConv = {
+                // uniqueId: uuidv4(),
+                uniqueId: conv.uniqueId,
+                name: conv.name,
+                createdDate: conv.createdOn,
+                updatedDate: conv.updatedOn,
+                linkedCGPTFileId:linkedCGPTFileId,
+                descriptions: [],
+                heading: conv.name,
+                parentId: "",
+                order: ++order
+            };
+
+            normalizedConvArr.push(newConv);
+
+            const convMessages = saveMessages(newConv.uniqueId, conv.messages, linkedCGPTFileId);
+            normalizedMessages.push(...convMessages); // Append messages
+        }
+    } catch (err) {
+        console.error("Error in fetchandSaveConvAndMessages:", err);
+        return { conversations: [], messages: [] };
+    }
+    return { conversations: normalizedConvArr, messages: normalizedMessages };
+}
+
+// Save messages
+function saveMessages(linkedCGPTConvId, messages, linkedCGPTFileId) {
+    let normalizedMessages = [];
+
+    try {
+        let order = 0;
+
+        for (const msg of messages) {
+            const newMsg = {
+                // uniqueId: uuidv4(),
+                uniqueId: msg.uniqueId,
+                name: msg.uniqueId + "_" + linkedCGPTConvId,
+                author: msg.author,
+                linkedCGPTConvId: linkedCGPTConvId,
+                linkedCGPTFileId:linkedCGPTFileId,
+                descriptions: [
+                    {
+                        content: msg.text,
+                        textOutputType: "markdown",
+                        textInputType: "TextArea",
+                    },
+                ],
+                order: ++order
+            };
+
+            normalizedMessages.push(newMsg);
+        }
+    } catch (err) {
+        console.error("Error in saveMessages:", err);
+    }
+
+    return normalizedMessages; // Return the normalized messages
+}
 
 async function main() {
     try {

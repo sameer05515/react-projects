@@ -37,8 +37,8 @@ const cGPTFileSchema = new mongoose.Schema({
     ...baseSchema,
     location: String,
     isLatest:{type: Boolean, default:false},
-    conversations:[cGPTConversationSchema],
-    messages:[cGPTMessagesSchema]
+    // conversations:[cGPTConversationSchema],
+    // messages:[cGPTMessagesSchema]
 });
 
 
@@ -47,7 +47,7 @@ const cGPTFileSchema = new mongoose.Schema({
 
 // Models
 const CGPTFile = mongoose.model('CGPTFile', cGPTFileSchema);
-// const CGPTConversation = mongoose.model('CGPTConversation', cGPTConversationSchema);
-// const CGPTMessage = mongoose.model('CGPTMessage', cGPTMessagesSchema);
+const CGPTConversation = mongoose.model('CGPTConversation', cGPTConversationSchema);
+const CGPTMessage = mongoose.model('CGPTMessage', cGPTMessagesSchema);
 
-module.exports = { CGPTFile,/** CGPTConversation, CGPTMessage*/ };
+module.exports = { CGPTFile,CGPTConversation, CGPTMessage };

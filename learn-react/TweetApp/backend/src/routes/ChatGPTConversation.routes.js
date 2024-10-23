@@ -14,5 +14,16 @@ router.get("/files", async (req, res) => {
     }
 });
 
+// Get all categories
+router.get("/files/:uniqueId", async (req, res) => {
+    const uniqueId= req.params.uniqueId;
+    try {
+        const category = await chatGPTConversation.getCategoryForUniqueId(uniqueId);
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 module.exports = router;

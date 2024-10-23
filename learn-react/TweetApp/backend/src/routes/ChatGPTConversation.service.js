@@ -9,14 +9,7 @@ const getAllCategories = async () => {
             parentId: 1,
         };
         const categories = await CGPTFile.find().select(selectFields);
-        // const categoriesWithQuestions= await Promise.all(
-        //     categories.map(async (cat)=>{
-        //         const questions= await getQuestionsForCategories(cat.uniqueId);
-        //         return {...cat.toObject, questions}
-        //     })
-        // )
 
-        // return categoriesWithQuestions;
         return categories;
     } catch (err) {
         console.error(err);
@@ -24,10 +17,33 @@ const getAllCategories = async () => {
     }
 };
 
+const getCategoryForUniqueId=async (uniqueId)=>{
+    try {
+        let selectFields = {
+            uniqueId: 1,
+            name: 1,
+            heading: 1,
+            parentId: 1,
+            'conversations.uniqueId': 1,  // Project uniqueId of conversations
+            'conversations.name': 1       // Project name of conversations
+        };
+        const cgptFile = await CGPTFile.findOne({ uniqueId }).select(selectFields);
+
+        if (!cgptFile) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        return cgptFile;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 module.exports = {
     // createCategory,
     getAllCategories,
-    // getCategoryByUniqueId,
+    getCategoryForUniqueId,
     // updateCategoryByUniqueId,
 
     // createQuestion,

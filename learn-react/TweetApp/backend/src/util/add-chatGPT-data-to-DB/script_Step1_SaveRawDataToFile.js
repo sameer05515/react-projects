@@ -25,7 +25,7 @@ async function saveHardcodedChatGPTFileNames() {
     try {
         for (const category of CGPTFileNames) {
             const chatGPTFileObject = {
-                uniqueId: uuidv4(),
+                uniqueId: category.name,
                 name: category.name,
                 location: category.location,
                 descriptions: [],

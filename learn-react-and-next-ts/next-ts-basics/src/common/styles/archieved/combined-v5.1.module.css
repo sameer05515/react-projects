@@ -1,0 +1,54 @@
+/* Component Selection Section */
+.component-selection-section {
+    width: 90%;
+    max-width: 40rem;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #540ebc;
+    color: #f0f8f1;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Main Section */
+  .main {
+    width: 90%;
+    max-width: 40rem;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #d58d1f;
+    color: #f0f8f1;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Common Label Style */
+  .label {
+    display: block;
+    font-size: 0.85rem;
+    color: #bbe3dd;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  
+  /* Common Select Style */
+  .select {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #486560;
+    background-color: #daedea;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #07302a;
+  }
+  
+  /* Navigation Button Styles */
+  .nav-button {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+  

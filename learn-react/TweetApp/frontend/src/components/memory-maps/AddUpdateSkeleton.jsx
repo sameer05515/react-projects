@@ -5,10 +5,11 @@ import {
     fetchMemoryMaps,
     updateMemoryMapForGivenSkeleton,
 } from "../../redux/slices/memoryMapSlice";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 import { buildTree } from "../../common/util/indentation-based-string-parser-to-tree-data";
 import TextDiffViewer from "./diff/TextDiffViewerV2";
 import { addUniqueIdsToTree } from "../../common/util/id-adder-util";
+import { SkeletonTextType } from "./util/constants";
 
 // Define styles in a JSON object
 const styles = {
@@ -82,6 +83,7 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
         uniqueId: initialFormData?.uniqueId || "",
         name: initialFormData?.name || "",
         skeleton: initialFormData?.skeleton || "",
+        skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
     });
 
     const validate = () => {
@@ -95,15 +97,18 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
     const upsertSkeleton = (event) => {
         event.preventDefault();
         if (validate()) {
-            dispatch(
+            const action = dispatch(
                 updateMemoryMapForGivenSkeleton({
                     ...formData,
                     uniqueId: formData.uniqueId,
                 })
             );
+            action.then(() => {
+                dispatch(fetchMemoryMaps());
+                navigate(-1);
+            })
         }
-        dispatch(fetchMemoryMaps());
-        navigate(-1);
+
     };
 
     const previewSkeleton = () => {
@@ -138,11 +143,10 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
                 <textarea
                     style={styles.textarea}
                     value={formData.skeleton}
-                    onChange={(e) =>
-                        {
-                            setIsValidSkeleton(false);
-                            setFormData((prev) => ({ ...prev, skeleton: e.target.value }));
-                        }
+                    onChange={(e) => {
+                        setIsValidSkeleton(false);
+                        setFormData((prev) => ({ ...prev, skeleton: e.target.value }));
+                    }
                     }
                 />
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Question } = require('./InterviewMgmt.v2.model');
 
 const pinnedItemSchema = new mongoose.Schema({
     uniqueId: {
@@ -25,7 +26,7 @@ const pinnedItemSchema = new mongoose.Schema({
     
     linkedItemType: {
         type: String,
-        enum: ['topic', 'task', 'tweet', 'word'], 
+        enum: ['topic', 'task', 'tweet', 'word', "question"], 
         required: true,
     },
 

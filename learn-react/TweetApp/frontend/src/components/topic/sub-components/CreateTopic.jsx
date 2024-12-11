@@ -1,30 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
-import { useDispatch, useSelector } from 'react-redux';
-import Select from 'react-select'; // Import the Select component from react-select
-import { SmartEditor } from '../../../common/components/smart-editor/SmartEditorV3';
+import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select"; // Import the Select component from react-select
+import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
 import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
-import { createTopic, fetchTopics, updateTopic } from '../../../redux/slices/topicSlice';
-import CustomButton from '../../../common/components/CustomButton';
-
+import {
+  createTopic,
+  fetchTopics,
+  updateTopic,
+} from "../../../redux/slices/topicSlice";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   const dispatch = useDispatch();
   const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
 
-  const [showDescr, setShowDescr]= useState(false);
+  const [showDescr, setShowDescr] = useState(false);
 
   const [topicData, setTopicData] = useState({
-    name: topic ? topic.name : '',
-    description: topic ? topic.description : '',
+    name: topic ? topic.name : "",
+    description: topic ? topic.description : "",
     smartContent: topic?.smartContent || {
-      content: topic ? topic.description : '',
+      content: topic ? topic.description : "",
       textOutputType: "",
       textInputType: "",
     },
-    parentId: parentId ? parentId : '',
+    parentId: parentId ? parentId : "",
     // Initialize the occurenceDate with the current date
-    occurenceDate: topic ? new Date(topic.occurenceDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0], // Set the occurenceDate in the format 'YYYY-MM-DD'
+    occurenceDate: topic
+      ? new Date(topic.occurenceDate).toISOString().split("T")[0]
+      : new Date().toISOString().split("T")[0], // Set the occurenceDate in the format 'YYYY-MM-DD'
     tags: topic ? topic.tags : [], // Set the initial tags based on the topic
   });
 
@@ -109,7 +114,9 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
     <div style={formStyle}>
       <h3>{topic && topic.uniqueId ? "Edit Topic" : "Add Topic"}</h3>
       <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-        <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>Name:</label>
+        <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>
+          Name:
+        </label>
         <input
           type="text"
           id="name"
@@ -135,17 +142,27 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           onChange={handleEditorChange}
         /> */}
         <div>
-        <CustomButton onClick={()=> setShowDescr(prev=> !prev)}>
-          {showDescr? 'Hide ':'Show '}Description
+          <CustomButton onClick={() => setShowDescr((prev) => !prev)}>
+            {showDescr ? "Hide " : "Show "}Description
           </CustomButton>
         </div>
-        {showDescr && <div style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}>
-          {ReactHtmlParser(topicData.description || "")}
-        </div> 
-        }
+        {showDescr && (
+          <div
+            style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}
+          >
+            {ReactHtmlParser(topicData.description || "")}
+          </div>
+        )}
 
-        <div style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}>
-          <SmartEditor preview={false} initialValue={topicData.smartContent} onChange={handleSmartEditorChange} onError={handleSmartEditorError} />
+        <div
+          style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}
+        >
+          <SmartEditor
+            preview={false}
+            initialValue={topicData.smartContent}
+            onChange={handleSmartEditorChange}
+            onError={handleSmartEditorError}
+          />
         </div>
       </div>
 
@@ -186,7 +203,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
       </div>
       <div>
         <CustomButton onClick={(event) => handleSaveTopic(event)}>
-          {topic ? 'Save Changes' : 'Create Topic'}
+          {topic ? "Save Changes" : "Create Topic"}
         </CustomButton>
         <CustomButton onClick={() => onCancelEdit()}>Cancel</CustomButton>
       </div>
@@ -208,7 +225,7 @@ const styles = {
   },
   pairedComponentStyle: {
     width: "85%", // Set paired component width to 75%
-  }
+  },
 };
 
 export default CreateTopic;

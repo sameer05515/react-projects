@@ -1,14 +1,28 @@
 import React from "react";
-import HoverableSpan from "../../../common/components/HoverableSpan";
-import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-import RatingComponent from "../../../common/components/RatingComponent";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
-import Breadcrumbs, { BreadcrumbItemType } from "../../../common/components/GlobalBreadcrumb";
-import Tree from "../../../common/components/TreeViewer";
-import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
+import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
+
+// Utility function to format date
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Kolkata',
+    timeZoneName: 'short',
+  }).format(date);
+};
 
 const QuestionCard = ({
   question,
@@ -21,6 +35,7 @@ const QuestionCard = ({
   onLinkedTagSelection = () => { }
 }) => {
   const { availableTags, refreshCategoryTree } = useInterviewMgmt();
+  const {BreadcrumbItemType}= useGlobalServiceProvider();
 
   const filteredTags = question?.tags?.map((uniqueId) =>
     availableTags.find((tag) => tag.uniqueId === uniqueId)
@@ -56,9 +71,16 @@ const QuestionCard = ({
           </div> */}
           <h2>
             <b>Question: </b>
-            <HtmlTextRendrer htmlString={question.heading} />
+            {/* <HtmlTextRendrer htmlString={question.heading} /> */}
+            {question.heading}
           </h2>
           <RatingComponent rating={question.rating} />
+          {/* <time dateTime={question.updatedDate}>{question.updatedDate}</time> */}
+          <div>
+            <b>Last Updated:</b> <time dateTime={question.updatedDate}>
+              {formatDate(question.updatedDate)}
+            </time>
+          </div>
 
           <div style={{ ...styles.datesStyle }}>
             <b>Tags: </b> {filteredTags?.length > 0 ? "" : "No tags added yet!"}

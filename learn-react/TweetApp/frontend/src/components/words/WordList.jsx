@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWords } from '../../redux/slices/wordsSlice';
 // import ReactHtmlParser from "react-html-parser";
-import HtmlTextRendrer from '../../common/components/HtmlTextRenderer';
+import { SmartPreviewer } from '../../common/components/smart-editor/SmartEditorV3';
 
 const WordList = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,8 @@ const WordList = () => {
             <p>Type: {word.type}</p>
             {/* <p>{word.details}</p> */}
             {/* <p style={customStyles}>{ReactHtmlParser(word.details || "")}</p> */}
-            <p><HtmlTextRendrer htmlString={word.details} /></p>
+            {/* <p><HtmlTextRendrer htmlString={word.details} /></p> */}
+            <SmartPreviewer data={{content:word.details||'', textOutputType: 'html'}}/>
           </div>
         ))}
       </div>

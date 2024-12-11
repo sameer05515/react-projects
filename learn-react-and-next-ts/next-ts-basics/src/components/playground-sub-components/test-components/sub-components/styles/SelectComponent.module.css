@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+.select {
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.selectedText {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}

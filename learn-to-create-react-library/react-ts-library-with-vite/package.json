@@ -1,0 +1,44 @@
+{
+  "name": "@stparap/react-ts-library-with-vite",
+  "private": false,
+  "version": "1.0.13",
+  "type": "module",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.umd.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build-lib": "vite build && vite-plugin-dts",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/css-modules": "^1.0.5",
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.12.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.15.0",
+    "vite": "^6.0.1",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-plugin-lib-inject-css": "^2.1.1"
+  }
+}

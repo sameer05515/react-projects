@@ -18,6 +18,7 @@ const topicSectionSchema = new mongoose.Schema({
     required: true,
   },
   order: {type:Number, required:true},
+  softDelete:{type: Boolean, default:false},
   tags: [String],
   createdDate: {
     type: Date,
@@ -64,6 +65,7 @@ const topicSchema = new mongoose.Schema({
     type: Date, // Assuming you want to store dates
     default: Date.now, // Default value is the current date and time
   },
+  softDelete:{type: Boolean, default:false},
   createdDate: {
     type: Date,
     default: Date.now,

@@ -1,0 +1,1 @@
+declare module '@stparap/react-ts-library-with-rollup';

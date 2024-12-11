@@ -55,6 +55,14 @@ const memoryMapSchema = new mongoose.Schema({
         },
     },
     skeleton: { type: String, default: "", required: false, },
+    skeletonTextType: {
+        type: String,
+        enum: [
+            "indented-string",
+            "json-array",
+        ],
+        required: false,
+    },
     details: [detailSchema],
     references: [referenceSchema],
     createdDate: {

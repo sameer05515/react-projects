@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import TagListOldView from "./TagListOldView";
-import ViewSwitcher from "../../common/components/ViewSwitcher";
+import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
 import { useDispatch, useSelector } from "react-redux";
-import CustomButton from "../../common/components/CustomButton";
-import TooltipSpan from "../../common/components/TooltipSpan";
+import CustomButton from "../../common/components/custom-button/CustomButton";
+import TooltipSpan from "../../common/components/tooltip-span/TooltipSpan";
 import {
     createTag,
     fetchTags,
@@ -28,7 +28,7 @@ import useDataFetching from "../../common/hooks/useDataFetching";
 import TagForm from "./TagForm";
 import TagCard, { TagLinkedItemType } from "./TagCard";
 import Select from "react-select";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 
 const TagBase = () => {
     const [selectedView, setSelectedView] = useState("list");

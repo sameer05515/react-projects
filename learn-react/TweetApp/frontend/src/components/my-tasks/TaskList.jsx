@@ -1,6 +1,6 @@
 import React, { /*useEffect*/ } from 'react';
-import AutoCompleteDropdown from '../../common/components/AutoCompleteDropdown';
-import CustomButton from '../../common/components/CustomButton';
+import AutoCompleteDropdown from '../../common/components/auto-complete/AutoCompleteDropdown';
+import CustomButton from '../../common/components/custom-button/CustomButton';
 import TaskCard from './TaskCard';
 
 

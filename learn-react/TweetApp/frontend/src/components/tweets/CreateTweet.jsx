@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GlobalConstants from "../../common/constants/globalConstants";
-import EditableLabel from "../../common/components/EditableLabel";
+import EditableLabel from "../../common/components/editable-label/EditableLabel";
 import { toast } from "react-toastify";
 
 function CreateTweet({ onTweetCreated }) {
@@ -12,7 +12,7 @@ function CreateTweet({ onTweetCreated }) {
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL}/tweets`, {
+      const response = await fetch(`${BASE_URL}/tweets/v1`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

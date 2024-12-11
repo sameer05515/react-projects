@@ -1,10 +1,8 @@
 import React from "react";
-import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-import RatingComponent from "../../../common/components/RatingComponent";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
-import { styles } from "../common/util";
-import CustomButton from "../../../common/components/CustomButton";
-import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 
 const tagStyle = {
   backgroundColor: "#ccc", // Grey background color

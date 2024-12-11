@@ -4,11 +4,10 @@ import GoldRateCalculator from "../miscelleneous/GoldRateCalculator";
 import ComparisonContainer from "../comparisons/ComparisonContainer";
 import ComparisonTableContainer from "../comparisons/ComparisonTableContainer";
 import StudentList from "../miscelleneous/StudentList";
-import Breadcrumb2 from "../../common/components/Breadcrumb2";
+import Breadcrumb2 from "../../common/components/breadcrumbs/Breadcrumb2";
 import CountFullStopLines from "../miscelleneous/CountFullStopLines";
 import DisplayData from "../miscelleneous/DisplayData";
 import {MainComponent as ArrowConnectorExample} from "../miscelleneous/ArrowConnectorExamples";
-import MiscellaneousExamples from "../miscelleneous/misc/MiscellaneousExamples";
 
 const tabButtonStyle = {
   padding: "10px",
@@ -18,7 +17,7 @@ const tabButtonStyle = {
 
 const TabNames = {
   //listUsers: "tags",
-  MiscellaneousExamples: "MiscellaneousExamples",
+  // MiscellaneousExamples: "MiscellaneousExamples",
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
   comparisonTableContainer: "ComparisonTableContainer",
@@ -32,7 +31,7 @@ const TabNames = {
 };
 
 function SettingDashboard() {
-  const [activeTab, setActiveTab] = useState(TabNames.MiscellaneousExamples);
+  const [activeTab, setActiveTab] = useState(TabNames.goldRateCalculator);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -76,7 +75,7 @@ function SettingDashboard() {
         >
           Tags
         </button> */}
-        <button
+        {/* <button
           style={{
             ...tabButtonStyle,
             background:
@@ -87,7 +86,7 @@ function SettingDashboard() {
           onClick={() => handleTabChange(TabNames.MiscellaneousExamples)}
         >
           MiscellaneousExamples Container
-        </button>
+        </button> */}
         <button
           style={{
             ...tabButtonStyle,
@@ -206,7 +205,7 @@ function SettingDashboard() {
         {activeTab === TabNames.CountFullStopLines && <CountFullStopLines />}
         {activeTab === TabNames.DisplayData && <DisplayData />}        
         {activeTab === TabNames.ArrowConnectorExample && <ArrowConnectorExample />}
-        {activeTab === TabNames.MiscellaneousExamples && <MiscellaneousExamples />}
+        {/* {activeTab === TabNames.MiscellaneousExamples && <MiscellaneousExamples />} */}
       </div>
     </div>
   );

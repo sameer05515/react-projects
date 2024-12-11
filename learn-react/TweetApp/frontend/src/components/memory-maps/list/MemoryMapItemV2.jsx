@@ -1,5 +1,9 @@
-import React from 'react';
-import { styles } from './util';
+import React from "react";
+import { styles } from "./util";
+import {
+    SmartPreviewer,
+    availableOutputTypes as SupportedTextFormats,
+} from "../../../common/components/smart-editor/SmartEditorV3";
 
 const MemoryMapItemV2 = ({
     node: memoryMap,
@@ -16,7 +20,14 @@ const MemoryMapItemV2 = ({
             onClick={() => onMemoryMapSelection(memoryMap)}
             onContextMenu={(e) => onItemRightClick(e, memoryMap)}
         >
-            {memoryMap.name}
+            {/* {memoryMap.name} */}
+            <SmartPreviewer
+                data={{
+                    content: memoryMap.name,
+                    textOutputType: SupportedTextFormats.MARKDOWN,
+                }}
+                markdownStyles={{fontSize:'10px'}}
+            />
             {/* <MarkdownComponent
                 markdownText={memoryMap.name || "**tree node name is missing!**"}
             /> */}
@@ -24,6 +35,4 @@ const MemoryMapItemV2 = ({
     </div>
 );
 
-
-
-export default MemoryMapItemV2
+export default MemoryMapItemV2;

@@ -173,6 +173,8 @@ const createQuestion = async (questionData) => {
     }
 };
 
+
+
 async function getAllQuestions() {
     try {
         let selectFields = {
@@ -180,7 +182,7 @@ async function getAllQuestions() {
             name: 1,
             heading: 1,
             parentId: 1,
-            rating:1,
+            rating: 1,
         };
         // console.log('Request came to fetch all questions');
         const questions = await getQuestionsForParentId(null, { ...selectFields });
@@ -271,7 +273,7 @@ const getQuestionByUniqueId = async (uniqueId) => {
         name: 1,
         heading: 1,
         parentId: 1,
-        rating:1,
+        rating: 1,
     };
     const answers = await getAnswersForQuestion(question.uniqueId);
     const children = await getQuestionsForParentId(question.uniqueId, selectFields);
@@ -402,34 +404,34 @@ const updateAnswerByUniqueId = async (uniqueId, answerData) => {
 
 const searchTopics = async (searchString, searchOptions) => {
     const regex = new RegExp(searchString, "i"); // 'i' for case insensitive
-  
+
     const selectFields = {
-      uniqueId: 1,
-      name: 1,
-      heading:1,
-      parentId: 1,
-      tags: 1,
+        uniqueId: 1,
+        name: 1,
+        heading: 1,
+        parentId: 1,
+        tags: 1,
     };
-  
+
     const criteria = {
-      $or: [
-        { name: { $regex: regex } },
-        { heading: { $regex: regex } },
-        //{ description: { $regex: regex } },
-      ],
+        $or: [
+            { name: { $regex: regex } },
+            { heading: { $regex: regex } },
+            //{ description: { $regex: regex } },
+        ],
     };
-  
+
     if (
-      searchOptions &&
-      searchOptions.description &&
-      searchOptions.description > 0
+        searchOptions &&
+        searchOptions.description &&
+        searchOptions.description > 0
     ) {
-      selectFields.description = 1;
-      criteria["$or"].push({ description: { $regex: regex } });
+        selectFields.description = 1;
+        criteria["$or"].push({ description: { $regex: regex } });
     }
-  
+
     return await Question.find(criteria).select(selectFields);
-  };
+};
 
 module.exports = {
     createCategory,
@@ -442,6 +444,8 @@ module.exports = {
     getQuestionByUniqueId,
     getQuestionByCategoryIdAndQuesId,
     updateQuestionByUniqueId,
+
+    // getAllQuestionsForReportingModule,
 
     getQuestionsByTagId,
 

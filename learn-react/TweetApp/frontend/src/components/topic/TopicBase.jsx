@@ -8,10 +8,10 @@ import {
     useSearchParams,
 } from "react-router-dom";
 import Select from "react-select";
-import CustomButton from "../../common/components/CustomButton";
-import HoverableSpan from "../../common/components/HoverableSpan";
-import TooltipSpan from "../../common/components/TooltipSpan";
-import ViewSwitcher from "../../common/components/ViewSwitcher";
+import CustomButton from "../../common/components/custom-button/CustomButton";
+import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
+import TooltipSpan from "../../common/components/tooltip-span/TooltipSpan";
+import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import useDataFetching from "../../common/hooks/useDataFetching";
 import {
@@ -37,7 +37,7 @@ import CreateTopic from "./sub-components/CreateTopic";
 import ListTopicsByCreatedDate from "./sub-components/ListTopicsByCreatedDate";
 import TopicCard from "./sub-components/TopicCard";
 import TopicSectionForm from "./sub-components/TopicSectionForm";
-import Tree from "../../common/components/TreeViewer";
+import Tree from "../../common/components/tree-viewer/TreeViewer";
 
 const TopicBase = () => {
     const [selectedView, setSelectedView] = useState("list");

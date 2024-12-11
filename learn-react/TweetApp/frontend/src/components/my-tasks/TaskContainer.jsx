@@ -6,7 +6,7 @@ import ViewTask from "./ViewTask";
 import { fetchTasks, saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
 import { useSelector, useDispatch } from "react-redux";
 import TaskSearch from "./TaskSearch";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 
 import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
 

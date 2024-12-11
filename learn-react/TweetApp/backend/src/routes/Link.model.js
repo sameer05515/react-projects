@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
 
 const childSchema = new mongoose.Schema({
@@ -24,7 +24,7 @@ const linkSchema = new mongoose.Schema({
   },
   parentId: {
     type: String,
-    default: ''
+    default: "",
   },
   linkType: {
     type: String,
@@ -40,6 +40,6 @@ const linkSchema = new mongoose.Schema({
   // children: [childSchema], // Define children field as an array of objects
 });
 
-const Tag = mongoose.model('Link', linkSchema);
+const Tag = mongoose.model("Link", linkSchema);
 
 module.exports = Tag;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { createLink, fetchLinks, fetchLinksByUniqueId, updateLink } from "../../redux/slices/linksSlice";
-import CustomButton from "../../common/components/CustomButton";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import "./Links.css";
 
 const ViewLink = () => {

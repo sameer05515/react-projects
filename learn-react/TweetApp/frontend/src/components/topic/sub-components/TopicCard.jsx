@@ -4,17 +4,16 @@ import {
   prepareQuestions,
 } from "../../../common/service/commonService";
 import ReactHtmlParser from "react-html-parser";
-import CustomButton from "../../../common/components/CustomButton";
-import FloatingButton from "../../../common/components/FloatingButton";
-import DynamicDataRenderer from "../../../common/components/DynamicDataRenderer";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
+import FloatingButton from "../../../common/components/floating-button/FloatingButton";
+import DynamicDataRenderer from "../../../common/components/dynamic-data-renderer/DynamicDataRenderer";
 // import { Breadcrumbs } from "./TopicBase";
-import HoverableSpan from "../../../common/components/HoverableSpan";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
-import Breadcrumbs, {
-  BreadcrumbItemType,
-} from "../../../common/components/GlobalBreadcrumb";
-import Tree from "../../../common/components/TreeViewer";
-import ToggleablePanel from "../../../common/components/ToggleablePanel";
+import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
+import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 
 const TopicCard = ({
   topic,
@@ -43,6 +42,7 @@ const TopicCard = ({
   onLinkedTagSelection = () => { },
   onBaseSpanClick = () => { },
 }) => {
+  const {BreadcrumbItemType}= useGlobalServiceProvider();
   const [showDescr, setShowDescr] = useState(showDescription);
   const filteredTags = topic.tags?.map((uniqueId) =>
     tags.find((tag) => tag.uniqueId === uniqueId)
@@ -251,6 +251,11 @@ const TopicCard = ({
           onClick={() => handlePinTopic(isPinned)}
         >
           {isPinned ? "Un-Pin" : "Pin"} topic
+        </CustomButton>
+
+        <CustomButton
+        style={{ ...tagStyle, marginRight: "10px" }}>
+          Convert to question
         </CustomButton>
 
         <FloatingButton

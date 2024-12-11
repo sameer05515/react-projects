@@ -91,7 +91,7 @@ async function createTask(newTask) {
     try {
         const task = new Task({
             name: newTask.name,
-            description: newTask.description,
+            descriptions: newTask.descriptions,
             linkedTasks: newTask.linkedTasks || [],
             parentId: newTask.parentId,
             tags: newTask.tags || [],
@@ -112,11 +112,11 @@ async function updateTask(taskId, updatedTask) {
         if (!task) {
             throw new Error("Task not found");
         }
-        const { parentId, name, description, tags, linkedTasks, taskStatus, activities } = updatedTask;
-        // console.log("activities: "+activities)
+        const { parentId, name, descriptions, tags, linkedTasks, taskStatus, activities } = updatedTask;
+        // console.log("activities: ", activities);
         task.parentId = parentId || task.parentId;
         task.name = name || task.name;
-        task.description = description || task.description;
+        task.descriptions = descriptions || task.descriptions;
         task.tags = tags && tags.length >= 0 ? tags : task.tags;
         task.taskStatus = taskStatus != null ? taskStatus : task.taskStatus;
         task.linkedTasks = linkedTasks && linkedTasks.length >= 0 ? linkedTasks : task.linkedTasks;

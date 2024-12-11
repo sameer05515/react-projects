@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
-import CustomButton from "../../../common/components/CustomButton";
-import RatingComponent from "../../../common/components/RatingComponent";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
 import {
   createQuestion, updateQuestion
 } from "../../../redux/slices/interviewMgmtSlice";
-import JSONDataViewer from "../../../common/components/JSONDataViewer";
+import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
 const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
@@ -28,7 +28,7 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
       textInputType: "",
     },
     parentId: initialFormData?.parentId || "",
-    rating: initialFormData?.rating || 0,
+    rating: initialFormData?.rating || 3,
     tags: initialFormData?.tags || [],
   });
 

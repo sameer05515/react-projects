@@ -7,9 +7,9 @@ import {
     useParams,
     useSearchParams,
 } from "react-router-dom";
-import CustomButton from "../../../common/components/CustomButton";
-import HoverableSpan from "../../../common/components/HoverableSpan";
-import Tree from "../../../common/components/TreeViewer";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useDataFetching from "../../../common/hooks/useDataFetching";
 import {
     searchTopic,
@@ -20,7 +20,7 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import QuestionCard from "./QuestionCard";
 import QuestionForm from "./QuestionForm";
 import AnswerForm from "./AnswerForm";
-import ButtonGroup from "../../../common/components/button/ButtonGroup";
+import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import Select from "react-select";
 
 const CategoryList = () => {

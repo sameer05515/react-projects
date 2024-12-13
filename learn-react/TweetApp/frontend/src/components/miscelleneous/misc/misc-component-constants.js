@@ -32,6 +32,8 @@ import FlipExampleV2 from "./sub-components/animation/FlipExampleV2";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 import SmartEditorV4Dashboard_V1_0_0 from "../../apna-playground/smart-editor/main/SmartEditorV4Dashboard_V1_0_0";
 import AppChatGPTDashboardV1_0_0 from "../../apna-playground/chatgpt-renderer/AppChatGPTDashboardV1_0_0";
+import VideoDownloader from '../../apna-playground/video-download/VideoDownloader';
+
 
 export const ComponentModules = {
     TestingPurpose: "Testing Purpose",
@@ -408,6 +410,14 @@ const componentMapWithPurposes = {
     },
     AppChatGPTDashboardV1_0_0:{
         element: AppChatGPTDashboardV1_0_0,
+        purpose:`
+    [Planned]: Explore ChatGPT data
+        `,
+        isExperimentalComponent: true,
+        module: ComponentModules.Explore_and_Upgrade_ChatGPTRenderer_Project
+    },
+    VideoDownloader:{
+        element: VideoDownloader,
         purpose:`
     [Planned]: Explore ChatGPT data
         `,

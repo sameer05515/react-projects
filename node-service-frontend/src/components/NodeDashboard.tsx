@@ -17,13 +17,19 @@ const NodeDashboard = () => {
   const fetchData = async () => {
     setAllNodes([]);
     try {
-      const response = await axios.get(BASE_URL);
-      const apiResponse = response.data as NodeServiceAPIResponse<Node[]>;
+      const response = await axios.get<NodeServiceAPIResponse<Node[]>>(BASE_URL);
+      const apiResponse = response.data;
       console.log("API Response: ", JSON.stringify(apiResponse, null, 2));
       const data = apiResponse.data || [];
       setAllNodes(() => data || []);
     } catch (error) {
       console.error(error);
+      if (axios.isAxiosError(error)) {
+        console.log(
+          "axios error Response: ",
+          JSON.stringify(error.response, null, 2)
+        );       
+      }
     }
   };
 

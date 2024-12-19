@@ -86,3 +86,4 @@
 
 # Uncategorized links
 - [**How to Use React Query with NextJS 13**](https://www.youtube.com/watch?v=G0BmM-L5FoE)
+- [The Only Right Way To Handle Errors in React - No More Error Boundaries](https://www.youtube.com/watch?v=0LpLxEUephc&t=117s)

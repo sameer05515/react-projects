@@ -84,3 +84,5 @@
 - [Code & Curiosity by Maximilian Schwarzmüller](https://www.youtube.com/watch?v=AYxzfDUmWUE&list=PLg_-ZSpC5BWJqe6vX3MVggfJ6Zr0j9E_n)
 
 
+# Uncategorized links
+- [**How to Use React Query with NextJS 13**](https://www.youtube.com/watch?v=G0BmM-L5FoE)

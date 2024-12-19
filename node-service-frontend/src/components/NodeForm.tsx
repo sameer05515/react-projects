@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../common/constants/Global";
-import { Node } from "./types";
-
+import { Node, ApiResponse as NodeServiceAPIResponse } from "./types";
 
 const NodeForm: React.FC = () => {
   const [uniqueId, setUniqueId] = useState<string>("");
@@ -23,14 +22,29 @@ const NodeForm: React.FC = () => {
     event.preventDefault();
     const node: Node = { uniqueId, metadata };
 
+    // let apiResponse: NodeServiceAPIResponse<Node> | null = null;
+
     try {
-      const response = await axios.post(BASE_URL, node);
-      setMessage(`Node saved successfully! ID: ${response.data.uniqueId}`);
+      const response = await axios.post<NodeServiceAPIResponse<Node>>(BASE_URL, node);
+      const apiResponse = response.data;
+
+      // const data = apiResponse.data;
+      // setMessage(`Node saved successfully! ID: ${data.uniqueId}`);
+      setMessage(apiResponse.message);
       setUniqueId("");
       setMetadata({});
     } catch (error) {
-      setMessage("Failed to save node. Please try again.");
       console.error(error);
+      if (axios.isAxiosError(error)) {
+        console.log(
+          "axios error Response: ",
+          JSON.stringify(error.response, null, 2)
+        );
+        setMessage(
+          error.response?.data?.message ||
+            "Failed to save node. Please try again."
+        );
+      }
     }
   };
 
@@ -40,7 +54,10 @@ const NodeForm: React.FC = () => {
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "10px" }}>
-          <label htmlFor="uniqueId" style={{ display: "block", marginBottom: "5px" }}>
+          <label
+            htmlFor="uniqueId"
+            style={{ display: "block", marginBottom: "5px" }}
+          >
             Unique ID
           </label>
           <input
@@ -69,7 +86,11 @@ const NodeForm: React.FC = () => {
               onChange={(e) => setMetadataValue(e.target.value)}
               style={{ flex: 1, padding: "8px" }}
             />
-            <button type="button" onClick={addMetadata} style={{ padding: "8px 12px" }}>
+            <button
+              type="button"
+              onClick={addMetadata}
+              style={{ padding: "8px 12px" }}
+            >
               Add
             </button>
           </div>
@@ -81,7 +102,10 @@ const NodeForm: React.FC = () => {
             ))}
           </ul>
         </div>
-        <button type="submit" style={{ padding: "10px 20px", background: "blue", color: "white" }}>
+        <button
+          type="submit"
+          style={{ padding: "10px 20px", background: "blue", color: "white" }}
+        >
           Save Node
         </button>
       </form>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./DraggableArea.css"; // Import your CSS file here
+import classes from "./DraggableArea.module.css"; // Import your CSS file here
 
 const StringList = ({ strings }) => {
   return (
@@ -7,14 +7,14 @@ const StringList = ({ strings }) => {
       {strings.map((str, index) => (
         <div
           key={index}
-          className="card"
+          className={classes["card"]}
           draggable
           onDragStart={(e) => {
             e.dataTransfer.setData("text/plain", str);
           }}
         >
-          <div className="card-label">Label {index + 1}</div>
-          <div className="card-content">{str}</div>
+          <div className={classes["card-label"]}>Label {index + 1}</div>
+          <div className={classes["card-content"]}>{str}</div>
         </div>
       ))}
     </div>
@@ -36,19 +36,19 @@ const DraggableArea = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="string-list">
+      <div className={classes["container"]}>
+        <div className={classes["string-list"]}>
           <h2>String List</h2>
           <StringList strings={["String 1", "String 2", "String 3"]} />
         </div>
         <div
-          className="droppable-area"
+          className={classes["droppable-area"]}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
         >
           <h2>Draggable Area</h2>
           {droppedStrings.map((str, index) => (
-            <div key={index} className="card">
+            <div key={index} className={classes["card"]}>
               {str}
             </div>
           ))}

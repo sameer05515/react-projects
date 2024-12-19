@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import JSONDataViewer from "../json-data-viewer/JSONDataViewer";
 
 const styles = {
   container: {
@@ -22,6 +21,9 @@ const styles = {
     fontSize: "14px",
     color: "#333",
   },
+  errorText: {
+    color: "red",
+  },
 };
 
 const TreeNode = ({
@@ -31,8 +33,8 @@ const TreeNode = ({
   selectedNodeId,
   expandAll,
   isDraggable = false,
-  onDragStart = () => { },
-  onDrop = () => { },
+  onDragStart = () => {},
+  onDrop = () => {},
 }) => {
   const [expanded, setExpanded] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
@@ -103,7 +105,7 @@ const TreeNode = ({
               isDraggable={isDraggable}
               onDragStart={onDragStart}
               onDrop={onDrop}
-            // expandAll={expandAll}
+              // expandAll={expandAll}
             />
           ))}
         </div>
@@ -127,26 +129,37 @@ const Tree = ({
   expandAll = false,
   areNodesDraggable = false,
   onDragStart,
-  onDrop
+  onDrop,
+  errorMessageOnNoData,
 }) => {
   return (
     <div>
-      {data.map((node) => (
-        <TreeNode
-          key={node[uniqueIdFieldName]}
-          node={node}
-          renderNode={renderNode}
-          uniqueIdFieldName={uniqueIdFieldName}
-          selectedNodeId={selectedNodeId}
-          expandAll={expandAll}
-          isDraggable={areNodesDraggable}
-          onDragStart={onDragStart}
-          onDrop={onDrop}
-        />
-      ))}
+      {data && isNonEmptyArray(data) ? (
+        data.map((node) => (
+          <TreeNode
+            key={node[uniqueIdFieldName]}
+            node={node}
+            renderNode={renderNode}
+            uniqueIdFieldName={uniqueIdFieldName}
+            selectedNodeId={selectedNodeId}
+            expandAll={expandAll}
+            isDraggable={areNodesDraggable}
+            onDragStart={onDragStart}
+            onDrop={onDrop}
+          />
+        ))
+      ) : (
+        <span style={styles.errorText}>
+          {errorMessageOnNoData || "No Data to render tree!!"}
+        </span>
+      )}
       {/* <JSONDataViewer metadata={{data}} title="Data"/> */}
     </div>
   );
+};
+
+const isNonEmptyArray = (input /**: unknown*/) => {
+  return input !== null && Array.isArray(input) && input.length > 0;
 };
 
 export default Tree;

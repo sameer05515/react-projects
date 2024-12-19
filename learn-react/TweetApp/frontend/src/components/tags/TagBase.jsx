@@ -199,7 +199,7 @@ const ViewTag = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const url = `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`;
-    const { data, loading, error, refetch } = useDataFetching(url);
+    const { data, loading, error, refetch } = useDataFetching({url});
     // const [searchParams] = useSearchParams();
     // const sectionId = searchParams.get("sectionId");
 

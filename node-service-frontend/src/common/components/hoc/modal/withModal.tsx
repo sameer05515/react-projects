@@ -4,16 +4,25 @@ import styles from "./Modal.module.css";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  closeOnEscKey?: boolean;
 }
 
 const withModal = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
-  const Modal: React.FC<P & ModalProps> = ({ isOpen, onClose, ...props }) => {
+  const Modal: React.FC<P & ModalProps> = ({
+    isOpen,
+    onClose,
+    closeOnEscKey,
+    ...props
+  }) => {
     if (!isOpen) return null;
 
     return (
-      <div className={styles.modalBackdrop} onClick={onClose}>
+      <div
+        className={styles.modalBackdrop}
+        onClick={() => closeOnEscKey && onClose()}
+      >
         <div
           className={styles.modalContent}
           onClick={(e) => e.stopPropagation()}

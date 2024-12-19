@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTopics } from "../../redux/topicSlice";
 import CreateTopic from "./CreateTopic"; // Import the CreateTopic component
 import TopicCard from "./TopicCard";
-import { selectAllFlatTopics } from "../../../redux/slices/topicSlice";
+import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
 
 
 function ListTopic() {

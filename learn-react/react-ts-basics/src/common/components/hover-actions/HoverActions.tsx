@@ -22,7 +22,7 @@ const HoverActions: FC<HoverActionsProps> = ({ actions = [], title }) => {
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      // onMouseLeave={() => setIsHovered(false)}
       className={styles.container}
     >
       <span title={`Actions: Total Actions ${calculatedActions.length}`}>

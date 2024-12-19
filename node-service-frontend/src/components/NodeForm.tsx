@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../common/constants/Global";
 import { Node, ApiResponse as NodeServiceAPIResponse } from "./types";
+import withModal from "../common/components/hoc/modal/withModal";
 
 const NodeForm: React.FC = () => {
   const [uniqueId, setUniqueId] = useState<string>("");
@@ -114,3 +115,4 @@ const NodeForm: React.FC = () => {
 };
 
 export default NodeForm;
+export const NodeForWithmModal = withModal(NodeForm);

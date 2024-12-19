@@ -1,33 +1,52 @@
 import { useState, useEffect } from "react";
 
-const useDataFetching = (url, options = {}, fetchInitially=true) => {
+const useDataFetching = ({
+  url,
+  options = {},
+  fetchInitially = true,
+  source = "",
+}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
+    // console.log(`url: ${url}`);
+
     try {
-      //console.log(`fetchData: `, new Date() , url);  
-      setLoading(true);    
+      if (!url) {
+        throw new Error(
+          `Url should not be null or undefined. Provided url is: '${url}'`
+        );
+      }
+      //console.log(`fetchData: `, new Date() , url);
+      setLoading(true);
       const response = await fetch(url, options);
       if (!response.ok) {
         // throw new Error("Failed to fetch data");
-        throw new Error(`Failed to fetch data : Response Status: ${response.status}`);
+        throw new Error(
+          `Failed to fetch data : Response Status: ${response.status}`
+        );
       }
       const result = await response.json();
       setData(result);
     } catch (error) {
       setError(error);
+      console.trace(
+        source ? "Source could be: " + source : "",
+        "An error occurred: ",
+        error
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if(fetchInitially && fetchInitially===true){
-      // console.log(`fetching Initially`)
+    if (url && fetchInitially && fetchInitially === true) {
+      // console.log(`fetching Initially`, `url: ${url}`);
       fetchData();
-    }    
+    }
   }, []);
 
   const refetch = () => {

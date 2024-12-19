@@ -1,7 +1,10 @@
 import React from "react";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
-import { SmartPreviewer } from "../../../common/components/smart-editor/SmartEditorV3";
+import {
+  SmartPreviewer,
+  availableOutputTypes as SupportedTextFormats,
+} from "../../../common/components/smart-editor/SmartEditorV3";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
@@ -34,8 +37,8 @@ const QuestionCard = ({
   onChildTopicClick = () => { },
   onLinkedTagSelection = () => { }
 }) => {
-  const { availableTags, refreshCategoryTree } = useInterviewMgmt();
-  const {BreadcrumbItemType}= useGlobalServiceProvider();
+  const { availableTags} = useInterviewMgmt();
+  const { BreadcrumbItemType } = useGlobalServiceProvider();
 
   const filteredTags = question?.tags?.map((uniqueId) =>
     availableTags.find((tag) => tag.uniqueId === uniqueId)
@@ -72,7 +75,14 @@ const QuestionCard = ({
           <h2>
             <b>Question: </b>
             {/* <HtmlTextRendrer htmlString={question.heading} /> */}
-            {question.heading}
+            {/* {question.heading} */}
+            <SmartPreviewer
+              data={{
+                content: question.heading || "**tree node name is missing!**",
+                textOutputType: SupportedTextFormats.MARKDOWN,
+              }}
+              markdownStyles={{ fontSize: "20px" }}
+            />
           </h2>
           <RatingComponent rating={question.rating} />
           {/* <time dateTime={question.updatedDate}>{question.updatedDate}</time> */}

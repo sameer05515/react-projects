@@ -1,7 +1,7 @@
 import React from "react";
 import Tree from "../common/components/tree/TreeV2";
 import NodeCard from "./NodeCard";
-import { Node } from "./types";
+import { Node, ApiResponse as NodeServiceAPIResponse } from "./types";
 import NodeForm from "./NodeForm";
 import axios from "axios";
 import { BASE_URL } from "../common/constants/Global";
@@ -18,7 +18,9 @@ const NodeDashboard = () => {
     setAllNodes([]);
     try {
       const response = await axios.get(BASE_URL);
-      const data = response.data as Node[];
+      const apiResponse = response.data as NodeServiceAPIResponse<Node[]>;
+      console.log("API Response: ", JSON.stringify(apiResponse, null, 2));
+      const data = apiResponse.data || [];
       setAllNodes(() => data || []);
     } catch (error) {
       console.error(error);

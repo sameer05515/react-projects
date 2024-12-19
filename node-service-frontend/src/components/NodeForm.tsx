@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../common/constants/Global";
-import { Node } from "./types";
+import { Node, ApiResponse as NodeServiceAPIResponse } from "./types";
 
 
 const NodeForm: React.FC = () => {
@@ -23,13 +23,22 @@ const NodeForm: React.FC = () => {
     event.preventDefault();
     const node: Node = { uniqueId, metadata };
 
+    let apiResponse:NodeServiceAPIResponse<Node>|null=null;
+
     try {
       const response = await axios.post(BASE_URL, node);
-      setMessage(`Node saved successfully! ID: ${response.data.uniqueId}`);
+      apiResponse = response.data as NodeServiceAPIResponse<Node>;
+      
+      // const data = apiResponse.data;
+      // setMessage(`Node saved successfully! ID: ${data.uniqueId}`);
+      setMessage(apiResponse.message);
       setUniqueId("");
       setMetadata({});
     } catch (error) {
-      setMessage("Failed to save node. Please try again.");
+      // setMessage("Failed to save node. Please try again.");
+      console.log("API Response: ", JSON.stringify(apiResponse, null, 2));
+      // console.log("error Response: ", JSON.stringify(error?.message, null, 2));
+      // setMessage(error?.message||'Failed to save node. Please try again.');
       console.error(error);
     }
   };

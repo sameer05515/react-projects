@@ -2,12 +2,9 @@ import React from "react";
 import Tree from "../common/components/tree/TreeV2";
 import NodeCard from "./NodeCard";
 import { Node, ApiResponse as NodeServiceAPIResponse } from "./types";
-import NodeForm from "./NodeForm";
+import { NodeForWithmModal as NodeFormModal } from "./NodeForm";
 import axios from "axios";
 import { BASE_URL } from "../common/constants/Global";
-import withModal from "../common/components/hoc/modal/withModal";
-
-const NodeFormModal = withModal(NodeForm);
 
 const NodeDashboard = () => {
   const [selectedNode, setSelectedNode] = React.useState<Node | null>(null);
@@ -17,7 +14,9 @@ const NodeDashboard = () => {
   const fetchData = async () => {
     setAllNodes([]);
     try {
-      const response = await axios.get<NodeServiceAPIResponse<Node[]>>(BASE_URL);
+      const response = await axios.get<NodeServiceAPIResponse<Node[]>>(
+        BASE_URL
+      );
       const apiResponse = response.data;
       console.log("API Response: ", JSON.stringify(apiResponse, null, 2));
       const data = apiResponse.data || [];
@@ -28,7 +27,7 @@ const NodeDashboard = () => {
         console.log(
           "axios error Response: ",
           JSON.stringify(error.response, null, 2)
-        );       
+        );
       }
     }
   };

@@ -80,7 +80,12 @@
 - [Complete ReactJS Course | 11 Hours+ | React Yatra: You Never Knew React](https://www.youtube.com/watch?v=xNQo6gEl16g)
 - [Web Dev Series](https://www.youtube.com/watch?v=HGTJBPNC-Gw&list=PLZPZq0r_RZOPP5Yjt6IqgytMRY5uLt4y3)
 - [JavaScript Full Course for free](https://www.youtube.com/watch?v=lfmg-EJ8gm4)
-- [Learn React JS - Full Beginner’s Tutorial (2024) & Practice Projects](https://www.youtube.com/watch?v=x4rFhThSX04)
+- [Learn React JS - Full Beginner's Tutorial (2024) & Practice Projects](https://www.youtube.com/watch?v=x4rFhThSX04)
 - [Code & Curiosity by Maximilian Schwarzmüller](https://www.youtube.com/watch?v=AYxzfDUmWUE&list=PLg_-ZSpC5BWJqe6vX3MVggfJ6Zr0j9E_n)
 
 
+# Uncategorized links
+- [**How to Use React Query with NextJS 13**](https://www.youtube.com/watch?v=G0BmM-L5FoE)
+- [The Only Right Way To Handle Errors in React - No More Error Boundaries](https://www.youtube.com/watch?v=0LpLxEUephc&t=117s)
+- [useNavigate documentation](https://api.reactrouter.com/v7/functions/react_router.useNavigate)
+  - A custom hook [`useSPPNavigation`](https://github.com/sameer05515/react-projects/blob/master/learn-react/TweetApp/frontend/src/common/hooks/useSPPNavigation/index.jsx) created to demonstrate centralized use of useNavigation hook

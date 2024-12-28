@@ -16,28 +16,28 @@ import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProv
 // Utility function to format date
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'Asia/Kolkata',
-    timeZoneName: 'short',
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Kolkata",
+    timeZoneName: "short",
   }).format(date);
 };
 
 const QuestionCard = ({
   question,
   categoryId,
-  onCreateAnswerClick = () => { },
-  onUpdateAnswerClick = () => { },
-  onAncestorClick = () => { },
-  onBaseSpanClick = () => { },
-  onChildTopicClick = () => { },
-  onLinkedTagSelection = () => { }
+  onCreateAnswerClick = () => {},
+  onUpdateAnswerClick = () => {},
+  onAncestorClick = () => {},
+  onBaseSpanClick = () => {},
+  onChildTopicClick = () => {},
+  onLinkedTagSelection = () => {},
 }) => {
-  const { availableTags} = useInterviewMgmt();
+  const { availableTags } = useInterviewMgmt();
   const { BreadcrumbItemType } = useGlobalServiceProvider();
 
   const filteredTags = question?.tags?.map((uniqueId) =>
@@ -87,7 +87,8 @@ const QuestionCard = ({
           <RatingComponent rating={question.rating} />
           {/* <time dateTime={question.updatedDate}>{question.updatedDate}</time> */}
           <div>
-            <b>Last Updated:</b> <time dateTime={question.updatedDate}>
+            <b>Last Updated:</b>{" "}
+            <time dateTime={question.updatedDate}>
               {formatDate(question.updatedDate)}
             </time>
           </div>
@@ -117,8 +118,10 @@ const QuestionCard = ({
               overflow: "auto",
             }}
           >
-
-            <ToggleablePanel title="Additional Description for Question:-" showContent={true}>
+            <ToggleablePanel
+              title="Additional Description for Question:-"
+              showContent={true}
+            >
               {question.smartContent && (
                 <SmartPreviewer data={question.smartContent} />
               )}
@@ -129,17 +132,19 @@ const QuestionCard = ({
             )} */}
           </div>
 
-
           {question.children && question.children.length > 0 && (
             <div style={styles.descriptionStyle}>
               <ToggleablePanel title="Child Questions:-">
-                <Tree data={question.children} renderNode={(t) =>
-                  <>
-                    <HoverableSpan onClick={() => onChildTopicClick(t)}>
-                      {t.name}
-                    </HoverableSpan>
-                  </>
-                } />
+                <Tree
+                  data={question.children}
+                  renderNode={(t) => (
+                    <>
+                      <HoverableSpan onClick={() => onChildTopicClick(t)}>
+                        {t.name}
+                      </HoverableSpan>
+                    </>
+                  )}
+                />
               </ToggleablePanel>
             </div>
           )}

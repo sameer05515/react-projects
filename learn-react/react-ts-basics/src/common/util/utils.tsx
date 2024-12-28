@@ -31,5 +31,5 @@ export const camelCaseToTitleCase = (str: string) => {
 };
 
 export const isNonEmptyArray = (input: unknown) => {
-  return input && Array.isArray(input) && input.length > 0;
+  return input!==null && Array.isArray(input) && input.length > 0;
 };

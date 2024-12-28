@@ -225,7 +225,7 @@ const EditTaskComp = () => {
   // const parentId = searchParams.get("parent");
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
-  const { data, loading, error /*refetch*/ } = useDataFetching(url);
+  const { data, loading, error /*refetch*/ } = useDataFetching({url});
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -256,7 +256,7 @@ const ViewTaskComp = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
-  const { data, loading, error, refetch } = useDataFetching(url);
+  const { data, loading, error, refetch } = useDataFetching({url});
   const availableTags = useSelector(selectAllFlatTags);
   const pinnedItems = useSelector((state) => state.pinnedItems.data);
 

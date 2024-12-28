@@ -42,24 +42,28 @@ import TaskBase, {
 } from "./components/my-tasks/TaskBase";
 import ResumeForm from "./components/resume/ResumeForm";
 import SettingDashboard from "./components/settings/SettingDashboard";
-import TopicBase, {
-  AddSubTopicComp,
-  CreateSectionRouterPage,
-  CreateTopicComp,
-  EditSectionRouterPage,
-  EditTopicComp,
-  MoveToAnotherTopicParent,
-  SearchRouterPage as SearchTopicRouterPage,
-  ViewTopic,
-} from "./components/topic/TopicBase";
+import TopicBase from "./components/topic/TopicBase";
+import AddSubTopicComp from "./components/topic/sub-components/common/AddSubTopicRouterPage";
+import CreateSectionRouterPage from "./components/topic/sub-components/common/CreateSectionRouterPage";
+import CreateTopicComp from "./components/topic/sub-components/common/CreateTopicRouterPage";
+import EditSectionRouterPage from "./components/topic/sub-components/common/EditSectionRouterPage";
+import EditTopicComp from "./components/topic/sub-components/common/EditTopicRouterPage";
+import MoveToAnotherTopicParent from "./components/topic/sub-components/common/MoveToAnotherTopicParentRouterPage";
+import SearchTopicRouterPage from "./components/topic/sub-components/common/SearchRouterPage";
+import ViewTopic from "./components/topic/sub-components/common/ViewTopicRouterPage";
 import TweetBase from "./components/tweets/TweetBase";
 import WordList from "./components/words/WordList";
 // import "./styles/nav-styles.css";
 // import TagList from "./components/tags/TagList";
 import HorizontalMenu from "./HorizontalMenu";
-import JSONDataViewer from "./common/components/json-data-viewer/JSONDataViewer";
+// import JSONDataViewer from "./common/components/json-data-viewer/JSONDataViewer";
+import Notifications from "./Notifications";
+import Welcome from "./Welcome";
 import GlobalBreadcrumbV2 from "./common/components/global-breadcrumbs/GlobalBreadcrumbV2";
+import ToggleableIcon from "./common/components/toggleable-icon/ToggleableIcon";
+import PlaygroundBase from "./components/apna-playground/PlaygroundBase";
 import { AddUpdateSkeletonForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeleton";
+import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
 import {
   CreateMemoryMapItem,
   EditMemoryMapItem,
@@ -83,12 +87,8 @@ import TagBase, {
   SearchTagRouterPage,
   ViewTag,
 } from "./components/tags/TagBase";
-import ToggleableIcon from "./common/components/toggleable-icon/ToggleableIcon";
-import TwoNodeComponentV5_3 from "./components/topic/sub-components/TwoNodeComponentV5.3";
-import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
-import Welcome from "./Welcome";
-import PlaygroundBase from "./components/apna-playground/PlaygroundBase";
-import Notifications from "./Notifications";
+import TwoNodeComponentV53 from "./components/topic/sub-components/common/TwoNodeComponentV5.3";
+import TestRouterPage from "./components/apna-playground/navigation-utils-examples/TestRouterPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -262,7 +262,7 @@ function App() {
             />
             <Route path="create" element={<CreateTopicComp />} />
             <Route path="search" element={<SearchTopicRouterPage />} />
-            <Route path="two-nodes" element={<TwoNodeComponentV5_3 />} />
+            <Route path="two-nodes" element={<TwoNodeComponentV53 />} />
           </Route>
 
           {/** ----- WORD-MEANING MANAGEMENT ---------------------- */}
@@ -376,6 +376,8 @@ function App() {
           {/** ----- Apna Playground ---------------------------- */}
           <Route path="/apna-playground" element={<PlaygroundBase />} />
 
+          {/** ----- Testing Route: For useSPPNavigation hook testing ---------------------------- */}
+          <Route path="/test-route/:id" element={<TestRouterPage />} />
         </Route>
 
         {/** ----- LOGIN/ LOGOUT ---------------------- */}
@@ -383,7 +385,7 @@ function App() {
         <Route path="/login" element={<LoginUser onLogin={handleLogin} />} />
         <Route path="/register" element={<Registration />} />
 
-        <Route path="/notifications" element={<Notifications/>} />
+        <Route path="/notifications" element={<Notifications />} />
 
         {/** ----- NOT FOUND ---------------------- */}
 
@@ -420,13 +422,13 @@ const Layout = () => {
       >
         {/* Breadcrumb component at the top */}
         <ToggleableIcon
-          label={'Dark Mode'}
+          label={"Dark Mode"}
           isContentVisible={isDarkMode}
           additionalStyleForContainer={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            cursor: 'pointer'
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            cursor: "pointer",
           }}
           toggleSymbols={{
             showSymbol: "Lite Mode",

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import ReactHtmlParser from "react-html-parser";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
-import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
-import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
+import { SmartEditor } from "../../../../common/components/smart-editor/SmartEditorV3";
+import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
 import {
   createTopic,
   fetchTopics,
   updateTopic,
-} from "../../../redux/slices/topicSlice";
-import CustomButton from "../../../common/components/custom-button/CustomButton";
+} from "../../../../redux/slices/topicSlice";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   const dispatch = useDispatch();

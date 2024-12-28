@@ -48,7 +48,7 @@ const SelectInput = ({ options, onChange, placeholder, value }) => (
 
 
 const MiscellaneousExamples = () => {
-  const [selectedComponent, setSelectedComponent] = useState("SPPTableV1_0_0");
+  const [selectedComponent, setSelectedComponent] = useState("UseNavigationExampleComponentV2");
 
   const handleChange = (selectedOption) => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);

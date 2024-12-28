@@ -5,8 +5,8 @@ import {
     fetchTopics,
     selectAllFlatTopics,
     selectAllTreeTopics,
-} from "../../../redux/slices/topicSlice";
-import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+} from "../../../../redux/slices/topicSlice";
+import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 // Reusable Label component
 const HoverLabel = ({ id, text, show, onMouseEnter, onMouseLeave }) => (
     <div

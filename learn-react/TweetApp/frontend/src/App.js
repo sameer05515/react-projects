@@ -34,12 +34,11 @@ import UserDashboard from "./components/login/UserDashboard";
 import GitDiff from "./components/miscelleneous/GitDiff";
 import MyFormWithValidation from "./components/miscelleneous/MyFormWithValidation";
 import MyResumeComponent from "./components/my-resume/MyResumeComponent";
-import TaskBase, {
-  AddSubTaskComp,
-  CreateTaskComp,
-  EditTaskComp,
-  ViewTaskComp,
-} from "./components/my-tasks/TaskBase";
+import TaskBase from "./components/my-tasks/TaskBase";
+import AddSubTaskRouterPage from "./components/my-tasks/sub-components/common/AddSubTaskRouterPage";
+import CreateTaskRouterPage from "./components/my-tasks/sub-components/common/CreateTaskRouterPage";
+import EditTaskRouterPage from "./components/my-tasks/sub-components/common/EditTaskRouterPage";
+import ViewTaskRouterPage from "./components/my-tasks/sub-components/common/ViewTaskRouterPage";
 import ResumeForm from "./components/resume/ResumeForm";
 import SettingDashboard from "./components/settings/SettingDashboard";
 import TopicBase from "./components/topic/TopicBase";
@@ -62,6 +61,7 @@ import Welcome from "./Welcome";
 import GlobalBreadcrumbV2 from "./common/components/global-breadcrumbs/GlobalBreadcrumbV2";
 import ToggleableIcon from "./common/components/toggleable-icon/ToggleableIcon";
 import PlaygroundBase from "./components/apna-playground/PlaygroundBase";
+import TestRouterPage from "./components/apna-playground/navigation-utils-examples/TestRouterPage";
 import { AddUpdateSkeletonForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeleton";
 import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "./components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
 import {
@@ -70,6 +70,7 @@ import {
 } from "./components/memory-maps/CreateUpdateMemoryMapItemRouterPage";
 import MemoryMapBase from "./components/memory-maps/MemoryMapBase";
 import { MemoryMapList } from "./components/memory-maps/list/MemoryMapListRouterPage";
+import OldTasksBase from "./components/old-tasks-mgmt/OldTasksBase";
 import RelatedNodesBase from "./components/related-nodes/RelatedNodesBase";
 import {
   CreateRelatedNodeItem,
@@ -88,7 +89,7 @@ import TagBase, {
   ViewTag,
 } from "./components/tags/TagBase";
 import TwoNodeComponentV53 from "./components/topic/sub-components/common/TwoNodeComponentV5.3";
-import TestRouterPage from "./components/apna-playground/navigation-utils-examples/TestRouterPage";
+import CustomBackdropV2 from "./common/components/CustomBackdrop/v2";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -150,6 +151,7 @@ function App() {
           theme="light"
         />
       </div>
+      <CustomBackdropV2 />
 
       {isAuthenticated && (
         <>
@@ -221,13 +223,16 @@ function App() {
 
           <Route path="/actionable" element={<ActionableContainer />} />
 
+          {/** ----- OLD TASK MANAGEMENT ---------------------- */}
+          <Route path="/old-task-mgmt" element={<OldTasksBase />} />
+
           {/** ----- TASK MANAGEMENT ---------------------- */}
 
           <Route path="/task-mgmt" element={<TaskBase />}>
-            <Route path=":id/edit" element={<EditTaskComp />} />
-            <Route path=":id/add-sub-task" element={<AddSubTaskComp />} />
-            <Route path=":id" element={<ViewTaskComp />} />
-            <Route path="create" element={<CreateTaskComp />} />
+            <Route path=":id/edit" element={<EditTaskRouterPage />} />
+            <Route path=":id/add-sub-task" element={<AddSubTaskRouterPage />} />
+            <Route path=":id" element={<ViewTaskRouterPage />} />
+            <Route path="create" element={<CreateTaskRouterPage />} />
           </Route>
 
           {/** ----- USER MANAGEMENT ---------------------- */}
@@ -377,7 +382,7 @@ function App() {
           <Route path="/apna-playground" element={<PlaygroundBase />} />
 
           {/** ----- Testing Route: For useSPPNavigation hook testing ---------------------------- */}
-          <Route path="/test-route/:id" element={<TestRouterPage />} />
+          <Route path="/test-route" element={<TestRouterPage />} />
         </Route>
 
         {/** ----- LOGIN/ LOGOUT ---------------------- */}

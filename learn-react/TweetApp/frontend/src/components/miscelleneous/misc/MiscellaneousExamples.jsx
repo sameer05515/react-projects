@@ -48,7 +48,7 @@ const SelectInput = ({ options, onChange, placeholder, value }) => (
 
 
 const MiscellaneousExamples = () => {
-  const [selectedComponent, setSelectedComponent] = useState("UseNavigationExampleComponentV2");
+  const [selectedComponent, setSelectedComponent] = useState("UseConsolidatedTesterDashboard");
 
   const handleChange = (selectedOption) => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);

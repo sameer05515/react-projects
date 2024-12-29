@@ -1,24 +1,25 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import CustomButton from "../../common/components/custom-button/CustomButton";
-import FloatingButton from "../../common/components/floating-button/FloatingButton";
-import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
+import FloatingButton from "../../../../common/components/floating-button/FloatingButton";
+import HoverableSpan from "../../../../common/components/hoverable-span/HoverableSpan";
 import {
   SmartEditor,
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
-} from "../../common/components/smart-editor/SmartEditorV3";
-import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
+} from "../../../../common/components/smart-editor/SmartEditorV3";
+import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import {
   activityList,
   getStatusLabelForId,
-} from "../../common/constants/globalConstants";
+} from "../../../../common/constants/globalConstants";
 import {
   getUserIdFromToken,
   getUserNameFromToken,
-} from "../../common/service/authService";
-import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
-import { updateTask } from "../../redux/slices/taskSlice";
+} from "../../../../common/service/authService";
+import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
+import { updateTask } from "../../../../redux/slices/taskSlice";
+import { prepareTaskTitle } from "./taskUtils";
 
 const TaskCard = ({
   task,
@@ -142,10 +143,10 @@ const TaskDetails = ({ task }) => (
   <div>
     <SmartPreviewer
       data={{
-        content: task?.name || "",
+        content: prepareTaskTitle(task, 'TaskCard'),
         textOutputType: SupportedTextFormats.MARKDOWN,
       }}
-      markdownStyles={{ fontSize: '20px' }}
+      markdownStyles={{ fontSize: "20px" }}
     />
 
     <div style={styles.datesStyle}>

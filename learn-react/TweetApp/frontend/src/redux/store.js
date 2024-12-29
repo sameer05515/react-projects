@@ -12,6 +12,7 @@ import pinnedItemReducer from "./slices/pinnedItemSlice";
 import interviewMgmtReducer from "./slices/interviewMgmtSlice";
 import memoryMapReducer from "./slices/memoryMapSlice";
 import breadcrumbReducer from "./slices/breadcrumbSlice";
+import backdropReducer from "./slices/backdropSlice";
 
 const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ const store = configureStore({
     interviewMgmt: interviewMgmtReducer,
     memoryMaps: memoryMapReducer,
     breadcrumbItems: breadcrumbReducer,
+    backdrop: backdropReducer,
   },
 });
 

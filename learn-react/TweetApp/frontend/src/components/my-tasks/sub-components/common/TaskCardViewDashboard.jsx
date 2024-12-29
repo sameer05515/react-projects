@@ -1,25 +1,31 @@
-// TaskContainer.js
+// TaskCardViewDashboard.js
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
+import UnderConstruction from "../../../../common/components/UnderConstruction";
+import {
+  fetchTags,
+  selectAllFlatTags,
+} from "../../../../redux/slices/tagsSlice";
+import {
+  fetchTasks,
+  saveTask,
+  selectAllFlatTasks,
+  updateTask,
+} from "../../../../redux/slices/taskSlice";
 import TaskList from "./TaskList";
 import TaskModel from "./TaskModel";
-import ViewTask from "./ViewTask";
-import { fetchTasks, saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
-import { useSelector, useDispatch } from "react-redux";
 import TaskSearch from "./TaskSearch";
-import CustomButton from "../../common/components/custom-button/CustomButton";
+import ViewTask from "./ViewTask";
 
-import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
-
-const TaskContainer = () => {
-
+const TaskCardViewDashboard = ({ underContruction = true }) => {
   const dispatch = useDispatch();
   const availableTags = useSelector(selectAllFlatTags);
-  
 
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);  
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const tasks = useSelector(selectAllFlatTasks);
   const status = useSelector((state) => state.tasks.status);
@@ -42,7 +48,7 @@ const TaskContainer = () => {
 
   if (status === "failed") {
     return <div>Error: {error}</div>;
-  }  
+  }
 
   const containerStyle = {
     display: "flex",
@@ -52,7 +58,7 @@ const TaskContainer = () => {
     flex: "100%",
     padding: "10px",
     border: "1px solid #ccc",
-  };  
+  };
 
   const openAddTaskModal = () => {
     setIsAddTaskModalOpen(true);
@@ -81,7 +87,7 @@ const TaskContainer = () => {
     setIsViewTaskModalOpen(false);
     setSelectedTask(null);
   };
-  
+
   const handleSaveTask = async (newTask) => {
     if (selectedTask) {
       // Update the existing task
@@ -122,6 +128,10 @@ const TaskContainer = () => {
     closeTaskModal();
   };
 
+  if (underContruction) {
+    return <UnderConstruction title="Card View of Task Management" />;
+  }
+
   return (
     <div style={containerStyle}>
       <div style={taskListStyle}>
@@ -153,10 +163,14 @@ const TaskContainer = () => {
         />
       )}
       {isViewTaskModalOpen && (
-        <ViewTask task={selectedTask} onClose={closeTaskModal} tags={availableTags} />
+        <ViewTask
+          task={selectedTask}
+          onClose={closeTaskModal}
+          tags={availableTags}
+        />
       )}
     </div>
   );
 };
 
-export default TaskContainer;
+export default TaskCardViewDashboard;

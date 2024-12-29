@@ -34,6 +34,7 @@ import TreeListV2 from "./sub-components/dnd-playground/TreeListV2";
 import TreeListV3 from "./sub-components/dnd-playground/TreeListV3";
 import TreeListV4 from "./sub-components/dnd-playground/TreeListV4";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
+import UseConsolidatedTesterDashboard from "../../apna-playground/UseConsolidatedTesters/UseConsolidatedTesterDashboard";
 
 export const ComponentModules = {
   TestingPurpose: "Testing Purpose",
@@ -429,6 +430,22 @@ const componentMapWithPurposes = {
     isExperimentalComponent: true,
     module: ComponentModules.Explore_and_Upgrade_ChatGPTRenderer_Project,
   },
+  UseConsolidatedTesterDashboard: {
+    element: UseConsolidatedTesterDashboard,
+    purpose: `
+      The primary goal of this component is to aid in the development and testing of a robust 'useConsolidated' hook. 
+      This hook is designed to streamline the following functionalities:
+      - Simplifying API calls by centralizing logic.
+      - Managing notifications during API call lifecycles (e.g., success, error, loading states).
+      - Controlling backdrop visibility dynamically during asynchronous operations.
+      - Centralizing state management for cleaner and more maintainable code.
+      
+      This component plays a critical role in ensuring the 'useConsolidated' hook is stable and production-ready.
+    `,
+    isExperimentalComponent: true,
+    module: ComponentModules.TestingPurpose,
+  }
+  
 };
 
 // Completed componentMapWithPurposes

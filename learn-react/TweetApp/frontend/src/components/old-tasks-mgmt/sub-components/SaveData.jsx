@@ -8,7 +8,7 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { saveData as addData } from "../../redux/dataSlice1";
+import { saveData as addData } from "../../../redux/slices/dataSlice1"; 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./SaveDataComponent.css"; // Import custom CSS for styling

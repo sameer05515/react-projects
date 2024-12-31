@@ -16,7 +16,7 @@ const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   const IconComponent = useMemo(() => {
-    return selectedIcon ? getIcon(selectedIcon) : null;
+    return selectedIcon ? getIcon(selectedIcon.name) : null;
   }, [selectedIcon]);
 
   return (
@@ -27,12 +27,16 @@ const ReactIconsDemonstrateDashboard = () => {
           <Tree
             data={iconFamily}
             renderNode={(node) => (
-              <span onClick={() => setSelectedIcon(node.name)}>{node.name}</span>
+              <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
             )}
           />
         </div>
         <div className={styles.iconDisplay}>
-          {selectedIcon ? <IconComponent className={styles.icon} /> : "Please select an icon"}
+          {selectedIcon ? (
+            <IconComponent className={styles.icon} />
+          ) : (
+            "Please select an icon"
+          )}
         </div>
       </div>
     </div>

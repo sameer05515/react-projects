@@ -1,18 +1,18 @@
 import React from "react";
+import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import {
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
 } from "../../../common/components/smart-editor/SmartEditorV3";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
+import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
+import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
-import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
-import Tree from "../../../common/components/tree-viewer/TreeViewer";
-import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
-import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
-import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
 
 // Utility function to format date
 const formatDate = (dateString) => {
@@ -50,6 +50,7 @@ const QuestionCard = ({
   const handleLinkedTagSelection = (linkedTagUID) => {
     onLinkedTagSelection(linkedTagUID);
   };
+
   return (
     <>
       <div>

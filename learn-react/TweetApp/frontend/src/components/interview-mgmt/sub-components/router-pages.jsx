@@ -7,10 +7,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import Select from "react-select";
+import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useDataFetching from "../../../common/hooks/useDataFetching";
+import useInterviewMgmtApis from "../../../common/hooks/useInterviewMgmtApis/v1";
 import {
   searchTopic,
   setSearchString,
@@ -19,11 +22,9 @@ import {
   updateQuestion,
 } from "../../../redux/slices/interviewMgmtSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
+import AnswerForm from "./AnswerForm";
 import QuestionCard from "./QuestionCard";
 import QuestionForm from "./QuestionForm";
-import AnswerForm from "./AnswerForm";
-import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
-import Select from "react-select";
 
 const CategoryList = () => {
   const navigate = useNavigate();
@@ -257,6 +258,7 @@ const CategoryList = () => {
 // };
 
 const ViewQuestionDetails = () => {
+  const { patchQuesionForUID } = useInterviewMgmtApis();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, qid } = useParams();
@@ -287,6 +289,10 @@ const ViewQuestionDetails = () => {
 
   const handleLinkedTagSelection = (linkedTagUID) => {
     navigate(`/tags/${linkedTagUID}`);
+  };
+
+  const handlePatch = async () => {
+    await patchQuesionForUID(qid);
   };
 
   return (
@@ -334,6 +340,11 @@ const ViewQuestionDetails = () => {
             id: 6,
             children: "Next",
             onClick: () => handleAncestorClick({ uniqueId: nextTreeNode?.id }),
+          },
+          {
+            id: 7,
+            children: "Mark As Revised Today",
+            onClick: handlePatch,
           },
         ]}
       />
@@ -662,16 +673,14 @@ const EditAnswer = () => {
 
 export {
   CategoryList,
+  CreateAnswer,
   // CreateCategory,
   CreateQuestion,
+  EditAnswer,
   // EditCategory,
   EditQuestion,
-  // ViewCategoryDetails,
-  ViewQuestionDetails,
   MoveQuestionToAnotherParentQuestion,
   SearchInterviewMgmtRouterPage,
-  CreateAnswer,
-  EditAnswer,
-  // MoveToAnotherCategoryParent,
-  // MoveQuestionToAnotherCategory,
+  // ViewCategoryDetails,
+  ViewQuestionDetails,
 };

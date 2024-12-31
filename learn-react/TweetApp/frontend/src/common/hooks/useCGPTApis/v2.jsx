@@ -1,5 +1,6 @@
 import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
 import { apiRequest } from "../../service/apiClient/v1";
+import { validateInputs } from "../../service/apiRequestValidation";
 import useConsolidated from "../useConsolidated/releases/v400";
 
 // Base URL for CGPT API requests
@@ -15,17 +16,7 @@ const ENDPOINTS = {
     `/f/${fileUid}/c/${convUid}/m/${msgUid}`,
 };
 
-/**
- * Utility to validate inputs and throw errors if invalid
- * @param {Array} inputs - Array of objects with `key`, `value`, and `type`.
- */
-const validateInputs = (inputs) => {
-  inputs.forEach(({ key, value, type }) => {
-    if (!value || typeof value !== type) {
-      throw new Error(`Invalid ${key}: '${value}' provided. Expected ${type}.`);
-    }
-  });
-};
+
 
 /**
  * Hook for CGPT API operations

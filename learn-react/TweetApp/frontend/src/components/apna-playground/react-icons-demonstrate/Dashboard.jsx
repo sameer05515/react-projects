@@ -1,55 +1,39 @@
 import React, { useMemo, useState } from "react";
-import * as ReactIconsFA from "react-icons/fa";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import styles from "./styles.module.css";
+import {
+    iconFamily,
+    iconFamilyLength,
+    getIconComponent,
+    getSelectedIndex,
+    TreeNode
+} from './utils';
 
-// Utility to fetch icon by name
-const getIcon = (name = "FaQuestionCircle") =>
-  ReactIconsFA[name] || ReactIconsFA.FaQuestionCircle;
 
-// Utility to calculate index by uniqueId
-const findIndexByUniqueId = (data, uniqueId) =>
-  data.findIndex((item) => item.uniqueId === uniqueId);
-
-const iconFamily = Object.keys(ReactIconsFA).map((n, idx) => ({
-  uniqueId: `ReactIconsFA_${idx + 1}_${n}`,
-  name: n,
-}));
-
-const iconFamilyLength = iconFamily.length;
-
-const TreeNode = ({ node, setSelectedIcon }) => (
-  <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
-);
 
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   const selectedIndex = useMemo(() => {
-    return selectedIcon
-      ? findIndexByUniqueId(iconFamily, selectedIcon.uniqueId)
-      : -1;
+    return getSelectedIndex(selectedIcon);
   }, [selectedIcon]);
 
   const IconComponent = useMemo(() => {
-    return selectedIcon ? getIcon(selectedIcon.name) : null;
+    return getIconComponent(selectedIcon);
   }, [selectedIcon]);
 
-  const handlePrev = () => {
+  const handleNavigation = (increment = 0) => {
     if (selectedIndex > 0) {
       setSelectedIcon(
-        iconFamily[(selectedIndex + iconFamilyLength - 1) % iconFamilyLength]
+        () =>
+          iconFamily[
+            (selectedIndex + iconFamilyLength + increment) % iconFamilyLength
+          ]
       );
     }
   };
 
-  const handleNext = () => {
-    if (selectedIndex < iconFamily.length - 1) {
-      setSelectedIcon(
-        iconFamily[(selectedIndex + iconFamilyLength + 1) % iconFamilyLength]
-      );
-    }
-  };
+
 
   return (
     <div className={styles.container}>
@@ -70,14 +54,14 @@ const ReactIconsDemonstrateDashboard = () => {
               <div className={styles.buttonContainer}>
                 <button
                   className={styles.button}
-                  onClick={handlePrev}
+                  onClick={() => handleNavigation(-1)}
                   disabled={selectedIndex <= 0}
                 >
                   Prev
                 </button>
                 <button
                   className={styles.button}
-                  onClick={handleNext}
+                  onClick={() => handleNavigation(1)}
                   disabled={selectedIndex >= iconFamily.length - 1}
                 >
                   Next

@@ -177,14 +177,17 @@ import {
  */
 
 /**
- * 
- * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx) 
- * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
- * 
- * ## List of bug-fixes (found in [.releases/v400.jsx](./releases/v400.jsx)) done
  *
- * 1. **Bug**: Even if validator function is throwing exception, the promise is starting to execute in background.
+ * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx)
+ * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
+ *
+ * ## List of bugs (found in [.releases/v400.jsx](./releases/v400.jsx)) and their status
+ *
+ * 1. **Bug**: [`Closed`]: Even if validator function is throwing exception, the promise is starting to execute in background.
  *    - **RCA**: the validation for determining given `apiRequest` argument was being done, before executing `validatorFn`
+ * 2. **Bug**: [`On-Hold`]: If a non-Promise function passed in `apiRequest` argument, `executeApiRequest` function is returning error response, but still the given function gets executed in background.
+ *    - **RCA**: If a non-Promise function passed in `apiRequest` argument, there is no way in Javascript/TypeScript to check return-type of `apiRequest` without executing it.
+ *    - **Workaround**: Developers have been advised to use `executeApiRequest` wisely and check what they are passing, to refrain from any `inconsistency`
  *
  */
 
@@ -215,10 +218,6 @@ const useConsolidated = () => {
       validateFunction(apiRequest, "apiRequest");
       validateFunction(validatorFn, "validatorFn");
 
-      // Validate API request returns a Promise
-      const apiRequestPromise = apiRequest();
-      validatePromise(apiRequestPromise, "apiRequest");
-
       // Show loading notification and backdrop
       toastId = notify(
         prepareMessage(loadingMessage, defaultMessages.loadingMessage)
@@ -228,6 +227,10 @@ const useConsolidated = () => {
       // Validate input state
       const isValid = validatorFn();
       validateBoolean(isValid);
+
+      // Execute and Validate API request returns a Promise
+      const apiRequestPromise = apiRequest();
+      validatePromise(apiRequestPromise, "apiRequest");
 
       // Await API response
       const result = await apiRequestPromise;

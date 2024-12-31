@@ -1,6 +1,6 @@
 import React from "react";
 // import useConsolidated from "../../../common/hooks/useConsolidated/v4";
-import useCGPTApis from "../../../common/hooks/useConsolidated/useCGPTApis/v2";
+import useCGPTApis from "../../../common/hooks/useCGPTApis/v2";
 
 const UseConsolidatedTesterV4 = () => {
   // const consolidatedObject = useConsolidated();

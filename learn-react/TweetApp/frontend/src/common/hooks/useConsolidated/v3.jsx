@@ -117,7 +117,7 @@
  */
 
 
-import { apiRequest } from "./apiClient";
+import { apiRequest } from "../../service/apiClient";
 import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
 import LoaderWithTitle, { LoaderStates } from "./LoaderWithTitle";
 import { toast } from "react-toastify";

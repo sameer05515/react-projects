@@ -18,6 +18,10 @@ const iconFamily = Object.keys(ReactIconsFA).map((n, idx) => ({
 
 const iconFamilyLength = iconFamily.length;
 
+const TreeNode = ({ node, setSelectedIcon }) => (
+  <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
+);
+
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
@@ -55,7 +59,7 @@ const ReactIconsDemonstrateDashboard = () => {
           <Tree
             data={iconFamily}
             renderNode={(node) => (
-              <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
+              <TreeNode node={node} setSelectedIcon={setSelectedIcon} />
             )}
           />
         </div>

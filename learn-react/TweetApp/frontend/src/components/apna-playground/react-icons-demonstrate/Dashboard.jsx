@@ -2,14 +2,16 @@ import React, { useMemo, useState } from "react";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import styles from "./styles.module.css";
 import {
-    iconFamily,
-    iconFamilyLength,
-    getIconComponent,
-    getSelectedIndex,
-    TreeNode
-} from './utils';
+  iconFamily,
+  iconFamilyLength,
+  getIconComponent,
+  getSelectedIndex,
+  // TreeNode
+} from "./utils";
 
-
+const TreeNode = ({ node, setSelectedIcon }) => (
+  <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
+);
 
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
@@ -32,8 +34,6 @@ const ReactIconsDemonstrateDashboard = () => {
       );
     }
   };
-
-
 
   return (
     <div className={styles.container}>

@@ -1,4 +1,3 @@
-import React from "react";
 import * as ReactIconsFA from "react-icons/fa";
 
 // Utility to fetch icon by name
@@ -22,9 +21,7 @@ const getIconComponent = (selectedIcon) =>
 const getSelectedIndex = (selectedIcon) =>
   selectedIcon ? findIndexByUniqueId(iconFamily, selectedIcon.uniqueId) : -1;
 
-const TreeNode = ({ node, setSelectedIcon }) => (
-  <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
-);
+
 
 export {
   getIcon,
@@ -33,5 +30,5 @@ export {
   iconFamilyLength,
   getIconComponent,
   getSelectedIndex,
-  TreeNode,
+//   TreeNode,
 };

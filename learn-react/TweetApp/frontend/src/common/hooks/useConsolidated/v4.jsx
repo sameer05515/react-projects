@@ -180,6 +180,7 @@ import {
  *
  * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx)
  * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
+ * > Please refer [**Bug-Tracker**](./bug-tracker.md) for details
  *
  * ## List of bugs (found in [.releases/v400.jsx](./releases/v400.jsx)) and their status
  *

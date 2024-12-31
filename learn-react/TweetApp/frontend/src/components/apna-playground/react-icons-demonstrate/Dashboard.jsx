@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import styles from "./styles.module.css";
 import {
@@ -6,15 +6,21 @@ import {
   iconFamilyLength,
   getIconComponent,
   getSelectedIndex,
-  // TreeNode
 } from "./utils";
 
-const TreeNode = ({ node, setSelectedIcon }) => (
-  <span onClick={() => setSelectedIcon(node)}>{node.name}</span>
+const TreeNode = ({ node, setSelectedIcon, isSelected, refNode }) => (
+  <span
+    ref={refNode}
+    className={`${styles.treeNode} ${isSelected ? styles.selectedNode : ""}`}
+    onClick={() => setSelectedIcon(node)}
+  >
+    {node.name}
+  </span>
 );
 
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const selectedRef = useRef(null);
 
   const selectedIndex = useMemo(() => {
     return getSelectedIndex(selectedIcon);
@@ -24,26 +30,43 @@ const ReactIconsDemonstrateDashboard = () => {
     return getIconComponent(selectedIcon);
   }, [selectedIcon]);
 
+  useEffect(() => {
+    if (selectedRef.current) {
+      selectedRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [selectedIcon]);
+
   const handleNavigation = (increment = 0) => {
-    if (selectedIndex > 0) {
+    if (selectedIndex >= 0) {
       setSelectedIcon(
-        () =>
-          iconFamily[
-            (selectedIndex + iconFamilyLength + increment) % iconFamilyLength
-          ]
+        iconFamily[
+          (selectedIndex + iconFamilyLength + increment) % iconFamilyLength
+        ]
       );
     }
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Dashboard: {selectedIcon?.name}</h1>
+      <h1 className={styles.header}>
+        Dashboard: {selectedIcon?.name || "Select an icon"}
+      </h1>
       <div className={styles.content}>
         <div className={styles.treeContainer}>
           <Tree
             data={iconFamily}
             renderNode={(node) => (
-              <TreeNode node={node} setSelectedIcon={setSelectedIcon} />
+              <TreeNode
+                node={node}
+                setSelectedIcon={setSelectedIcon}
+                isSelected={selectedIcon?.uniqueId === node.uniqueId}
+                refNode={
+                  selectedIcon?.uniqueId === node.uniqueId ? selectedRef : null
+                }
+              />
             )}
           />
         </div>

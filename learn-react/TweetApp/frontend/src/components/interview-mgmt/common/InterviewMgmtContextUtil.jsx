@@ -10,6 +10,40 @@ import { fetchAllQuestions } from "../../../redux/slices/interviewMgmtSlice";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
 import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
 
+const buildCategoryTree = (treeArr = []) => {
+  if (!treeArr?.length) return [];
+
+  return treeArr.reduce((acc, question) => {
+    const questionNode = {
+      id: question.uniqueId,
+      name: question.heading,
+      type: "question",
+      children: [],
+    };
+    acc.push(questionNode);
+
+    // Recursive handling of child categories
+    if (question.children && question.children.length > 0) {
+      questionNode.children = questionNode.children.concat(
+        buildCategoryTree(question.children)
+      );
+    }
+
+    // Handling questions
+    // if (category.questions && category.questions.length > 0) {
+    //   categoryNode.children = categoryNode.children.concat(
+    //     category.questions.map((question) => ({
+    //       id: question.uniqueId,
+    //       name: question.heading,
+    //       type: "question",
+    //     }))
+    //   );
+    // }
+
+    return acc;
+  }, []);
+};
+
 const InterviewMgmtContext = createContext();
 
 export const InterviewMgmtProvider = ({ children }) => {
@@ -28,39 +62,7 @@ export const InterviewMgmtProvider = ({ children }) => {
     dispatch(fetchTags());
   }, [dispatch]);
 
-  const buildCategoryTree = (treeArr = []) => {
-    if (!treeArr?.length) return [];
 
-    return treeArr.reduce((acc, question) => {
-      const questionNode = {
-        id: question.uniqueId,
-        name: question.heading,
-        type: "question",
-        children: [],
-      };
-      acc.push(questionNode);
-
-      // Recursive handling of child categories
-      if (question.children && question.children.length > 0) {
-        questionNode.children = questionNode.children.concat(
-          buildCategoryTree(question.children)
-        );
-      }
-
-      // Handling questions
-      // if (category.questions && category.questions.length > 0) {
-      //   categoryNode.children = categoryNode.children.concat(
-      //     category.questions.map((question) => ({
-      //       id: question.uniqueId,
-      //       name: question.heading,
-      //       type: "question",
-      //     }))
-      //   );
-      // }
-
-      return acc;
-    }, []);
-  };
 
   // const buildQuestionIdMap = (treeArr = []) => {
   //   if (!treeArr?.length) return [];

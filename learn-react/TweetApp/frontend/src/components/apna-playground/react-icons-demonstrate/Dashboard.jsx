@@ -6,17 +6,10 @@ import {
   iconFamilyLength,
   getIconComponent,
   getSelectedIndex,
+  TreeNode
 } from "./utils";
 
-const TreeNode = ({ node, setSelectedIcon, isSelected, refNode }) => (
-  <span
-    ref={refNode}
-    className={`${styles.treeNode} ${isSelected ? styles.selectedNode : ""}`}
-    onClick={() => setSelectedIcon(node)}
-  >
-    {node.name}
-  </span>
-);
+
 
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
@@ -78,14 +71,14 @@ const ReactIconsDemonstrateDashboard = () => {
                 <button
                   className={styles.button}
                   onClick={() => handleNavigation(-1)}
-                  disabled={selectedIndex <= 0}
+                  disabled={selectedIndex < 0}
                 >
                   Prev
                 </button>
                 <button
                   className={styles.button}
                   onClick={() => handleNavigation(1)}
-                  disabled={selectedIndex >= iconFamily.length - 1}
+                  disabled={selectedIndex > iconFamily.length - 1}
                 >
                   Next
                 </button>

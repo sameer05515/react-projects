@@ -5,7 +5,7 @@ import {
   showBackdrop,
 } from "../../../redux/slices/backdropSlice";
 import CustomBackdrop from "../../../common/components/CustomBackdrop/v2";
-import useConsolidated from "../../../common/hooks/useConsolidated/v2";
+import useConsolidated from "../../../common/hooks/useConsolidated/archieved/v2";
 
 const UseConsolidatedTesterV2 = () => {
   const isBackdropActive = useSelector((state) => state.backdrop.active);

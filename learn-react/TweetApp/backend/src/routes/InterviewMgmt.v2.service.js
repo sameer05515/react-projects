@@ -125,6 +125,7 @@ const getCategoryByUniqueId = async (uniqueId) => {
         heading: 1,
         parentId: 1,
         smartContent: 1,
+        lastRevisedOn:1,
         title: 1,
         rating: 1,
     };

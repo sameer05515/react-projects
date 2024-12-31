@@ -12,6 +12,7 @@ import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBre
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
+import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
 
 // Utility function to format date
 const formatDate = (dateString) => {
@@ -91,6 +92,17 @@ const QuestionCard = ({
             <time dateTime={question.updatedDate}>
               {formatDate(question.updatedDate)}
             </time>
+          </div>
+
+          <div>
+            <span>
+              <b>Last Revised On:- </b>{" "}
+              {question.lastRevisedOn ? (
+                formatDateToDDMMMYYYYWithTime(question.lastRevisedOn)
+              ) : (
+                <span style={{ color: "red" }}>{"Question never revised"}</span>
+              )}
+            </span>
           </div>
 
           <div style={{ ...styles.datesStyle }}>

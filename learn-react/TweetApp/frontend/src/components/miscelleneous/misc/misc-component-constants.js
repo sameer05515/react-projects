@@ -35,6 +35,7 @@ import TreeListV3 from "./sub-components/dnd-playground/TreeListV3";
 import TreeListV4 from "./sub-components/dnd-playground/TreeListV4";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 import UseConsolidatedTesterDashboard from "../../apna-playground/UseConsolidatedTesters/UseConsolidatedTesterDashboard";
+import ReactIconsDemonstrateDashboard from "../../apna-playground/react-icons-demonstrate/Dashboard";
 
 export const ComponentModules = {
   TestingPurpose: "Testing Purpose",
@@ -442,6 +443,12 @@ const componentMapWithPurposes = {
       
       This component plays a critical role in ensuring the 'useConsolidated' hook is stable and production-ready.
     `,
+    isExperimentalComponent: true,
+    module: ComponentModules.TestingPurpose,
+  },
+  ReactIconsDemonstrateDashboard:{
+    element:ReactIconsDemonstrateDashboard,
+    purpose:"To show all icons of react-icons",
     isExperimentalComponent: true,
     module: ComponentModules.TestingPurpose,
   }

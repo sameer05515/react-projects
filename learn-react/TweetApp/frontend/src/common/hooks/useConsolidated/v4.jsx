@@ -177,12 +177,16 @@ import {
  */
 
 /**
- * List of bug-fixes (found in [.releases/v400.jsx](./releases/v400.jsx)) done
  * 
+ * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx) 
+ * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
+ * 
+ * ## List of bug-fixes (found in [.releases/v400.jsx](./releases/v400.jsx)) done
+ *
  * 1. **Bug**: Even if validator function is throwing exception, the promise is starting to execute in background.
- *  - **RCA**: the validation for determining given `apiRequest` argument was being done, before executing `validatorFn`
- * 
-*/
+ *    - **RCA**: the validation for determining given `apiRequest` argument was being done, before executing `validatorFn`
+ *
+ */
 
 const useConsolidated = () => {
   const dispatch = useDispatch();

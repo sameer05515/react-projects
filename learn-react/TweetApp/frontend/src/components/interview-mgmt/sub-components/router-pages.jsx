@@ -19,7 +19,7 @@ import {
   setSearchString,
   setSelectedQuestionUID,
   setSelectedTreeNodeUID,
-  updateQuestion,
+  // updateQuestion,
 } from "../../../redux/slices/interviewMgmtSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import AnswerForm from "./AnswerForm";
@@ -377,8 +377,9 @@ const ViewQuestionDetails = () => {
 };
 
 const MoveQuestionToAnotherParentQuestion = () => {
+  const { updateQuestion } = useInterviewManagementAPIs();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { qid } = useParams();
 
   const { flatCategoryItemData: flatData, refreshCategoryTree } =
@@ -406,12 +407,10 @@ const MoveQuestionToAnotherParentQuestion = () => {
 
   const handleSaveTask = () => {
     if (topic && topic.uniqueId && qid) {
-      dispatch(
-        updateQuestion({
-          ...{ parentId: formData.parentId },
-          uniqueId: qid,
-        })
-      ).then(() => refreshCategoryTree());
+      updateQuestion({
+        ...{ parentId: formData.parentId },
+        uniqueId: qid,
+      }).then(() => refreshCategoryTree());
     }
     navigate(`/interview-mgmt/questions/${qid}`);
   };

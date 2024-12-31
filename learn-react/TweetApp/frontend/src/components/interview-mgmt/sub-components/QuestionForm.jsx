@@ -1,21 +1,19 @@
 import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
-import {
-  createQuestion, updateQuestion
-} from "../../../redux/slices/interviewMgmtSlice";
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
+import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
+
 const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
-  const dispatch = useDispatch();
+  const { createQuestion, updateQuestion } = useInterviewManagementAPIs();
+  // const dispatch = useDispatch();
   // const availableTags = useSelector(selectAllFlatTags);
-  const {
-    availableTags,refreshCategoryTree
-  } = useInterviewMgmt();
+  const { availableTags, refreshCategoryTree } = useInterviewMgmt();
 
   const [formData, setFormData] = useState({
     uniqueId: initialFormData?.uniqueId || "",
@@ -93,41 +91,47 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     label: tag.title,
   }));
 
-  const handleSaveCategory = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (!validateForm()) {
+  // const handleSaveCategory = useCallback(
+  //   ,
+  //   [validateForm]
+  // );
+
+  const handleSaveCategory = (event) => {
+    event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
+    const action = initialFormData?.uniqueId
+      ? updateQuestion({ ...formData, uniqueId: initialFormData.uniqueId })
+      : createQuestion(formData);
+
+    // if (initialFormData?.uniqueId) {
+    //   // dispatch(
+    //   //   updateCategory({ ...formData, uniqueId: initialFormData.uniqueId })
+    //   // );
+    //   console.log('Update facility will be available soon!!')
+    // } else {
+    //   dispatch(createQuestion(formData));
+    // }
+
+    action.then((response) => {
+      // if (formData.uniqueId) setFormData(selectedNode);
+      // else
+      // refreshNodes();
+      // dispatch(fetchCategoryTree());
+      if (response.isError) {
+        setFormErrors([response.message || "Some API related error occurred!"]);
         return;
       }
+      refreshCategoryTree();
+      onSave();
+    });
 
-      const action = initialFormData?.uniqueId ?
-        dispatch(updateQuestion({ ...formData, uniqueId: initialFormData.uniqueId })) :
-        dispatch(createQuestion(formData));
-
-      // if (initialFormData?.uniqueId) {
-      //   // dispatch(
-      //   //   updateCategory({ ...formData, uniqueId: initialFormData.uniqueId })
-      //   // );
-      //   console.log('Update facility will be available soon!!')
-      // } else {
-      //   dispatch(createQuestion(formData));
-      // }
-
-      action.then(() => {
-        // if (formData.uniqueId) setFormData(selectedNode);
-        // else 
-        // refreshNodes();
-        // dispatch(fetchCategoryTree());
-        refreshCategoryTree();
-        onSave();
-      });
-
-      if (onSave) {
-        // onSave();
-      }
-    },
-    [formData, validateForm, initialFormData, dispatch, onSave]
-  );
+    // if (onSave) {
+    //   // onSave();
+    // }
+  };
 
   const handleSmartEditorChange = useCallback((smartContent) => {
     setFormData((prev) => ({ ...prev, smartContent }));
@@ -137,8 +141,8 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     setSmartEditorError(error);
   }, []);
 
-  if(!initialFormData){
-    return <>Bhosri wale data kaun dega? Tera baap??</>
+  if (!initialFormData) {
+    return <>Bhosri wale data kaun dega? Tera baap??</>;
   }
 
   return (
@@ -184,7 +188,9 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
         />
       </div>
       <div>
-        <label htmlFor="description">Additional Description for Question:</label>
+        <label htmlFor="description">
+          Additional Description for Question:
+        </label>
         <div style={styles.smartEditorContainer}>
           <SmartEditor
             initialValue={formData.smartContent}
@@ -199,7 +205,9 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
           isMulti
           name="tags"
           options={tagOptions}
-          value={tagOptions?.filter((tag) => formData.tags?.includes(tag.value))}
+          value={tagOptions?.filter((tag) =>
+            formData.tags?.includes(tag.value)
+          )}
           onChange={handleTagSelect}
         />
       </div>
@@ -221,7 +229,7 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
         <JSONDataViewer
           metadata={{
             formData,
-            initialFormData,            
+            initialFormData,
             // createCategoryResponse,
             // updateCategoryResponse,
           }}

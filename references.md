@@ -89,3 +89,10 @@
 - [The Only Right Way To Handle Errors in React - No More Error Boundaries](https://www.youtube.com/watch?v=0LpLxEUephc&t=117s)
 - [useNavigate documentation](https://api.reactrouter.com/v7/functions/react_router.useNavigate)
   - A custom hook [`useSPPNavigation`](https://github.com/sameer05515/react-projects/blob/master/learn-react/TweetApp/frontend/src/common/hooks/useSPPNavigation/index.jsx) created to demonstrate centralized use of useNavigation hook
+
+- A custom hook [`useConsolidated`](https://github.com/sameer05515/react-projects/tree/master/learn-react/TweetApp/frontend/src/common/hooks/useConsolidated) has been officially released with the initial stable version [`v400`](https://github.com/sameer05515/react-projects/blob/master/learn-react/TweetApp/frontend/src/common/hooks/useConsolidated/releases/v400.jsx). This hook is now fully functional within **TweetApp**, offering a centralized approach to streamline API calling, notifications, and error handling. 
+  - **Key Features:**
+    - Simplifies API requests with unified logic.
+    - Built-in notification handling for success, failure, and loading states.
+    - Enhanced error management, including expected and unexpected errors.
+  - Developers are encouraged to adopt `v400` for improved consistency and maintainability in API operations, while future updates will enhance functionality further.

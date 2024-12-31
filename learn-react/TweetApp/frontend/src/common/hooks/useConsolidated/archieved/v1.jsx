@@ -1,6 +1,6 @@
-import { apiRequest } from "../../service/apiClient/v1";
-import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
-import LoaderWithTitle, { LoaderStates } from "./LoaderWithTitle";
+import { apiRequest } from "../../../service/apiClient/v1";
+import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
+import LoaderWithTitle, { LoaderStates } from "../LoaderWithTitle";
 import { toast } from "react-toastify";
 
 /**

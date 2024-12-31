@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useConsolidated from "../../../common/hooks/useConsolidated/v1";
+import useConsolidated from "../../../common/hooks/useConsolidated/archieved/v1";
 import CustomBackdrop from "../../../common/components/CustomBackdrop/v1";
 
 /**

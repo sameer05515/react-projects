@@ -77,13 +77,13 @@
  *
  */
 
-import { LoaderStates } from "./LoaderWithTitle";
-import { notify, updateNotification } from "./toast-utils";
+import { LoaderStates } from "../LoaderWithTitle";
+import { notify, updateNotification } from "../toast-utils";
 import { useDispatch } from "react-redux";
 import {
   hideBackdrop,
   showBackdrop,
-} from "../../../redux/slices/backdropSlice";
+} from "../../../../redux/slices/backdropSlice";
 
 const isFunction = (argument, name) => {
   if (typeof argument !== "function") {

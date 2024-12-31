@@ -1,5 +1,5 @@
 import React from "react";
-import useConsolidated from "../../../common/hooks/useConsolidated/v3";
+import useConsolidated from "../../../common/hooks/useConsolidated/archieved/v3";
 
 const UseConsolidatedTesterV3 = () => {
   const { fetchTaskDetailsForGivenId, getRandomNumber, doubleTheNumber } =

@@ -3,11 +3,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button } from "react-bootstrap";
-import * as PageModes from "../../common/taskPageModes";
-import ViewTask from "./ViewTask";
-import SaveDataComponent from "./SaveData";
-import DataList from "./DataList";
-import EditDataComponent from "./EditDataComponent";
+import * as PageModes from "../../common/constants/taskPageModes";
+import ViewTask from "./sub-components/ViewTask";
+import SaveDataComponent from "./sub-components/SaveData";
+import DataList from "./sub-components/DataList";
+import EditDataComponent from "./sub-components/EditDataComponent";
 
 const initialState = PageModes.LIST;
 
@@ -24,7 +24,7 @@ const reducer = (state, action) => {
   }
 };
 
-function TasksBase() {
+function OldTasksBase() {
   const [pageMode, dispatch] = useReducer(reducer, initialState);
 
   const changePageMode = (newMode) => {
@@ -129,4 +129,4 @@ function TasksBase() {
   );
 }
 
-export default TasksBase;
+export default OldTasksBase;

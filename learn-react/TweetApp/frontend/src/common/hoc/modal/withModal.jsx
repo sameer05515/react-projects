@@ -14,6 +14,7 @@ const withModal = /**<P extends object>*/ (
     isOpen,
     onClose,
     closeOnEscKey,
+    showCloseButton=false,
     ...props
   }) => {
     if (!isOpen) return null;
@@ -27,9 +28,9 @@ const withModal = /**<P extends object>*/ (
           className={styles.modalContent}
           onClick={(e) => e.stopPropagation()}
         >
-          <button className={styles.closeButton} onClick={onClose}>
+          {showCloseButton && <button className={styles.closeButton} onClick={onClose}>
             &times;
-          </button>
+          </button>}
           <WrappedComponent {...props /**as P*/} />
         </div>
       </div>

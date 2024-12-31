@@ -3,12 +3,12 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
-import { taskStatusList } from "../../common/constants/globalConstants";
-import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
-import { saveTask, selectAllFlatTasks, updateTask } from "../../redux/slices/taskSlice";
-import CustomButton from "../../common/components/custom-button/CustomButton";
-import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
-import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
+import { taskStatusList } from "../../../../common/constants/globalConstants";
+import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
+import { saveTask, selectAllFlatTasks, updateTask } from "../../../../redux/slices/taskSlice";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
+import { SmartEditor } from "../../../../common/components/smart-editor/SmartEditorV3";
+import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 
 const TaskForm = ({ task, onSave, onCancelEdit }) => {
     const dispatch = useDispatch();

@@ -8,14 +8,14 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { updateData } from "../../redux/dataSlice1";
+import { updateData } from "../../../redux/slices/dataSlice1"; 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import "./SaveDataComponent.css"; // Import custom CSS for styling
 import tagList from "./tagList";
-import GitDiff from '../GitDiff'
+import GitDiff from '../../miscelleneous/GitDiff'
 
 const EditDataComponent = ({ savedData }) => {
   const [selectedDate, setSelectedDate] = useState(

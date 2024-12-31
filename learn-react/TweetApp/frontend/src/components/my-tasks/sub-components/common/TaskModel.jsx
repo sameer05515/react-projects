@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import CustomButton from "../../common/components/custom-button/CustomButton";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from 'react-select'; // Import the Select component from react-select
-import { fetchTags, selectAllFlatTags } from "../../redux/slices/tagsSlice";
+import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
 import { useDispatch, useSelector } from 'react-redux';
 
 const TaskModel = ({ task, onSave, onCancel, tasks }) => {

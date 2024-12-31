@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../redux/dataSlice1";
+import { fetchData } from "../../../redux/slices/dataSlice1"; 
 
 const DataList = ({ itemSelectionHandler = () => {} }) => {
   const dispatch = useDispatch();

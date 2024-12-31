@@ -1,6 +1,6 @@
 import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
+import { apiRequest } from "../../service/apiClient/v1";
 import useConsolidated from "../useConsolidated/releases/v400";
-import { apiRequest } from "../../service/apiClient";
 
 // Base URL for CGPT API requests
 const BASE_URL = `${BACKEND_APPLICATION_BASE_URL}/cgpt`;

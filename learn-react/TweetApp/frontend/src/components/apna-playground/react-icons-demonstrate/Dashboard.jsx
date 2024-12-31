@@ -32,7 +32,7 @@ const ReactIconsDemonstrateDashboard = () => {
           />
         </div>
         <div className={styles.iconDisplay}>
-          {selectedIcon ? <IconComponent /> : "Please select an icon"}
+          {selectedIcon ? <IconComponent className={styles.icon} /> : "Please select an icon"}
         </div>
       </div>
     </div>

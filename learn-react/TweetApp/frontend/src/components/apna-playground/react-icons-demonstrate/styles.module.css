@@ -32,3 +32,9 @@
   border: 1px solid #ccc; /* Optional: Add border for visibility */
   text-align: center;
 }
+
+.icon {
+  margin-right: 0.5rem;
+  font-size: 10rem;
+  vertical-align: middle;
+}

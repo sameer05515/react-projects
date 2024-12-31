@@ -78,10 +78,9 @@ router.get("/questions", async (req, res) => {
 // Get Question for given uniqueId
 router.get("/questions/:uniqueId", async (req, res) => {
   try {
-    const question =
-      await interviewMgmtV2Service.getQuestionByUniqueId(
-        req.params.uniqueId
-      );
+    const question = await interviewMgmtV2Service.getQuestionByUniqueId(
+      req.params.uniqueId
+    );
     res.json(question);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -119,20 +118,36 @@ router.put("/questions/:uniqueId", async (req, res) => {
   }
 });
 
+router.patch("/questions/:uniqueId", async (req, res) => {
+  try {
+    await interviewMgmtV2Service.updateLastRevisedOfQuestionByUniqueId(
+      req.params.uniqueId
+    );
+    res.json('success');
+  } catch (error) {
+    res.status(501).json({ error: error.message });
+  }
+});
+
 // Search topics by searchString
-router.post('/questions/search', async (req, res) => {
+router.post("/questions/search", async (req, res) => {
   const { searchString, searchOptions } = req.body;
 
   if (!searchString) {
-    return res.status(400).json({ error: 'searchString is required' });
+    return res.status(400).json({ error: "searchString is required" });
   }
 
   try {
-    const topics = await interviewMgmtV2Service.searchTopics(searchString, searchOptions);
+    const topics = await interviewMgmtV2Service.searchTopics(
+      searchString,
+      searchOptions
+    );
     res.json(topics);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while searching for topics' });
+    res
+      .status(500)
+      .json({ error: "An error occurred while searching for topics" });
   }
 });
 
@@ -176,11 +191,10 @@ router.post("/answers", async (req, res) => {
 // update an answer by uniqueId
 router.put("/answers/:uniqueId", async (req, res) => {
   try {
-    const updatedAnswer =
-      await interviewMgmtV2Service.updateAnswerByUniqueId(
-        req.params.uniqueId,
-        req.body
-      );
+    const updatedAnswer = await interviewMgmtV2Service.updateAnswerByUniqueId(
+      req.params.uniqueId,
+      req.body
+    );
 
     if (!updatedAnswer) {
       return res.status(404).json({ message: "Answer not found" });

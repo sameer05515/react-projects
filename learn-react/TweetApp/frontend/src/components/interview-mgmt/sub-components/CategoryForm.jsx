@@ -1,23 +1,20 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
+import JSONDataViewer from "../../../common/components/JSONDataViewer";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartEditor } from "../../../common/components/SmartEditor";
 import {
   createCategory,
   updateCategory,
 } from "../../../redux/slices/interviewMgmtSlice";
-import { fetchTags, selectAllFlatTags } from "../../../redux/slices/tagsSlice";
-import JSONDataViewer from "../../../common/components/JSONDataViewer";
-import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
+import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 
 const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
   const dispatch = useDispatch();
-  // const availableTags = useSelector(selectAllFlatTags);
-  const {
-    availableTags,
-  } = useInterviewMgmt();
+
+  const tagOptions = useSelector(getTagsForComboOptions);
 
   const { createCategoryResponse, updateCategoryResponse } = useSelector(
     (state) => state.interviewMgmt
@@ -44,17 +41,13 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
     if (createCategoryResponse?.error || updateCategoryResponse?.error) {
       setFormErrors([
         createCategoryResponse?.error ||
-        updateCategoryResponse?.error ||
-        "Missing error message: Please contact administrator",
+          updateCategoryResponse?.error ||
+          "Missing error message: Please contact administrator",
       ]);
     }
   }, [createCategoryResponse, updateCategoryResponse]);
 
-  // useEffect(() => {
-  //   dispatch(fetchTags());
-  // }, [dispatch]);
-
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = [];
 
     if (!formData.name.trim()) {
@@ -75,7 +68,7 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
 
     setFormErrors(errors);
     return errors.length === 0;
-  };
+  }, [formData.heading, formData.name, formData.rating, smartEditorError]);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -88,11 +81,6 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
       tags: selectedTags.map((tag) => tag.value),
     }));
   }, []);
-
-  const tagOptions = availableTags.map((tag) => ({
-    value: tag.uniqueId,
-    label: tag.title,
-  }));
 
   const handleSaveCategory = useCallback(
     (event) => {
@@ -179,9 +167,7 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           isMulti
           name="tags"
           options={tagOptions}
-          value={tagOptions.filter((tag) =>
-            formData.tags.includes(tag.value)
-          )}
+          value={tagOptions.filter((tag) => formData.tags.includes(tag.value))}
           onChange={handleTagSelect}
         />
       </div>
@@ -195,7 +181,6 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
         </div>
       )}
       <div>
-
         <CustomButton onClick={handleSaveCategory}>
           {category?.uniqueId ? "Update Changes" : "Save Changes"}
         </CustomButton>

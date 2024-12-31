@@ -3,17 +3,8 @@ import CustomButton from "../../../../common/components/custom-button/CustomButt
 // import ReactHtmlParser from "react-html-parser";
 import TaskCard from "./TaskCard";
 
-const ViewTask = ({ task, onClose, tags = [] }) => {
-  // const filteredTags = task.tags?.map((uniqueId) =>
-  //   tags.find((tag) => tag.uniqueId === uniqueId)
-  // );
-  // const tagStyle = {
-  //   backgroundColor: "#ccc", // Grey background color
-  //   border: "1px solid #999", // Grey border
-  //   padding: "2px 5px", // Adjust padding as needed
-  //   fontSize: "12px", // Small font size
-  //   borderRadius: "4px", // Rounded corners
-  // };
+const ViewTask = ({ task, onClose, }) => {
+  
   const modalStyle = {
     position: "fixed",
     top: "0",
@@ -47,7 +38,7 @@ const ViewTask = ({ task, onClose, tags = [] }) => {
     <div style={modalStyle}>
       <div style={modalContentStyle}>
         <h3>View Task</h3>        
-        <TaskCard task={task} tags={tags}/>
+        <TaskCard task={task}/>
         <div style={{ textAlign: "right", marginTop: "10px" }}>
           <CustomButton onClick={onClose} label="Close">
             Close

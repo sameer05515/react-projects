@@ -1,20 +1,21 @@
-import { LoaderStates } from "./LoaderWithTitle";
-import { notify, updateNotification } from "./toast-utils";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   hideBackdrop,
   showBackdrop,
 } from "../../../redux/slices/backdropSlice";
+import { LoaderStates } from "./LoaderWithTitle";
 import {
   defaultMessages,
-  prepareMessage,
   prepareErrorMessage,
+  prepareMessage,
 } from "./message-preparation-utils";
+import { notify, updateNotification } from "./toast-utils";
 
 import {
+  validateBoolean,
   validateFunction,
   validatePromise,
-  validateBoolean,
   validatePromiseResult,
 } from "./validation-utils";
 
@@ -176,6 +177,25 @@ import {
  * experience, this version aims to be a go-to utility for developers building modern React applications.
  */
 
+/**
+ *
+ * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx)
+ * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
+ * > Please refer [**Bug-Tracker**](./documentation/bug-tracker.md) for details
+ *
+ * ## List of bugs (found in [.releases/v400.jsx](./releases/v400.jsx)) and their status
+ *
+ * 1. **Bug**: [`Closed`]: Even if validator function is throwing exception, the promise is starting to execute in background.
+ *    - **RCA**: the validation for determining given `apiRequest` argument was being done, before executing `validatorFn`
+ * 2. **Bug**: [`On-Hold`]: If a non-Promise function passed in `apiRequest` argument, `executeApiRequest` function is returning error response, but still the given function gets executed in background.
+ *    - **RCA**: If a non-Promise function passed in `apiRequest` argument, there is no way in Javascript/TypeScript to check return-type of `apiRequest` without executing it.
+ *    - **Workaround**: Developers have been advised to use `executeApiRequest` wisely and check what they are passing, to refrain from any `inconsistency`
+ * 3. ****: [`Closed`]: In router pages, where executeApiRequest was being called inside useEffect, infinite number of request are going to server
+ *    - **RCA**: `executeApiRequest` function was not optimized with useCallback, hence was creating issue
+ *    - **Details**: Please find detailed explaination [**here**](./documentation/issue-3-resolution.md)
+ *
+ */
+
 const useConsolidated = () => {
   const dispatch = useDispatch();
 
@@ -186,73 +206,76 @@ const useConsolidated = () => {
    * @param {Object} messages - Custom messages for loading, success, failure, and error states.
    * @returns {Promise<{data: any, isError: boolean, message: string}>}
    */
-  const executeApiRequest = async (
-    apiRequest,
-    validatorFn,
-    {
-      loadingMessage = "",
-      successMessage = "",
-      failureMessage = "",
-      unexpectedErrorMessage = "",
-    } = {}
-  ) => {
-    let toastId = null;
+  const executeApiRequest = useCallback(
+    async (
+      apiRequest,
+      validatorFn,
+      {
+        loadingMessage = "",
+        successMessage = "",
+        failureMessage = "",
+        unexpectedErrorMessage = "",
+      } = {}
+    ) => {
+      let toastId = null;
 
-    try {
-      // Validate input functions
-      validateFunction(apiRequest, "apiRequest");
-      validateFunction(validatorFn, "validatorFn");
+      try {
+        // Validate input functions
+        validateFunction(apiRequest, "apiRequest");
+        validateFunction(validatorFn, "validatorFn");
 
-      // Validate API request returns a Promise
-      const apiRequestPromise = apiRequest();
-      validatePromise(apiRequestPromise, "apiRequest");
+        // Show loading notification and backdrop
+        toastId = notify(
+          prepareMessage(loadingMessage, defaultMessages.loadingMessage)
+        );
+        dispatch(showBackdrop());
 
-      // Show loading notification and backdrop
-      toastId = notify(
-        prepareMessage(loadingMessage, defaultMessages.loadingMessage)
-      );
-      dispatch(showBackdrop());
+        // Validate input state
+        const isValid = validatorFn();
+        validateBoolean(isValid);
 
-      // Validate input state
-      const isValid = validatorFn();
-      validateBoolean(isValid);
+        // Execute and Validate API request returns a Promise
+        const apiRequestPromise = apiRequest();
+        validatePromise(apiRequestPromise, "apiRequest");
 
-      // Await API response
-      const result = await apiRequestPromise;
-      validatePromiseResult(result);
+        // Await API response
+        const result = await apiRequestPromise;
+        validatePromiseResult(result);
 
-      // Destructure result
-      const { data, isError, message } = result;
+        // Destructure result
+        const { data, isError, message } = result;
 
-      // Update notification based on success or failure
-      updateNotification(
-        toastId,
-        isError
-          ? prepareMessage(failureMessage, defaultMessages.failureMessage)
-          : prepareMessage(successMessage, defaultMessages.successMessage),
-        isError ? LoaderStates.error : LoaderStates.success
-      );
+        // Update notification based on success or failure
+        updateNotification(
+          toastId,
+          isError
+            ? prepareMessage(failureMessage, defaultMessages.failureMessage)
+            : prepareMessage(successMessage, defaultMessages.successMessage),
+          isError ? LoaderStates.error : LoaderStates.success
+        );
 
-      return { data, isError, message };
-    } catch (error) {
-      // Handle unexpected errors
-      const errorMessage = prepareErrorMessage(
-        error,
-        prepareMessage(
-          unexpectedErrorMessage,
-          defaultMessages.unexpectedErrorMessage
-        )
-      );
+        return { data, isError, message };
+      } catch (error) {
+        // Handle unexpected errors
+        const errorMessage = prepareErrorMessage(
+          error,
+          prepareMessage(
+            unexpectedErrorMessage,
+            defaultMessages.unexpectedErrorMessage
+          )
+        );
 
-      updateNotification(toastId, errorMessage, LoaderStates.error);
-      console.error("API Request Error:", error);
+        updateNotification(toastId, errorMessage, LoaderStates.error);
+        console.error("API Request Error:", error);
 
-      return { data: null, isError: true, message: errorMessage };
-    } finally {
-      // Hide backdrop
-      dispatch(hideBackdrop());
-    }
-  };
+        return { data: null, isError: true, message: errorMessage };
+      } finally {
+        // Hide backdrop
+        dispatch(hideBackdrop());
+      }
+    },
+    [dispatch]
+  );
 
   return { executeApiRequest };
 };

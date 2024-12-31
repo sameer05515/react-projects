@@ -3,7 +3,7 @@ import { styles } from "./util";
 import {
     SmartPreviewer,
     availableOutputTypes as SupportedTextFormats,
-} from "../../../common/components/smart-editor/SmartEditorV3";
+} from "../../../common/components/Smart/Editor/v3";
 
 const MemoryMapItemV2 = ({
     node: memoryMap,

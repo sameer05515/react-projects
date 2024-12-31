@@ -11,7 +11,7 @@ import RadioButtonsComponent from "../../common/components/radiobutton-component
 import {
     SmartEditor,
     SmartPreviewer,
-} from "../../common/components/smart-editor/SmartEditorV3";
+} from "../../common/components/Smart/Editor/v3";
 import { selectAllFlatLinks } from "../../redux/slices/linksSlice";
 import { createMemoryMap, updateMemoryMap } from "../../redux/slices/memoryMapSlice";
 import {

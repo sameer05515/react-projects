@@ -1,26 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactHtmlParser from "react-html-parser";
+// import ReactHtmlParser from "react-html-parser";
+import { useSelector } from "react-redux";
+import ButtonGroup from "../../../../common/components/button-group/ButtonGroup";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import DynamicDataRenderer from "../../../../common/components/dynamic-data-renderer/DynamicDataRenderer";
 import FloatingButton from "../../../../common/components/floating-button/FloatingButton";
 import Breadcrumbs from "../../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import HoverableSpan from "../../../../common/components/hoverable-span/HoverableSpan";
-import { SmartPreviewer } from "../../../../common/components/smart-editor/SmartEditorV3";
+import ListSection from "../../../../common/components/list-section/ListSection";
+import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
 import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../../../common/hooks/useGlobalServiceProvider";
-import {
-  formatDateToDDMMMYYYYWithTime,
-  prepareQuestions,
-} from "../../../../common/service/commonService";
-import ButtonGroup from "../../../../common/components/button-group/ButtonGroup";
-import ListSection from "../../../../common/components/list-section/ListSection";
+import { formatDateToDDMMMYYYYWithTime, prepareQuestions } from "../../../../common/service/commonService";
+import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 import { topicAndSectionStyles as styles } from "../styles";
 import TopicSectionCard from "./TopicSectionCard";
 
 const TopicCard = ({
   topic,
-  tags = [],
   showDescription = false,
   selectedSectionId = null,
   topicSections = [],
@@ -47,9 +45,8 @@ const TopicCard = ({
 }) => {
   const { BreadcrumbItemType } = useGlobalServiceProvider();
   const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = topic.tags?.map((uniqueId) =>
-    tags.find((tag) => tag.uniqueId === uniqueId)
-  );
+
+  const filteredTags = useSelector(getTagsForGivenIds(topic?.tags || []));
 
   const selectedElementRef = useRef(null);
 
@@ -115,13 +112,7 @@ const TopicCard = ({
       />
 
       <div>
-        <Breadcrumbs
-          providedItem={topic}
-          providedItemType={BreadcrumbItemType.TOPIC}
-          ancestors={topic.ancestors}
-          onAncestorClick={(a) => handleAncestorClick(a)}
-          onBaseSpanClick={onBaseSpanClick}
-        />
+        <Breadcrumbs providedItem={topic} providedItemType={BreadcrumbItemType.TOPIC} ancestors={topic.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
         <h3>{topic.name}</h3>
         <div style={{ ...styles.topicDatesStyle }}>
           <ListSection
@@ -129,11 +120,7 @@ const TopicCard = ({
             items={filteredTags}
             errorMessage={"No tags added yet!"}
             renderItem={(tag, idx) => (
-              <HoverableSpan
-                style={{ ...styles.topicTagStyle, margin: "5px" }}
-                key={tag._id || `tag_${idx + 1}`}
-                onClick={() => handleLinkedTagSelection(tag.uniqueId)}
-              >
+              <HoverableSpan style={{ ...styles.topicTagStyle, margin: "5px" }} key={tag._id || `tag_${idx + 1}`} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
                 {tag.title}
               </HoverableSpan>
             )}
@@ -196,85 +183,54 @@ const TopicCard = ({
             },
           ]}
           renderItem={({ title, action }, idx) => (
-            <CustomButton
-              key={`action_buttons_${idx + 1}`}
-              style={{ ...styles.topicTagStyle, marginRight: "10px" }}
-              onClick={action}
-            >
+            <CustomButton key={`action_buttons_${idx + 1}`} style={{ ...styles.topicTagStyle, marginRight: "10px" }} onClick={action}>
               {title}
             </CustomButton>
           )}
         />
 
-        <FloatingButton
-          buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }}
-          buttonText={"Show Pinned Topics"}
-        >
+        <FloatingButton buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }} buttonText={"Show Pinned Topics"}>
           <ListSection
             title="List of all pinned Topics:-"
             errorMessage=""
             items={pinnedTopics}
             renderItem={(t) => (
               <div style={styles.liStyles} key={t.uniqueId}>
-                <HoverableSpan
-                  onClick={() =>
-                    onChildTopicClick({ uniqueId: t.linkedUniqueId })
-                  }
-                >
-                  {t.title}
-                </HoverableSpan>
+                <HoverableSpan onClick={() => onChildTopicClick({ uniqueId: t.linkedUniqueId })}>{t.title}</HoverableSpan>
               </div>
             )}
           />
         </FloatingButton>
 
-        <FloatingButton
-          buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }}
-          buttonText={"?"}
-        >
+        <FloatingButton buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }} buttonText={"?"}>
           <div style={{ padding: "10px" }}>
-            If this <b>{`${topic.name}`}</b> is a topic, It should answer below
-            questions
+            If this <b>{`${topic.name}`}</b> is a topic, It should answer below questions
           </div>
-          {topic.name && (
-            <DynamicDataRenderer data={prepareQuestions(topic.name)} />
-          )}
+          {topic.name && <DynamicDataRenderer data={prepareQuestions(topic.name)} />}
         </FloatingButton>
         <br />
       </div>
 
-      <ToggleablePanel
-        panelContainerStyle={styles.sectionStyle}
-        showContent={topic?.sections?.length > 0}
-        title={`Sections [${topic?.sections?.length || 0}]:-`}
-      >
+      <ToggleablePanel panelContainerStyle={styles.sectionStyle} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
         <ListSection
           title=""
           errorMessage="No Sections Added Yet!!"
           items={topic.sections}
           renderItem={(t) => (
             <div style={styles.liStyles} key={t.uniqueId}>
-              <HoverableSpan onClick={() => onTopicSectionClick(t.uniqueId)}>
-                {t.name}
-              </HoverableSpan>
+              <HoverableSpan onClick={() => onTopicSectionClick(t.uniqueId)}>{t.name}</HoverableSpan>
             </div>
           )}
         />
       </ToggleablePanel>
 
-      <ToggleablePanel
-        showContent={topic?.children?.length > 0}
-        title={`Child Topics [${topic?.children?.length || 0}]:-`}
-        panelContainerStyle={styles.descriptionStyle}
-      >
+      <ToggleablePanel showContent={topic?.children?.length > 0} title={`Child Topics [${topic?.children?.length || 0}]:-`} panelContainerStyle={styles.descriptionStyle}>
         <Tree
           data={topic.children}
           errorMessageOnNoData="No Child Topic Added Yet!!"
           renderNode={(t) => (
             <>
-              <HoverableSpan onClick={() => onChildTopicClick(t)}>
-                {t.name}
-              </HoverableSpan>
+              <HoverableSpan onClick={() => onChildTopicClick(t)}>{t.name}</HoverableSpan>
             </>
           )}
         />
@@ -292,18 +248,15 @@ const TopicCard = ({
           overflow: "auto",
         }}
       >
-        {topic.description &&
-          !topic.smartContent &&
-          ReactHtmlParser(topic.description || "")}
+        {topic.description && !topic.smartContent && (
+          // ReactHtmlParser(topic.description || "")
+          <SmartPreviewer data={{ content: topic.description || "", textOutputType: "html" }} />
+        )}
         {topic.smartContent && <SmartPreviewer data={topic.smartContent} />}
       </ToggleablePanel>
 
       {topicSections && topicSections.length > 0 ? (
-        <ToggleablePanel
-          panelContainerStyle={styles.topicSectionsStyle}
-          showContent={topic?.sections?.length > 0}
-          title={`Sections [${topic?.sections?.length || 0}]:-`}
-        >
+        <ToggleablePanel panelContainerStyle={styles.topicSectionsStyle} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
           <ListSection
             title=""
             errorMessage=""
@@ -312,7 +265,7 @@ const TopicCard = ({
               <TopicSectionCard
                 key={ts?.uniqueId || `section_${idx}`}
                 data={ts}
-                tags={tags}
+                // tags={tags}
                 selectedElementRef={selectedElementRef}
                 selectedSectionId={selectedSectionId}
                 onEditSection={onEditSection}

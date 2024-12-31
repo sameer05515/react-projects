@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
-import { SmartEditor } from "../../../../common/components/smart-editor/SmartEditorV3";
+import { SmartEditor } from "../../../../common/components/Smart/Editor/v3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchTags,
-  selectAllFlatTags,
-} from "../../../../redux/slices/tagsSlice";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { useSelector } from "react-redux";
+import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import Select from "react-select";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 
@@ -17,8 +14,7 @@ const TopicSectionForm = ({
   onSubmit = () => {},
   onCancel = () => {},
 }) => {
-  const dispatch = useDispatch();
-  const flatTagList = useSelector(selectAllFlatTags) || [];
+  const tagOptions = useSelector(getTagsForComboOptions);
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,14 +47,11 @@ const TopicSectionForm = ({
   useEffect(() => {
     setLoading(false);
     if (sectionsData) {
+      console.trace("sectionsData: ", sectionsData);
       setFormData((prev) => ({ ...sectionsData }));
       // setLoading(false);
     }
   }, [sectionsData]);
-
-  useEffect(() => {
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   const validateForm = () => {
     const errors = [];
@@ -95,10 +88,10 @@ const TopicSectionForm = ({
     }
   };
 
-  const tagOptions = flatTagList.map((tag) => ({
-    value: tag.uniqueId,
-    label: tag.title,
-  }));
+  // const tagOptions = flatTagList.map((tag) => ({
+  //   value: tag.uniqueId,
+  //   label: tag.title,
+  // }));
 
   if (loading) {
     return <div>Loading...</div>;

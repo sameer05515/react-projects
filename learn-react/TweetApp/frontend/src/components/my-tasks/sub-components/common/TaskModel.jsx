@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import Select from 'react-select'; // Import the Select component from react-select
-import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
-import { useDispatch, useSelector } from 'react-redux';
+import Select from "react-select"; // Import the Select component from react-select
+import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
+import { useSelector } from "react-redux";
 
 const TaskModel = ({ task, onSave, onCancel, tasks }) => {
-  const dispatch = useDispatch();
-  const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
+  const tagOptions = useSelector(getTagsForComboOptions);
   const [formData, setFormData] = useState({
     _id: task ? task._id : "",
     uniqueId: task ? task.uniqueId : "",
@@ -32,17 +31,6 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
     alignItems: "center",
     zIndex: "1000", // Adjust as needed
   };
-  useEffect(() => {
-    // Fetch available tags when the component mounts
-    // You should dispatch an action to retrieve the tags from your API
-    // For example: dispatch(fetchTags());
-    dispatch(fetchTags());
-  }, [dispatch]);
-
-  const tagOptions = availableTags.map((tag) => ({
-    value: tag.uniqueId, // Assuming tags have unique IDs
-    label: tag.title, // Display tag names in the dropdown
-  }));
 
   const handleTagSelect = (selectedTags) => {
     // Extract the tag values and store them in the 'tags' property of the topic data
@@ -64,7 +52,6 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
     maxHeight: "80vh", // Set a maximum height to trigger scrolling if the content exceeds it
     overflowY: "auto", // Enable vertical scrolling when the content overflows
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -115,12 +102,12 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
           onChange={handleInputChange}
         /> */}
         <CKEditor
-            id="description"
-            name="description"
-            editor={ClassicEditor}
-            data={formData.description}
-            onChange={handleEditorChange}
-          />
+          id="description"
+          name="description"
+          editor={ClassicEditor}
+          data={formData.description}
+          onChange={handleEditorChange}
+        />
         <br />
         {/* Dropdown to select linked tasks */}
         <label htmlFor="linkedTasks">Linked Tasks:</label>
@@ -131,11 +118,13 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
           value={formData.linkedTasks}
           onChange={handleLinkedTasksChange}
         >
-          {tasks.filter((task)=> task.uniqueId!==formData?.uniqueId ).map((task) => (
-            <option key={task.uniqueId} value={task.uniqueId}>
-              {task.title}
-            </option>
-          ))}
+          {tasks
+            .filter((task) => task.uniqueId !== formData?.uniqueId)
+            .map((task) => (
+              <option key={task.uniqueId} value={task.uniqueId}>
+                {task.title}
+              </option>
+            ))}
         </select>
         <br />
         <div>
@@ -144,7 +133,9 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
             isMulti
             name="tags"
             options={tagOptions}
-            value={tagOptions.filter((tag) => formData.tags.includes(tag.value))}
+            value={tagOptions.filter((tag) =>
+              formData.tags.includes(tag.value)
+            )}
             onChange={handleTagSelect}
           />
         </div>

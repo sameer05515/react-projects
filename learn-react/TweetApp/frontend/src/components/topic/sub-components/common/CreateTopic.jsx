@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import ReactHtmlParser from "react-html-parser";
+import React, { useState } from "react";
+// import ReactHtmlParser from "react-html-parser";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
-import { SmartEditor } from "../../../../common/components/smart-editor/SmartEditorV3";
-import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
+import { SmartEditor, SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
+import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import {
   createTopic,
   fetchTopics,
   updateTopic,
 } from "../../../../redux/slices/topicSlice";
-import CustomButton from "../../../../common/components/custom-button/CustomButton";
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   const dispatch = useDispatch();
-  const availableTags = useSelector(selectAllFlatTags); // Assuming you have a tags slice in your Redux store
+
+  const tagOptions = useSelector(getTagsForComboOptions);
 
   const [showDescr, setShowDescr] = useState(false);
 
@@ -67,18 +68,6 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
     setTopicData({ ...topicData, tags: selectedTags.map((tag) => tag.value) });
   };
 
-  useEffect(() => {
-    // Fetch available tags when the component mounts
-    // You should dispatch an action to retrieve the tags from your API
-    // For example: dispatch(fetchTags());
-    dispatch(fetchTags());
-  }, [dispatch]);
-
-  const tagOptions = availableTags.map((tag) => ({
-    value: tag.uniqueId, // Assuming tags have unique IDs
-    label: tag.title, // Display tag names in the dropdown
-  }));
-
   const handleSaveTopic = (event) => {
     event.preventDefault();
     if (!validateForm()) {
@@ -91,7 +80,6 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
       // Otherwise, it's a new topic creation
       dispatch(createTopic(topicData));
     }
-
     dispatch(fetchTopics());
 
     // Notify the parent component to handle closing the CreateTopic form
@@ -150,7 +138,8 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           <div
             style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}
           >
-            {ReactHtmlParser(topicData.description || "")}
+            {/* {ReactHtmlParser(topicData.description || "")} */}
+            <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html" }}/>
           </div>
         )}
 

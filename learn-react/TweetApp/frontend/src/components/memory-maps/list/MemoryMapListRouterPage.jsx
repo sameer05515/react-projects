@@ -1,27 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import MarkdownComponent from "../../../common/components/markdown-component/MarkdownComponent";
+import {
+  SmartPreviewer,
+  availableOutputTypes as SupportedTextFormats,
+} from "../../../common/components/Smart/Editor/v3";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
+import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
 import { buildTree } from "../../../common/util/indentation-based-string-parser-to-tree-data";
-import {
-  fetchMemoryMaps,
-  selectAllTreeMemoryMaps,
-} from "../../../redux/slices/memoryMapSlice";
-import PopupMenuV3 from "../../miscelleneous/misc/sub-components/PopupMenuV3";
+import { selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
+// import PopupMenuV3 from "../../miscelleneous/misc/sub-components/PopupMenuV3";
+import PopupMenuV3 from "../../../ApnaPlayground/MiscellaneousExamples/PopupMenu/v3";
 import CopyButton from "../copy-to-clipboard/CopyButton";
 import { Header } from "./HelperComponents";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
 import { styles } from "./util";
-import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
-import {
-  SmartPreviewer,
-  availableOutputTypes as SupportedTextFormats,
-} from "../../../common/components/smart-editor/SmartEditorV3";
 
 const MemoryMapList = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const memoryMaps = useSelector(selectAllTreeMemoryMaps);
@@ -44,10 +40,6 @@ const MemoryMapList = () => {
       setCopied(false);
     }, 5000);
   };
-
-  useEffect(() => {
-    dispatch(fetchMemoryMaps());
-  }, [dispatch]);
 
   useEffect(() => {
     if (memoryMapDataToBeViewed) {
@@ -213,7 +205,7 @@ const MemoryMapList = () => {
                       content: node?.name || "**tree node name is missing!**",
                       textOutputType: SupportedTextFormats.MARKDOWN,
                     }}
-                    markdownStyles={{ fontSize: '10px' }}
+                    markdownStyles={{ fontSize: "10px" }}
                   />
                 )}
               />

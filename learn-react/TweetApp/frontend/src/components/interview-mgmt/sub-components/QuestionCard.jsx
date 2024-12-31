@@ -1,17 +1,19 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import {
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
-} from "../../../common/components/smart-editor/SmartEditorV3";
-import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
+} from "../../../common/components/Smart/Editor/v3";
+import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
+import Tree from "../../../common/components/tree-viewer/TreeViewer";
+import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
+import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
+import { getTagsForGivenIds } from "../../../redux/slices/tagsSlice";
 import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
-import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
-import Tree from "../../../common/components/tree-viewer/TreeViewer";
-import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
-import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 
 // Utility function to format date
 const formatDate = (dateString) => {
@@ -29,7 +31,7 @@ const formatDate = (dateString) => {
 
 const QuestionCard = ({
   question,
-  categoryId,
+  // categoryId,
   onCreateAnswerClick = () => {},
   onUpdateAnswerClick = () => {},
   onAncestorClick = () => {},
@@ -37,18 +39,17 @@ const QuestionCard = ({
   onChildTopicClick = () => {},
   onLinkedTagSelection = () => {},
 }) => {
-  const { availableTags } = useInterviewMgmt();
   const { BreadcrumbItemType } = useGlobalServiceProvider();
 
-  const filteredTags = question?.tags?.map((uniqueId) =>
-    availableTags.find((tag) => tag.uniqueId === uniqueId)
-  );
+  const filteredTags = useSelector(getTagsForGivenIds(question?.tags || []));
+
   const handleAncestorClick = (ancestor) => {
     onAncestorClick(ancestor);
   };
   const handleLinkedTagSelection = (linkedTagUID) => {
     onLinkedTagSelection(linkedTagUID);
   };
+
   return (
     <>
       <div>
@@ -91,6 +92,17 @@ const QuestionCard = ({
             <time dateTime={question.updatedDate}>
               {formatDate(question.updatedDate)}
             </time>
+          </div>
+
+          <div>
+            <span>
+              <b>Last Revised On:- </b>{" "}
+              {question.lastRevisedOn ? (
+                formatDateToDDMMMYYYYWithTime(question.lastRevisedOn)
+              ) : (
+                <span style={{ color: "red" }}>{"Question never revised"}</span>
+              )}
+            </span>
           </div>
 
           <div style={{ ...styles.datesStyle }}>

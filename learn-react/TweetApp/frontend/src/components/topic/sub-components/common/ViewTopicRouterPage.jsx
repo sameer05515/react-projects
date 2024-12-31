@@ -7,15 +7,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching";
-import {
-  fetchPinnedItems,
-  upsertPinnedItem,
-} from "../../../../redux/slices/pinnedItemSlice";
-import {
-  fetchTags,
-  selectAllFlatTags,
-} from "../../../../redux/slices/tagsSlice";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { upsertPinnedItem } from "../../../../redux/slices/pinnedItemSlice";
 import {
   selectAllFlatTopics,
   selectNextTopicUniqueId,
@@ -33,12 +26,10 @@ const ViewTopic = () => {
   const url = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`;
   const { data, loading, error, refetch } = useDataFetching({ url });
   const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/sections`;
-  const {
-    data: sectionsData,    
-    refetch: sectionsRefetch,
-  } = useDataFetching({ url: sectionFetchUrl });
-  const availableTags = useSelector(selectAllFlatTags);
-  // const topics = useSelector(selectAllFlatTopics);
+  const { data: sectionsData, refetch: sectionsRefetch } = useDataFetching({
+    url: sectionFetchUrl,
+  });
+
   const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
   const [pinnedTopics, setPinnedTopics] = useState([]);
@@ -48,11 +39,6 @@ const ViewTopic = () => {
 
   const nextTopicUniqueId = useSelector(selectNextTopicUniqueId);
   const prevTopicUniqueId = useSelector(selectPrevTopicUniqueId);
-
-  useEffect(() => {
-    dispatch(fetchTags());
-    dispatch(fetchPinnedItems());
-  }, [dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -89,8 +75,8 @@ const ViewTopic = () => {
     }
   }, [id, topics, pinnedItems]);
 
-  useEffect(() => {    
-    sectionsRefetch();    
+  useEffect(() => {
+    sectionsRefetch();
   }, [id, sectionId]);
 
   const handleEdit = (item) => {
@@ -104,15 +90,12 @@ const ViewTopic = () => {
     }
   };
   const handleAddSubTask = (item) => {
-    
     navigate(`/topic-mgmt/${id}/add-sub-topic`);
   };
   const handleChildTaskClick = (item) => {
-    
     navigate(`/topic-mgmt/${item?.uniqueId}`);
   };
   const handleMoveAnotherParent = (item) => {
-    
     navigate(`/topic-mgmt/${id}/move-parent`);
   };
   const handlePinTopic = (item, isPinned) => {
@@ -138,7 +121,6 @@ const ViewTopic = () => {
   };
 
   const handleTopicSectionClick = (sectionUniqueId) => {
-    
     navigate({
       pathname: `/topic-mgmt/${id}`,
       search: sectionUniqueId
@@ -167,12 +149,10 @@ const ViewTopic = () => {
   }
   return (
     <>
-      
       {data && (
         <TopicCard
           topic={data}
           topicSections={sectionsData}
-          tags={availableTags}
           pinnedTopics={pinnedTopics}
           isPinned={isPinned}
           showDescription={true}

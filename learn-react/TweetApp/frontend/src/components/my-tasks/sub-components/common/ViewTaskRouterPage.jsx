@@ -2,15 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching";
-import {
-  fetchPinnedItems,
-  upsertPinnedItem,
-} from "../../../../redux/slices/pinnedItemSlice";
-import {
-  fetchTags,
-  selectAllFlatTags,
-} from "../../../../redux/slices/tagsSlice";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { upsertPinnedItem } from "../../../../redux/slices/pinnedItemSlice";
 import {
   selectAllFlatTasks,
   selectNextTaskUniqueId,
@@ -25,7 +18,6 @@ const ViewTaskRouterPage = () => {
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
   const { data, loading, error, refetch } = useDataFetching({ url });
-  const availableTags = useSelector(selectAllFlatTags);
   const pinnedItems = useSelector((state) => state.pinnedItems.data);
 
   const tasks = useSelector(selectAllFlatTasks);
@@ -33,11 +25,6 @@ const ViewTaskRouterPage = () => {
   const [isPinned, setIsPinned] = useState(false);
   const nextTaskUniqueId = useSelector(selectNextTaskUniqueId);
   const prevTaskUniqueId = useSelector(selectPrevTaskUniqueId);
-
-  useEffect(() => {
-    dispatch(fetchTags());
-    dispatch(fetchPinnedItems());
-  }, [dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -116,7 +103,7 @@ const ViewTaskRouterPage = () => {
       {data ? (
         <TaskCard
           task={data}
-          tags={availableTags}
+          // tags={availableTags}
           showDescription={true}
           pinnedTasks={pinnedTasks}
           isPinned={isPinned}

@@ -3,9 +3,13 @@ import * as ReactIconsFA from "react-icons/fa";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import styles from "./styles.module.css";
 
-// Safely fetch icon components by name
+// Utility to fetch icon by name
 const getIcon = (name = "FaQuestionCircle") =>
   ReactIconsFA[name] || ReactIconsFA.FaQuestionCircle;
+
+// Utility to calculate index by uniqueId
+const findIndexByUniqueId = (data, uniqueId) =>
+  data.findIndex((item) => item.uniqueId === uniqueId);
 
 const iconFamily = Object.keys(ReactIconsFA).map((n, idx) => ({
   uniqueId: `ReactIconsFA_${idx + 1}_${n}`,
@@ -15,9 +19,27 @@ const iconFamily = Object.keys(ReactIconsFA).map((n, idx) => ({
 const ReactIconsDemonstrateDashboard = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
+  const selectedIndex = useMemo(() => {
+    return selectedIcon
+      ? findIndexByUniqueId(iconFamily, selectedIcon.uniqueId)
+      : -1;
+  }, [selectedIcon]);
+
   const IconComponent = useMemo(() => {
     return selectedIcon ? getIcon(selectedIcon.name) : null;
   }, [selectedIcon]);
+
+  const handlePrev = () => {
+    if (selectedIndex > 0) {
+      setSelectedIcon(iconFamily[selectedIndex - 1]);
+    }
+  };
+
+  const handleNext = () => {
+    if (selectedIndex < iconFamily.length - 1) {
+      setSelectedIcon(iconFamily[selectedIndex + 1]);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -33,7 +55,25 @@ const ReactIconsDemonstrateDashboard = () => {
         </div>
         <div className={styles.iconDisplay}>
           {selectedIcon ? (
-            <IconComponent className={styles.icon} />
+            <>
+              <IconComponent className={styles.icon} />
+              <div className={styles.buttonContainer}>
+                <button
+                  className={styles.button}
+                  onClick={handlePrev}
+                  disabled={selectedIndex <= 0}
+                >
+                  Prev
+                </button>
+                <button
+                  className={styles.button}
+                  onClick={handleNext}
+                  disabled={selectedIndex >= iconFamily.length - 1}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           ) : (
             "Please select an icon"
           )}

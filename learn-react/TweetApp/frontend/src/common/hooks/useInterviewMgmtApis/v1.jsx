@@ -1,40 +1,43 @@
 import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
 import { apiRequest } from "../../service/apiClient/v1";
 import { validateInputs } from "../../service/apiRequestValidation";
-import useConsolidated from "../useConsolidated/releases/v400";
-// import useConsolidated from "../useConsolidated/v4";
+// import useConsolidated from "../useConsolidated/releases/v400";
+import useConsolidated from "../useConsolidated/v4";
 
-// Base URL for CGPT API requests
-const BASE_URL = `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2`;
+// Base URL for Interview Management API requests
+const INTERVIEW_MGMT_BASE_URL = `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2`;
 
-const ENDPOINTS = {
-  PATCH_QUESTION_FOR_UID: (uid) => `/questions/${uid}`,
+const API_ENDPOINTS = {
+  PATCH_QUESTION_BY_UID: (uniqueId) => `/questions/${uniqueId}`,
 };
 
-const useInterviewMgmtApis = () => {
+const useInterviewManagementAPIs = () => {
   const { executeApiRequest } = useConsolidated();
 
-  const patchQuesionForUID = (uniqueId) => {
+  const partialUpdateQuestionByUniqueId = (uniqueId) => {
     const apiRequestPromise = () =>
       apiRequest({
-        url: `${BASE_URL}${ENDPOINTS.PATCH_QUESTION_FOR_UID(uniqueId)}`,
-        method: "patch",
+        url: `${INTERVIEW_MGMT_BASE_URL}${API_ENDPOINTS.PATCH_QUESTION_BY_UID(
+          uniqueId
+        )}`,
+        method: "PATCH",
       });
-    const validator = () => {
-        validateInputs([{ key: "uniqueId", value: undefined, type: "string" }]);
-        return true;
+
+    const validateRequest = () => {
+      validateInputs([{ key: "uniqueId", value: uniqueId, type: "string" }]);
+      return true;
     };
 
     const messages = {
-      loadingMessage: "Sending patch request for question",
-      //   successMessage: "All CGPT files fetched successfully!",
-      //   failureMessage: `Failed to patch question for uniqueId: ${uniqueId}`,
+      loadingMessage: "Updating question details...",
+      successMessage: "Question updated successfully!",
+      failureMessage: `Failed to update question for unique ID: ${uniqueId}`,
     };
 
-    return executeApiRequest(apiRequestPromise, validator, messages);
+    return executeApiRequest(apiRequestPromise, validateRequest, messages);
   };
 
-  return { patchQuesionForUID };
+  return { partialUpdateQuestionByUniqueId };
 };
 
-export default useInterviewMgmtApis;
+export default useInterviewManagementAPIs;

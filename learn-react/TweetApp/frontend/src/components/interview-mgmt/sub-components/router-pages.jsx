@@ -13,7 +13,7 @@ import CustomButton from "../../../common/components/custom-button/CustomButton"
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useDataFetching from "../../../common/hooks/useDataFetching";
-import useInterviewMgmtApis from "../../../common/hooks/useInterviewMgmtApis/v1";
+import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
 import {
   searchTopic,
   setSearchString,
@@ -258,7 +258,7 @@ const CategoryList = () => {
 // };
 
 const ViewQuestionDetails = () => {
-  const { patchQuesionForUID } = useInterviewMgmtApis();
+  const { partialUpdateQuestionByUniqueId } = useInterviewManagementAPIs();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, qid } = useParams();
@@ -292,7 +292,7 @@ const ViewQuestionDetails = () => {
   };
 
   const handlePatch = async () => {
-    await patchQuesionForUID(qid);
+    await partialUpdateQuestionByUniqueId(qid);
   };
 
   return (

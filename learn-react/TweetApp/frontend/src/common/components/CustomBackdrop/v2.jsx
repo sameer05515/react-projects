@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
+import { selectIsBackdropActive } from "../../../redux/slices/backdropSlice";
 
 const FallbackDuration = 10000; // Fallback duration in ms
 
 const CustomBackdropV2 = () => {
-  const isActive = useSelector((state) => state.backdrop.active);
+  const isActive = useSelector(selectIsBackdropActive);
 
   useEffect(() => {
     let timer;

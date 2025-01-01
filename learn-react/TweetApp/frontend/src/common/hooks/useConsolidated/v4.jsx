@@ -181,7 +181,7 @@ import {
  *
  * > **Note**: This version is running snapshot of [.releases/v400.jsx](./releases/v400.jsx)
  * > and hence will incorporate all bug-fixes enhancements found, during **`Optimization of TweetApp`**
- * > Please refer [**Bug-Tracker**](./bug-tracker.md) for details
+ * > Please refer [**Bug-Tracker**](./documentation/bug-tracker.md) for details
  *
  * ## List of bugs (found in [.releases/v400.jsx](./releases/v400.jsx)) and their status
  *
@@ -190,7 +190,9 @@ import {
  * 2. **Bug**: [`On-Hold`]: If a non-Promise function passed in `apiRequest` argument, `executeApiRequest` function is returning error response, but still the given function gets executed in background.
  *    - **RCA**: If a non-Promise function passed in `apiRequest` argument, there is no way in Javascript/TypeScript to check return-type of `apiRequest` without executing it.
  *    - **Workaround**: Developers have been advised to use `executeApiRequest` wisely and check what they are passing, to refrain from any `inconsistency`
- * 3. ****: [`In-Progress`]: In router pages, where executeApiRequest was being called inside useEffect, infinite number of request are going to server
+ * 3. ****: [`Closed`]: In router pages, where executeApiRequest was being called inside useEffect, infinite number of request are going to server
+ *    - **RCA**: `executeApiRequest` function was not optimized with useCallback, hence was creating issue
+ *    - **Details**: Please find detailed explaination [**here**](./documentation/issue-3-resolution.md)
  *
  */
 

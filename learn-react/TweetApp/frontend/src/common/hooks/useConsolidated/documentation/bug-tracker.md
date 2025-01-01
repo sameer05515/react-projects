@@ -33,6 +33,15 @@ This document provides an overview of the **running snapshot** of `.releases/v40
 
 ---
 
+#### 3. **Bug:** Fix Infinite API Requests in Router Pages Due to Unoptimized useEffect Dependencies
+   - **Status:** `Closed`
+   - **Description:**  In the router pages where the `executeApiRequest` function was used inside a `useEffect` hook, it was causing **infinite requests to the server**.
+   - **Root Cause Analysis (RCA):** The `executeApiRequest` function was not wrapped in `useCallback`. Without `useCallback`, the function's reference changes on every render, causing `useEffect` to re-trigger due to dependency array mismatches.
+   - **Resolution:** Wrap `executeApiRequest` in `useCallback` to memoize its reference and avoid unnecessary re-renders and infinite loops.
+   - **Details:** Please find detailed explaination [**here**](./issue-3-resolution.md)
+
+---
+
 ### Developer Notes
 
 - **Purpose of Snapshot:** This snapshot is actively evolving and will continue to serve as a foundation for identifying and resolving further issues in TweetApp.  

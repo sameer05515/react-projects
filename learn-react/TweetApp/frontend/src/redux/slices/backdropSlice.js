@@ -1,5 +1,5 @@
 // store/backdropSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const backdropSlice = createSlice({
   name: "backdrop",
@@ -18,3 +18,11 @@ const backdropSlice = createSlice({
 
 export const { showBackdrop, hideBackdrop } = backdropSlice.actions;
 export default backdropSlice.reducer;
+
+/* ============== Selectors ======================*/
+const selectBackdropState = (state) => state.backdrop;
+
+export const selectIsBackdropActive = createSelector(
+  selectBackdropState,
+  (topicsState) => topicsState.active
+);

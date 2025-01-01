@@ -30,13 +30,29 @@ const UsingCustomBackdropV3 = () => {
         },
         3000,
         5
-      );      
-      console.log("Interval completed!");
-      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+      );
+      console.log("Interval completed!");      
       await delayForMS(5000);
-      dispatch(v3.hide());
+      // dispatch(v3.hide());
     } catch (error) {
       console.error("Error during interval:", error);
+    } finally {
+      dispatch(v3.hide());
+    }
+  }, [dispatch]);
+
+  const handleUpdateTitleWithDelay = useCallback(async () => {
+    dispatch(v3.show());
+    try {
+      for (let i = 1; i <= 3; i++) {
+        const message = `Iteration Number: ${i} completed successfully!!`;
+        console.log(message);
+        dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+        await delayForMS(5000);
+      }
+      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+      await delayForMS(5000);
+    } catch (error) {
     } finally {
       dispatch(v3.hide());
     }
@@ -49,7 +65,14 @@ const UsingCustomBackdropV3 = () => {
       <br />
       <button onClick={handleClick}>Show BackdropV3</button>
       <br />
-      <button onClick={handleUpdateTitle}>Update Title of BackdropV3</button>
+      <button onClick={handleUpdateTitle}>
+        Update Title of BackdropV3: With setInterval
+      </button>
+
+      <br />
+      <button onClick={handleUpdateTitleWithDelay}>
+        Update Title of BackdropV3: With delay of 5 seconds
+      </button>
 
       <CustomBackdropV3 />
     </div>

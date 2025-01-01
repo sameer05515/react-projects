@@ -36,6 +36,7 @@ import TreeListV4 from "./sub-components/dnd-playground/TreeListV4";
 import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTableV1_0_0";
 import UseConsolidatedTesterDashboard from "../../apna-playground/UseConsolidatedTesters/UseConsolidatedTesterDashboard";
 import ReactIconsDemonstrateDashboard from "../../apna-playground/react-icons-demonstrate/Dashboard";
+import SamplePromiseTesterDashboard from "../../apna-playground/SamplePromiseTesters/Dashboard";
 
 export const ComponentModules = {
   TestingPurpose: "Testing Purpose",
@@ -446,13 +447,22 @@ const componentMapWithPurposes = {
     isExperimentalComponent: true,
     module: ComponentModules.TestingPurpose,
   },
-  ReactIconsDemonstrateDashboard:{
-    element:ReactIconsDemonstrateDashboard,
-    purpose:"To show all icons of react-icons",
+  ReactIconsDemonstrateDashboard: {
+    element: ReactIconsDemonstrateDashboard,
+    purpose: "To show all icons of react-icons",
     isExperimentalComponent: true,
     module: ComponentModules.TestingPurpose,
-  }
-  
+  },
+  SamplePromiseTesterDashboard: {
+    element: SamplePromiseTesterDashboard,
+    purpose: `
+    To develop a optimized and interactive version of 'Custom Backdrop' in isolated environment, which can be integrated with 'TweetApp' application
+      
+    Also please refer related Dashboards viz. 'UseConsolidatedTesterDashboard' and 'ReactIconsDemonstrateDashboard', so that active development could be in sync
+    `,
+    isExperimentalComponent: true,
+    module: ComponentModules.TestingPurpose,
+  },
 };
 
 // Completed componentMapWithPurposes

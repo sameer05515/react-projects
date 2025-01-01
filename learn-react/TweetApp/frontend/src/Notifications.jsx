@@ -4,8 +4,13 @@ import {
   availableOutputTypes as SupportedTextFormats,
 } from "./common/components/smart-editor/SmartEditorV3";
 import useMemoryManagementApis from "./common/hooks/useMemoryManagementApis/v1";
-
-const memoryMapId = "cd6bb190-0e56-4e3a-8f01-748c8d05d9d4";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  hideBackdrop,
+  selectIsBackdropActive,
+  showBackdrop,
+} from "./redux/slices/backdropSlice";
+import { getRandomNumberWithToastNotifications as getRandomNumber } from "./components/apna-playground/sample-promises";
 
 const Notifications = ({ id = memoryMapId }) => {
   const isDarkMode = false;
@@ -15,13 +20,15 @@ const Notifications = ({ id = memoryMapId }) => {
     message: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(false);
+  const loading = useSelector(selectIsBackdropActive);
 
   const { getMemoryMap } = useMemoryManagementApis();
 
   const fetchMemoryMap = useCallback(async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const { data, isError, message } = await getMemoryMap(id);
       // if (isMounted) {
       setApiResponse({
@@ -29,6 +36,7 @@ const Notifications = ({ id = memoryMapId }) => {
         isError,
         message: message || "No message available",
       });
+
       // }
     } catch (error) {
       // if (isMounted) {
@@ -39,13 +47,18 @@ const Notifications = ({ id = memoryMapId }) => {
       });
       // }
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   }, [getMemoryMap, id]);
 
-  useEffect(() => {
-    // let isMounted = true; // Prevent state updates if the component unmounts
+  const handleRandomNumber = useCallback(async () => {
+    dispatch(showBackdrop());
+    const response = await getRandomNumber();
+    console.log("getRandomNumber response: ", response);
+    dispatch(hideBackdrop());
+  }, [dispatch]);
 
+  useEffect(() => {
     fetchMemoryMap();
   }, [fetchMemoryMap, getMemoryMap, id]); // Ensure these dependencies are stable
 
@@ -69,6 +82,10 @@ const Notifications = ({ id = memoryMapId }) => {
         <strong>Message:</strong> {message}
       </div>
 
+      <div>
+        <button onClick={handleRandomNumber}>handleRandomNumber</button>
+      </div>
+
       <SmartPreviewer
         data={{
           content: data?.name || "No content available",
@@ -86,5 +103,7 @@ const Notifications = ({ id = memoryMapId }) => {
     </div>
   );
 };
+
+const memoryMapId = "cd6bb190-0e56-4e3a-8f01-748c8d05d9d4";
 
 export default React.memo(Notifications);

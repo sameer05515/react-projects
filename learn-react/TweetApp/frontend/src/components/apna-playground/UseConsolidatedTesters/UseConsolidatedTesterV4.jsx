@@ -2,6 +2,7 @@ import React from "react";
 // import useConsolidated from "../../../common/hooks/useConsolidated/v4";
 import useCGPTApis from "../../../common/hooks/useCGPTApis/v2";
 import useTopicManagementApis from '../../../common/hooks/useTopicManagementApis/v1';
+import useMemoryManagementApis from "../../../common/hooks/useMemoryManagementApis/v1";
 
 const UseConsolidatedTesterV4 = () => {
   // const consolidatedObject = useConsolidated();
@@ -13,6 +14,7 @@ const UseConsolidatedTesterV4 = () => {
   } = useCGPTApis();
 
   const { getSectionData } = useTopicManagementApis();
+  const {getMemoryMap}= useMemoryManagementApis();
 
   const sampleFileId = "CONVERSATIONS_23_OCT_2024";
   const sampleConvId = "4b59e0cd-7922-411d-a6e5-0ac51b29087d";
@@ -20,6 +22,8 @@ const UseConsolidatedTesterV4 = () => {
 
   const topicId="1203d550-0351-4af0-a88f-a8d0b1d6ae21";
   const sectionId="1670f51c-d661-4fe1-8d81-7798521e82d2";
+
+  const memoryMapId= "cd6bb190-0e56-4e3a-8f01-748c8d05d9d4";
 
   // Generic handler for API calls
   const handleFetch = async (fetchMethod) => {
@@ -95,6 +99,17 @@ const UseConsolidatedTesterV4 = () => {
         }
       >
         Test : getSectionData : {topicId} , {sectionId}
+      </button>
+
+      <br />
+      <button
+        onClick={() =>
+          handleFetch(() =>
+            getMemoryMap(memoryMapId)
+          )
+        }
+      >
+        Test : getMemoryMap : {memoryMapId}
       </button>
     </div>
   );

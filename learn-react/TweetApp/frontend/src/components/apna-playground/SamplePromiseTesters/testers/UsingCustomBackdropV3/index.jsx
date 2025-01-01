@@ -24,19 +24,21 @@ const UsingCustomBackdropV3 = () => {
       let itration = 0;
       await createIntervalPromise(
         () => {
-          const message=`Iteration Number: ${++itration} completed successfully!!`
+          const message = `Iteration Number: ${++itration} completed successfully!!`;
           console.log(message);
           dispatch(v3.updateTitle(`Operation in progress: ${message}`));
-          if(itration===5){
-            dispatch(v3.hide());
-          }
         },
         3000,
         5
-      );
+      );      
       console.log("Interval completed!");
+      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+      await delayForMS(5000);
+      dispatch(v3.hide());
     } catch (error) {
       console.error("Error during interval:", error);
+    } finally {
+      dispatch(v3.hide());
     }
   }, [dispatch]);
 

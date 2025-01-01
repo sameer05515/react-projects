@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../../../common/components/smart-editor/SmartEditorV3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTags,
@@ -51,6 +51,7 @@ const TopicSectionForm = ({
   useEffect(() => {
     setLoading(false);
     if (sectionsData) {
+      console.trace("sectionsData: ",sectionsData)
       setFormData((prev) => ({ ...sectionsData }));
       // setLoading(false);
     }

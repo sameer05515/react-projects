@@ -19,7 +19,14 @@ const backdropSlice = createSlice({
     hideBackdrop: (state) => {
       state.active = false;
     },
-    
+
+    showBackdropV3: (state) => {
+      state.active = true;
+    },
+    hideBackdropV3: (state) => {
+      state.active = false;
+    },
+
   },
 });
 

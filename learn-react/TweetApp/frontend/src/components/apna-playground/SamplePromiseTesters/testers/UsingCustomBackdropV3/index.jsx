@@ -18,11 +18,18 @@ const UsingCustomBackdropV3 = () => {
   }, [dispatch]);
 
   const handleUpdateTitle = useCallback(async () => {
+    dispatch(v3.show());
+    dispatch(v3.updateTitle("Starting calculations"));
     try {
       let itration = 0;
       await createIntervalPromise(
         () => {
-          console.log(`Iteration Number: ${++itration}`);
+          const message=`Iteration Number: ${++itration} completed successfully!!`
+          console.log(message);
+          dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+          if(itration===5){
+            dispatch(v3.hide());
+          }
         },
         3000,
         5
@@ -31,7 +38,7 @@ const UsingCustomBackdropV3 = () => {
     } catch (error) {
       console.error("Error during interval:", error);
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

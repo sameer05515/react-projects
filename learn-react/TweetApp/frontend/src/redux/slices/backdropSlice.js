@@ -9,6 +9,7 @@ const backdropSlice = createSlice({
     customBackdrop: {
       v3: {
         active: false,
+        title: "",
       },
     },
   },
@@ -26,6 +27,10 @@ const backdropSlice = createSlice({
     hideBackdropV3: (state) => {
       state.customBackdrop.v3.active = false;
     },
+
+    updateTitle: (state, action) => {
+      state.customBackdrop.v3.title = action.payload;
+    },
   },
 });
 
@@ -34,6 +39,7 @@ export const { showBackdrop, hideBackdrop } = backdropSlice.actions;
 export const v3 = {
   show: backdropSlice.actions.showBackdropV3,
   hide: backdropSlice.actions.hideBackdropV3,
+  updateTitle: backdropSlice.actions.updateTitle,
 };
 export default backdropSlice.reducer;
 
@@ -48,4 +54,9 @@ export const selectIsBackdropActive = createSelector(
 export const selectIsCustomBackdropV3Active = createSelector(
   selectBackdropState,
   (topicsState) => topicsState.customBackdrop.v3.active
+);
+
+export const selectCustomBackdropV3CurrentTitle = createSelector(
+  selectBackdropState,
+  (topicsState) => topicsState.customBackdrop.v3.title
 );

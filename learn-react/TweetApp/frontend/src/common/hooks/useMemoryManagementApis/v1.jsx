@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
 import { apiRequest } from "../../service/apiClient/v1";
 import { validateInputs } from "../../service/apiRequestValidation";
@@ -22,32 +23,35 @@ const getUrl = (endpoint) => {
 const useMemoryManagementApis = () => {
   const { executeApiRequest } = useConsolidated();
 
-  const getMemoryMap = (uniqueId) => {
-    const apiRequestPromise = () =>
-      apiRequest({
-        url: getUrl(API_ENDPOINTS.MEMORY_MAP_BY_UID(uniqueId)),
-        method: "GET",
-      });
+  const getMemoryMap = useCallback(
+    (uniqueId) => {
+      const apiRequestPromise = () =>
+        apiRequest({
+          url: getUrl(API_ENDPOINTS.MEMORY_MAP_BY_UID(uniqueId)),
+          method: "GET",
+        });
 
-    const validateRequest = () => {
-      validateInputs([
-        {
-          key: "uniqueId",
-          value: uniqueId,
-          type: "string",
-        },
-      ]);
-      return true;
-    };
+      const validateRequest = () => {
+        validateInputs([
+          {
+            key: "uniqueId",
+            value: uniqueId,
+            type: "string",
+          },
+        ]);
+        return true;
+      };
 
-    const messages = {
-      //   loadingMessage: "Updating question details...",
-      //   successMessage: "Question updated successfully!",
-      //   failureMessage: `Failed to update question for unique ID: ${uniqueId}`,
-    };
+      const messages = {
+        //   loadingMessage: "Updating question details...",
+        //   successMessage: "Question updated successfully!",
+        //   failureMessage: `Failed to update question for unique ID: ${uniqueId}`,
+      };
 
-    return executeApiRequest(apiRequestPromise, validateRequest, messages);
-  };
+      return executeApiRequest(apiRequestPromise, validateRequest, messages);
+    },
+    [executeApiRequest]
+  );
 
   return { getMemoryMap };
 };

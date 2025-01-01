@@ -12,7 +12,7 @@ import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
-import useDataFetching from "../../../common/hooks/useDataFetching";
+import useDataFetching from "../../../common/hooks/useDataFetching/v1";
 import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
 import {
   searchTopic,

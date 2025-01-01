@@ -5,7 +5,7 @@ import {
     useParams
 } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
 import {
     fetchTasks
 } from "../../../../redux/slices/taskSlice";

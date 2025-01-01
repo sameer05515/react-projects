@@ -4,7 +4,7 @@ import {
   availableOutputTypes as SupportedTextFormats,
 } from "./common/components/smart-editor/SmartEditorV3";
 import { BACKEND_APPLICATION_BASE_URL } from "./common/constants/globalConstants";
-import useDataFetching from "./common/hooks/useDataFetching";
+import useDataFetching from "./common/hooks/useDataFetching/v1";
 
 const Notifications = () => {
   const isDarkMode = false;

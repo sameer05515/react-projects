@@ -21,10 +21,10 @@ const backdropSlice = createSlice({
     },
 
     showBackdropV3: (state) => {
-      state.active = true;
+      state.customBackdrop.v3.active = true;
     },
     hideBackdropV3: (state) => {
-      state.active = false;
+      state.customBackdrop.v3.active = false;
     },
 
   },
@@ -43,5 +43,5 @@ export const selectIsBackdropActive = createSelector(
 
 export const selectIsCustomBackdropV3Active = createSelector(
   selectBackdropState,
-  (topicsState) => topicsState.active
+  (topicsState) => topicsState.customBackdrop.v3.active
 );

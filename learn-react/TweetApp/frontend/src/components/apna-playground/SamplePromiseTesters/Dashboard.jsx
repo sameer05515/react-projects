@@ -1,19 +1,16 @@
 import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  hideBackdrop,
-  selectIsCustomBackdropV3Active,
-  showBackdrop,
+    hideBackdrop, showBackdrop
 } from "../../../redux/slices/backdropSlice";
 import { getRandomNumber } from "../sample-promises";
+import UsingCustomBackdropV3 from "./testers/UsingCustomBackdropV3";
 // import CustomBackdropV3 from "../../../common/components/CustomBackdrop/v3";
 
-const convertToYesNo = (value) => (!value ? "No" : "Yes");
+
 
 const SamplePromiseTesterDashboard = () => {
-  const dispatch = useDispatch();
-
-  const isActive = useSelector(selectIsCustomBackdropV3Active);
+  const dispatch = useDispatch(); 
 
   const handleRandomNumber = useCallback(async () => {
     dispatch(showBackdrop());
@@ -24,10 +21,12 @@ const SamplePromiseTesterDashboard = () => {
   return (
     <div>
       <h1>SamplePromiseTesterDashboard</h1>
-      <h2>CustomBackdropV3 is active: {convertToYesNo(isActive)}</h2>
+      
       <div>
         <button onClick={handleRandomNumber}>handleRandomNumber</button>
       </div>
+      <hr />
+      <UsingCustomBackdropV3/>
     </div>
   );
 };

@@ -30,7 +30,7 @@ const backdropSlice = createSlice({
   },
 });
 
-export const { showBackdrop, hideBackdrop } = backdropSlice.actions;
+export const { showBackdrop, hideBackdrop, showBackdropV3, hideBackdropV3 } = backdropSlice.actions;
 export default backdropSlice.reducer;
 
 /* ============== Selectors ======================*/

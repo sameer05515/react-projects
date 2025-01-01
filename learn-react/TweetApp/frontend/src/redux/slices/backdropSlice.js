@@ -6,10 +6,10 @@ const backdropSlice = createSlice({
   initialState: {
     active: false, // CustomBackdropV2 visibility
     /** CustomBackdropV3 states */
-    customBackdrop:{
-      v3:{
-        active:false
-      }
+    customBackdrop: {
+      v3: {
+        active: false,
+      },
     },
   },
   reducers: {
@@ -26,11 +26,15 @@ const backdropSlice = createSlice({
     hideBackdropV3: (state) => {
       state.customBackdrop.v3.active = false;
     },
-
   },
 });
 
-export const { showBackdrop, hideBackdrop, showBackdropV3, hideBackdropV3 } = backdropSlice.actions;
+export const { showBackdrop, hideBackdrop } = backdropSlice.actions;
+//showBackdropV3, hideBackdropV3
+export const v3 = {
+  show: backdropSlice.actions.showBackdropV3,
+  hide: backdropSlice.actions.hideBackdropV3,
+};
 export default backdropSlice.reducer;
 
 /* ============== Selectors ======================*/

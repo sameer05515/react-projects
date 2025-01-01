@@ -1,15 +1,21 @@
 import React from "react";
 import { convertToYesNo } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsCustomBackdropV3Active, showBackdropV3 } from "../../../../../redux/slices/backdropSlice";
+import {
+  selectIsCustomBackdropV3Active,
+  v3,
+} from "../../../../../redux/slices/backdropSlice";
 import CustomBackdropV3 from "../../../../../common/components/CustomBackdrop/v3";
+import { delayForMS } from "../../../sample-promises";
 
 const UsingCustomBackdropV3 = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const isActive = useSelector(selectIsCustomBackdropV3Active);
-  const handleClick=()=>{
-    dispatch(showBackdropV3());
-  }
+  const handleClick = async () => {
+    dispatch(v3.show());
+    await delayForMS(1000);
+    dispatch(v3.hide());
+  };
   return (
     <div>
       <h1>UsingCustomBackdropV3</h1>
@@ -17,7 +23,7 @@ const UsingCustomBackdropV3 = () => {
       <br />
       <button onClick={handleClick}>Show BackdropV3</button>
 
-      <CustomBackdropV3/>
+      <CustomBackdropV3 />
     </div>
   );
 };

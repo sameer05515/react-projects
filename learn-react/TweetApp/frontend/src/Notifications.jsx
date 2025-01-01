@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
 } from "./common/components/smart-editor/SmartEditorV3";
 import useMemoryManagementApis from "./common/hooks/useMemoryManagementApis/v1";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  hideBackdrop,
-  selectIsBackdropActive,
-  showBackdrop,
+  selectIsBackdropActive
 } from "./redux/slices/backdropSlice";
-import { getRandomNumberWithToastNotifications as getRandomNumber } from "./components/apna-playground/sample-promises";
 
 const Notifications = ({ id = memoryMapId }) => {
   const isDarkMode = false;
@@ -20,7 +17,6 @@ const Notifications = ({ id = memoryMapId }) => {
     message: "",
   });
 
-  const dispatch = useDispatch();
   // const [loading, setLoading] = useState(false);
   const loading = useSelector(selectIsBackdropActive);
 
@@ -28,35 +24,23 @@ const Notifications = ({ id = memoryMapId }) => {
 
   const fetchMemoryMap = useCallback(async () => {
     try {
-      // setLoading(true);
       const { data, isError, message } = await getMemoryMap(id);
-      // if (isMounted) {
+
       setApiResponse({
         data,
         isError,
         message: message || "No message available",
       });
-
-      // }
     } catch (error) {
-      // if (isMounted) {
       setApiResponse({
         data: null,
         isError: true,
         message: "An unexpected error occurred.",
       });
-      // }
     } finally {
-      // setLoading(false);
+      console.log("Operation completed. Do any cleanup work here.");
     }
   }, [getMemoryMap, id]);
-
-  const handleRandomNumber = useCallback(async () => {
-    dispatch(showBackdrop());
-    const response = await getRandomNumber();
-    console.log("getRandomNumber response: ", response);
-    dispatch(hideBackdrop());
-  }, [dispatch]);
 
   useEffect(() => {
     fetchMemoryMap();
@@ -80,10 +64,6 @@ const Notifications = ({ id = memoryMapId }) => {
         <strong>Status:</strong> {isError ? "Error Occurred" : "Success"}
         <br />
         <strong>Message:</strong> {message}
-      </div>
-
-      <div>
-        <button onClick={handleRandomNumber}>handleRandomNumber</button>
       </div>
 
       <SmartPreviewer

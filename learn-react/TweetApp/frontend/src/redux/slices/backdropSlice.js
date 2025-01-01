@@ -4,7 +4,13 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 const backdropSlice = createSlice({
   name: "backdrop",
   initialState: {
-    active: false, // Backdrop visibility
+    active: false, // CustomBackdropV2 visibility
+    /** CustomBackdropV3 states */
+    customBackdrop:{
+      v3:{
+        active:false
+      }
+    },
   },
   reducers: {
     showBackdrop: (state) => {
@@ -13,6 +19,7 @@ const backdropSlice = createSlice({
     hideBackdrop: (state) => {
       state.active = false;
     },
+    
   },
 });
 
@@ -23,6 +30,11 @@ export default backdropSlice.reducer;
 const selectBackdropState = (state) => state.backdrop;
 
 export const selectIsBackdropActive = createSelector(
+  selectBackdropState,
+  (topicsState) => topicsState.active
+);
+
+export const selectIsCustomBackdropV3Active = createSelector(
   selectBackdropState,
   (topicsState) => topicsState.active
 );

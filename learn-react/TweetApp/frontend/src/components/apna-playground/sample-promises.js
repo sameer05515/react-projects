@@ -5,35 +5,24 @@ import {
 } from "../../common/hooks/useConsolidated/toast-utils";
 
 // Generate a random number
-export const getRandomNumber = () => {
-  // const toastId = notify("Generating a random number...");
+export const getRandomNumber = () => {  
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const randomNumber = Math.floor(Math.random() * 10) + 1;
       if (randomNumber > 0) {
         resolve({ randomNumber, isError: false, message: "" });
-        // updateNotification(
-        //   toastId,
-        //   "Random number generated!",
-        //   LoaderStates.success
-        // );
       } else {
         reject({
           randomNumber: null,
           isError: true,
           message: "Error generating random number",
         });
-        // updateNotification(
-        //   toastId,
-        //   "Error generating number",
-        //   LoaderStates.error
-        // );
       }
-    }, 7000); // 3-second delay
+    }, 7000); // 7-second delay
   });
 };
 
-// Generate a random number
+// Generate a random number with Toast notifications
 export const getRandomNumberWithToastNotifications = () => {
   const toastId = notify("Generating a random number...");
   return new Promise((resolve, reject) => {
@@ -58,7 +47,7 @@ export const getRandomNumberWithToastNotifications = () => {
           LoaderStates.error
         );
       }
-    }, 7000); // 3-second delay
+    }, 7000); // 7-second delay
   });
 };
 

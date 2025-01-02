@@ -19,8 +19,7 @@ const UsingEarlierVersionsOfBackdrops = () => {
       <h1>UsingEarlierVersionsOfBackdrops</h1>
       <div>
         <button onClick={handleRandomNumber}>handleRandomNumber</button>
-      </div>
-      <hr />
+      </div>      
     </div>
   );
 };

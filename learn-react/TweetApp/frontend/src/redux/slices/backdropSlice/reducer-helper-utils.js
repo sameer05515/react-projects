@@ -1,24 +1,30 @@
-import initialState from "./initialState";
+import { isValidObject } from "../../../common/service/basic-validations";
+import { truncateAndUpdate } from "../../../common/service/safely-updations";
 import {
-  safelyTruncateString,
-  safelyUpdateString,
-} from "../../../common/service/safely-updations";
-import { isValidString } from "../../../common/service/basic-validations";
-// import { toJsonString } from "../../../common/service/transformations";
+  ALLOWED_MAX_V3_DESCRIPTION_LENGTH,
+  ALLOWED_MAX_V3_SUBTITLE_LENGTH,
+  ALLOWED_MAX_V3_TITLE_LENGTH,
+} from "./initialState";
 
-const ALLOWED_MAX_V3_TITLE_LENGTH = 0;
-const customBackdropV3InitialState = { ...initialState.customBackdrop.v3 };
+export const sanitizeAndUpdateV3 = (oldObj = {}, newObj = {}) => {
+  if (!isValidObject(newObj)) return oldObj;
 
-export const getV3InitialState = () => {
-  return customBackdropV3InitialState;
-};
-
-export const getSanitizedAndUpdatedV3Title = (oldTitle = "", newTitle = "") => {
-  if (!isValidString(newTitle)) {
-    return oldTitle;
-  }
-  return safelyTruncateString(
-    safelyUpdateString(oldTitle, newTitle),
-    ALLOWED_MAX_V3_TITLE_LENGTH
-  );
+  return {
+    ...oldObj,
+    title: truncateAndUpdate(
+      oldObj.title,
+      newObj.title,
+      ALLOWED_MAX_V3_TITLE_LENGTH
+    ),
+    subtitle: truncateAndUpdate(
+      oldObj.subtitle,
+      newObj.subtitle,
+      ALLOWED_MAX_V3_SUBTITLE_LENGTH
+    ),
+    description: truncateAndUpdate(
+      oldObj.description,
+      newObj.description,
+      ALLOWED_MAX_V3_DESCRIPTION_LENGTH
+    ),
+  };
 };

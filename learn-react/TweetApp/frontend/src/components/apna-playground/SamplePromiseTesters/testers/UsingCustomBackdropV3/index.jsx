@@ -3,7 +3,10 @@ import { convertToYesNo } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectIsCustomBackdropV3Active,
-  v3,
+  // v3,
+  showBackdropV3,
+  hideBackdropV3,
+  updateBackdropV3,
 } from "../../../../../redux/slices/backdropSlice";
 import CustomBackdropV3 from "../../../../../common/components/CustomBackdrop/v3";
 import { createIntervalPromise, delayForMS } from "../../../sample-promises";
@@ -12,21 +15,23 @@ const UsingCustomBackdropV3 = () => {
   const dispatch = useDispatch();
   const isActive = useSelector(selectIsCustomBackdropV3Active);
   const handleClick = useCallback(async () => {
-    dispatch(v3.show());
+    dispatch(showBackdropV3());
     await delayForMS(1000);
-    dispatch(v3.hide());
+    dispatch(hideBackdropV3());
   }, [dispatch]);
 
   const handleUpdateTitle = useCallback(async () => {
-    dispatch(v3.show());
-    dispatch(v3.updateTitle("Starting calculations"));
+    dispatch(showBackdropV3());
+    dispatch(updateBackdropV3({ title: "Starting calculations" }));
     try {
       let itration = 0;
       await createIntervalPromise(
         () => {
           const message = `Iteration Number: ${++itration} completed successfully!!`;
           console.log(message);
-          dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+          dispatch(
+            updateBackdropV3({ title: `Operation in progress: ${message}` })
+          );
         },
         3000,
         5
@@ -37,48 +42,58 @@ const UsingCustomBackdropV3 = () => {
     } catch (error) {
       console.error("Error during interval:", error);
     } finally {
-      dispatch(v3.hide());
+      dispatch(hideBackdropV3());
     }
   }, [dispatch]);
 
   const handleUpdateTitleWithDelay = useCallback(async () => {
-    dispatch(v3.show());
+    dispatch(showBackdropV3());
     try {
       for (let i = 1; i <= 3; i++) {
         const message = `Iteration Number: ${i} completed successfully!!`;
         console.log(message);
-        dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+        dispatch(
+          updateBackdropV3({ title: `Operation in progress: ${message}` })
+        );
         await delayForMS(5000);
       }
-      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+      dispatch(
+        updateBackdropV3({ title: `Operation Completed successfully!!` })
+      );
       await delayForMS(5000);
     } catch (error) {
     } finally {
-      dispatch(v3.hide());
+      dispatch(hideBackdropV3());
     }
   }, [dispatch]);
 
   const loadInitialDataForModule = useCallback(
     async (moduleName) => {
-      dispatch(v3.show());
+      dispatch(showBackdropV3());
       try {
         /**
          * TO-DO:
          * 1. prepare message post validating it, give some default fallback value
          * */
-        const messagePrefix = `Loading Data for given module ${moduleName}`;
+        const title = `Loading Data for given module ${moduleName}`;
+        dispatch(updateBackdropV3({ title }));
         const totalIterations = 9;
         for (let i = 1; i <= totalIterations; i++) {
-          const message = `${messagePrefix}: Iteration Number: ${i} completed successfully!!`;
+          const subtitle = `Iteration Number: ${i} completed successfully!!`;
           // console.log(message);
-          dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+          dispatch(updateBackdropV3({ subtitle }));
           await delayForMS(3000);
         }
-        dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+        dispatch(
+          updateBackdropV3({
+            title: `Operation Completed successfully!!`,
+            subtitle: "",
+          })
+        );
         await delayForMS(5000);
       } catch (error) {
       } finally {
-        dispatch(v3.hide());
+        dispatch(hideBackdropV3());
       }
     },
     [dispatch]

@@ -1,8 +1,8 @@
 // store/backdropSlice.js
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import initialState from "./initialState";
-import { toJsonString } from "../../../common/service/transformations";
-import { getSanitizedAndUpdatedV3Title } from "./reducer-helper-utils";
+import initialState, { v3InitialState } from "./initialState";
+import { sanitizeAndUpdateV3 } from "./reducer-helper-utils";
+import { truncateAndUpdate } from "../../../common/service/safely-updations";
 
 const backdropSlice = createSlice({
   name: "backdrop",
@@ -15,36 +15,42 @@ const backdropSlice = createSlice({
       state.active = false;
     },
 
-    showBackdropV3: (state, action) => {
-      const customBackdropV3 = state.customBackdrop.v3;
-      customBackdropV3.title = "";
-      customBackdropV3.active = true;
+    showBackdropV3: (state) => {
+      state.customBackdrop.v3 = { ...v3InitialState, active: true };
     },
     hideBackdropV3: (state) => {
-      state.customBackdrop.v3.active = false;
+      state.customBackdrop.v3 = { ...v3InitialState };
     },
 
-    updateTitle: (state, action) => {
-      const customBackdropV3 = state.customBackdrop.v3;
-      console.log("action: ", toJsonString(action));
+    updateBackdropV3: (state, action) => {
+      const { v3 } = state.customBackdrop;
+      const { title, subtitle, description } = action.payload;
 
-      if (customBackdropV3.active) {
-        customBackdropV3.title = getSanitizedAndUpdatedV3Title(
-          customBackdropV3.title,
-          action.payload
+      if (v3.active) {
+        state.customBackdrop.v3 = sanitizeAndUpdateV3(
+          { ...v3 },
+          { title, subtitle, description }
         );
       }
+
+      console.log("state.customBackdrop.v3: ", state.customBackdrop.v3);
     },
   },
 });
 
-export const { showBackdrop, hideBackdrop } = backdropSlice.actions;
+export const {
+  showBackdrop,
+  hideBackdrop,
+  showBackdropV3,
+  hideBackdropV3,
+  updateBackdropV3,
+} = backdropSlice.actions;
 //showBackdropV3, hideBackdropV3
-export const v3 = {
-  show: backdropSlice.actions.showBackdropV3,
-  hide: backdropSlice.actions.hideBackdropV3,
-  updateTitle: backdropSlice.actions.updateTitle,
-};
+// export const v3 = {
+//   show: backdropSlice.actions.showBackdropV3,
+//   hide: backdropSlice.actions.hideBackdropV3,
+//   updateTitle: backdropSlice.actions.updateBackdropV3,
+// };
 export default backdropSlice.reducer;
 
 /* ============== Selectors ======================*/

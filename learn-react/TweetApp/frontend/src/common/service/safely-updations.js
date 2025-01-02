@@ -52,3 +52,8 @@ export const safelyUpdateNumber = (existing = 0, newValue = 0) =>
 // Safely Update Boolean
 export const safelyUpdateBoolean = (existing = false, newValue = false) =>
   isValidBoolean(newValue) ? newValue : existing;
+
+
+/**Derived operations*/
+export const truncateAndUpdate = (oldValue="", newValue="", maxLength=0) =>
+    safelyTruncateString(safelyUpdateString(oldValue, newValue), maxLength);

@@ -70,7 +70,7 @@ const UsingCustomBackdropV3 = () => {
         const totalIterations = 9;
         for (let i = 1; i <= totalIterations; i++) {
           const message = `${messagePrefix}: Iteration Number: ${i} completed successfully!!`;
-          console.log(message);
+          // console.log(message);
           dispatch(v3.updateTitle(`Operation in progress: ${message}`));
           await delayForMS(3000);
         }

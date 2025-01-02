@@ -31,7 +31,7 @@ const UsingCustomBackdropV3 = () => {
         3000,
         5
       );
-      console.log("Interval completed!");      
+      console.log("Interval completed!");
       await delayForMS(5000);
       // dispatch(v3.hide());
     } catch (error) {
@@ -58,28 +58,31 @@ const UsingCustomBackdropV3 = () => {
     }
   }, [dispatch]);
 
-  const loadInitialDataForModule = useCallback(async (moduleName) => {
-    dispatch(v3.show());
-    try {
-      /**
-       * TO-DO: 
-       * 1. prepare message post validating it, give some default fallback value
-       * */ 
-      const messagePrefix=`Loading Data for given module ${moduleName}`;
-      const totalIterations=9;
-      for (let i = 1; i <= totalIterations; i++) {
-        const message = `${messagePrefix}: Iteration Number: ${i} completed successfully!!`;
-        console.log(message);
-        dispatch(v3.updateTitle(`Operation in progress: ${message}`));
-        await delayForMS(3000);
+  const loadInitialDataForModule = useCallback(
+    async (moduleName) => {
+      dispatch(v3.show());
+      try {
+        /**
+         * TO-DO:
+         * 1. prepare message post validating it, give some default fallback value
+         * */
+        const messagePrefix = `Loading Data for given module ${moduleName}`;
+        const totalIterations = 9;
+        for (let i = 1; i <= totalIterations; i++) {
+          const message = `${messagePrefix}: Iteration Number: ${i} completed successfully!!`;
+          console.log(message);
+          dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+          await delayForMS(3000);
+        }
+        dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+        await delayForMS(5000);
+      } catch (error) {
+      } finally {
+        dispatch(v3.hide());
       }
-      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
-      await delayForMS(5000);
-    } catch (error) {
-    } finally {
-      dispatch(v3.hide());
-    }
-  }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   return (
     <div>
@@ -98,8 +101,9 @@ const UsingCustomBackdropV3 = () => {
       </button>
 
       <br />
-      <button onClick={()=>loadInitialDataForModule("Tweet App")}>
-        Update Title of BackdropV3: <strong>Load initial data</strong> for a dummy module: With delay of 5 seconds
+      <button onClick={() => loadInitialDataForModule("Tweet App")}>
+        Update Title of BackdropV3: <strong>Load initial data</strong> for a
+        dummy module: With delay of 5 seconds
       </button>
 
       <CustomBackdropV3 />

@@ -58,6 +58,29 @@ const UsingCustomBackdropV3 = () => {
     }
   }, [dispatch]);
 
+  const loadInitialDataForModule = useCallback(async (moduleName) => {
+    dispatch(v3.show());
+    try {
+      /**
+       * TO-DO: 
+       * 1. prepare message post validating it, give some default fallback value
+       * */ 
+      const messagePrefix=`Loading Data for given module ${moduleName}`;
+      const totalIterations=9;
+      for (let i = 1; i <= totalIterations; i++) {
+        const message = `${messagePrefix}: Iteration Number: ${i} completed successfully!!`;
+        console.log(message);
+        dispatch(v3.updateTitle(`Operation in progress: ${message}`));
+        await delayForMS(3000);
+      }
+      dispatch(v3.updateTitle(`Operation Completed successfully!!`));
+      await delayForMS(5000);
+    } catch (error) {
+    } finally {
+      dispatch(v3.hide());
+    }
+  }, [dispatch]);
+
   return (
     <div>
       <h1>UsingCustomBackdropV3</h1>
@@ -72,6 +95,11 @@ const UsingCustomBackdropV3 = () => {
       <br />
       <button onClick={handleUpdateTitleWithDelay}>
         Update Title of BackdropV3: With delay of 5 seconds
+      </button>
+
+      <br />
+      <button onClick={()=>loadInitialDataForModule("Tweet App")}>
+        Update Title of BackdropV3: <strong>Load initial data</strong> for a dummy module: With delay of 5 seconds
       </button>
 
       <CustomBackdropV3 />

@@ -64,10 +64,41 @@ export const safelyUpdateString = (
     return existing; // Return existing if invalid
   }
 
+  return newValue;
+};
+
+const safelyTruncateString = (value = "", maxLength = 0) => {
+  const sanitizedString = safelyUpdateString("", value);
+  if (!sanitizedString) {
+    return "";
+  }
+
   // Trim and truncate the string if it exceeds max length
-  const trimmedValue = newValue.trim();
+  const trimmedValue = value.trim();
   let calcMaxLength = getMaxInteger(0, maxLength);
   return calcMaxLength && trimmedValue.length > calcMaxLength
     ? trimmedValue.substring(0, calcMaxLength)
     : trimmedValue;
+};
+
+export const safelyUpdateObject = (existing = {}, newValue = {}) => {
+  return newValue && typeof newValue === "object" && !Array.isArray(newValue)
+    ? newValue
+    : existing;
+};
+
+export const safelyUpdateArray = (existing = [], newValue = []) => {
+  return Array.isArray(newValue) ? newValue : existing;
+};
+
+export const safelyUpdateNullable = (existing = null, newValue = null) => {
+  return newValue === null || newValue === undefined ? existing : newValue;
+};
+
+export const safelyUpdateNumber = (existing = 0, newValue = 0) => {
+  return typeof newValue === "number" && !isNaN(newValue) ? newValue : existing;
+};
+
+export const safelyUpdateBoolean = (existing = false, newValue = false) => {
+  return typeof newValue === "boolean" ? newValue : existing;
 };

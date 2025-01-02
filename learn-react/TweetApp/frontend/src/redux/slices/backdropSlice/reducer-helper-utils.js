@@ -67,12 +67,11 @@ export const safelyUpdateString = (
   return newValue;
 };
 
-const safelyTruncateString = (value = "", maxLength = 0) => {
-  const sanitizedString = safelyUpdateString("", value);
-  if (!sanitizedString) {
+export const safelyTruncateString = (value = "", maxLength = 0) => {
+  //   const sanitizedString = safelyUpdateString("", value);
+  if (!safelyUpdateString("", value)) {
     return "";
   }
-
   // Trim and truncate the string if it exceeds max length
   const trimmedValue = value.trim();
   let calcMaxLength = getMaxInteger(0, maxLength);

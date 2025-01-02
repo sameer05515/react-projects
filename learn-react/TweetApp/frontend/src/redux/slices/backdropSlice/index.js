@@ -1,7 +1,8 @@
 // store/backdropSlice.js
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import * as utils from "./reducer-helper-utils";
+import { toJsonString } from "../../../common/service/transformations";
+import { safelyUpdateString } from "../../../common/service/safely-updations";
 
 const backdropSlice = createSlice({
   name: "backdrop",
@@ -25,8 +26,8 @@ const backdropSlice = createSlice({
 
     updateTitle: (state, action) => {
       const customBackdropV3 = state.customBackdrop.v3;
-      console.log("action: ", utils.toJsonString(action));
-      customBackdropV3.title = utils.safelyUpdateString(
+      console.log("action: ", toJsonString(action));
+      customBackdropV3.title = safelyUpdateString(
         customBackdropV3.title,
         action.payload
       );

@@ -2,7 +2,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import initialState, { v3InitialState } from "./initialState";
 import { sanitizeAndUpdateV3 } from "./reducer-helper-utils";
-import { truncateAndUpdate } from "../../../common/service/safely-updations";
 
 const backdropSlice = createSlice({
   name: "backdrop",

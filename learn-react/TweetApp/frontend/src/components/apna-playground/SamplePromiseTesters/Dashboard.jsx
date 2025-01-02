@@ -8,6 +8,7 @@ const SamplePromiseTesterDashboard = () => {
       <h1>SamplePromiseTesterDashboard</h1>
 
       <UsingEarlierVersionsOfBackdrops />
+      <hr />
       <UsingCustomBackdropV3 />
     </div>
   );

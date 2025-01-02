@@ -1,9 +1,6 @@
 import initialState from "./initialState";
 import { toJsonString } from "../../../common/service/transformations";
 
-
-  
-
 const customBackdropV3InitialState = initialState.customBackdrop.v3;
 
 export const reset = (prev, payload) => {
@@ -22,4 +19,3 @@ export const reset = (prev, payload) => {
   // }
   return prev;
 };
-

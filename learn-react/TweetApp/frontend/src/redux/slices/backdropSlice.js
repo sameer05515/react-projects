@@ -1,18 +1,22 @@
 // store/backdropSlice.js
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
-const backdropSlice = createSlice({
-  name: "backdrop",
-  initialState: {
-    active: false, // CustomBackdropV2 visibility
-    /** CustomBackdropV3 states */
-    customBackdrop: {
-      v3: {
-        active: false,
-        title: "",
-      },
+const initialState = {
+  active: false, // CustomBackdropV2 visibility
+  /** CustomBackdropV3 states */
+  customBackdrop: {
+    v3: {
+      active: false,
+      title: "",
+      subtitle: "",
+      description: "",
     },
   },
+};
+
+const backdropSlice = createSlice({
+  name: "backdrop",
+  initialState: { ...initialState },
   reducers: {
     showBackdrop: (state) => {
       state.active = true;
@@ -31,7 +35,7 @@ const backdropSlice = createSlice({
     },
 
     updateTitle: (state, action) => {
-      state.customBackdrop.v3.title = action.payload;
+      state.customBackdrop.v3.title = action.payload;      
     },
   },
 });

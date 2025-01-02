@@ -2,7 +2,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
 import { toJsonString } from "../../../common/service/transformations";
-import { safelyUpdateString } from "../../../common/service/safely-updations";
+import { getSanitizedAndUpdatedV3Title } from "./reducer-helper-utils";
 
 const backdropSlice = createSlice({
   name: "backdrop",
@@ -27,10 +27,13 @@ const backdropSlice = createSlice({
     updateTitle: (state, action) => {
       const customBackdropV3 = state.customBackdrop.v3;
       console.log("action: ", toJsonString(action));
-      customBackdropV3.title = safelyUpdateString(
-        customBackdropV3.title,
-        action.payload
-      );
+
+      if (customBackdropV3.active) {
+        customBackdropV3.title = getSanitizedAndUpdatedV3Title(
+          customBackdropV3.title,
+          action.payload
+        );
+      }
     },
   },
 });

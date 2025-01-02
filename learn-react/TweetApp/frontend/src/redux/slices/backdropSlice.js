@@ -22,7 +22,9 @@ const backdropSlice = createSlice({
     },
 
     showBackdropV3: (state) => {
-      state.customBackdrop.v3.active = true;
+      const customBackdropV3 = state.customBackdrop.v3;
+      customBackdropV3.title = "";
+      customBackdropV3.active = true;
     },
     hideBackdropV3: (state) => {
       state.customBackdrop.v3.active = false;

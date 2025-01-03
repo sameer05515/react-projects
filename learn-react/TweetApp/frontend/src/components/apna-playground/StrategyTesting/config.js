@@ -5,7 +5,7 @@ const DefaultComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>
-      The tester component with the name <strong>{invalidName}</strong> could
+      The tester component with the name <strong>'{invalidName}'</strong> could
       not be located.
     </p>
   </div>
@@ -18,11 +18,12 @@ const FallbackStrategies = {
 };
 
 const actAccordingToStrategy = (strategy, invalidName) => {
-  if (!strategy) return DefaultComponent;
+  if (!strategy) return () => <DefaultComponent name={invalidName} />;
 
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
-      return DefaultComponent;
+      console.log(`invalidName: ${invalidName}`)
+      return () => <DefaultComponent name={invalidName} />;
 
     case FallbackStrategies.RETURN_NULL:
       return null;
@@ -39,8 +40,8 @@ const actAccordingToStrategy = (strategy, invalidName) => {
 };
 
 const Testers = {
-  CompA:()=><div>Component A</div>,
-  CompB:()=><div>Component B</div>,
+  CompA: () => <div>Component A</div>,
+  CompB: () => <div>Component B</div>,
 };
 
 export const testerNames = Object.keys(Testers).map((keyName, idx) => ({
@@ -52,4 +53,4 @@ export const testerNames = Object.keys(Testers).map((keyName, idx) => ({
 export const getTesterComponent = (
   name = "",
   strategy = FallbackStrategies.RETURN_DEFAULT_COMPONENT
-) => Testers[name] || actAccordingToStrategy(strategy);
+) => Testers[name] || actAccordingToStrategy(strategy, name);

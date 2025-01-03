@@ -21,6 +21,8 @@
  * - Handling invalid or non-existing component names gracefully.
  * - Avoiding application crashes due to unexpected values.
  * - Customizing behavior based on specific requirements in different contexts.
+ * 
+ * Please find additional strategies [**here**](./Readme.md)
  */
 
 export const FallbackStrategies = {

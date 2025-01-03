@@ -22,7 +22,7 @@ const actAccordingToStrategy = (strategy, invalidName) => {
 
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
-      console.log(`invalidName: ${invalidName}`)
+      console.log(`invalidName: ${invalidName}`);
       return () => <DefaultComponent name={invalidName} />;
 
     case FallbackStrategies.RETURN_NULL:

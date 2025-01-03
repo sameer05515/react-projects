@@ -6,6 +6,12 @@ import CustomBackdropV3 from "../../../../../common/components/CustomBackdrop/v3
 import HoverActions from "../../../../../common/components/hover-actions/HoverActions";
 import { sampleNames, getSampleComponent } from "./samplesConfig";
 
+const actionStyles = {
+  cursor: "pointer",
+  margin: "0 8px",
+  textDecoration: "underline",
+};
+
 const UsingCustomBackdropV3 = () => {
   const isActive = useSelector(selectIsCustomBackdropV3Active);
   const [selectedSample, setSelectedSample] = useState(null);
@@ -14,21 +20,19 @@ const UsingCustomBackdropV3 = () => {
     setSelectedSample(sampleName);
   }, []);
 
-  const sampleActions = useMemo(() => {
-    return sampleNames.map(({ id, name }) => (
-      <span
-        key={id}
-        onClick={() => handleSampleSelect(name)}
-        style={{
-          cursor: "pointer",
-          margin: "0 8px",
-          textDecoration: "underline",
-        }}
-      >
-        {name}
-      </span>
-    ));
-  }, [handleSampleSelect]);
+  const sampleActions = useMemo(
+    () =>
+      sampleNames.map(({ id, name }) => (
+        <span
+          key={id}
+          onClick={() => handleSampleSelect(name)}
+          style={actionStyles}
+        >
+          {name}
+        </span>
+      )),
+    [handleSampleSelect]
+  );
 
   const { component: SelectedSampleComponent, componentTitle } = useMemo(() => {
     if (!selectedSample)
@@ -39,18 +43,10 @@ const UsingCustomBackdropV3 = () => {
     };
   }, [selectedSample]);
 
-  // const SelectedSampleComponent = selectedSample
-  //   ? getSampleComponent(selectedSample)
-  //   : null;
-
-  // const componentTitle = selectedSample
-  //   ? "Selected Component: " + selectedSample
-  //   : "Please select a sample";
-
-  useEffect(() => {
-    console.trace("I have been rendered!");
-    return () => console.trace("I have been destroyed!");
-  }, []);
+  // useEffect(() => {
+  //   console.trace("I have been rendered!");
+  //   return () => console.trace("I have been destroyed!");
+  // }, []);
 
   return (
     <div>

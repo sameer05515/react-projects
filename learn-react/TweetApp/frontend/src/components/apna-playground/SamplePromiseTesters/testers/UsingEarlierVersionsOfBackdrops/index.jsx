@@ -15,10 +15,10 @@ const UsingEarlierVersionsOfBackdrops = () => {
     dispatch(hideBackdrop());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.trace("I have been rendered!");
-    return () => console.trace("I have been destroyed!");
-  },[]);
+  // useEffect(() => {
+  //   console.trace("I have been rendered!");
+  //   return () => console.trace("I have been destroyed!");
+  // },[]);
   return (
     <div>
       <h1>UsingEarlierVersionsOfBackdrops</h1>

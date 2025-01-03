@@ -1,5 +1,6 @@
 import React from "react";
-import { FallbackStrategies, getTesterComponent, testerNames } from "./config";
+import { FallbackStrategies } from "../../../../common/best-practices/FallbackStrategies";
+import { getTesterComponent, testerNames } from "./config";
 
 // Test data including a non-existing name
 const testData = [

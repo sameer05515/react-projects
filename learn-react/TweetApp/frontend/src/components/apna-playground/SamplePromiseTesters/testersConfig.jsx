@@ -1,6 +1,7 @@
 import { memo } from "react";
 import UsingCustomBackdropV3 from "./testers/UsingCustomBackdropV3";
 import UsingEarlierVersionsOfBackdrops from "./testers/UsingEarlierVersionsOfBackdrops";
+import { FallbackStrategies } from "../../../common/best-practices/FallbackStrategies";
 
 // Default fallback component
 const DefaultTesterComponent = memo(({ invalidName }) => (
@@ -13,11 +14,6 @@ const DefaultTesterComponent = memo(({ invalidName }) => (
   </div>
 ));
 
-const FallbackStrategies = {
-  RETURN_DEFAULT_COMPONENT: "RETURN_DEFAULT_COMPONENT",
-  RETURN_NULL: "RETURN_NULL",
-  RETURN_UNDEFINED: "RETURN_UNDEFINED",
-};
 
 const actAccordingToStrategy = (strategy, invalidName) => {
   if (!strategy) return DefaultTesterComponent;

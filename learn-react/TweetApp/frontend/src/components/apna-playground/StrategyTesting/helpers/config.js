@@ -1,10 +1,5 @@
 import { memo } from "react";
-
-export const FallbackStrategies = {
-  RETURN_DEFAULT_COMPONENT: "RETURN_DEFAULT_COMPONENT",
-  RETURN_NULL: "RETURN_NULL",
-  RETURN_UNDEFINED: "RETURN_UNDEFINED",
-};
+import { FallbackStrategies } from "../../../../common/best-practices/FallbackStrategies";
 
 // List of available tester components
 const Testers = {

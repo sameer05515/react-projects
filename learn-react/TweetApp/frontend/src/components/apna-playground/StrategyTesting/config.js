@@ -5,7 +5,7 @@ const DefaultComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>
-      The tester component with the name <strong>'{invalidName}'</strong> could
+      The tester component with the name <strong>{invalidName}</strong> could
       not be located.
     </p>
   </div>

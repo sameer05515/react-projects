@@ -80,9 +80,9 @@ const CustomBackdropV3 = () => {
 
   return (
     <div className={styles.backdrop}>
-      <h1 className={styles.title}>{title || ""}</h1>
-      <h2 className={styles.subtitle}>{subtitle || ""}</h2>
-      <div className={styles.description}>{description || ""}</div>
+      {title && <h1 className={styles.title}>{title}</h1>}
+      {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
+      {description && <p className={styles.description}>{description}</p>}
     </div>
   );
 };

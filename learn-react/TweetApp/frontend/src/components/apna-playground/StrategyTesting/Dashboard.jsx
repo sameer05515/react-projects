@@ -29,14 +29,37 @@ const validInvalidSeggregationForEachApproach = () => {
   return { validComponents, invalidNames };
 };
 
+const validInvalidSeggregationMapReduceApproach = () => {
+  return testTesterNames.reduce(
+    (acc, { name, id }) => {
+      const TesterComponent = getTesterComponent(
+        name,
+        FallbackStrategies.RETURN_UNDEFINED
+      );
+
+      if (!TesterComponent) {
+        acc.invalidNames.count += 1;
+        acc.invalidNames.names.push(name);
+      } else {
+        acc.validComponents.push(<TesterComponent key={id} />);
+      }
+      return acc;
+    },
+    {
+      validComponents: [],
+      invalidNames: { count: 0, names: [] },
+    }
+  );
+};
+
 const componentsArrWithDefaultStrategy = testTesterNames.map(({ name, id }) => {
   const TesterComponent = getTesterComponent(name);
   return <TesterComponent key={id} />;
 });
 
 const StrategyTestingDashboard = () => {
-  const { validComponents, invalidNames } =
-    validInvalidSeggregationForEachApproach();
+  const forEachApproach = validInvalidSeggregationForEachApproach();
+  const reduceApproach = validInvalidSeggregationMapReduceApproach();
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>
@@ -46,11 +69,21 @@ const StrategyTestingDashboard = () => {
       <hr />
       <h2>With Return Null strategy</h2>
       <div>
-        {validComponents}
-        {invalidNames.count > 0 && (
+        {forEachApproach.validComponents}
+        {forEachApproach.invalidNames.count > 0 && (
           <p style={{ color: "red" }}>
-            Total invalid names: {invalidNames.count} : [
-            {invalidNames.names.map((n) => n)}]
+            Total invalid names: {forEachApproach.invalidNames.count} : [
+            {forEachApproach.invalidNames.names.map((n) => n)}]
+          </p>
+        )}
+      </div>
+      <h2>With Return Undefined strategy</h2>
+      <div>
+        {reduceApproach.validComponents}
+        {reduceApproach.invalidNames.count > 0 && (
+          <p style={{ color: "red" }}>
+            Total invalid names: {reduceApproach.invalidNames.count} : [
+            {reduceApproach.invalidNames.names.map((n) => n)}]
           </p>
         )}
       </div>

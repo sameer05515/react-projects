@@ -13,8 +13,8 @@ const initialState = {
 
 export const v3InitialState = initialState.customBackdrop.v3;
 
-export const ALLOWED_MAX_V3_TITLE_LENGTH = 30;
-export const ALLOWED_MAX_V3_SUBTITLE_LENGTH = 50;
-export const ALLOWED_MAX_V3_DESCRIPTION_LENGTH = 200;
+export const ALLOWED_MAX_V3_TITLE_LENGTH = 0;
+export const ALLOWED_MAX_V3_SUBTITLE_LENGTH = 0;
+export const ALLOWED_MAX_V3_DESCRIPTION_LENGTH = 0;
 
 export default initialState;

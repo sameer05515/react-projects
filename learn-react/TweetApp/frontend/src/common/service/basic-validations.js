@@ -8,6 +8,9 @@ const isValidObject = (value) =>
 const isValidArray = (value) => Array.isArray(value);
 const isValidBoolean = (value) => typeof value === "boolean";
 
+const isString = (value) => typeof value === "string";
+const isNonEmptyString = isValidString;
+
 export {
   isValidInteger,
   isValidString,
@@ -15,4 +18,6 @@ export {
   isValidObject,
   isValidArray,
   isValidBoolean,
+  isString,
+  isNonEmptyString,
 };

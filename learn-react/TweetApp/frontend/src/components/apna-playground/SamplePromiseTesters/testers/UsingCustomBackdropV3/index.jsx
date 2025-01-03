@@ -76,6 +76,7 @@ const UsingCustomBackdropV3 = () => {
          * 1. prepare message post validating it, give some default fallback value
          * */
         const title = `Loading Data for given module ${moduleName}`;
+        console.log("moduleName: "+moduleName);
         dispatch(updateBackdropV3({ title }));
         const totalIterations = 9;
         for (let i = 1; i <= totalIterations; i++) {

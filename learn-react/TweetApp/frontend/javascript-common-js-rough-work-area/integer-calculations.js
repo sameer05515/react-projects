@@ -1,1 +1,3 @@
-console.log(Math.max(0,-1));
+const isValidNumber = (value) => typeof value === "number" && !isNaN(value);
+
+console.log(isValidNumber(0));

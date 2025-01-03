@@ -2,6 +2,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import initialState, { v3InitialState } from "./initialState";
 import { sanitizeAndUpdateV3 } from "./reducer-helper-utils";
+import { isValidObject } from "../../../common/service/basic-validations";
 
 const backdropSlice = createSlice({
   name: "backdrop",
@@ -14,22 +15,31 @@ const backdropSlice = createSlice({
       state.active = false;
     },
 
-    showBackdropV3: (state) => {
-      state.customBackdrop.v3 = { ...v3InitialState, active: true };
+    showBackdropV3: (state, action) => {
+      state.customBackdrop.v3 = {
+        ...v3InitialState,
+        title: action.payload?.title || "",
+        subtitle: action.payload?.subtitle || "",
+        description: action.payload?.description || "",
+        active: true,
+      };
     },
     hideBackdropV3: (state) => {
-      state.customBackdrop.v3 = { ...v3InitialState };
+      state.customBackdrop.v3 = { ...v3InitialState, active: false };
     },
 
     updateBackdropV3: (state, action) => {
       const { v3 } = state.customBackdrop;
-      const { title, subtitle, description } = action.payload;
+      if (!v3.active) return;
 
       if (v3.active) {
-        state.customBackdrop.v3 = sanitizeAndUpdateV3(
-          { ...v3 },
-          { title, subtitle, description }
-        );
+        state.customBackdrop.v3 = {
+          ...v3,
+          title: action.payload?.title || "",
+          subtitle: action.payload?.subtitle || "",
+          description: action.payload?.description || "",
+          active: true,
+        };
       }
 
       console.log("state.customBackdrop.v3: ", state.customBackdrop.v3);

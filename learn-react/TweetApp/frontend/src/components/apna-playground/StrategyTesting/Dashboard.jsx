@@ -29,6 +29,11 @@ const validInvalidSeggregationForEachApproach = () => {
   return { validComponents, invalidNames };
 };
 
+const componentsArrWithDefaultStrategy = testTesterNames.map(({ name, id }) => {
+  const TesterComponent = getTesterComponent(name);
+  return <TesterComponent key={id} />;
+});
+
 const StrategyTestingDashboard = () => {
   const { validComponents, invalidNames } =
     validInvalidSeggregationForEachApproach();
@@ -36,10 +41,7 @@ const StrategyTestingDashboard = () => {
     <div>
       <h1>StrategyTestingDashboard</h1>
       <h2>With Default Strategy</h2>
-      {testTesterNames.map(({ name, id }) => {
-        const TesterComponent = getTesterComponent(name);
-        return <TesterComponent key={id} />;
-      })}
+      {componentsArrWithDefaultStrategy}
       <hr />
       <hr />
       <h2>With Return Null strategy</h2>

@@ -1,13 +1,15 @@
 import { memo } from "react";
 
+const error = { color: "red" };
+
 // Default fallback component
 const DefaultComponent = memo(({ invalidName }) => (
   <div>
-    <h2>Component Not Found</h2>
-    <p>
+    <strong>Component Not Found: </strong>
+    <span style={error}>
       The tester component with the name <strong>{invalidName}</strong> could
       not be located.
-    </p>
+    </span>
   </div>
 ));
 

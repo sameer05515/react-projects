@@ -10,41 +10,15 @@ import {
 } from "../../../../../redux/slices/backdropSlice";
 import CustomBackdropV3 from "../../../../../common/components/CustomBackdrop/v3";
 import { createIntervalPromise, delayForMS } from "../../../sample-promises";
+import SampleV1 from "./samples/v1";
+import SampleV2 from "./samples/v2";
 
 const UsingCustomBackdropV3 = () => {
   const dispatch = useDispatch();
   const isActive = useSelector(selectIsCustomBackdropV3Active);
-  const handleClick = useCallback(async () => {
-    dispatch(showBackdropV3());
-    await delayForMS(1000);
-    dispatch(hideBackdropV3());
-  }, [dispatch]);
+  
 
-  const handleUpdateTitle = useCallback(async () => {
-    dispatch(showBackdropV3());
-    dispatch(updateBackdropV3({ title: "Starting calculations" }));
-    try {
-      let itration = 0;
-      await createIntervalPromise(
-        () => {
-          const message = `Iteration Number: ${++itration} completed successfully!!`;
-          console.log(message);
-          dispatch(
-            updateBackdropV3({ title: `Operation in progress: ${message}` })
-          );
-        },
-        3000,
-        5
-      );
-      console.log("Interval completed!");
-      await delayForMS(5000);
-      // dispatch(v3.hide());
-    } catch (error) {
-      console.error("Error during interval:", error);
-    } finally {
-      dispatch(hideBackdropV3());
-    }
-  }, [dispatch]);
+
 
   const handleUpdateTitleWithDelay = useCallback(async () => {
     dispatch(showBackdropV3());
@@ -109,11 +83,9 @@ const UsingCustomBackdropV3 = () => {
       <h1>UsingCustomBackdropV3</h1>
       <h2>CustomBackdropV3 is active: {convertToYesNo(isActive)}</h2>
       <br />
-      <button onClick={handleClick}>Show BackdropV3</button>
+      <SampleV1/>
       <br />
-      <button onClick={handleUpdateTitle}>
-        Update Title of BackdropV3: With setInterval
-      </button>
+      <SampleV2/>
 
       <br />
       <button onClick={handleUpdateTitleWithDelay}>

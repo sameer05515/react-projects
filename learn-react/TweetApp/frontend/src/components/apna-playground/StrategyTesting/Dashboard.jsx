@@ -1,6 +1,6 @@
 import React from "react";
-import { VALID_INVALID_SEGGREGATION } from "./utils";
-import styles from "./styles.module.css";
+import { VALID_INVALID_SEGGREGATION } from "./helpers/utils";
+import styles from "./helpers/styles.module.css";
 
 const StrategyTestingDashboard = () => {
   const {

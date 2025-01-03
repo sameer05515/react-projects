@@ -468,8 +468,15 @@ const componentMapWithPurposes = {
   },
   StrategyTestingDashboard: {
     element: StrategyTestingDashboard,
-    purpose:
-      "A component to test various strategies to handle non-existing case",
+    purpose: `
+      This component serves as a testing ground for implementing and evaluating
+      different strategies to handle non-existing or fallback cases. It allows
+      developers to validate the behavior of various fallback mechanisms, such
+      as returning default components, null, or undefined, in a controlled environment.
+      
+      The component is designed to facilitate experimentation and comparison,
+      ensuring the adoption of best practices for robust and maintainable application design.
+    `,
     isExperimentalComponent: true,
     module: ComponentModules.TweetApp_Optimization_With_Best_Practices,
   },

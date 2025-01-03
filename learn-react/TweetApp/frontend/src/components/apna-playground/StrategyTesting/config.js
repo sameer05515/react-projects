@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 // Default fallback component
-const DefaultComponent = memo(({ invalidName }) => (
+export const DefaultComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>
@@ -18,12 +18,12 @@ const FallbackStrategies = {
 };
 
 const actAccordingToStrategy = (strategy, invalidName) => {
-  if (!strategy) return () => <DefaultComponent name={invalidName} />;
+  if (!strategy) return () => <DefaultComponent invalidName={invalidName} />;
 
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
       console.log(`invalidName: ${invalidName}`);
-      return () => <DefaultComponent name={invalidName} />;
+      return () => <DefaultComponent invalidName={invalidName} />;
 
     case FallbackStrategies.RETURN_NULL:
       return null;

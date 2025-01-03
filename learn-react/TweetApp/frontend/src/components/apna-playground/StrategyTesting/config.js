@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 // Default fallback component
-export const DefaultComponent = memo(({ invalidName }) => (
+const DefaultComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>

@@ -16,9 +16,6 @@ import SampleV2 from "./samples/v2";
 const UsingCustomBackdropV3 = () => {
   const dispatch = useDispatch();
   const isActive = useSelector(selectIsCustomBackdropV3Active);
-  
-
-
 
   const handleUpdateTitleWithDelay = useCallback(async () => {
     dispatch(showBackdropV3());
@@ -51,8 +48,8 @@ const UsingCustomBackdropV3 = () => {
          * */
         const backdropMessages = {
           title: `Loading Data for given module ${moduleName}`,
-          subtitle:"",
-          description:""
+          subtitle: "",
+          description: "",
         };
         console.log("moduleName: " + moduleName);
         dispatch(updateBackdropV3(backdropMessages));
@@ -60,8 +57,8 @@ const UsingCustomBackdropV3 = () => {
         for (let i = 1; i <= totalIterations; i++) {
           const subtitle = `Iteration Number: ${i} completed successfully!!`;
           // console.log(message);
-          dispatch(updateBackdropV3({...backdropMessages, subtitle }));
-          await delayForMS(3000); 
+          dispatch(updateBackdropV3({ ...backdropMessages, subtitle }));
+          await delayForMS(3000);
         }
         dispatch(
           updateBackdropV3({
@@ -83,9 +80,9 @@ const UsingCustomBackdropV3 = () => {
       <h1>UsingCustomBackdropV3</h1>
       <h2>CustomBackdropV3 is active: {convertToYesNo(isActive)}</h2>
       <br />
-      <SampleV1/>
+      <SampleV1 />
       <br />
-      <SampleV2/>
+      <SampleV2 />
 
       <br />
       <button onClick={handleUpdateTitleWithDelay}>

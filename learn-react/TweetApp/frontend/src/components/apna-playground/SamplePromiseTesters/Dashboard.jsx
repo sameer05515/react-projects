@@ -7,11 +7,7 @@ const SamplePromiseTesterDashboard = () => {
       <h1>SamplePromiseTesterDashboard</h1>
       {testerNames.map(({ name, id }) => {
         const TesterComponent = getTesterComponent(name);
-        return (
-          <div key={id}>
-            {TesterComponent ? <TesterComponent /> : <p>No component found</p>}
-          </div>
-        );
+        return <TesterComponent key={id} />;
       })}
     </div>
   );

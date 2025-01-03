@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles.v3.module.css";
 import {
+  selectCustomBackdropV3CurrentDescription,
+  selectCustomBackdropV3CurrentSubtitle,
   selectCustomBackdropV3CurrentTitle,
   selectIsCustomBackdropV3Active,
 } from "../../../redux/slices/backdropSlice";
@@ -71,14 +73,16 @@ import {
 const CustomBackdropV3 = () => {
   const isActive = useSelector(selectIsCustomBackdropV3Active);
   const title = useSelector(selectCustomBackdropV3CurrentTitle);
+  const subtitle = useSelector(selectCustomBackdropV3CurrentSubtitle);
+  const description = useSelector(selectCustomBackdropV3CurrentDescription);
 
   if (!isActive) return null;
 
   return (
     <div className={styles.backdrop}>
       <h1 className={styles.title}>{title || ""}</h1>
-      {/* <h2 className={styles.title}>{title || ""}</h2>
-      <div className={styles.title}>{title || ""}</div> */}
+      <h2 className={styles.subtitle}>{subtitle || ""}</h2>
+      <div className={styles.description}>{description || ""}</div>
     </div>
   );
 };

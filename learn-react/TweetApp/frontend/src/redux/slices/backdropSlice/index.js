@@ -80,3 +80,13 @@ export const selectCustomBackdropV3CurrentTitle = createSelector(
   selectBackdropState,
   (topicsState) => topicsState.customBackdrop.v3.title
 );
+
+export const selectCustomBackdropV3CurrentSubtitle = createSelector(
+  selectBackdropState,
+  (topicsState) => topicsState.customBackdrop.v3.subtitle
+);
+
+export const selectCustomBackdropV3CurrentDescription = createSelector(
+  selectBackdropState,
+  (topicsState) => topicsState.customBackdrop.v3.description
+);

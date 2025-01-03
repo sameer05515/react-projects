@@ -6,6 +6,12 @@ export const FallbackStrategies = {
   RETURN_UNDEFINED: "RETURN_UNDEFINED",
 };
 
+// List of available tester components
+const Testers = {
+  CompA: () => <div>Component A</div>,
+  CompB: () => <div>Component B</div>,
+};
+
 const error = { color: "red" };
 
 // Default fallback component
@@ -19,38 +25,32 @@ const DefaultComponent = memo(({ invalidName }) => (
   </div>
 ));
 
+// Act according to the specified strategy
 const actAccordingToStrategy = (strategy, invalidName) => {
-  if (!strategy) return () => <DefaultComponent invalidName={invalidName} />;
-
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
       return () => <DefaultComponent invalidName={invalidName} />;
-
     case FallbackStrategies.RETURN_NULL:
       return null;
-
     case FallbackStrategies.RETURN_UNDEFINED:
       return undefined;
-
     default:
       console.warn(
-        `Unknown strategy: ${strategy}. Falling back to default component.`
+        `Unknown strategy: ${strategy}. Falling back to RETURN_DEFAULT_COMPONENT.`
       );
-      return DefaultComponent;
+      return () => <DefaultComponent invalidName={invalidName} />;
   }
 };
 
-const Testers = {
-  CompA: () => <div>Component A</div>,
-  CompB: () => <div>Component B</div>,
-};
 
+
+// Generate tester names
 export const testerNames = Object.keys(Testers).map((keyName, idx) => ({
   id: `tester_no_${idx + 1}`,
   name: keyName,
 }));
 
-// Return default fallback component when name is not found
+// Get tester component with fallback logic
 export const getTesterComponent = (
   name = "",
   strategy = FallbackStrategies.RETURN_DEFAULT_COMPONENT

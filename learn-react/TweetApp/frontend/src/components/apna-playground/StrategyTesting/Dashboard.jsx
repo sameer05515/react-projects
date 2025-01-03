@@ -7,9 +7,11 @@ const testTesterNames = [
 ];
 
 const StrategyTestingDashboard = () => {
+    
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>
+      <h2>With Default Strategy</h2>
       {testTesterNames.map(({ name, id }) => {
         const TesterComponent = getTesterComponent(name);
         return <TesterComponent key={id} />;

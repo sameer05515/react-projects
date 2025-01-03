@@ -6,7 +6,7 @@ const testTesterNames = [
   { name: "non-existing-name", id: "non-existing-id" },
 ];
 
-const StrategyTestingDashboard = () => {
+const validInvalidSeggregationForEachApproach = () => {
   const validComponents = [];
   let invalidNames = {
     count: 0,
@@ -25,6 +25,13 @@ const StrategyTestingDashboard = () => {
       validComponents.push(<TesterComponent key={name} />);
     }
   });
+
+  return { validComponents, invalidNames };
+};
+
+const StrategyTestingDashboard = () => {
+  const { validComponents, invalidNames } =
+    validInvalidSeggregationForEachApproach();
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>

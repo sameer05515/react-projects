@@ -1,5 +1,5 @@
 import React from "react";
-import { getTesterComponent, testerNames } from "./config";
+import { FallbackStrategies, getTesterComponent, testerNames } from "./config";
 
 const testTesterNames = [
   ...testerNames,
@@ -8,12 +8,19 @@ const testTesterNames = [
 
 const StrategyTestingDashboard = () => {
   const validComponents = [];
-  let invalidNamesCount = 0;
+  let invalidNames = {
+    count: 0,
+    names: [],
+  };
 
-  testerNames.forEach(({ name }) => {
-    const TesterComponent = getTesterComponent(name);
+  testTesterNames.forEach(({ name }) => {
+    const TesterComponent = getTesterComponent(
+      name,
+      FallbackStrategies.RETURN_NULL
+    );
     if (TesterComponent === null) {
-      invalidNamesCount += 1;
+      invalidNames.count += 1;
+      invalidNames.names.push(name);
     } else {
       validComponents.push(<TesterComponent key={name} />);
     }
@@ -26,6 +33,18 @@ const StrategyTestingDashboard = () => {
         const TesterComponent = getTesterComponent(name);
         return <TesterComponent key={id} />;
       })}
+      <hr />
+      <hr />
+      <h2>With Return Null strategy</h2>
+      <div>
+        {validComponents}
+        {invalidNames.count > 0 && (
+          <p style={{ color: "red" }}>
+            Total invalid names: {invalidNames.count} : [
+            {invalidNames.names.map((n) => n)}]
+          </p>
+        )}
+      </div>
     </div>
   );
 };

@@ -11,7 +11,7 @@ export const DefaultComponent = memo(({ invalidName }) => (
   </div>
 ));
 
-const FallbackStrategies = {
+export const FallbackStrategies = {
   RETURN_DEFAULT_COMPONENT: "RETURN_DEFAULT_COMPONENT",
   RETURN_NULL: "RETURN_NULL",
   RETURN_UNDEFINED: "RETURN_UNDEFINED",

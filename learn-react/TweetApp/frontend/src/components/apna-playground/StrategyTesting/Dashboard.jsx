@@ -7,7 +7,17 @@ const testTesterNames = [
 ];
 
 const StrategyTestingDashboard = () => {
-    
+  const validComponents = [];
+  let invalidNamesCount = 0;
+
+  testerNames.forEach(({ name }) => {
+    const TesterComponent = getTesterComponent(name);
+    if (TesterComponent === null) {
+      invalidNamesCount += 1;
+    } else {
+      validComponents.push(<TesterComponent key={name} />);
+    }
+  });
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>

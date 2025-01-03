@@ -1,9 +1,7 @@
 import { memo } from "react";
-import UsingCustomBackdropV3 from "./testers/UsingCustomBackdropV3";
-import UsingEarlierVersionsOfBackdrops from "./testers/UsingEarlierVersionsOfBackdrops";
 
 // Default fallback component
-const DefaultTesterComponent = memo(({ invalidName }) => (
+const DefaultComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>
@@ -20,11 +18,11 @@ const FallbackStrategies = {
 };
 
 const actAccordingToStrategy = (strategy, invalidName) => {
-  if (!strategy) return DefaultTesterComponent;
+  if (!strategy) return DefaultComponent;
 
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
-      return DefaultTesterComponent;
+      return DefaultComponent;
 
     case FallbackStrategies.RETURN_NULL:
       return null;
@@ -36,13 +34,13 @@ const actAccordingToStrategy = (strategy, invalidName) => {
       console.warn(
         `Unknown strategy: ${strategy}. Falling back to default component.`
       );
-      return DefaultTesterComponent;
+      return DefaultComponent;
   }
 };
 
 const Testers = {
-  UsingCustomBackdropV3,
-  UsingEarlierVersionsOfBackdrops,
+  CompA:()=><div>Component A</div>,
+  CompB:()=><div>Component B</div>,
 };
 
 export const testerNames = Object.keys(Testers).map((keyName, idx) => ({

@@ -1,15 +1,15 @@
 import React from "react";
-import { getTesterComponent, testerNames } from "./testersConfig";
+import { getTesterComponent, testerNames } from "./config";
 
 const testTesterNames = [
   ...testerNames,
   { name: "non-existing-name", id: "non-existing-id" },
 ];
 
-const SamplePromiseTesterDashboard = () => {
+const StrategyTestingDashboard = () => {
   return (
     <div>
-      <h1>SamplePromiseTesterDashboard</h1>
+      <h1>StrategyTestingDashboard</h1>
       {testTesterNames.map(({ name, id }) => {
         const TesterComponent = getTesterComponent(name);
         return <TesterComponent key={id} />;
@@ -18,4 +18,4 @@ const SamplePromiseTesterDashboard = () => {
   );
 };
 
-export default SamplePromiseTesterDashboard;
+export default StrategyTestingDashboard;

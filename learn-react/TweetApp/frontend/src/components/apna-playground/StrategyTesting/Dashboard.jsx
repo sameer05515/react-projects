@@ -1,17 +1,16 @@
 import React from "react";
-import { VALID_INVALID_SEGGREGATION, Separator } from "./utils";
+import { VALID_INVALID_SEGGREGATION } from "./utils";
 
 const StrategyTestingDashboard = () => {
   const withMapApproachForSanitizedRender =
-    VALID_INVALID_SEGGREGATION.withDefaultStrategy;
-  const withForEachApproach = VALID_INVALID_SEGGREGATION.withReturnNullStrategy;
-  const withReduceApproach =
-    VALID_INVALID_SEGGREGATION.withReturnUndefinedStrategy;
+    VALID_INVALID_SEGGREGATION.defaultStrategy;
+  const withForEachApproach = VALID_INVALID_SEGGREGATION.returnNullStrategy;
+  const withReduceApproach = VALID_INVALID_SEGGREGATION.returnUndefinedStrategy;
 
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>
-      
+
       <StrategyOutputDisplay
         title="With Default Strategy"
         apprachData={withMapApproachForSanitizedRender}
@@ -32,12 +31,15 @@ const StrategyTestingDashboard = () => {
 };
 
 const StrategyOutputDisplay = ({
-  apprachData = { validComponents: [], invalidNames: { count: 0, names: [] } },
+  apprachData = {
+    validComponents: [],
+    invalidComponents: { count: 0, names: [] },
+  },
   title = "",
 }) => {
   const {
     validComponents,
-    invalidNames: { count, names },
+    invalidComponents: { count, names },
   } = apprachData;
   return (
     <div>
@@ -55,5 +57,10 @@ const StrategyOutputDisplay = ({
 };
 
 const error = { color: "red" };
+
+// Separator for visual distinction
+export const Separator = (
+  <div style={{ margin: "20px 0", borderTop: "2px solid black" }} />
+);
 
 export default StrategyTestingDashboard;

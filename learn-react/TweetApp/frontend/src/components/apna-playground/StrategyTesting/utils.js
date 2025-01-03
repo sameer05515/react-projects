@@ -1,74 +1,66 @@
 import React from "react";
 import { FallbackStrategies, getTesterComponent, testerNames } from "./config";
 
-const testTesterNames = [
+// Test data including a non-existing name
+const testData = [
   ...testerNames,
   { name: "non-existing-name", id: "non-existing-id" },
 ];
 
-const withForEachApproach = () => {
+// Approach 1: Using forEach for segregation
+const segregateComponentsWithForEach = () => {
   const validComponents = [];
-  let invalidNames = {
+  const invalidComponents = {
     count: 0,
     names: [],
   };
 
-  testTesterNames.forEach(({ name }) => {
-    const TesterComponent = getTesterComponent(
-      name,
-      FallbackStrategies.RETURN_NULL
-    );
-    if (TesterComponent === null) {
-      invalidNames.count += 1;
-      invalidNames.names.push(name);
+  testData.forEach(({ name, id }) => {
+    const Component = getTesterComponent(name, FallbackStrategies.RETURN_NULL);
+    if (Component === null) {
+      invalidComponents.count += 1;
+      invalidComponents.names.push(name);
     } else {
-      validComponents.push(<TesterComponent key={name} />);
+      validComponents.push(<Component key={id} />);
     }
   });
 
-  return { validComponents, invalidNames };
+  return { validComponents, invalidComponents };
 };
 
-const withReduceApproach = () => {
-  return testTesterNames.reduce(
-    (acc, { name, id }) => {
-      const TesterComponent = getTesterComponent(
-        name,
-        FallbackStrategies.RETURN_UNDEFINED
-      );
-
-      if (!TesterComponent) {
-        acc.invalidNames.count += 1;
-        acc.invalidNames.names.push(name);
+// Approach 2: Using reduce for segregation
+const segregateComponentsWithReduce = () =>
+  testData.reduce(
+    (result, { name, id }) => {
+      const Component = getTesterComponent(name, FallbackStrategies.RETURN_UNDEFINED);
+      if (!Component) {
+        result.invalidComponents.count += 1;
+        result.invalidComponents.names.push(name);
       } else {
-        acc.validComponents.push(<TesterComponent key={id} />);
+        result.validComponents.push(<Component key={id} />);
       }
-      return acc;
+      return result;
     },
     {
       validComponents: [],
-      invalidNames: { count: 0, names: [] },
+      invalidComponents: { count: 0, names: [] },
     }
   );
-};
 
-const withMapApproachForSanitizedRender = () => ({
-  validComponents: testTesterNames.map(({ name, id }) => {
-    const TesterComponent = getTesterComponent(name);
-    return <TesterComponent key={id} />;
+// Approach 3: Using map for sanitized render (does not count invalid names)
+const sanitizedRenderWithMap = () => ({
+  validComponents: testData.map(({ name, id }) => {
+    const Component = getTesterComponent(name);
+    return <Component key={id} />;
   }),
-  invalidNames: { count: 0, names: [] },
+  invalidComponents: { count: 0, names: [] }, // Not tracked here
 });
 
+// Exported utility object for strategy-based results
 export const VALID_INVALID_SEGGREGATION = {
-  withDefaultStrategy: withMapApproachForSanitizedRender(),
-  withReturnNullStrategy: withForEachApproach(),
-  withReturnUndefinedStrategy: withReduceApproach(),
+  defaultStrategy: sanitizedRenderWithMap(),
+  returnNullStrategy: segregateComponentsWithForEach(),
+  returnUndefinedStrategy: segregateComponentsWithReduce(),
 };
 
-export const Separator = (
-  <>
-    <hr />
-    <hr />
-  </>
-);
+

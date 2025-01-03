@@ -1,27 +1,29 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import {
-  // v3,
-  showBackdropV3,
-  hideBackdropV3,
-} from "../../../../../../redux/slices/backdropSlice";
+import { showBackdropV3, hideBackdropV3 } from "../../../../../../redux/slices/backdropSlice";
 import { delayForMS } from "../../../../sample-promises";
-
-const description = `This component should show a backdrop with ' dispatch(showBackdropV3());' action, where no payload passed`;
 
 const SampleV1 = () => {
   const dispatch = useDispatch();
+
   const handleClick = useCallback(async () => {
-    dispatch(showBackdropV3());
-    await delayForMS(1000);
-    dispatch(hideBackdropV3());
+    try {
+      dispatch(showBackdropV3());
+      await delayForMS(1000);
+    } catch (error) {
+      console.error("Error in SampleV1 handleClick:", error);
+    } finally {
+      dispatch(hideBackdropV3());
+    }
   }, [dispatch]);
+
   return (
     <div>
-      <h1>SampleV1: Show BackdropV3</h1>
-      <strong>Description: </strong>
-      <pre>{description}</pre>
-      <button onClick={handleClick}>Show Result</button>
+      <h3>SampleV1: Show BackdropV3</h3>
+      <p>
+        <strong>Description:</strong> This component shows a backdrop using the `showBackdropV3` action.
+      </p>
+      <button onClick={handleClick}>Show Backdrop</button>
     </div>
   );
 };

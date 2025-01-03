@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { convertToYesNo } from "../../utils";
 import { useSelector } from "react-redux";
 import { selectIsCustomBackdropV3Active } from "../../../../../redux/slices/backdropSlice";

@@ -9,7 +9,7 @@ import {
   updateBackdropV3,
 } from "../../../../../redux/slices/backdropSlice";
 import CustomBackdropV3 from "../../../../../common/components/CustomBackdrop/v3";
-import { createIntervalPromise, delayForMS } from "../../../sample-promises";
+import { delayForMS } from "../../../sample-promises";
 import SampleV1 from "./samples/v1";
 import SampleV2 from "./samples/v2";
 

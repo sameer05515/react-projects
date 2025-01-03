@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { convertToYesNo } from "../../utils";
 import { useSelector } from "react-redux";
 import { selectIsCustomBackdropV3Active } from "../../../../../redux/slices/backdropSlice";
@@ -14,27 +14,43 @@ const UsingCustomBackdropV3 = () => {
     setSelectedSample(sampleName);
   }, []);
 
-  const sampleActions = sampleNames.map(({ id, name }) => (
-    <span
-      key={id}
-      onClick={() => handleSampleSelect(name)}
-      style={{
-        cursor: "pointer",
-        margin: "0 8px",
-        textDecoration: "underline",
-      }}
-    >
-      {name}
-    </span>
-  ));
+  const sampleActions = useMemo(() => {
+    return sampleNames.map(({ id, name }) => (
+      <span
+        key={id}
+        onClick={() => handleSampleSelect(name)}
+        style={{
+          cursor: "pointer",
+          margin: "0 8px",
+          textDecoration: "underline",
+        }}
+      >
+        {name}
+      </span>
+    ));
+  }, [handleSampleSelect]);
 
-  const SelectedSampleComponent = selectedSample
-    ? getSampleComponent(selectedSample)
-    : null;
+  const { component: SelectedSampleComponent, componentTitle } = useMemo(() => {
+    if (!selectedSample)
+      return { component: null, componentTitle: "Please select a sample" };
+    return {
+      component: getSampleComponent(selectedSample) || null,
+      componentTitle: "Selected Component: " + selectedSample,
+    };
+  }, [selectedSample]);
 
-  const componentTitle = selectedSample
-    ? "Selected Component: " + selectedSample
-    : "Please select a sample";
+  // const SelectedSampleComponent = selectedSample
+  //   ? getSampleComponent(selectedSample)
+  //   : null;
+
+  // const componentTitle = selectedSample
+  //   ? "Selected Component: " + selectedSample
+  //   : "Please select a sample";
+
+  useEffect(() => {
+    console.trace("I have been rendered!");
+    return () => console.trace("I have been destroyed!");
+  }, []);
 
   return (
     <div>

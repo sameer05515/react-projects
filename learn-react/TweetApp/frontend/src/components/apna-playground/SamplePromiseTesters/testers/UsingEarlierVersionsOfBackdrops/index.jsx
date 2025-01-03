@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   hideBackdrop,
@@ -14,12 +14,17 @@ const UsingEarlierVersionsOfBackdrops = () => {
     console.log("getRandomNumber response: ", response);
     dispatch(hideBackdrop());
   }, [dispatch]);
+
+  useEffect(() => {
+    console.trace("I have been rendered!");
+    return () => console.trace("I have been destroyed!");
+  },[]);
   return (
     <div>
       <h1>UsingEarlierVersionsOfBackdrops</h1>
       <div>
         <button onClick={handleRandomNumber}>handleRandomNumber</button>
-      </div>      
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import {
     isValidObject,
 } from "../../../common/service/basic-validations";
 
-const getSanitizedString = (value) => (isString(value) ? value : "");
+export const getSanitizedString = (value) => (isString(value) ? value : "");
 
 export const sanitizeAndUpdateV3 = (oldObj = {}, newObj = {}) => {
   if (!isValidObject(newObj)) return oldObj;

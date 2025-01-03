@@ -75,15 +75,19 @@ const UsingCustomBackdropV3 = () => {
          * TO-DO:
          * 1. prepare message post validating it, give some default fallback value
          * */
-        const title = `Loading Data for given module ${moduleName}`;
-        console.log("moduleName: "+moduleName);
-        dispatch(updateBackdropV3({ title }));
+        const backdropMessages = {
+          title: `Loading Data for given module ${moduleName}`,
+          subtitle:"",
+          description:""
+        };
+        console.log("moduleName: " + moduleName);
+        dispatch(updateBackdropV3(backdropMessages));
         const totalIterations = 9;
         for (let i = 1; i <= totalIterations; i++) {
           const subtitle = `Iteration Number: ${i} completed successfully!!`;
           // console.log(message);
-          dispatch(updateBackdropV3({ subtitle }));
-          await delayForMS(3000);
+          dispatch(updateBackdropV3({...backdropMessages, subtitle }));
+          await delayForMS(3000); 
         }
         dispatch(
           updateBackdropV3({

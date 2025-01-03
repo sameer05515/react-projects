@@ -1,94 +1,59 @@
 import React from "react";
-import { FallbackStrategies, getTesterComponent, testerNames } from "./config";
-
-const testTesterNames = [
-  ...testerNames,
-  { name: "non-existing-name", id: "non-existing-id" },
-];
-
-const validInvalidSeggregationForEachApproach = () => {
-  const validComponents = [];
-  let invalidNames = {
-    count: 0,
-    names: [],
-  };
-
-  testTesterNames.forEach(({ name }) => {
-    const TesterComponent = getTesterComponent(
-      name,
-      FallbackStrategies.RETURN_NULL
-    );
-    if (TesterComponent === null) {
-      invalidNames.count += 1;
-      invalidNames.names.push(name);
-    } else {
-      validComponents.push(<TesterComponent key={name} />);
-    }
-  });
-
-  return { validComponents, invalidNames };
-};
-
-const validInvalidSeggregationMapReduceApproach = () => {
-  return testTesterNames.reduce(
-    (acc, { name, id }) => {
-      const TesterComponent = getTesterComponent(
-        name,
-        FallbackStrategies.RETURN_UNDEFINED
-      );
-
-      if (!TesterComponent) {
-        acc.invalidNames.count += 1;
-        acc.invalidNames.names.push(name);
-      } else {
-        acc.validComponents.push(<TesterComponent key={id} />);
-      }
-      return acc;
-    },
-    {
-      validComponents: [],
-      invalidNames: { count: 0, names: [] },
-    }
-  );
-};
-
-const componentsArrWithDefaultStrategy = testTesterNames.map(({ name, id }) => {
-  const TesterComponent = getTesterComponent(name);
-  return <TesterComponent key={id} />;
-});
+import { VALID_INVALID_SEGGREGATION, Separator } from "./utils";
 
 const StrategyTestingDashboard = () => {
-  const forEachApproach = validInvalidSeggregationForEachApproach();
-  const reduceApproach = validInvalidSeggregationMapReduceApproach();
+  const withMapApproachForSanitizedRender =
+    VALID_INVALID_SEGGREGATION.withDefaultStrategy;
+  const withForEachApproach = VALID_INVALID_SEGGREGATION.withReturnNullStrategy;
+  const withReduceApproach =
+    VALID_INVALID_SEGGREGATION.withReturnUndefinedStrategy;
+
   return (
     <div>
       <h1>StrategyTestingDashboard</h1>
-      <h2>With Default Strategy</h2>
-      {componentsArrWithDefaultStrategy}
-      <hr />
-      <hr />
-      <h2>With Return Null strategy</h2>
+      
+      <StrategyOutputDisplay
+        title="With Default Strategy"
+        apprachData={withMapApproachForSanitizedRender}
+      />
+      {Separator}
+      <StrategyOutputDisplay
+        title="With Return Null strategy"
+        apprachData={withForEachApproach}
+      />
+      {Separator}
+      <StrategyOutputDisplay
+        title="With Return Undefined strategy"
+        apprachData={withReduceApproach}
+      />
+      {Separator}
+    </div>
+  );
+};
+
+const StrategyOutputDisplay = ({
+  apprachData = { validComponents: [], invalidNames: { count: 0, names: [] } },
+  title = "",
+}) => {
+  const {
+    validComponents,
+    invalidNames: { count, names },
+  } = apprachData;
+  return (
+    <div>
+      <h2>{title}</h2>
       <div>
-        {forEachApproach.validComponents}
-        {forEachApproach.invalidNames.count > 0 && (
-          <p style={{ color: "red" }}>
-            Total invalid names: {forEachApproach.invalidNames.count} : [
-            {forEachApproach.invalidNames.names.map((n) => n)}]
-          </p>
-        )}
-      </div>
-      <h2>With Return Undefined strategy</h2>
-      <div>
-        {reduceApproach.validComponents}
-        {reduceApproach.invalidNames.count > 0 && (
-          <p style={{ color: "red" }}>
-            Total invalid names: {reduceApproach.invalidNames.count} : [
-            {reduceApproach.invalidNames.names.map((n) => n)}]
+        {validComponents}
+        {count > 0 && (
+          <p style={error}>
+            Total invalid names: {count} : [{names.map((n) => n)}]
           </p>
         )}
       </div>
     </div>
   );
 };
+
+const error = { color: "red" };
 
 export default StrategyTestingDashboard;

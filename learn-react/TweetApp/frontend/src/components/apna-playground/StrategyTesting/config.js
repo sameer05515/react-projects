@@ -1,5 +1,11 @@
 import { memo } from "react";
 
+export const FallbackStrategies = {
+  RETURN_DEFAULT_COMPONENT: "RETURN_DEFAULT_COMPONENT",
+  RETURN_NULL: "RETURN_NULL",
+  RETURN_UNDEFINED: "RETURN_UNDEFINED",
+};
+
 const error = { color: "red" };
 
 // Default fallback component
@@ -12,12 +18,6 @@ const DefaultComponent = memo(({ invalidName }) => (
     </span>
   </div>
 ));
-
-export const FallbackStrategies = {
-  RETURN_DEFAULT_COMPONENT: "RETURN_DEFAULT_COMPONENT",
-  RETURN_NULL: "RETURN_NULL",
-  RETURN_UNDEFINED: "RETURN_UNDEFINED",
-};
 
 const actAccordingToStrategy = (strategy, invalidName) => {
   if (!strategy) return () => <DefaultComponent invalidName={invalidName} />;

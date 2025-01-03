@@ -37,6 +37,7 @@ import SPPTableV1_0_0 from "./sub-components/reusable-comparison-component/SPPTa
 import UseConsolidatedTesterDashboard from "../../apna-playground/UseConsolidatedTesters/UseConsolidatedTesterDashboard";
 import ReactIconsDemonstrateDashboard from "../../apna-playground/react-icons-demonstrate/Dashboard";
 import SamplePromiseTesterDashboard from "../../apna-playground/SamplePromiseTesters/Dashboard";
+import StrategyTestingDashboard from "../../apna-playground/StrategyTesting/Dashboard";
 
 export const ComponentModules = {
   TestingPurpose: "Testing Purpose",
@@ -49,6 +50,8 @@ export const ComponentModules = {
     "Upgrade: SmartEditorV3 component to SmartEditorV4",
   Explore_and_Upgrade_ChatGPTRenderer_Project:
     "Explore and Upgrade: ChatGPTRenderer Project",
+  TweetApp_Optimization_With_Best_Practices:
+    "TweetApp_Optimization_With_Best_Practices",
 };
 
 const moduleWithPurposes = [
@@ -445,13 +448,13 @@ const componentMapWithPurposes = {
       This component plays a critical role in ensuring the 'useConsolidated' hook is stable and production-ready.
     `,
     isExperimentalComponent: true,
-    module: ComponentModules.TestingPurpose,
+    module: ComponentModules.TweetApp_Optimization_With_Best_Practices,
   },
   ReactIconsDemonstrateDashboard: {
     element: ReactIconsDemonstrateDashboard,
     purpose: "To show all icons of react-icons",
     isExperimentalComponent: true,
-    module: ComponentModules.TestingPurpose,
+    module: ComponentModules.TweetApp_Optimization_With_Best_Practices,
   },
   SamplePromiseTesterDashboard: {
     element: SamplePromiseTesterDashboard,
@@ -461,7 +464,14 @@ const componentMapWithPurposes = {
     Also please refer related Dashboards viz. 'UseConsolidatedTesterDashboard' and 'ReactIconsDemonstrateDashboard', so that active development could be in sync
     `,
     isExperimentalComponent: true,
-    module: ComponentModules.TestingPurpose,
+    module: ComponentModules.TweetApp_Optimization_With_Best_Practices,
+  },
+  StrategyTestingDashboard: {
+    element: StrategyTestingDashboard,
+    purpose:
+      "A component to test various strategies to handle non-existing case",
+    isExperimentalComponent: true,
+    module: ComponentModules.TweetApp_Optimization_With_Best_Practices,
   },
 };
 

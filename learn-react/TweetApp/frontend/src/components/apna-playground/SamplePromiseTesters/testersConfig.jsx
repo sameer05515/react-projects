@@ -1,13 +1,17 @@
+import { memo } from "react";
 import UsingCustomBackdropV3 from "./testers/UsingCustomBackdropV3";
 import UsingEarlierVersionsOfBackdrops from "./testers/UsingEarlierVersionsOfBackdrops";
 
 // Default fallback component
-const DefaultTesterComponent = () => (
+const DefaultTesterComponent = memo(({ invalidName }) => (
   <div>
     <h2>Component Not Found</h2>
-    <p>The requested tester component could not be located.</p>
+    <p>
+      The tester component with the name <strong>{invalidName}</strong> could
+      not be located.
+    </p>
   </div>
-);
+));
 
 const Testers = {
   UsingCustomBackdropV3,

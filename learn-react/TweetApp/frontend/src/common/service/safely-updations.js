@@ -5,6 +5,7 @@ import {
   isValidObject,
   isValidArray,
   isValidBoolean,
+  isString,
 } from "./basic-validations";
 
 // Safely Update Integer
@@ -53,7 +54,11 @@ export const safelyUpdateNumber = (existing = 0, newValue = 0) =>
 export const safelyUpdateBoolean = (existing = false, newValue = false) =>
   isValidBoolean(newValue) ? newValue : existing;
 
-
 /**Derived operations*/
-export const truncateAndUpdate = (oldValue="", newValue="", maxLength=0) =>
-    safelyTruncateString(safelyUpdateString(oldValue, newValue), maxLength);
+export const truncateAndUpdate = (
+  oldValue = "",
+  newValue = "",
+  maxLength = 0
+) => safelyTruncateString(safelyUpdateString(oldValue, newValue), maxLength);
+
+export const getSanitizedString = (value) => (isString(value) ? value : "");

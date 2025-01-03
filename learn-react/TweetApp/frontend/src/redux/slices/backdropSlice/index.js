@@ -1,9 +1,7 @@
 // store/backdropSlice.js
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { getSanitizedString } from "../../../common/service/safely-updations";
 import initialState, { v3InitialState } from "./initialState";
-import {
-  getSanitizedString
-} from "./reducer-helper-utils";
 
 const backdropSlice = createSlice({
   name: "backdrop",

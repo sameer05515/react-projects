@@ -459,9 +459,11 @@ const componentMapWithPurposes = {
   SamplePromiseTesterDashboard: {
     element: SamplePromiseTesterDashboard,
     purpose: `
-    To develop a optimized and interactive version of 'Custom Backdrop' in isolated environment, which can be integrated with 'TweetApp' application
+    To develop a optimized and interactive version of 'Custom Backdrop' in isolated environment, 
+    which can be integrated with 'TweetApp' application.
       
-    Also please refer related Dashboards viz. 'UseConsolidatedTesterDashboard' and 'ReactIconsDemonstrateDashboard', so that active development could be in sync
+    Also please refer related Dashboards viz. 'UseConsolidatedTesterDashboard', 'StrategyTestingDashboard' 
+    and 'ReactIconsDemonstrateDashboard', so that active development could be in sync
     `,
     isExperimentalComponent: true,
     module: ComponentModules.TweetApp_Optimization_With_Best_Practices,

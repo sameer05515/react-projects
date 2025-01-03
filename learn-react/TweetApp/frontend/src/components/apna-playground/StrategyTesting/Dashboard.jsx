@@ -1,6 +1,8 @@
 import React from "react";
 import { VALID_INVALID_SEGGREGATION } from "./helpers/utils";
 import styles from "./helpers/styles.module.css";
+import StrategyOutputDisplay from "./helpers/StrategyOutputDisplay";
+import Separator from "../../../common/components/Separator/v1";
 
 const StrategyTestingDashboard = () => {
   const {
@@ -30,32 +32,5 @@ const StrategyTestingDashboard = () => {
     </div>
   );
 };
-
-const StrategyOutputDisplay = ({
-  approachData = {
-    validComponents: [],
-    invalidComponents: { count: 0, names: [] },
-  },
-  title = "",
-}) => {
-  const { validComponents, invalidComponents } = approachData;
-  const { count, names } = invalidComponents;
-
-  return (
-    <div className={styles.strategyContainer}>
-      <h2 className={styles.subHeader}>{title}</h2>
-      <div className={styles.outputContainer}>
-        {validComponents}
-        {count > 0 && (
-          <p className={styles.errorText}>
-            Total invalid names: {count} : [{names.map((n) => n)}]
-          </p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const Separator = () => <div className={styles.separator} />;
 
 export default StrategyTestingDashboard;

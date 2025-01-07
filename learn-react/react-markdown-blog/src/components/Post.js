@@ -2,11 +2,13 @@ import Markdown from "markdown-to-jsx"
 import { useEffect, useState } from "react"
 import Code from "./Code";
 
+const urlToMd1="../markdown/article.md";
+
 const Post = () => {
   const [postContent, setPostContent] = useState("");
 
   useEffect(() => {
-    import("../markdown/article.md")
+    import("../markdown/my-content.md")
       .then(res => {
         fetch(res.default)
           .then(response => response.text())

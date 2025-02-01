@@ -224,9 +224,9 @@ const SmartPreviewer = ({ data }) => {
       )}
       {(!textOutputType || !Object.values(SupportedOutFormats).includes(textOutputType)) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
       {debug && <CopyButton buttonText={"Copy Skeleton As Yaml"} textToCopy={""} onCopy={() => {}} />}
-      {debug && <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="VandanaKiMaaKaBhosda" />}
+      {debug && <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />}
     </>
   );
 };
 
-export { SmartEditor as SmartEditorV4, SmartPreviewer as SmartPreviewerV4 };
+// export { SmartEditor as SmartEditorV4, SmartPreviewer as SmartPreviewerV4 };

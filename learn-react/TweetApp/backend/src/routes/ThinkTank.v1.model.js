@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
-const smartContentSchema = require("./common/SmartContent.schema"); // Import the smartContentSchema
+const smartContentSchema = require("./common/SmartContent.schema.v2"); // Import the smartContentSchema
 
 const Status = {
   OPEN: "Open",

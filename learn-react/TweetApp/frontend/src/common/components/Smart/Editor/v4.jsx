@@ -21,7 +21,7 @@ const SupportedOutFormats = {
   YAML_to_SKELETON: "yaml_to_skeleton",
 };
 
-const availableInputTypes = {
+const SupportedInputComponents = {
   textArea: "TextArea",
   ckEditor: "CKEditor",
 };
@@ -30,32 +30,32 @@ const inputOutputMapping = {
   RT_from_RT: {
     detailedName: "RawText from RawText",
     textOutputType: SupportedOutFormats.TEXT,
-    textInputType: availableInputTypes.textArea,
+    textInputType: SupportedInputComponents.textArea,
   },
   HTML_FROM_RT: {
     detailedName: "HTML generated from RawText",
     textOutputType: SupportedOutFormats.HTML,
-    textInputType: availableInputTypes.textArea,
+    textInputType: SupportedInputComponents.textArea,
   },
   HTML_FROM_CKEditor: {
     detailedName: "HTML generated from CKEditor",
     textOutputType: SupportedOutFormats.HTML,
-    textInputType: availableInputTypes.ckEditor,
+    textInputType: SupportedInputComponents.ckEditor,
   },
   YAML_From_RT: {
     detailedName: "YAML format text, input from RawText. Will show parsing error if invalid YAML text given",
     textOutputType: SupportedOutFormats.YAML,
-    textInputType: availableInputTypes.textArea,
+    textInputType: SupportedInputComponents.textArea,
   },
   MARKDOWN_From_RT: {
     detailedName: "MARKDOWN format text, input from RawText",
     textOutputType: SupportedOutFormats.MARKDOWN,
-    textInputType: availableInputTypes.textArea,
+    textInputType: SupportedInputComponents.textArea,
   },
   SKELETON_From_TIS: {
     detailedName: "Tabbed Indented String (TIS) format text, input from RawText. Will show parsing error if invalid YAML text given",
     textOutputType: SupportedOutFormats.SKELETON,
-    textInputType: availableInputTypes.textArea,
+    textInputType: SupportedInputComponents.textArea,
   },
 };
 
@@ -128,7 +128,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
         ))}
       </select>
 
-      {formData.textInputType === availableInputTypes.textArea && (
+      {formData.textInputType === SupportedInputComponents.textArea && (
         <div>
           <label htmlFor="content" style={labelStyle}>
             Content:
@@ -137,7 +137,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
         </div>
       )}
 
-      {formData.textInputType === availableInputTypes.ckEditor && (
+      {formData.textInputType === SupportedInputComponents.ckEditor && (
         <div>
           <label htmlFor="ckeditor" style={labelStyle}>
             Content:

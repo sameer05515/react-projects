@@ -2,18 +2,11 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
 import React, { useEffect, useRef, useState } from "react";
-import { addUniqueIdsToTree } from "../../../util/id-adder-util";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
-import MarkdownComponent from "../../markdown-component/MarkdownComponent";
-import Tree from "../../tree-viewer/TreeViewer";
-import CopyButton from "../../../../components/memory-maps/copy-to-clipboard/CopyButton";
-import { getKeyName,inputOutputMapping, SupportedOutFormats, SupportedInputComponents } from "../common/utils.v4";
-
-const debug = false;
-
-
+import { getKeyName, inputOutputMapping, SupportedInputComponents, SupportedOutFormats } from "../common/utils.v4";
+import SmartPreviewer from "../Previewer/v4";
 
 const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
   const textareaRef = useRef(null);
@@ -68,7 +61,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
 
   return (
     <div>
-      <label htmlFor="outputType" style={labelStyle}>
+      <label htmlFor="outputType" style={styles.labelStyle}>
         Select Output Type:
       </label>
       <select value={selectedOutputType} title={inputOutputMapping[selectedOutputType]?.detailedName || ""} onChange={handleChangeOutputTypes}>
@@ -81,7 +74,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
 
       {formData.textInputType === SupportedInputComponents.textArea && (
         <div>
-          <label htmlFor="content" style={labelStyle}>
+          <label htmlFor="content" style={styles.labelStyle}>
             Content:
           </label>
           <textarea ref={textareaRef} id="content" name="content" value={formData.content} onChange={handleInputChange} style={styles.textarea} />
@@ -90,7 +83,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
 
       {formData.textInputType === SupportedInputComponents.ckEditor && (
         <div>
-          <label htmlFor="ckeditor" style={labelStyle}>
+          <label htmlFor="ckeditor" style={styles.labelStyle}>
             Content:
           </label>
           <CKEditor id="ckeditor" name="content" editor={ClassicEditor} data={formData.content} onChange={handleEditorChange} />
@@ -109,7 +102,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
   );
 };
 
-const labelStyle = { fontWeight: "bold" };
+// const labelStyle = { fontWeight: "bold" };
 
 const styles = {
   textarea: {
@@ -121,63 +114,8 @@ const styles = {
     resize: "none",
     overflow: "hidden",
   },
+  labelStyle: { fontWeight: "bold" },
 };
 
-const SmartPreviewer = ({ data }) => {
-  const { content, textOutputType } = data;
+export { SmartEditor as SmartEditorV4 };
 
-  const [yamlProcessedData, setYamlProcessedData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [resultData, setResultData] = useState([]);
-
-  useEffect(() => {
-    if ((textOutputType === SupportedOutFormats.YAML || textOutputType === SupportedOutFormats.YAML_to_SKELETON) && content) {
-      try {
-        const yamlResponse = yaml.load(content);
-        setYamlProcessedData(yamlResponse);
-        if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) {
-          setResultData(() => yamlResponse);
-        }
-        setErrorMessage("");
-      } catch (e) {
-        const error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        setErrorMessage(error);
-      }
-    }
-    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-      const { data: skeletonData, isValid, message } = buildTree(content);
-      if (!isValid) setErrorMessage(message || "Missing error message");
-      else setResultData([...addUniqueIdsToTree(skeletonData)]);
-    }
-  }, [content, textOutputType]);
-
-  return (
-    <>
-      {textOutputType === SupportedOutFormats.TEXT && <pre>{content}</pre>}
-      {textOutputType === SupportedOutFormats.HTML && <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: content }} />}
-      {textOutputType === SupportedOutFormats.MARKDOWN && <MarkdownComponent markdownText={content} />}
-      {textOutputType === SupportedOutFormats.YAML && (
-        <div>
-          <pre>{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-          <span style={{ color: "red" }}>{errorMessage}</span>
-        </div>
-      )}
-      {textOutputType === SupportedOutFormats.TIS_to_SKELETON && resultData && resultData.length > 0 && (
-        <>
-          <Tree
-            data={resultData}
-            expandAll={true}
-            renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
-          />
-          <span style={{ color: "red" }}>{errorMessage}</span>
-          {/* <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview"/> */}
-        </>
-      )}
-      {(!textOutputType || !Object.values(SupportedOutFormats).includes(textOutputType)) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
-      {debug && <CopyButton buttonText={"Copy Skeleton As Yaml"} textToCopy={""} onCopy={() => {}} />}
-      {debug && <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />}
-    </>
-  );
-};
-
-export { SmartEditor as SmartEditorV4, SmartPreviewer as SmartPreviewerV4 };

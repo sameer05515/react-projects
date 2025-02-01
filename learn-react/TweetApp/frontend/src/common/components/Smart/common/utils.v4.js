@@ -45,7 +45,7 @@ const inputOutputMapping = {
   },
 };
 
-const getKeyName = (textOutputType, textInputType) =>
+export const getKeyName = (textOutputType, textInputType) =>
   Object.keys(inputOutputMapping).find(
     (key) => inputOutputMapping[key].textOutputType === textOutputType && inputOutputMapping[key].textInputType === textInputType
   ) || "";
@@ -63,7 +63,7 @@ export const getDetailedName = (textOutputType, textInputType) => {
 };
 
 export const getInpOupDetailsForKey = (key = "") => {
-//   console.log("[getInpOupDetailsForKey]: key: '", key, "'");
+  //   console.log("[getInpOupDetailsForKey]: key: '", key, "'");
   if (!key || typeof key !== "string") {
     return {
       textOutputType: "",
@@ -72,7 +72,7 @@ export const getInpOupDetailsForKey = (key = "") => {
   }
 
   const obj = inputOutputMapping[key.trim()] || {};
-//   console.log("obj", JSON.stringify(obj))
+  //   console.log("obj", JSON.stringify(obj))
   return {
     textOutputType: obj.textOutputType || "",
     textInputType: obj.textInputType || "",

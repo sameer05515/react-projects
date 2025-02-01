@@ -76,6 +76,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
 
   const updateFormContent = (content = "") => {
     if (!content) {
+      setError(`Invalid content : '${content}'`);
       console.error("Invalid content", content);
       return;
     }

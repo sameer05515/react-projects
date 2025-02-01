@@ -11,54 +11,57 @@ import { isValidString } from "../../../service/basic-validations";
 
 const debug = false;
 
+const getSPProcessedData = (data) => {
+  const content = isValidString(data?.content) ? data.content : "";
+  const textOutputType =
+    isValidString(data?.textOutputType) && Object.values(SupportedOutFormats).includes(data.textOutputType)
+      ? data.textOutputType
+      : SupportedOutFormats.TEXT;
+  let yamlProcessedData = null;
+  let resultData = [];
+  let errorMessage = "";
+
+  if (
+    content &&
+    (textOutputType === SupportedOutFormats.YAML || textOutputType === SupportedOutFormats.YAML_to_SKELETON)
+  ) {
+    try {
+      const yamlResponse = yaml.load(content);
+      yamlProcessedData = yamlResponse;
+
+      if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) {
+        resultData = yamlResponse;
+      }
+    } catch (e) {
+      const error = e.mark
+        ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
+        : `Error parsing YAML: ${e.message}`;
+      errorMessage = error;
+    }
+  }
+  if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
+    const { data: skeletonData, isValid, message } = buildTree(content);
+    if (!isValid) {
+      errorMessage = message || "Missing error message";
+    } else {
+      resultData = [...addUniqueIdsToTree(skeletonData)];
+    }
+  }
+
+  return {
+    content,
+    textOutputType,
+    yamlProcessedData,
+    resultData,
+    errorMessage,
+  };
+};
+
 const SmartPreviewerV4 = ({ data }) => {
-  const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(() => {
-    const content = isValidString(data?.content) ? data.content : "";
-    const textOutputType =
-      isValidString(data?.textOutputType) && Object.values(SupportedOutFormats).includes(data.textOutputType)
-        ? data.textOutputType
-        : SupportedOutFormats.TEXT;
-    let yamlProcessedData = null;
-    let resultData = [];
-    let errorMessage = "";
-
-    if (
-      content &&
-      (textOutputType === SupportedOutFormats.YAML || textOutputType === SupportedOutFormats.YAML_to_SKELETON)
-    ) {
-      try {
-        const yamlResponse = yaml.load(content);
-        yamlProcessedData = yamlResponse;
-
-        if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) {
-          resultData = yamlResponse;
-        }
-      } catch (e) {
-        const error = e.mark
-          ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-          : `Error parsing YAML: ${e.message}`;
-        errorMessage = error;
-      }
-    }
-    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-      const { data: skeletonData, isValid, message } = buildTree(content);
-      if (!isValid) {
-        // setErrorMessage(message || "Missing error message");
-        errorMessage = message || "Missing error message";
-      } else {
-        // setResultData([...addUniqueIdsToTree(skeletonData)]);
-        resultData = [...addUniqueIdsToTree(skeletonData)];
-      }
-    }
-
-    return {
-      content,
-      textOutputType,
-      yamlProcessedData,
-      resultData,
-      errorMessage,
-    };
-  }, [data]);
+  const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(
+    () => getSPProcessedData(data),
+    [data]
+  );
 
   return (
     <>
@@ -81,7 +84,7 @@ const SmartPreviewerV4 = ({ data }) => {
             renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
           />
           <span style={{ color: "red" }}>{errorMessage}</span>
-          {/* <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview"/> */}
+          {debug && <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview" />}
         </>
       )}
       {(!textOutputType || !Object.values(SupportedOutFormats).includes(textOutputType)) && (

@@ -62,6 +62,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
 
   const handleChangeOutputTypes = (newOutputType) => {
     if (!newOutputType) {
+      setError(`Invalid newOutputType : '${newOutputType}'`);
       console.error("Invalid newOutputType", newOutputType);
       return;
     }
@@ -80,7 +81,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
 
   return (
     <div>
-      <label htmlFor="outputType" style={styles.labelStyle}>
+      <label htmlFor="outputType" style={{ fontWeight: "bold" }}>
         Select Output Type:
       </label>
       <select
@@ -97,7 +98,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
 
       {formData.textInputType === SupportedInputComponents.textArea && (
         <div>
-          <label htmlFor="content" style={styles.labelStyle}>
+          <label htmlFor="content" style={{ fontWeight: "bold" }}>
             Content:
           </label>
           <textarea
@@ -106,14 +107,22 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
             name="content"
             value={formData.content}
             onChange={(e) => updateFormContent(e.target.value)}
-            style={styles.textarea}
+            style={{
+              width: "100%",
+              padding: "10px",
+              fontSize: "16px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              resize: "none",
+              overflow: "hidden",
+            }}
           />
         </div>
       )}
 
       {formData.textInputType === SupportedInputComponents.ckEditor && (
         <div>
-          <label htmlFor="ckeditor" style={styles.labelStyle}>
+          <label htmlFor="ckeditor" style={{ fontWeight: "bold" }}>
             Content:
           </label>
           <CKEditor
@@ -138,19 +147,6 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       <JSONDataViewer metadata={{ formData, selectedOutputType }} title="selectedOutputType" />
     </div>
   );
-};
-
-const styles = {
-  textarea: {
-    width: "100%",
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    resize: "none",
-    overflow: "hidden",
-  },
-  labelStyle: { fontWeight: "bold" },
 };
 
 export default SmartEditorV4;

@@ -1,12 +1,14 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import { getKeyName, inputOutputMapping, SupportedInputComponents, SupportedOutFormats } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
+
+const debug = false;
 
 const FormError = ({ error }) => {
   if (!error) return null;
@@ -144,7 +146,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       )}
 
       {showPreview && <SmartPreviewer data={formData} />}
-      <JSONDataViewer metadata={{ formData, selectedOutputType }} title="selectedOutputType" />
+      {debug && <JSONDataViewer metadata={{ formData, selectedOutputType }} title="selectedOutputType" />}
     </div>
   );
 };

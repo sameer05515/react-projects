@@ -3,7 +3,7 @@ import SmartEditorV4 from "../../../common/components/Smart/Editor/v4";
 import { smartPreviewerDataArray as smartPreviewerData, observations } from "../common/data";
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
-import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+// import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import SmartPreviewerV4 from '../../../common/components/Smart/Editor/v4'
 
 const SmartEditorV4Dashboard_V1_0_0 = () => {
@@ -27,7 +27,7 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
       <ToggleablePanel showContent={false} title="SmartEditorV4[_unstable]">
         <SmartEditorV4 initialValue={selectedData.data} />
       </ToggleablePanel>
-      <JSONDataViewer metadata={{ selectedDataIndex, selectedData }} title="X-Ray" />
+      {/* <JSONDataViewer metadata={{ selectedDataIndex, selectedData }} title="X-Ray" /> */}
     </div>
   );
 };

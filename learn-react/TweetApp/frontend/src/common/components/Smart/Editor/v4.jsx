@@ -55,9 +55,52 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
   //   // onChange(formData);
   // }, [formData.content, formData.textOutputType]);
 
-  const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);
-  const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
-  const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
+  const handleFormUpdate = (content, textOutputType, textInputType) => {
+    // const { textOutputType, content } = formData;
+
+    let error = "";
+    if (textOutputType === SupportedOutFormats.YAML && content) {
+      try {
+        yaml.load(content);
+      } catch (e) {
+        error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+      }
+    }
+
+    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
+      const { isValid, message } = buildTree(content);
+      if (!isValid) error = message;
+    }
+
+    if (!content.trim()) error = "Content is empty";
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
+    }
+
+    // onError(error);
+    // onChange(formData);
+  };
+  // , [formData.content, formData.textOutputType]);
+
+  const handleChangeOutputTypes = (event) => {
+    setSelectedOutputType(event.target.value);
+    const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
+    if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
+      setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
+    }
+  };
+  // const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
+  // const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
+
+  const updateFormContent = (content = "") => {
+    if (!content) {
+      console.error("Invalid content", content);
+      return;
+    }
+    setFormData((prev) => ({ ...prev, content: content }));
+  };
 
   return (
     <div>
@@ -77,7 +120,14 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
           <label htmlFor="content" style={styles.labelStyle}>
             Content:
           </label>
-          <textarea ref={textareaRef} id="content" name="content" value={formData.content} onChange={handleInputChange} style={styles.textarea} />
+          <textarea
+            ref={textareaRef}
+            id="content"
+            name="content"
+            value={formData.content}
+            onChange={(e) => updateFormContent(e.target.value)}
+            style={styles.textarea}
+          />
         </div>
       )}
 
@@ -86,7 +136,13 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
           <label htmlFor="ckeditor" style={styles.labelStyle}>
             Content:
           </label>
-          <CKEditor id="ckeditor" name="content" editor={ClassicEditor} data={formData.content} onChange={handleEditorChange} />
+          <CKEditor
+            id="ckeditor"
+            name="content"
+            editor={ClassicEditor}
+            data={formData.content}
+            onChange={(event, editor) => updateFormContent(editor.getData())}
+          />
         </div>
       )}
 
@@ -97,7 +153,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       )}
 
       {showPreview && <SmartPreviewer data={formData} />}
-      <JSONDataViewer metadata={{ selectedOutputType }} title="selectedOutputType" />
+      <JSONDataViewer metadata={{ formData, selectedOutputType }} title="selectedOutputType" />
     </div>
   );
 };

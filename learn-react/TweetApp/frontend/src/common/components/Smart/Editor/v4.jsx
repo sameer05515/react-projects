@@ -18,7 +18,12 @@ const debug = false;
 
 const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
-const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
+const SmartEditorV4 = ({
+  initialValue,
+  preview: previewInitialValue = true,
+  onChange = () => {},
+  onError = () => {},
+}) => {
   const textareaRef = useRef(null);
 
   const [showPreview, setShowPreview] = useState(previewInitialValue);
@@ -46,7 +51,9 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
         if (!isValid) return message;
       }
     } catch (e) {
-      return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+      return e.mark
+        ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
+        : `Error parsing YAML: ${e.message}`;
     }
     return "";
   };
@@ -65,7 +72,8 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
   }, []);
 
   useEffect(() => {
-    if (initialValue) handleFormUpdate(initialValue.content, getKeyName(initialValue.textOutputType, initialValue.textInputType));
+    if (initialValue)
+      handleFormUpdate(initialValue.content, getKeyName(initialValue.textOutputType, initialValue.textInputType));
   }, [handleFormUpdate, initialValue]);
 
   const handleChangeOutputTypes = useCallback(
@@ -140,7 +148,10 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       {/* Preview Button */}
       {formData.content && (
         <div>
-          <button className="btn btn-info btn-sm p-1 m-1 text-uppercase" onClick={() => setShowPreview((prev) => !prev)}>
+          <button
+            className="btn btn-info btn-sm p-1 m-1 text-uppercase"
+            onClick={() => setShowPreview((prev) => !prev)}
+          >
             {showPreview ? "Hide Preview" : "Show Preview"}
           </button>
           {showPreview && <SmartPreviewer data={formData} />}

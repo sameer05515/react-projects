@@ -1210,7 +1210,9 @@ Would you like help creating a personalized stress-management routine based on y
   }),
 
   ThinkTankItem.fromObject({
-    smartContent:{textOutputType: availableOutputTypes.HTML,content: `
+    smartContent: {
+      textOutputType: availableOutputTypes.HTML,
+      content: `
 31-January-2025
 [Nu, I, G][TODO]- Collate all frequently asked questions in interviews 
 As a hint, refer tags in Tweet app, and notes created during earlier interviews
@@ -1283,16 +1285,19 @@ Restarting your career while managing time for revision requires a structured ap
 
 
 
-    `},
+    `,
+    },
     createdDate: "31/Jan/2025",
     isUrgent: false,
     isImportant: false,
     hasGroomed: false,
-    itemType: ThinkTankItemType.ToDo
+    itemType: ThinkTankItemType.ToDo,
   }),
 
   ThinkTankItem.fromObject({
-    smartContent:{textOutputType: availableOutputTypes.HTML,content: `
+    smartContent: {
+      textOutputType: availableOutputTypes.HTML,
+      content: `
 01-February-2025
 [U,I][Plan][NG] My plan of revision
 RPR (review, practice and revise) refresher plans of topics
@@ -1318,12 +1323,13 @@ Links with summary of learning
 
  
 
-    `},
+    `,
+    },
     createdDate: "01/Feb/2025",
     isUrgent: false,
     isImportant: false,
     hasGroomed: false,
-    itemType: ThinkTankItemType.ToDo
+    itemType: ThinkTankItemType.ToDo,
   }),
 
   // ThinkTankItem.fromObject({

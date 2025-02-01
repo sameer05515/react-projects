@@ -12,7 +12,7 @@ import {
 } from "./Item.dto";
 import { myTodos } from "./data";
 import pipe from "../../../common/service/pipe-util";
-import { SmartPreviewerV4 as SmartPreviewer } from "../../../common/components/Smart/Editor/v4";
+import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
 
 const FilterActionTypes = {
   SHOW_ALL: "show-all",

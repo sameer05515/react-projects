@@ -8,7 +8,7 @@ import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import { getKeyName, inputOutputMapping, SupportedInputComponents, SupportedOutFormats } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 
-const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
+const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
   const textareaRef = useRef(null);
 
   const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType, initialValue?.textInputType));
@@ -117,5 +117,5 @@ const styles = {
   labelStyle: { fontWeight: "bold" },
 };
 
-export { SmartEditor as SmartEditorV4 };
+export default SmartEditorV4 ;
 

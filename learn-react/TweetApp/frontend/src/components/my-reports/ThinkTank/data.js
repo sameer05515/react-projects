@@ -463,6 +463,25 @@ Practice and revise Spring boot security with
     smartContent: {
       textOutputType: availableOutputTypes.HTML,
       content: `
+27-January-2025
+Create a project setup with angular without cli+ts+vite
+Explore it's use and limitations 
+Create a basic react+ js+vite setup, which has some authentication and authorisation logic. For persistence of the data, try to use first a manual json approach.
+Then move data to backend, but in same hardcoded json format. It can be managed via an express or a spring boot security project
+
+      `,
+    },
+    createdDate: "27/Jan/2025",
+    isUrgent: true,
+    isImportant: true,
+    hasGroomed: true,
+    itemType: ThinkTankItemType.ToDo,
+  }),
+
+  ThinkTankItem.fromObject({
+    smartContent: {
+      textOutputType: availableOutputTypes.HTML,
+      content: `
     Create one TO-DO App with angular.
 
     Approach will be similar. we will use hardcoded json to populate todo data and will try to render UI with Angular.
@@ -470,6 +489,11 @@ Practice and revise Spring boot security with
     <b>Purpose: </b> Learning Angular by creating this app
 
     Done with help of chat gpt. <span class="badge text-bg-danger">However, i must learn the code.</span>
+
+28-January-2025
+[Urgent and important] : I have asked almost all topics' refreshers to ChatGPT. Please go through it and collect actionable for my revision plan and start revision cycle as soon as possible.
+[28-Jan-2025]: Reviewed till microservices. Resume review from "please create a small plan or roadmap for SOLID and other frequently used principle refresher."
+
     `,
     },
     createdDate: "28/Jan/2025",
@@ -530,6 +554,14 @@ Date : 29-Jan-2025
 	- One possible way is, I can put these questions either
 		- under a specific memory map item in TweetApp, with date . And strike-through or find answer next day they created.
 		- or, I will maintain a separate json file, similar to todo.
+
+-----------------------------------------------
+29-January-2025
+[Not Urgent][Important]- Read "Microservices Patterns" by Chris Richardson. Book. 
+Book can be found at 
+https://github.com/AAAAAIstudy/bookshelf-1/blob/main/Extra/Microservices%20Patterns%20With%20examples%20in%20Java.pdf
+
+Move all todos mentioned here to google doc, for better maintainability and reliability for security 
 
 
     `,
@@ -617,6 +649,23 @@ Date : 29-Jan-2025
       content: `
 - [TO-DO][NU,NI][NG]: any todo which is not groomed, should be placed in todo-datewise-pool only, for better readability. Rest all todos should be treated as groomed only.
     `,
+    },
+    createdDate: "30/Jan/2025",
+    isUrgent: false,
+    isImportant: false,
+    hasGroomed: false,
+    itemType: ThinkTankItemType.ToDo,
+  }),
+
+  ThinkTankItem.fromObject({
+    smartContent: {
+      textOutputType: availableOutputTypes.MARKDOWN,
+      content: `
+30-January-2025
+"The Microservice architecture pattern language', read till 1.5 section of book.
+Will resume reaWill resume reading further by tomorrow morning.
+
+      `,
     },
     createdDate: "30/Jan/2025",
     isUrgent: false,
@@ -1033,38 +1082,249 @@ As a user, I should focus on three types of topics for interview preparation:
     itemType: ThinkTankItemType.RawQuestion,
   }),
 
-  // ThinkTankItem.fromObject({
-  //   smartContent:{textOutputType: availableOutputTypes.HTML,content: `
+  ThinkTankItem.fromObject({
+    smartContent: {
+      textOutputType: availableOutputTypes.HTML,
+      content: `
+Think-Tank items: 31-Jan-2025
+----------------------------------------
+[Raw-Question][U,I,NG] 
+- Am I prepared for interviews?
+	- No. 
+	- Below are reasons:-
+		- 
+	
+--------------------------------------
+[Raw-Question][U,I,NG] 
+- What is my priority in next job opportunity?
+	- refer http://localhost:3002/notifications for a raw answer.
+	- amend it and remove dependency of above link.
+	
+-----------------------------------------------
+[TODO][U,I,NG] 
+- Understand Javascript Event Loop and persist the understanding in a topic. 
+	- Also collect the related questions. 
+	- Map all questions and topic to memory map (for key-terminologies of javascript)
 
-  //   `},
-  //   createdDate: "30/Jan/2025",
-  //   isUrgent: false,
-  //   isImportant: false,
-  //   hasGroomed: false,
-  //   itemType: ThinkTankItemType.ToDo
-  // }),
+--------------------------------------------
+[TODO][NU,I,NG] 
+- Change memory-map code so that it can hold memory-map items as array of node with below structure. 
+\`\`\`
+{
+	uniqueId:string; 
+	parentId:string; 
+	type:string; 
+	smartContent:{
+		content:string;
+		outputType:string;
+	}
+}
+\`\`\`
+Also make such mechanism (i.e. do such code changes) that is compatible with previous TIS approach. We will facilitate users both approaches to create memory-maps (i.e. users can create memory maps using TIS and newer node-array approach. However we give user a info message to encourage them use of newer node-array approach.
 
-  // ThinkTankItem.fromObject({
-  //   smartContent:{textOutputType: availableOutputTypes.HTML,content: `
 
-  //   `},
-  //   createdDate: "30/Jan/2025",
-  //   isUrgent: false,
-  //   isImportant: false,
-  //   hasGroomed: false,
-  //   itemType: ThinkTankItemType.ToDo
-  // }),
 
-  // ThinkTankItem.fromObject({
-  //   smartContent:{textOutputType: availableOutputTypes.HTML,content: `
 
-  //   `},
-  //   createdDate: "30/Jan/2025",
-  //   isUrgent: false,
-  //   isImportant: false,
-  //   hasGroomed: false,
-  //   itemType: ThinkTankItemType.ToDo
-  // }),
+----------------------------------------------------------------
+[TODO][NU,I,G] 
+Hierarchical structure of data in Tweet, Topic, MemoryMap, Question module are not helping to establish a complex but reliable relations among nodes. 
+	- We should think for a better approach.
+------------------------------
+[TODO][U,I,NG][State-In-Progress][Owner-Prem]
+Collect best practices questions series (i.e. ask this to ChatGPT)
+	- ✅ What are best practices to develop APIs?
+		- What are best practices to develop APIs with Spring Boot?
+		- What are best practices to develop APIs with Node+Express?
+	- What are best practices to securing an API resources?
+
+-------------------------------
+[My-Pain-Areas] 
+**Problem Statement**:  
+- I am not able to prioritize, as I see multiple items to be done concurrently. Like
+	- Moving Think-Tank items data to mongodb
+	- Improving layout of TweetApp, and many more.
+- However, I can not concentrate on every items at same time.
+
+- Also, Once I am starting to work on some items, I feel distractions, roadblocks. Due to it, my concentration is not being maintained.
+
+**Solution**:
+- TBD
+			
+---------------------------------
+[Self-Realization]
+> I realized that mind gets distracted due to various reasons, but in that case it can not think properly. Hence **We must try to stop and be calm first, whenever some distraction, anxiety or confusion is felt**. 
+
+===============
+# Same thought in more organized way :)
+
+🌿 **Stay Calm, Regain Focus** 🌿  
+
+Life is full of distractions—worries, doubts, and endless thoughts pulling us in different directions. When our mind is restless, it becomes difficult to think clearly and make the right decisions.  
+
+✨ **But here’s the key:** Whenever you feel distracted, anxious, or confused, don’t rush. Instead, **pause, take a deep breath, and allow yourself to be calm first.**  
+
+🧘‍♂️ **Why?**  
+- A calm mind sees solutions, while a restless mind sees problems.  
+- Clarity comes in moments of stillness, not chaos.  
+- Stopping for a moment helps us regain control over our thoughts instead of being controlled by them.  
+
+So next time you feel overwhelmed, **just pause. Close your eyes. Take a deep breath.** In that moment of stillness, you’ll find the power to refocus and move forward with confidence. 🚀
+
+===================================
+
+### **Effective Strategies to Manage Stress**  
+
+#### 🏃‍♂️ **1. Physical Techniques (Body-Based)**
+- **Exercise Regularly** 🏋️‍♂️ – Running, yoga, or even a short walk reduces cortisol levels.  
+- **Deep Breathing** 🌬 – Try the **4-7-8 breathing technique** (inhale for 4 sec, hold for 7, exhale for 8).  
+- **Progressive Muscle Relaxation (PMR)** 💆‍♂️ – Tense and relax different muscle groups.  
+
+#### 🧠 **2. Mental Techniques (Mind-Based)**
+- **Reframe Negative Thoughts** 🔄 – Convert *"I'm failing"* into *"I'm learning"*.  
+- **Mindfulness & Meditation** 🧘‍♀️ – Stay present and avoid overthinking. Try apps like **Headspace** or **Calm**.  
+- **Journaling** ✍️ – Write down your worries to clear mental clutter.  
+
+#### 🗓 **3. Time & Work Management**
+- **Use the Pomodoro Technique** 🍅 – Work in **25-minute focused sessions** with 5-minute breaks.  
+- **Prioritize Tasks** 📋 – Follow the **Eisenhower Matrix** (Urgent vs. Important).  
+- **Avoid Multitasking** 🚫 – Focus on one task at a time for better efficiency.  
+
+#### ❤️ **4. Emotional & Social Support**
+- **Talk to Someone** 🗣 – Friends, family, or a mentor can offer perspective.  
+- **Laugh & Have Fun** 😆 – Watch comedy, play games, or engage in hobbies.  
+- **Practice Gratitude** 🙏 – Write 3 things you're grateful for daily.  
+
+#### 🌿 **5. Lifestyle Changes**
+- **Healthy Diet** 🥗 – Reduce caffeine, sugar, and processed foods.  
+- **Good Sleep Hygiene** 😴 – Maintain a **consistent sleep schedule** and avoid screens before bed.  
+- **Limit Social Media** 📱 – Reduce doomscrolling and comparison stress.  
+
+Would you like help creating a personalized stress-management routine based on your daily schedule? 😊
+    `,
+    },
+    createdDate: "31/Jan/2025",
+    isUrgent: false,
+    isImportant: false,
+    hasGroomed: false,
+    itemType: ThinkTankItemType.ToDo,
+  }),
+
+  ThinkTankItem.fromObject({
+    smartContent:{textOutputType: availableOutputTypes.HTML,content: `
+31-January-2025
+[Nu, I, G][TODO]- Collate all frequently asked questions in interviews 
+As a hint, refer tags in Tweet app, and notes created during earlier interviews
+—--
+
+[Nu, I][TODO] We should make a rule that any ThinkTank item, which user wants to publish should have a unique slug based on its title. Hence title should be non empty.
+This title should be used for creating a slug, based on title
+As a workaround, if title is not unique , system should suggest some unique slug by appending
+A date string in format of ddMMMyyyy
+Or any other suffix identified during actual implementation 
+The actual id should not be exposed for a public think-tank item. This can be useful if user wants to publish a new version with same slug.
+As version came in picture, we can go with a default '-latest' prefix in every slug, by default. This prefix thing can also be part of suggested slug in case of conflicts 
+—-
+(Commitment)(U,I) I have 15: years of Full stack development experience 
+—-
+(Commitment)(U,I) I have worked for development with java for 15 years 
+—--
+I have worked for development with Reactjs for 8 years
+—----
+I have worked for development with spring boot and microservices for 8 years
+—----
+I have worked for team leadership for 8 years
+—----
+(Raw-Question)- After I get new job opportunity, and my resuming my career, how will I manage my time and schedule for revision?
+
+
+Restarting your career while managing time for revision requires a structured approach. Here’s a simple yet powerful strategy to balance your work, learning, and personal life effectively:  
+
+### **1. Prioritize & Plan Ahead**  
+- Identify key topics you need to revise (technologies, frameworks, problem-solving skills, etc.).  
+- Allocate time based on importance—focus more on areas that need improvement.  
+- Use a **weekly planner** or a **digital calendar** (Google Calendar, Notion, or Todoist) to schedule revision slots.  
+
+### **2. Leverage the Power of Micro-Learning**  
+- Instead of long study sessions, revise in **short bursts** (30-45 minutes).  
+- Use the **Pomodoro Technique** (25 mins study + 5 mins break) to stay focused.  
+- Summarize key learnings daily in a **personal knowledge base** (Notion, OneNote, or Obsidian).  
+
+### **3. Integrate Learning into Your Work**  
+- Apply what you revise in real projects at your job.  
+- Maintain a **"Lessons Learned" journal** to note challenges and solutions.  
+- Engage in technical discussions with colleagues to reinforce concepts.  
+
+### **4. Make Use of Dead Time**  
+- Listen to tech podcasts or audiobooks during commutes.  
+- Watch short tutorial videos during lunch breaks.  
+- Use flashcards (Anki, Quizlet) for quick topic recall.  
+
+### **5. Stay Consistent & Track Progress**  
+- Set **small weekly goals** (e.g., "Revise React Hooks," "Practice 3 DSA problems").  
+- Use a **habit tracker** to monitor progress and stay accountable.  
+- Every weekend, **reflect** on what worked and adjust the schedule if needed.  
+
+### **6. Maintain Work-Life Balance**  
+- Avoid burnout by setting boundaries between work and study time.  
+- Schedule **relaxation and social time** to stay motivated.  
+- Exercise and meditate to keep your mind fresh.  
+
+**🚀 Final Thought:** The key to success is **consistency, not intensity.** Even **30 minutes a day** adds up over time. Stay patient, trust the process, and enjoy the journey of growth!
+—----------
+
+
+
+
+
+
+
+
+
+
+
+
+    `},
+    createdDate: "31/Jan/2025",
+    isUrgent: false,
+    isImportant: false,
+    hasGroomed: false,
+    itemType: ThinkTankItemType.ToDo
+  }),
+
+  ThinkTankItem.fromObject({
+    smartContent:{textOutputType: availableOutputTypes.HTML,content: `
+01-February-2025
+[U,I][Plan][NG] My plan of revision
+RPR (review, practice and revise) refresher plans of topics
+RPR key terminologies of topics
+RPR practicals of topics
+Links with summary of learning
+—---------------------
+[U,I][TODO] My laptop fan is making a lot of noise. I must take it to repair shop for its diagnosis, to refrain from any big damage.
+
+—--------------------------
+[U,I][TODO][G] SmartEditors and SmartPreviewers are most common used code in TweetApp. However, their codes have been spaghetti over the time. And due to refactor initiated, now the Sev1 has been raised. So, dhoti sambhal ke saara kaam chhor ke log jao.
+
+—----------------------------------
+[U,I][MY-UPDATES] 
+- What I am working today (i.e. on 01-February-2025)
+  - I am refactoring SmartEditor code. 
+    - However, after initial refactor of renaming file, I am worrying that I am introducing breaking changes in v4. How will I manage balance between legacy v3 and new v4. I am thinking both from UI as well as backend side.
+    - My worry is also due to unstable backend of TweetApp. For now I have thought so many changes, but have not implemented them uniformly.
+    - I fear that I may introduce breaking changes un-intentionally, and due to this my whole application may stop functioning.
+      - For solution of this worry, I must push all my recent changes in a separate branch, naming as \`work-branch-before-impl-smart-editor-v4-changes\`
+      - In this way, I will have a backup working branch, which I can use to rollback my breaking changes.
+
+
+ 
+
+    `},
+    createdDate: "01/Feb/2025",
+    isUrgent: false,
+    isImportant: false,
+    hasGroomed: false,
+    itemType: ThinkTankItemType.ToDo
+  }),
 
   // ThinkTankItem.fromObject({
   //   smartContent:{textOutputType: availableOutputTypes.HTML,content: `

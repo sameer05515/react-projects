@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { /**useMemo,*/ useState } from "react";
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
-import PopupMenuV3 from "../../../miscelleneous/misc/sub-components/PopupMenuV3";
+// import PopupMenuV3 from "../../../miscelleneous/sub-components/PopupMenuV3";
+import PopupMenuV3 from "../../../../ApnaPlayground/MiscellaneousExamples/PopupMenu/v3";
 import { useNavigate } from "react-router-dom";
 import { RELATION_DIRECTION_TYPES } from "../../util/common.util";
 import { ArcherContainer, ArcherElement } from "react-archer";
@@ -85,28 +86,28 @@ const Playground = () => {
 
   const getNodeForId = (id) => {
     if (!id) return "";
-    return allNodes.find((node) => node.uniqueId === id)|| null;
+    return allNodes.find((node) => node.uniqueId === id) || null;
   };
 
-  const previousNodes = useMemo(() => {
-    return selectedNode?.relations?.reduce((acc, rel) => {
-      if (rel.type === RELATION_DIRECTION_TYPES.previous) {
-        const prevRel = allNodes?.find((an) => an.uniqueId === rel.withId);
-        if (prevRel) acc.push(prevRel);
-      }
-      return acc;
-    }, []);
-  }, [allNodes, selectedNode]);
+  // const previousNodes = useMemo(() => {
+  //   return selectedNode?.relations?.reduce((acc, rel) => {
+  //     if (rel.type === RELATION_DIRECTION_TYPES.previous) {
+  //       const prevRel = allNodes?.find((an) => an.uniqueId === rel.withId);
+  //       if (prevRel) acc.push(prevRel);
+  //     }
+  //     return acc;
+  //   }, []);
+  // }, [allNodes, selectedNode]);
 
-  const nextNodes = useMemo(() => {
-    return selectedNode?.relations?.reduce((acc, rel) => {
-      if (rel.type === RELATION_DIRECTION_TYPES.next) {
-        const nextRel = allNodes?.find((an) => an.uniqueId === rel.withId);
-        if (nextRel) acc.push(nextRel);
-      }
-      return acc;
-    }, []);
-  }, [allNodes, selectedNode]);
+  // const nextNodes = useMemo(() => {
+  //   return selectedNode?.relations?.reduce((acc, rel) => {
+  //     if (rel.type === RELATION_DIRECTION_TYPES.next) {
+  //       const nextRel = allNodes?.find((an) => an.uniqueId === rel.withId);
+  //       if (nextRel) acc.push(nextRel);
+  //     }
+  //     return acc;
+  //   }, []);
+  // }, [allNodes, selectedNode]);
 
   const getArcherBoxesForLanguage = () => {
     if (!selectedNode || !allNodes) return { prevBoxes: [], selBoxes: [], nextBoxes: [] };
@@ -122,8 +123,8 @@ const Playground = () => {
       };
       acc.push(ac);
       lang.relations
-        .filter(l => l.type === RELATION_DIRECTION_TYPES.previous)
-        .forEach(l => {
+        .filter((l) => l.type === RELATION_DIRECTION_TYPES.previous)
+        .forEach((l) => {
           const c = {
             id: l.withId,
             label: getNodeNameForId(l.withId) || l.withId,
@@ -138,11 +139,11 @@ const Playground = () => {
             style: strokeStyle,
             label: l.name,
           });
-        })
+        });
 
       lang.relations
-        .filter(l => l.type === RELATION_DIRECTION_TYPES.next)
-        .forEach(l => {
+        .filter((l) => l.type === RELATION_DIRECTION_TYPES.next)
+        .forEach((l) => {
           const c = {
             id: l.withId,
             label: getNodeNameForId(l.withId) || l.withId,
@@ -157,23 +158,16 @@ const Playground = () => {
             style: strokeStyle,
             label: l.name,
           });
-        })
+        });
 
       return acc;
     }, archerBoxes);
 
-    const selBoxes = archerBoxes.filter(
-      (box) => box.type === NodeType.selectedNode
-    );
-    const prevBoxes = archerBoxes.filter(
-      (box) => box.type === NodeType.previousNode
-    );
-    const nextBoxes = archerBoxes.filter(
-      (box) => box.type === NodeType.nextNode
-    );
+    const selBoxes = archerBoxes.filter((box) => box.type === NodeType.selectedNode);
+    const prevBoxes = archerBoxes.filter((box) => box.type === NodeType.previousNode);
+    const nextBoxes = archerBoxes.filter((box) => box.type === NodeType.nextNode);
 
     return { prevBoxes, selBoxes, nextBoxes };
-
   };
 
   const { prevBoxes, selBoxes, nextBoxes } = getArcherBoxesForLanguage();
@@ -185,9 +179,7 @@ const Playground = () => {
   };
 
   const handlePopupOption = (option) => {
-    console.log(
-      `[handlePopupOption]: '${option.title}' selected for '${selectedNode?.name}'`
-    );
+    console.log(`[handlePopupOption]: '${option.title}' selected for '${selectedNode?.name}'`);
     setPopupVisible(false);
     option.action();
   };
@@ -222,7 +214,7 @@ const Playground = () => {
   const nodeContainerStyle = {
     // ...styles.greenBorder,
     margin: "5px 0",
-    padding: '50px',
+    padding: "50px",
     flex: 1,
     display: "flex",
     flexDirection: "row",
@@ -237,20 +229,8 @@ const Playground = () => {
             <div style={nodeContainerStyle}>
               {/* Previous Nodes container */}
               {prevBoxes?.map((node) => (
-                <ArcherBox
-                  key={node.id}
-                  id={node.id}
-                  relations={node.relations}
-                  label={node.label}
-                  style={node.style}
-                >
-                  <Node
-                    isSelected={false}
-                    node={getNodeForId(node.id)}
-                    onItemSelection={setSelectedNode}
-                    onItemRightClick={handleRightClick}
-                    style={styles.greenBorder}
-                  />
+                <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={node.style}>
+                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
                 </ArcherBox>
               ))}
             </div>
@@ -258,20 +238,8 @@ const Playground = () => {
             <div style={nodeContainerStyle}>
               {/* Current Node container <br /> */}
               {selBoxes.map((node) => (
-                <ArcherBox
-                  key={node.id}
-                  id={node.id}
-                  relations={node.relations}
-                  label={node.label}
-                  style={node.style}
-                >
-                  <Node
-                    isSelected={true}
-                    node={getNodeForId(node.id)}
-                    onItemSelection={setSelectedNode}
-                    onItemRightClick={handleRightClick}
-                    style={styles.greenBorder}
-                  />
+                <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={node.style}>
+                  <Node isSelected={true} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
                 </ArcherBox>
               ))}
             </div>
@@ -279,58 +247,30 @@ const Playground = () => {
             <div style={nodeContainerStyle}>
               {/* Next Nodes container <br /> */}
               {nextBoxes?.map((node) => (
-                <ArcherBox
-                  key={node.id}
-                  id={node.id}
-                  relations={node.relations}
-                  label={node.label}
-                  style={{...node.style, padding:'20px'}}
-                >
-                  <Node
-                    isSelected={false}
-                    node={getNodeForId(node.id)}
-                    onItemSelection={setSelectedNode}
-                    onItemRightClick={handleRightClick}
-                    style={styles.greenBorder}
-                  />
+                <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={{ ...node.style, padding: "20px" }}>
+                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
                 </ArcherBox>
               ))}
             </div>
           </div>
         </ArcherContainer>
 
-        {popupVisible && (
-          <PopupMenuV3
-            position={popupPosition}
-            popupOptions={popupOptions}
-            onOptionSelect={handlePopupOption}
-            popupOptionStyle={{ fontSize: "12px" }}
-          />
-        )}
+        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionStyle={{ fontSize: "12px" }} />}
       </div>
     </>
   );
 };
-const Node = React.memo(
-  ({
-    isSelected = false,
-    node,
-    onItemRightClick,
-    onItemSelection,
-    style = {},
-  }) => (
-    <div
-      style={{
-        ...style,
-        fontSize: "12px",
-        fontWeight: isSelected ? "bold" : "normal",
-      }}
-      onDoubleClick={() => !isSelected && onItemSelection(node)}
-      onContextMenu={(e) => isSelected && onItemRightClick(e)}
-    >
-      {node.name}
-    </div>
-  )
-);
+const Node = React.memo(({ isSelected = false, node, onItemRightClick, onItemSelection, style = {} }) => (
+  <div
+    style={{
+      ...style,
+      fontSize: "12px",
+      fontWeight: isSelected ? "bold" : "normal",
+    }}
+    onDoubleClick={() => !isSelected && onItemSelection(node)}
+    onContextMenu={(e) => isSelected && onItemRightClick(e)}
+  >
+    {node.name}
+  </div>
+));
 export default Playground;
-

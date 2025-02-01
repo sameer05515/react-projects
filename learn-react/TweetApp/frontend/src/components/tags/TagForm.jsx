@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import { SmartEditor } from "../../common/components/smart-editor/SmartEditorV3";
+import { SmartEditor } from "../../common/components/Smart/Editor/v3";
 
 const TagForm = ({
   formData: initialValue,

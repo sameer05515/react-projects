@@ -1,24 +1,25 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import Select from "react-select";
+// import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
-import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
+import { SmartEditor } from "../../../common/components/Smart/Editor/v3";
 import {
-  createAnswer, updateAnswer
+  createAnswer,
+  updateAnswer,
 } from "../../../redux/slices/interviewMgmtSlice";
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
-const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
+const AnswerForm = ({
+  questionName,
+  initialFormData,
+  onSave,
+  onCancelEdit,
+}) => {
   const dispatch = useDispatch();
 
-
-  // const availableTags = useSelector(selectAllFlatTags);
-
-  const {
-    availableTags,refreshCategoryTree
-  } = useInterviewMgmt();
+  const { refreshCategoryTree } = useInterviewMgmt();
 
   const [formData, setFormData] = useState({
     uniqueId: initialFormData?.uniqueId || "",
@@ -34,20 +35,10 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
     tags: initialFormData?.tags || [],
   });
 
-  // useEffect(()=>{
-  //   setFormData(()=>({...initialFormData}));
-  // }, [initialFormData])
-
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
 
-
-
-  // useEffect(() => {
-  //   dispatch(fetchTags());
-  // }, [dispatch]);
-
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = [];
 
     if (!formData.name.trim()) {
@@ -68,24 +59,24 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
 
     setFormErrors(errors);
     return errors.length === 0;
-  };
+  }, [formData.heading, formData.name, formData.rating, smartEditorError]);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleTagSelect = useCallback((selectedTags) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: selectedTags.map((tag) => tag.value),
-    }));
-  }, []);
+  // const handleTagSelect = useCallback((selectedTags) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     tags: selectedTags.map((tag) => tag.value),
+  //   }));
+  // }, []);
 
-  const tagOptions = availableTags.map((tag) => ({
-    value: tag.uniqueId,
-    label: tag.title,
-  }));
+  // const tagOptions = availableTags.map((tag) => ({
+  //   value: tag.uniqueId,
+  //   label: tag.title,
+  // }));
 
   const handleSaveCategory = useCallback(
     (event) => {
@@ -94,9 +85,11 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
         return;
       }
 
-      const action = initialFormData?.uniqueId ?
-        dispatch(updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })) :
-        dispatch(createAnswer(formData));
+      const action = initialFormData?.uniqueId
+        ? dispatch(
+            updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })
+          )
+        : dispatch(createAnswer(formData));
 
       // if (initialFormData?.uniqueId) {
       //   // dispatch(
@@ -109,7 +102,7 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
 
       action.then(() => {
         // if (formData.uniqueId) setFormData(selectedNode);
-        // else 
+        // else
         // refreshNodes();
         // dispatch(fetchCategoryTree());
         refreshCategoryTree();
@@ -120,7 +113,14 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
         // onSave();
       }
     },
-    [formData, validateForm, initialFormData, dispatch, onSave]
+    [
+      validateForm,
+      initialFormData.uniqueId,
+      dispatch,
+      formData,
+      onSave,
+      refreshCategoryTree,
+    ]
   );
 
   const handleSmartEditorChange = useCallback((smartContent) => {
@@ -133,7 +133,10 @@ const AnswerForm = ({questionName, initialFormData, onSave, onCancelEdit }) => {
 
   return (
     <div style={styles.formStyle}>
-      <h3>{initialFormData?.uniqueId ? "Edit Answer" : "Add Answer"} {`For Question: ${questionName}`}</h3>
+      <h3>
+        {initialFormData?.uniqueId ? "Edit Answer" : "Add Answer"}{" "}
+        {`For Question: ${questionName}`}
+      </h3>
       <div style={styles.fieldRow}>
         <label htmlFor="name" style={styles.labelStyle}>
           Name:
@@ -251,4 +254,4 @@ const styles = {
   },
 };
 
-export default AnswerForm
+export default AnswerForm;

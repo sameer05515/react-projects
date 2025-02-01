@@ -1,12 +1,8 @@
 // TaskCardViewDashboard.js
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import UnderConstruction from "../../../../common/components/UnderConstruction";
-import {
-  fetchTags,
-  selectAllFlatTags,
-} from "../../../../redux/slices/tagsSlice";
 import {
   fetchTasks,
   saveTask,
@@ -20,7 +16,6 @@ import ViewTask from "./ViewTask";
 
 const TaskCardViewDashboard = ({ underContruction = true }) => {
   const dispatch = useDispatch();
-  const availableTags = useSelector(selectAllFlatTags);
 
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
@@ -30,17 +25,6 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
   const tasks = useSelector(selectAllFlatTasks);
   const status = useSelector((state) => state.tasks.status);
   const error = useSelector((state) => state.tasks.error);
-
-  useEffect(() => {
-    dispatch(fetchTasks()); // Dispatch the fetchTasks async thunk to fetch tasks
-  }, [dispatch]);
-
-  useEffect(() => {
-    // Fetch available tags when the component mounts
-    // You should dispatch an action to retrieve the tags from your API
-    // For example: dispatch(fetchTags());
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -141,11 +125,8 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
           tasks={tasks}
           onEditTask={openEditTaskModal}
           onViewTask={openViewTaskModal}
-          tags={availableTags}
         />
       </div>
-      {/* <div style={blankDivStyle}>        
-      </div> */}
 
       {isAddTaskModalOpen && (
         <TaskModel
@@ -166,7 +147,7 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
         <ViewTask
           task={selectedTask}
           onClose={closeTaskModal}
-          tags={availableTags}
+          // tags={availableTags}
         />
       )}
     </div>

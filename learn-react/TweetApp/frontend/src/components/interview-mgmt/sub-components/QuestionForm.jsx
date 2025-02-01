@@ -1,21 +1,18 @@
-import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
-import RatingComponent from "../../../common/components/rating-component/RatingComponent";
-import { SmartEditor } from "../../../common/components/smart-editor/SmartEditorV3";
-import {
-  createQuestion, updateQuestion
-} from "../../../redux/slices/interviewMgmtSlice";
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
+import { SmartEditor } from "../../../common/components/Smart/Editor/v3";
+import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
+import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
 const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
-  const dispatch = useDispatch();
-  // const availableTags = useSelector(selectAllFlatTags);
-  const {
-    availableTags,refreshCategoryTree
-  } = useInterviewMgmt();
+  const { createQuestion, updateQuestion } = useInterviewManagementAPIs();
+  const tagOptions = useSelector(getTagsForComboOptions);
+  const { refreshCategoryTree } = useInterviewMgmt();
 
   const [formData, setFormData] = useState({
     uniqueId: initialFormData?.uniqueId || "",
@@ -32,26 +29,8 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     tags: initialFormData?.tags || [],
   });
 
-  // useEffect(()=>{
-  //   setFormData(()=>({...initialFormData}));
-  // }, [initialFormData])
-
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
-
-  // useEffect(() => {
-  //   if (createCategoryResponse?.error || updateCategoryResponse?.error) {
-  //     setFormErrors([
-  //       createCategoryResponse?.error ||
-  //       updateCategoryResponse?.error ||
-  //       "Missing error message: Please contact administrator",
-  //     ]);
-  //   }
-  // }, [createCategoryResponse, updateCategoryResponse]);
-
-  // useEffect(() => {
-  //   dispatch(fetchTags());
-  // }, [dispatch]);
 
   const validateForm = () => {
     const errors = [];
@@ -88,46 +67,33 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     }));
   }, []);
 
-  const tagOptions = availableTags.map((tag) => ({
-    value: tag.uniqueId,
-    label: tag.title,
-  }));
+  const handleSaveCategory = (event) => {
+    event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
 
-  const handleSaveCategory = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (!validateForm()) {
+    const action = initialFormData?.uniqueId
+      ? updateQuestion({ ...formData, uniqueId: initialFormData.uniqueId })
+      : createQuestion(formData);
+
+    action.then((response) => {
+      // if (formData.uniqueId) setFormData(selectedNode);
+      // else
+      // refreshNodes();
+      // dispatch(fetchCategoryTree());
+      if (response.isError) {
+        setFormErrors([response.message || "Some API related error occurred!"]);
         return;
       }
+      refreshCategoryTree();
+      onSave();
+    });
 
-      const action = initialFormData?.uniqueId ?
-        dispatch(updateQuestion({ ...formData, uniqueId: initialFormData.uniqueId })) :
-        dispatch(createQuestion(formData));
-
-      // if (initialFormData?.uniqueId) {
-      //   // dispatch(
-      //   //   updateCategory({ ...formData, uniqueId: initialFormData.uniqueId })
-      //   // );
-      //   console.log('Update facility will be available soon!!')
-      // } else {
-      //   dispatch(createQuestion(formData));
-      // }
-
-      action.then(() => {
-        // if (formData.uniqueId) setFormData(selectedNode);
-        // else 
-        // refreshNodes();
-        // dispatch(fetchCategoryTree());
-        refreshCategoryTree();
-        onSave();
-      });
-
-      if (onSave) {
-        // onSave();
-      }
-    },
-    [formData, validateForm, initialFormData, dispatch, onSave]
-  );
+    // if (onSave) {
+    //   // onSave();
+    // }
+  };
 
   const handleSmartEditorChange = useCallback((smartContent) => {
     setFormData((prev) => ({ ...prev, smartContent }));
@@ -137,8 +103,8 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     setSmartEditorError(error);
   }, []);
 
-  if(!initialFormData){
-    return <>Bhosri wale data kaun dega? Tera baap??</>
+  if (!initialFormData) {
+    return <>Bhosri wale data kaun dega? Tera baap??</>;
   }
 
   return (
@@ -184,7 +150,9 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
         />
       </div>
       <div>
-        <label htmlFor="description">Additional Description for Question:</label>
+        <label htmlFor="description">
+          Additional Description for Question:
+        </label>
         <div style={styles.smartEditorContainer}>
           <SmartEditor
             initialValue={formData.smartContent}
@@ -199,7 +167,9 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
           isMulti
           name="tags"
           options={tagOptions}
-          value={tagOptions?.filter((tag) => formData.tags?.includes(tag.value))}
+          value={tagOptions?.filter((tag) =>
+            formData.tags?.includes(tag.value)
+          )}
           onChange={handleTagSelect}
         />
       </div>
@@ -221,7 +191,7 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
         <JSONDataViewer
           metadata={{
             formData,
-            initialFormData,            
+            initialFormData,
             // createCategoryResponse,
             // updateCategoryResponse,
           }}

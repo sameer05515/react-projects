@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
-import { fetchTags, selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
-import { fetchTopics, selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
+import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
 import CreateTopic from "../common/CreateTopic";
 import TopicCard from "../common/TopicCard";
-import CustomButton from "../../../../common/components/custom-button/CustomButton";
 
 function ListTopicsByCreatedDate() {
   const topics = useSelector(selectAllFlatTopics);
   const loading = useSelector((state) => state.topics.loading);
   const error = useSelector((state) => state.topics.error);
-  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
-  const availableTags = useSelector(selectAllFlatTags);
 
   const [editTopic, setEditTopic] = useState(null);
   const [startDate, setStartDate] = useState(""); // Start date for date range filter
   const [endDate, setEndDate] = useState(""); // End date for date range filter
-
-  useEffect(() => {
-    dispatch(fetchTopics());
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   const handleEditTopic = (topic) => {
     handleCancelEdit();
@@ -62,7 +54,6 @@ function ListTopicsByCreatedDate() {
   };
 
   const filteredTopics = topics.filter((topic) => {
-
     if (!startDate || !endDate) {
       return true; // No filter applied
     }
@@ -101,7 +92,9 @@ function ListTopicsByCreatedDate() {
       {loading === "pending" && <p>Loading topics...</p>}
       {error && <p>Error: {error}</p>}
 
-      {!showForm && <CustomButton onClick={() => setShowForm(true)}>Add</CustomButton>}
+      {!showForm && (
+        <CustomButton onClick={() => setShowForm(true)}>Add</CustomButton>
+      )}
 
       {showForm && (
         <CreateTopic
@@ -139,7 +132,7 @@ function ListTopicsByCreatedDate() {
                   style={itemStyle}
                   onDoubleClick={() => handleEditTopic(topic)}
                 >
-                  <TopicCard topic={topic} tags={availableTags} />
+                  <TopicCard topic={topic} />
                 </div>
               ))}
             </div>

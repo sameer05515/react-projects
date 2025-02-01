@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { formatDateToDDMMMYYYYWithTime } from "../../common/service/commonService";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan";
-import ReactHtmlParser from "react-html-parser";
+// import ReactHtmlParser from "react-html-parser";
 import Breadcrumbs from "../../common/components/global-breadcrumbs/GlobalBreadcrumb";
-import { SmartPreviewer } from "../../common/components/smart-editor/SmartEditorV3";
+import { SmartPreviewer } from "../../common/components/Smart/Editor/v3";
 import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvider";
@@ -12,16 +12,16 @@ import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvide
 const TagCard = ({
   tag,
   showDescription = false,
-  onEdit = () => { },
-  onTagTraversal = () => { },
-  onAddSubTag = () => { },
-  onChildTagClick = () => { },
-  onMoveAnotherParent = () => { },
-  onAncestorClick = () => { },
-  onLinkedItemClick = () => { },
-  onBaseSpanClick = () => { },
+  onEdit = () => {},
+  onTagTraversal = () => {},
+  onAddSubTag = () => {},
+  onChildTagClick = () => {},
+  onMoveAnotherParent = () => {},
+  onAncestorClick = () => {},
+  onLinkedItemClick = () => {},
+  onBaseSpanClick = () => {},
 }) => {
-  const {BreadcrumbItemType}= useGlobalServiceProvider();
+  const { BreadcrumbItemType } = useGlobalServiceProvider();
   const [showDescr, setShowDescr] = useState(showDescription);
 
   const handleEdit = () => {
@@ -51,9 +51,7 @@ const TagCard = ({
           <ul style={styles.ulStyle}>
             {childTagList.map((t) => (
               <li style={styles.liStyles} key={t.uniqueId}>
-                <HoverableSpan onClick={() => onChildTagClick(t)}>
-                  {t.name}
-                </HoverableSpan>
+                <HoverableSpan onClick={() => onChildTagClick(t)}>{t.name}</HoverableSpan>
                 {populateChildren(t.children)}
               </li>
             ))}
@@ -70,17 +68,7 @@ const TagCard = ({
           <ul style={styles.ulStyle}>
             {sectionsList.map((t) => (
               <li style={styles.liStyles} key={t.uniqueId}>
-                {(TagLinkedItemType.topic === type ||
-                  TagLinkedItemType.task === type ||
-                  TagLinkedItemType.question === type) && (
-                    <HoverableSpan
-                      onClick={() =>
-                        onLinkedItemClick({ uniqueId: t.uniqueId }, type)
-                      }
-                    >
-                      {t.name}
-                    </HoverableSpan>
-                  )}
+                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type || TagLinkedItemType.question === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
 
                 {TagLinkedItemType.topicSection === type && (
                   <HoverableSpan
@@ -109,54 +97,39 @@ const TagCard = ({
     return (
       <>
         {sectionsList && sectionsList.length > 0 && (
-          <Tree data={sectionsList} renderNode={(t) => (
-            <>
-              {(TagLinkedItemType.topic === type ||
-                TagLinkedItemType.task === type) && (
-                  <HoverableSpan
-                    onClick={() =>
-                      onLinkedItemClick({ uniqueId: t.uniqueId }, type)
-                    }
-                  >
-                    {t.name}
-                  </HoverableSpan>
-                )}
+          <Tree
+            data={sectionsList}
+            renderNode={(t) => (
+              <>
+                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
 
-              {(
-                // TagLinkedItemType.topic === type ||
+                {// TagLinkedItemType.topic === type ||
                 // TagLinkedItemType.task === type ||
-                TagLinkedItemType.question === type) && (
+                TagLinkedItemType.question === type && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
+
+                {TagLinkedItemType.topicSection === type && (
                   <HoverableSpan
                     onClick={() =>
-                      onLinkedItemClick({ uniqueId: t.uniqueId }, type)
+                      onLinkedItemClick(
+                        {
+                          linkedTopicUniqueId: t.linkedTopicUniqueId,
+                          uniqueId: t.uniqueId,
+                        },
+                        type
+                      )
                     }
                   >
                     {t.name}
                   </HoverableSpan>
                 )}
-
-              {TagLinkedItemType.topicSection === type && (
-                <HoverableSpan
-                  onClick={() =>
-                    onLinkedItemClick(
-                      {
-                        linkedTopicUniqueId: t.linkedTopicUniqueId,
-                        uniqueId: t.uniqueId,
-                      },
-                      type
-                    )
-                  }
-                >
-                  {t.name}
-                </HoverableSpan>
-              )}
-            </>
-          )} />
+              </>
+            )}
+          />
         )}
-        <JSONDataViewer metadata={{sectionsList, type}} title="sectionsList"/>
+        <JSONDataViewer metadata={{ sectionsList, type }} title="sectionsList" />
       </>
     );
-  }
+  };
 
   const tagStyle = {
     backgroundColor: "#ccc",
@@ -174,10 +147,7 @@ const TagCard = ({
   return (
     <>
       <div>
-        <CustomButton
-          style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => traverseTag(-1)}
-        >
+        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
         <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
@@ -187,61 +157,37 @@ const TagCard = ({
 
       <div>
         {/* <div> */}
-        <Breadcrumbs
-          providedItem={tag}
-          providedItemType={BreadcrumbItemType.TAG}
-          ancestors={tag.ancestors}
-          onAncestorClick={(a) => handleAncestorClick(a)}
-          onBaseSpanClick={onBaseSpanClick}
-        />
+        <Breadcrumbs providedItem={tag} providedItemType={BreadcrumbItemType.TAG} ancestors={tag.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
         <h3>{tag.name}</h3> <br />
-
         <div style={datesStyle}>
           <span style={{ marginRight: "10px" }}>
             <b>Created:</b> {formatDateToDDMMMYYYYWithTime(tag.createdDate)}
           </span>
           <span>
-            <b>Last updated:</b>{" "}
-            {formatDateToDDMMMYYYYWithTime(tag.updatedDate)}
+            <b>Last updated:</b> {formatDateToDDMMMYYYYWithTime(tag.updatedDate)}
           </span>
         </div>
       </div>
 
       <div style={{ margin: "10px 0" }}>
-        <CustomButton
-          style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={handleEdit}
-        >
+        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={handleEdit}>
           Edit
         </CustomButton>
         {!showDescr && (
-          <CustomButton
-            style={{ ...tagStyle, marginRight: "10px" }}
-            onClick={() => setShowDescr(true)}
-          >
+          <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => setShowDescr(true)}>
             Show Description
           </CustomButton>
         )}
         {showDescr && (
-          <CustomButton
-            style={{ ...tagStyle, marginRight: "10px" }}
-            onClick={() => setShowDescr(false)}
-          >
+          <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => setShowDescr(false)}>
             Hide Description
           </CustomButton>
         )}
-        <CustomButton
-          style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => handleAddSubTag()}
-        >
+        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => handleAddSubTag()}>
           Add Sub-Tag
         </CustomButton>
 
-
-        <CustomButton
-          style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => handleMoveAnotherParent()}
-        >
+        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => handleMoveAnotherParent()}>
           Move to another parent
         </CustomButton>
 
@@ -265,10 +211,7 @@ const TagCard = ({
       {tag.linkedTopicSections && tag.linkedTopicSections.length > 0 && (
         <div style={styles.descriptionStyle}>
           <b>Linked Topic Sections:-</b> <br />
-          {populateLinkedItems(
-            tag.linkedTopicSections,
-            TagLinkedItemType.topicSection
-          )}
+          {populateLinkedItems(tag.linkedTopicSections, TagLinkedItemType.topicSection)}
         </div>
       )}
 
@@ -298,9 +241,11 @@ const TagCard = ({
           }}
         >
           <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
-          {tag.description &&
-            !tag.smartContent &&
-            ReactHtmlParser(tag.description || "")}
+          {
+            tag.description && !tag.smartContent && <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html" }} />
+
+            // ReactHtmlParser(tag.description || "")
+          }
           {tag.smartContent && <SmartPreviewer data={tag.smartContent} />}
         </div>
       )}
@@ -308,10 +253,7 @@ const TagCard = ({
       <JSONDataViewer metadata={{ tag }} title="Tag Data" />
 
       <div>
-        <CustomButton
-          style={{ ...tagStyle, marginRight: "10px" }}
-          onClick={() => traverseTag(-1)}
-        >
+        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
         <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
@@ -362,9 +304,8 @@ const TagLinkedItemType = {
   topic: "topic",
   task: "task",
   topicSection: "topic-section",
-  question: "question"
+  question: "question",
 };
 
 export default TagCard;
 export { TagLinkedItemType };
-

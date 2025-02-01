@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTags, createTag, updateTag, selectAllTreeTags } from "../../redux/slices/tagsSlice";
+import {
+  fetchTags,
+  createTag,
+  updateTag,
+  selectAllTreeTags,
+} from "../../redux/slices/tagsSlice";
 import TagsCreate from "./TagsCreate"; // Import the TagsCreate componenthe createTag and updateTag actions
 
 function TagList() {
@@ -11,10 +16,6 @@ function TagList() {
 
   // State to manage editing
   const [editTag, setEditTag] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   const handleEditTag = (tag) => {
     setEditTag(tag);
@@ -34,7 +35,6 @@ function TagList() {
       await dispatch(createTag(tagData));
       await dispatch(fetchTags());
     }
-    
 
     setEditTag(null); // Clear the edit state
   };

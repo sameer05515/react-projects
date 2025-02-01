@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTopics } from "../../redux/topicSlice";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic"; // Import the CreateTopic component
 import TopicCard from "./TopicCard";
-import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
-
 
 function ListTopic() {
   const topics = useSelector(selectAllFlatTopics);
   const loading = useSelector((state) => state.topics.loading);
   const error = useSelector((state) => state.topics.error);
-  const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
-  
-
 
   // State to manage editing
   const [editTopic, setEditTopic] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchTopics());
-  }, [dispatch]);
 
   const handleEditTopic = (topic) => {
     handleCancelEdit();
@@ -40,15 +31,13 @@ function ListTopic() {
     // and update the state accordingly.
   };
 
-  
-
-  const listStyleGen= (columns=3)=>{
+  const listStyleGen = (columns = 3) => {
     return {
       display: "grid",
       gridTemplateColumns: `repeat(${columns}, 1fr)`,
       gap: "20px",
-    }
-  }
+    };
+  };
 
   const itemStyle = {
     border: "1px solid #ccc",
@@ -61,7 +50,7 @@ function ListTopic() {
       {loading === "pending" && <p>Loading topics...</p>}
       {error && <p>Error: {error}</p>}
       {/* CreateTopic component for creating and editing topics */}
-      {!showForm && <button onClick={()=>setShowForm(true)} >Add</button>}
+      {!showForm && <button onClick={() => setShowForm(true)}>Add</button>}
       {showForm && (
         <CreateTopic
           topic={editTopic}
@@ -78,7 +67,7 @@ function ListTopic() {
               style={itemStyle}
               onDoubleClick={() => handleEditTopic(topic)}
             >
-              <TopicCard topic={topic}/>
+              <TopicCard topic={topic} />
             </div>
           ))}
         </div>

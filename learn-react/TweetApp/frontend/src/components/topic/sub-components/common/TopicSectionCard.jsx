@@ -1,14 +1,15 @@
-import React, { memo, useMemo, useCallback } from "react";
+import React, { memo, useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../../../common/components/hoverable-span/HoverableSpan";
-import { SmartPreviewer } from "../../../../common/components/smart-editor/SmartEditorV3";
-import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import ListSection from "../../../../common/components/list-section/ListSection";
+import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
+import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
+import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 import { topicAndSectionStyles as styles } from "../styles";
 
 const TopicSectionCard = ({
   data: ts,
-  tags = [],
   selectedElementRef,
   selectedSectionId,
   onEditSection = () => {},
@@ -23,12 +24,7 @@ const TopicSectionCard = ({
   );
 
   // Filter tags based on unique IDs
-  const filteredTags = useMemo(() => {
-    if (!ts?.tags) return [];
-    return ts.tags.map((uniqueId) =>
-      tags.find((tag) => tag.uniqueId === uniqueId)
-    );
-  }, [ts?.tags, tags]);
+  const filteredTags = useSelector(getTagsForGivenIds(ts?.tags || []));
 
   // Define button actions
   const buttonActions = useMemo(

@@ -5,7 +5,7 @@ import CustomButton from "../../common/components/custom-button/CustomButton";
 import {
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
-} from "../../common/components/smart-editor/SmartEditorV3";
+} from "../../common/components/Smart/Editor/v3";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
 import { fetchTags } from "../../redux/slices/tagsSlice";
@@ -47,16 +47,6 @@ const TaskTreeViewDashboard = () => {
   const error = useSelector((state) => state.tasks.error);
   const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
   const selectedElementRef = useRef(null);
-  useEffect(() => {
-    dispatch(fetchTasks()); // Dispatch the fetchTasks async thunk to fetch tasks
-  }, [dispatch]);
-
-  useEffect(() => {
-    // Fetch available tags when the component mounts
-    // You should dispatch an action to retrieve the tags from your API
-    // For example: dispatch(fetchTags());
-    dispatch(fetchTags());
-  }, [dispatch]);
 
   useEffect(() => {
     if (selectedElementRef.current) {

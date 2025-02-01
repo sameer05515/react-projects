@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import "./SaveDataComponent.css"; // Import custom CSS for styling
 import tagList from "./tagList";
-import GitDiff from '../../miscelleneous/GitDiff'
+import GitDiff from '../../../ApnaPlayground/GitDiff/v1'
 
 const EditDataComponent = ({ savedData }) => {
   const [selectedDate, setSelectedDate] = useState(

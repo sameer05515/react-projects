@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../../../common/components/floating-button/FloatingButton";
 import HoverableSpan from "../../../../common/components/hoverable-span/HoverableSpan";
@@ -7,7 +7,7 @@ import {
   SmartEditor,
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
-} from "../../../../common/components/smart-editor/SmartEditorV3";
+} from "../../../../common/components/Smart/Editor/v3";
 import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import {
   activityList,
@@ -20,10 +20,10 @@ import {
 import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
 import { updateTask } from "../../../../redux/slices/taskSlice";
 import { prepareTaskTitle } from "./taskUtils";
+import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 
 const TaskCard = ({
   task,
-  tags = [],
   showDescription = false,
   pinnedTasks = [],
   isPinned = false,
@@ -35,9 +35,9 @@ const TaskCard = ({
   onLinkedTagSelection = () => {},
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
-  const filteredTags = task.tags?.map((uniqueId) =>
-    tags.find((tag) => tag.uniqueId === uniqueId)
-  );
+
+
+  const filteredTags = useSelector(getTagsForGivenIds(task?.tags || []));
 
   const handleTraverse = (increment) => onTaskTraversal(increment);
   const handleDescriptionToggle = () => setShowDescr((prev) => !prev);
@@ -143,7 +143,7 @@ const TaskDetails = ({ task }) => (
   <div>
     <SmartPreviewer
       data={{
-        content: prepareTaskTitle(task, 'TaskCard'),
+        content: prepareTaskTitle(task, "TaskCard"),
         textOutputType: SupportedTextFormats.MARKDOWN,
       }}
       markdownStyles={{ fontSize: "20px" }}

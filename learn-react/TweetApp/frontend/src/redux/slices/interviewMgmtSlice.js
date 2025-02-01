@@ -51,22 +51,22 @@ export const updateCategory = createAsyncThunk(
 );
 
 // Define an async thunk to create a new Question
-export const createQuestion = createAsyncThunk(
-  "categories/createQuestion",
-  async (questionData) => {
-    const response = await fetch(
-      `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(questionData),
-      }
-    );
-    return response.json();
-  }
-);
+// export const createQuestion = createAsyncThunk(
+//   "categories/createQuestion",
+//   async (questionData) => {
+//     const response = await fetch(
+//       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(questionData),
+//       }
+//     );
+//     return response.json();
+//   }
+// );
 
 export const searchTopic = createAsyncThunk(
   "topics/searchTopic",
@@ -94,22 +94,22 @@ export const fetchAllQuestions = createAsyncThunk(
 );
 
 // Define an async thunk to update a Question by uniqueId
-export const updateQuestion = createAsyncThunk(
-  "categories/updateQuestion",
-  async (categoryData) => {
-    const response = await fetch(
-      `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/${categoryData.uniqueId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(categoryData),
-      }
-    );
-    return response.json();
-  }
-);
+// export const updateQuestion = createAsyncThunk(
+//   "categories/updateQuestion",
+//   async (categoryData) => {
+//     const response = await fetch(
+//       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/${categoryData.uniqueId}`,
+//       {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(categoryData),
+//       }
+//     );
+//     return response.json();
+//   }
+// );
 
 // Define an async thunk to create a new Answer
 export const createAnswer = createAsyncThunk(

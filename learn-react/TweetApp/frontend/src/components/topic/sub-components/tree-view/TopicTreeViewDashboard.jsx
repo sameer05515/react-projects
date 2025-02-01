@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    Outlet, useNavigate
+  Outlet, useNavigate
 } from "react-router-dom";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import TooltipSpan from "../../../../common/components/tooltip-span/TooltipSpan";
-import { fetchTags } from "../../../../redux/slices/tagsSlice";
-import {
-    fetchTopics, selectAllTreeTopics, selectSelectedTopicUniqueId
-} from "../../../../redux/slices/topicSlice";
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
+import {
+  fetchTopics, selectAllTreeTopics, selectSelectedTopicUniqueId
+} from "../../../../redux/slices/topicSlice";
 import { TopicMgmtStyles as styles } from "../styles";
 
 const TopicTreeViewDashboard = () => {
@@ -22,10 +21,7 @@ const TopicTreeViewDashboard = () => {
     const selectedTopicUniqueId = useSelector(selectSelectedTopicUniqueId);
   
     const selectedElementRef = useRef(null);
-    useEffect(() => {
-      dispatch(fetchTopics());
-      dispatch(fetchTags());
-    }, [dispatch]);
+    
   
     useEffect(() => {
       if (selectedElementRef.current) {

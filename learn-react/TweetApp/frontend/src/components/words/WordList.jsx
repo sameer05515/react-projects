@@ -1,9 +1,7 @@
-// WordList.js
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchWords } from '../../redux/slices/wordsSlice';
-// import ReactHtmlParser from "react-html-parser";
-import { SmartPreviewer } from '../../common/components/smart-editor/SmartEditorV3';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWords } from "../../redux/slices/wordsSlice";
+import { SmartPreviewer } from "../../common/components/Smart/Editor/v3";
 
 const WordList = () => {
   const dispatch = useDispatch();
@@ -27,13 +25,6 @@ const WordList = () => {
     return <p>Error: {error}</p>;
   }
 
-  // const customStyles = {
-  //   ol: {
-  //     display: 'block',
-  //     marginLeft: '1em', // Adjust as needed
-  //   },
-  // };
-
   return (
     <div>
       <div>
@@ -44,12 +35,18 @@ const WordList = () => {
             {/* <p>{word.details}</p> */}
             {/* <p style={customStyles}>{ReactHtmlParser(word.details || "")}</p> */}
             {/* <p><HtmlTextRendrer htmlString={word.details} /></p> */}
-            <SmartPreviewer data={{content:word.details||'', textOutputType: 'html'}}/>
+            <SmartPreviewer
+              data={{ content: word.details || "", textOutputType: "html" }}
+            />
           </div>
         ))}
       </div>
       <div className="pagination">
-        <Pagination currentPage={1} totalPages={5} onPageChange={handlePageChange} />
+        <Pagination
+          currentPage={1}
+          totalPages={5}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
@@ -62,7 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <ul className="pagination-list">
       {pages.map((page) => (
-        <li key={page} className={page === currentPage ? 'active' : ''}>
+        <li key={page} className={page === currentPage ? "active" : ""}>
           <button onClick={() => onPageChange(page)}>{page}</button>
         </li>
       ))}

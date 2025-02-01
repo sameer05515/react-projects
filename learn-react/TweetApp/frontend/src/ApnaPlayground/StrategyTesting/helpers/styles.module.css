@@ -1,0 +1,48 @@
+/* styles.module.css */
+
+/* Container for the entire dashboard */
+.dashboardContainer {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Main header */
+.header {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Container for each strategy */
+.strategyContainer {
+  margin-bottom: 20px;
+}
+
+/* Sub-header for each strategy */
+.subHeader {
+  font-size: 20px;
+  color: #444;
+}
+
+/* Output container for components and messages */
+.outputContainer {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Styling for error messages */
+.errorText {
+  color: red;
+  font-weight: bold;
+}
+
+/* Separator for visual distinction */
+.separator {
+  margin: 20px 0;
+  border-top: 2px solid #000;
+}

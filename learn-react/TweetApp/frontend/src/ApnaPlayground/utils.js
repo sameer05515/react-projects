@@ -1,23 +1,28 @@
-import MiscellaneousExamples from "./MiscellaneousExamples/Dashboard";
-import MyFormWithValidation from "./MyFormWithValidation/v2";
-import ActionableContainer from "./actionable/ActionableContainer";
-import ActivityForm from "./activity/ActivityForm";
-import SchedulerCalender from "./calendar/SchedulerCalenderWithEventsWithViews";
-import DraggableAreaDashboard from "./drag-drop/Dashboard";
+import BootstrapClassUseV1 from "./BootstrapClassUse/v1";
 import FormComponentV1 from "./FormComponent/v1";
 import GitDiffV1 from "./GitDiff/v1";
 import GoldRateTableV1 from "./GoldRateTable/v1";
+import ListWithEditIconV1 from "./ListWithEditIcon/v1";
 import LoadingButtonV1 from "./LoadingButton/v1";
 import MUIIconTestV1 from "./MUIIconTest/v1";
+import MetaLearningCycleV1 from "./MetaLearningCycle/v1";
+import MetaLearningCycleV2 from "./MetaLearningCycle/v2";
+import MetaLearningCycleV3 from "./MetaLearningCycle/v3";
+import MiscellaneousExamples from "./MiscellaneousExamples/Dashboard";
+import MyFormWithValidationV1 from "./MyFormWithValidation/v1";
+import { default as MyFormWithValidation, default as MyFormWithValidationV2 } from "./MyFormWithValidation/v2";
+import ReactQueryBuilderDemoV1 from "./ReactQueryBuilderDemo/v1";
+import RevisionHelperV1 from "./RevisionHelper/v1";
 import SettingDashboard from "./SettingsTesting/Dashboard";
+import TestHttpV1 from "./TestHttp/v1";
 import ToastButtonComponentV1 from "./ToastButtonComponent/v1";
 import UseGlobalServiceProviderTestingV1 from "./UseGlobalServiceProviderTesting/v1";
 import UserListComponentV1 from "./UserListComponent/v1";
-import MyFormWithValidationV1 from "./MyFormWithValidation/v1";
-import MyFormWithValidationV2 from "./MyFormWithValidation/v2";
-import TestHttpV1 from "./TestHttp/v1";
-import ReactQueryBuilderDemoV1 from "./ReactQueryBuilderDemo/v1";
-import BootstrapClassUseV1 from "./BootstrapClassUse/v1";
+import ActionableContainer from "./actionable/ActionableContainer";
+import ActivityForm from "./activity/ActivityForm";
+import SchedulerCalender from "./calendar/SchedulerCalenderWithEventsWithViews";
+import ChantingV1 from "./chanting/v1";
+import DraggableAreaDashboard from "./drag-drop/Dashboard";
 
 const Components = {
   MiscellaneousExamples,
@@ -39,7 +44,13 @@ const Components = {
   MyFormWithValidationV2,
   TestHttpV1,
   ReactQueryBuilderDemoV1,
-  BootstrapClassUseV1
+  BootstrapClassUseV1,
+  ListWithEditIconV1,
+  MetaLearningCycleV1,
+  MetaLearningCycleV2,
+  MetaLearningCycleV3,
+  ChantingV1,
+  RevisionHelperV1
 };
 
 export const componentNames = Object.keys(Components);

@@ -1,232 +1,198 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import yaml from "js-yaml";
-import React, { useEffect, useRef, useState } from "react";
-import { addUniqueIdsToTree } from "../../../util/id-adder-util";
-import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
-import CustomButton from "../../custom-button/CustomButton";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
-import MarkdownComponent from "../../markdown-component/MarkdownComponent";
-import Tree from "../../tree-viewer/TreeViewer";
-import CopyButton from "../../../../components/memory-maps/copy-to-clipboard/CopyButton";
+import {
+  getDetailedName,
+  SupportedInputComponents,
+  getInpOupDetailsForKey,
+  getComboOptions,
+  getKeyName,
+  validateSmartContent,
+} from "../common/utils.v4";
+import SmartPreviewer from "../Previewer/v4";
+import FormMessagesV1 from "../../FormMessages/v1";
+import FormMessageBuilder from "../../FormMessages/Builder";
 
 const debug = false;
 
-const SupportedOutFormats = {
-  HTML: "html",
-  YAML: "yaml",
-  MARKDOWN: "markdown",
-  TEXT: "text",
-  TIS_to_SKELETON: "skeleton",
-  YAML_to_SKELETON: "yaml_to_skeleton",
-};
+// const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
-const availableInputTypes = {
-  textArea: "TextArea",
-  ckEditor: "CKEditor",
-};
-
-const inputOutputMapping = {
-  RT_from_RT: {
-    detailedName: "RawText from RawText",
-    textOutputType: SupportedOutFormats.TEXT,
-    textInputType: availableInputTypes.textArea,
+const SmartEditorV4 = ({
+  initialValue = {
+    content: "",
+    textOutputType: "",
+    textInputType: "",
   },
-  HTML_FROM_RT: {
-    detailedName: "HTML generated from RawText",
-    textOutputType: SupportedOutFormats.HTML,
-    textInputType: availableInputTypes.textArea,
-  },
-  HTML_FROM_CKEditor: {
-    detailedName: "HTML generated from CKEditor",
-    textOutputType: SupportedOutFormats.HTML,
-    textInputType: availableInputTypes.ckEditor,
-  },
-  YAML_From_RT: {
-    detailedName: "YAML format text, input from RawText. Will show parsing error if invalid YAML text given",
-    textOutputType: SupportedOutFormats.YAML,
-    textInputType: availableInputTypes.textArea,
-  },
-  MARKDOWN_From_RT: {
-    detailedName: "MARKDOWN format text, input from RawText",
-    textOutputType: SupportedOutFormats.MARKDOWN,
-    textInputType: availableInputTypes.textArea,
-  },
-  SKELETON_From_TIS: {
-    detailedName: "Tabbed Indented String (TIS) format text, input from RawText. Will show parsing error if invalid YAML text given",
-    textOutputType: SupportedOutFormats.SKELETON,
-    textInputType: availableInputTypes.textArea,
-  },
-};
-
-const getKeyName = (textOutputType, textInputType) =>
-  Object.keys(inputOutputMapping).find(
-    (key) => inputOutputMapping[key].textOutputType === textOutputType && inputOutputMapping[key].textInputType === textInputType
-  ) || "HTML_FROM_RT";
-
-const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
-  const textareaRef = useRef(null);
-
-  const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType, initialValue?.textInputType));
+  preview: previewInitialValue = true,
+  disableSaveButton = false,
+  disableResetButton = false,
+  onSubmit = async () => ({ isError: false, messages: [{ type: "info", message: "Action performed successfully!" }] }),
+}) => {
   const [showPreview, setShowPreview] = useState(previewInitialValue);
+  const [formMessages, setFormMessages] = useState([]);
 
   const [formData, setFormData] = useState({
-    content: initialValue?.content || "",
-    textOutputType: inputOutputMapping[selectedOutputType].textOutputType,
-    textInputType: inputOutputMapping[selectedOutputType].textInputType,
+    content: "",
+    textOutputType: "",
+    textInputType: "",
   });
 
-  useEffect(() => {
-    const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
-    if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
-      setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
+  const { detailedName, selectedOutputType } = useMemo(
+    () => ({
+      selectedOutputType: getKeyName(formData.textOutputType, formData.textInputType),
+      detailedName: getDetailedName(formData.textOutputType, formData.textInputType),
+    }),
+    [formData.textInputType, formData.textOutputType]
+  );
+
+  const handleFormUpdate = useCallback((newContent, newOutputType) => {
+    if (newContent == null) return;
+    const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
+    const validationError = validateSmartContent(newContent, textOutputType);
+    if (validationError) {
+      // setFormMessages([{ type: "error", message: validationError }]);
+      setFormMessages(FormMessageBuilder.builder().appendError(validationError).build());
     }
-  }, [selectedOutputType]);
+
+    setFormData((prev) => ({
+      content: newContent,
+      textOutputType: textOutputType || prev.textOutputType,
+      textInputType: textInputType || prev.textInputType,
+    }));
+  }, []);
 
   useEffect(() => {
-    const { textOutputType, content } = formData;
+    if (initialValue)
+      handleFormUpdate(
+        initialValue?.content || "",
+        getKeyName(initialValue.textOutputType, initialValue.textInputType)
+      );
+  }, [handleFormUpdate, initialValue]);
 
-    let error = "";
-    if (textOutputType === SupportedOutFormats.YAML && content) {
-      try {
-        yaml.load(content);
-      } catch (e) {
-        error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+  const handleChangeOutputTypes = useCallback(
+    (newOutputType) => {
+      if (typeof newOutputType !== "string") {
+        // setFormMessages([{ type: "error", message: `Invalid newOutputType: '${newOutputType}'` }]);
+        setFormMessages(FormMessageBuilder.builder().appendError(`Invalid newOutputType: '${newOutputType}'`).build());
+        return;
       }
+      handleFormUpdate(formData.content || "", newOutputType);
+    },
+    [handleFormUpdate, formData.content]
+  );
+
+  const updateFormContent = useCallback(
+    (content = "") => {
+      setFormMessages([]);
+      if (!content?.trim()) {
+        setFormMessages([{ type: "error", message: "Content cannot be empty" }]);
+        // setFormMessages(FormMessageBuilder.builder().appendError("Content cannot be empty").build());
+      }
+      handleFormUpdate(content || "");
+    },
+    [handleFormUpdate]
+  );
+
+  const handleSave = async () => {
+    const result = await onSubmit(formData);
+    if (result.isError) {
+      // setFormMessages([...result.messages] || [{ type: "error", message: "Some unexpected error occurred!" }]);
+      setFormMessages([
+        ...(result.messages || FormMessageBuilder.builder().appendError("Some unexpected error occurred!").build()),
+      ]);
+    } else {
+      setFormMessages([...result.messages]);
     }
+  };
 
-    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-      const { isValid, message } = buildTree(content);
-      if (!isValid) error = message;
-    }
-
-    if (!content.trim()) error = "Content is empty";
-
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
-    }
-
-    onError(error);
-    onChange(formData);
-  }, [formData.content, formData.textOutputType]);
-
-  const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);
-  const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
-  const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
+  const handleReset = () => {
+    setFormMessages([]);
+    setFormData({
+      content: initialValue?.content || "",
+      textOutputType: initialValue?.textOutputType || "",
+      textInputType: initialValue?.textInputType || "",
+    });
+  };
 
   return (
-    <div>
-      <label htmlFor="outputType" style={labelStyle}>
-        Select Output Type:
-      </label>
-      <select value={selectedOutputType} title={inputOutputMapping[selectedOutputType]?.detailedName || ""} onChange={handleChangeOutputTypes}>
-        {Object.keys(inputOutputMapping).map((outputType) => (
-          <option key={outputType} value={outputType}>
-            {outputType.replace(/_/g, " ")}
-          </option>
-        ))}
-      </select>
+    <div className="container">
+      {/* Output Type Selection */}
+      <div className="form-floating">
+        <select
+          className="form-select"
+          id="OutputTypeCombobox"
+          value={selectedOutputType}
+          title={detailedName || ""}
+          onChange={(e) => handleChangeOutputTypes(e.target.value)}
+        >
+          {getComboOptions()}
+        </select>
+        <label htmlFor="OutputTypeCombobox" style={{ fontWeight: "bold" }}>
+          Select Output Type:
+        </label>
+      </div>
 
-      {formData.textInputType === availableInputTypes.textArea && (
-        <div>
-          <label htmlFor="content" style={labelStyle}>
+      {/* Textarea Input */}
+      {formData.textInputType === SupportedInputComponents.textArea && (
+        <div className="form-floating">
+          <textarea
+            // ref={textareaRef}
+            id="content"
+            name="content"
+            className="form-control"
+            value={formData.content}
+            onChange={(e) => updateFormContent(e.target.value)}
+            style={{ height: "300px" }}
+          />
+          <label htmlFor="content" style={{ fontWeight: "bold" }}>
             Content:
           </label>
-          <textarea ref={textareaRef} id="content" name="content" value={formData.content} onChange={handleInputChange} style={styles.textarea} />
         </div>
       )}
 
-      {formData.textInputType === availableInputTypes.ckEditor && (
-        <div>
-          <label htmlFor="ckeditor" style={labelStyle}>
-            Content:
-          </label>
-          <CKEditor id="ckeditor" name="content" editor={ClassicEditor} data={formData.content} onChange={handleEditorChange} />
+      {/* CKEditor Input */}
+      {formData.textInputType === SupportedInputComponents.ckEditor && (
+        <div className="form-floating">
+          <CKEditor
+            id="ckeditor"
+            name="ckeditorContent"
+            editor={ClassicEditor}
+            data={formData.content}
+            onChange={(event, editor) => updateFormContent(editor.getData())}
+          />
         </div>
       )}
 
+      {/* Buttons */}
+      <div className="d-flex justify-content-end mt-2">
+        <button className="btn btn-outline-secondary me-2" onClick={handleReset} disabled={disableResetButton === true}>
+          Reset
+        </button>
+        <button className="btn btn-primary" onClick={handleSave} disabled={disableSaveButton === true}>
+          Save
+        </button>
+      </div>
+
+      {/* <FormError error={error} /> */}
+      {<FormMessagesV1 messages={formMessages} />}
+
+      {/* Preview Button */}
       {formData.content && (
         <div>
-          <b>Preview:</b> <CustomButton onClick={() => setShowPreview((prev) => !prev)}>{showPreview ? "Hide" : "Show"}</CustomButton>
+          <button
+            className="btn btn-info btn-sm p-1 m-1 text-uppercase"
+            onClick={() => setShowPreview((prev) => !prev)}
+          >
+            {showPreview ? "Hide Preview" : "Show Preview"}
+          </button>
+          {showPreview && <SmartPreviewer data={formData} />}
         </div>
       )}
 
-      {showPreview && <SmartPreviewer data={formData} />}
-      <JSONDataViewer metadata={{ selectedOutputType }} title="selectedOutputType" />
+      {debug && <JSONDataViewer metadata={{ formData, formMessages }} title="selectedOutputType" />}
     </div>
   );
 };
 
-const labelStyle = { fontWeight: "bold" };
-
-const styles = {
-  textarea: {
-    width: "100%",
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    resize: "none",
-    overflow: "hidden",
-  },
-};
-
-const SmartPreviewer = ({ data }) => {
-  const { content, textOutputType } = data;
-
-  const [yamlProcessedData, setYamlProcessedData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [resultData, setResultData] = useState([]);
-
-  useEffect(() => {
-    if ((textOutputType === SupportedOutFormats.YAML || textOutputType === SupportedOutFormats.YAML_to_SKELETON) && content) {
-      try {
-        const yamlResponse = yaml.load(content);
-        setYamlProcessedData(yamlResponse);
-        if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) {
-          setResultData(() => yamlResponse);
-        }
-        setErrorMessage("");
-      } catch (e) {
-        const error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        setErrorMessage(error);
-      }
-    }
-    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-      const { data: skeletonData, isValid, message } = buildTree(content);
-      if (!isValid) setErrorMessage(message || "Missing error message");
-      else setResultData([...addUniqueIdsToTree(skeletonData)]);
-    }
-  }, [content, textOutputType]);
-
-  return (
-    <>
-      {textOutputType === SupportedOutFormats.TEXT && <pre>{content}</pre>}
-      {textOutputType === SupportedOutFormats.HTML && <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: content }} />}
-      {textOutputType === SupportedOutFormats.MARKDOWN && <MarkdownComponent markdownText={content} />}
-      {textOutputType === SupportedOutFormats.YAML && (
-        <div>
-          <pre>{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-          <span style={{ color: "red" }}>{errorMessage}</span>
-        </div>
-      )}
-      {textOutputType === SupportedOutFormats.TIS_to_SKELETON && resultData && resultData.length > 0 && (
-        <>
-          <Tree
-            data={resultData}
-            expandAll={true}
-            renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
-          />
-          <span style={{ color: "red" }}>{errorMessage}</span>
-          {/* <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview"/> */}
-        </>
-      )}
-      {(!textOutputType || !Object.values(SupportedOutFormats).includes(textOutputType)) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
-      {debug && <CopyButton buttonText={"Copy Skeleton As Yaml"} textToCopy={""} onCopy={() => {}} />}
-      {debug && <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="VandanaKiMaaKaBhosda" />}
-    </>
-  );
-};
-
-export { SmartEditor as SmartEditorV4, SmartPreviewer as SmartPreviewerV4 };
+export default SmartEditorV4;

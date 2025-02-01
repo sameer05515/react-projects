@@ -12,3 +12,9 @@ const obj = {
 
 console.log(obj.regularFn()()); // undefined
 console.log(obj.arrowFn()()); // 10
+
+const totalPages=5;
+const currentPage=2;
+const pages = Array.from({ length: totalPages }, (_, i) => currentPage + i + 1);
+
+console.log(pages);

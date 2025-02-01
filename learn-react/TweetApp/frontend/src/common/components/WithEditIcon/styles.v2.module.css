@@ -1,0 +1,21 @@
+.listItem {
+  position: relative; /* Ensure the edit icon is positioned relative to this */
+  display: flex; /* Maintain proper layout */
+  align-items: center; /* Align child items properly */
+}
+
+.editIcon {
+  display: none;
+  position: absolute;
+  top: 0px; /* Adjust positioning as needed */
+  left: 0px;
+  /* padding: 8px; */
+  color: gray;
+  cursor: pointer;
+  /**background: white;*/ /* Optional: To avoid overlapping text */
+  border-radius: 50%;
+}
+
+.listItem:hover .editIcon {
+  display: inline-block;
+}

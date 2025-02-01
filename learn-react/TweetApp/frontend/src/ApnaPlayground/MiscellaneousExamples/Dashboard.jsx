@@ -46,7 +46,7 @@ const SelectInput = ({ options, onChange, placeholder, value }) => (
 
 const MiscellaneousExamples = () => {
   const [selectedComponent, setSelectedComponent] = useState(
-    "SamplePromiseTesterDashboard"
+    "SmartEditorV4Dashboard_V1_0_0"
   );
 
   const handleChange = (selectedOption) => {

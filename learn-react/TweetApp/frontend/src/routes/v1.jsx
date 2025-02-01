@@ -100,8 +100,7 @@ const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
                   <Navigate to="/login" />
                 </>
               ) : (
-                <>
-                  {/* Welcome Bro!! */}
+                <>                  
                   <Welcome />
                   {/* <HorizontalMenu
                     isAuthenticated={isAuthenticated}

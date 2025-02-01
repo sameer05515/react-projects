@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
-const smartContentSchema = require("./common/SmartContent.schema"); // Import the smartContentSchema
+const smartContentSchema = require("./common/SmartContent.schema.v2"); // Import the smartContentSchema
 
 const Status = {
   OPEN: "Open",
@@ -13,21 +13,6 @@ const ThinkTankItemType = {
   RawQuestion: "raw-question",
   YetToBeDecided: "yet-to-be-decided",
 };
-
-// // SmartContent sub-schema
-// const SmartContentSchema = new mongoose.Schema({
-//   content: {
-//     type: String,
-//     required: true,
-//     default: "Missing Content!!!",
-//   },
-//   textOutputType: {
-//     type: String,
-//     required: true,
-//     enum: ["HTML", "Markdown", "PlainText"], // Adjust based on availableOutputTypes
-//     default: "HTML",
-//   },
-// });
 
 // ThinkTankItem Schema
 const ThinkTankItemSchema = new mongoose.Schema(

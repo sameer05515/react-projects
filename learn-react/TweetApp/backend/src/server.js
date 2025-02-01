@@ -37,6 +37,7 @@ const consolidatedReportingRouter = require("./routes/ConsolidatedReporting.rout
 
 const cgptRouter = require("./routes/ChatGPTConversation.routes");
 const thinkTankRouter = require("./routes/ThinkTank.v1.routes");
+const thinkTankStatsRouter= require('./routes/ThinkTank.v1.stats.routes')
 
 // mongoose.connect("mongodb://127.0.0.1:27017/mongodb_test", {
 //   useNewUrlParser: true,
@@ -84,6 +85,7 @@ app.use("/node-story", relatedNodeRouter);
 app.use("/consolidated-reporting", consolidatedReportingRouter);
 app.use("/cgpt", cgptRouter);
 app.use("/think-tank/v1", thinkTankRouter);
+app.use("/think-tank/v1",thinkTankStatsRouter)
 
 // Serve Swagger documentation at /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

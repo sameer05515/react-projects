@@ -1,72 +1,44 @@
-const express = require('express');
-const path = require('path');
-const { publicFolderPath, FileTraversalAPI, MarkdownReaderAPI } = require('./util');
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
 
-const { createFileList, findNextFileObject, findPrevFileObject } = FileTraversalAPI();
-const { getFileHtmlContent } = MarkdownReaderAPI();
+const serverV1Router = require("./routes/v1");
+const serverV2Router = require("./routes/v2");
 
 const app = express();
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Enable CORS globally
+app.use(cors());
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 // Serve static files from "assets" directory
-// app.use(express.static(path.join(__dirname, 'assets')));
-app.use(express.static('assets'));
+app.use(express.static("assets"));
 
+// Mount the content route
+// app.use("/api", contentDetailsForAPIRoutesV1);
+app.use("/v1", serverV1Router);
+app.use("/v2", serverV2Router);
 
-// Route to render the file list and optionally render selected MD file as HTML
-app.get('/', (req, res) => {
-    const fileList = createFileList(publicFolderPath);
-    let htmlContent = null;
+app.get("/", (req, res) => res.render('home'));
 
-    let filename = req.query.filename;
-    const direction = req.query.direction;
+// // 404 Handler (This should be the last middleware)
+// app.use((req, res) => {
+//   res.status(404).render("404");
+// });
 
-    // Check if a specific MD file is requested
-    if (req.query.filename) {
-
-        if (req.query.direction && req.query.direction === 'next') {
-            const nextFile = findNextFileObject(fileList, filename);
-            const nextFileName = nextFile && nextFile.name ? nextFile.name : null;
-            if (nextFileName) {
-                filename = nextFileName;
-            }
-        } else if (req.query.direction && req.query.direction === 'prev') {
-            const prevFile = findPrevFileObject(fileList, filename);
-            const prevFileName = prevFile && prevFile.name ? prevFile.name : null;
-            if (prevFileName) {
-                filename = prevFileName;
-            }
-        }
-
-
-        try {
-            htmlContent = getFileHtmlContent(filename);
-            const resetSelected = (list) => {
-                if (list && list.length > 0) {
-                    // Set the 'selected' property for the selected file
-                    const selectedFile = list.find(file => file.path === filename && file.fileType === 'file');
-                    if (selectedFile) {
-                        selectedFile.selected = true;
-                    }
-                    list.forEach(file => {
-                        // file.selected = (file.path === filename && file.fileType === 'file');
-                        resetSelected(file.children);
-                    });
-                }
-            }
-            // Set the 'selected' property for the selected file
-            resetSelected(fileList);
-
-        } catch (err) {
-            console.error('Error reading file:', err);
-        }
-    }
-
-    res.render('index', { fileList, htmlContent, filename, direction });
+// 404 Handler (This should be the last middleware)
+app.use((req, res) => {
+  if (req.accepts("html")) {
+    // If the request expects an HTML response, render 404.ejs
+    res.status(404).render("404");
+  } else {
+    // If the request is for JSON (API call), send a JSON response
+    res.status(404).json({ message: "The requested resource not found" });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

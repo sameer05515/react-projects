@@ -214,7 +214,7 @@ const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } 
       )}
 
       {(!textOutputType || !Object.values(availableOutputTypes).includes(textOutputType)) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
-      {/* <JSONDataViewer metadata={{data,resultData,errorMessage  }} title="VandanaKiMaaKaBhosda"/> */}
+      {/* <JSONDataViewer metadata={{data,resultData,errorMessage  }} title="X-Ray"/> */}
     </>
   );
 };

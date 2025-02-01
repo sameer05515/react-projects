@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Questions Metadata</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="mb-4">📚💡 <strong>Interview Questions Metadata</strong></h2>
+        <p>
+            I built <strong>Interview Questions Metadata</strong>, a full-stack application designed to render Markdown files efficiently.
+            <br/>
+            <a href="/v1/pages/admin/content-details/itr1">/v1/pages/admin/content-details/itr1</a>
+        </p>
+
+        <button class="btn btn-primary btn-sm mb-3" onclick="toggleContent()">Read More</button>
+
+        <div class="content">
+            <h4>✅ <strong>Tech Stack:</strong></h4>
+            <ul>
+                <li><strong>Frontend:</strong> EJS (Embedded JavaScript Templates)</li>
+                <li><strong>Backend:</strong> Express.js</li>
+                <li><strong>Testing:</strong> Jest</li>
+                <li><strong>Data Fetching:</strong> Axios</li>
+            </ul>
+
+            <h4>✅ <strong>Key Features:</strong></h4>
+            <ul>
+                <li>Renders Markdown (<code>.md</code>) files placed in a <strong>base folder</strong> or any of its subdirectories.</li>
+                <li>Uses <strong>Express and EJS</strong> for a smooth rendering experience.</li>
+                <li>Working on an <strong>API to expose stored references</strong>, making it a centralized place for my static file references.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent() {
+            const content = document.querySelector('.content');
+            const button = document.querySelector('button');
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                button.textContent = 'Read Less';
+            } else {
+                content.style.display = 'none';
+                button.textContent = 'Read More';
+            }
+        }
+    </script>
+
+</body>
+</html>

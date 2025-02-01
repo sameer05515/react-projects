@@ -1,14 +1,14 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
-import { getKeyName, inputOutputMapping, SupportedInputComponents, SupportedOutFormats } from "../common/utils.v4";
+import { getDetailedName, SupportedInputComponents, SupportedOutFormats, getInpOupDetailsForKey, getComboOptions } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 
-const debug = false;
+const debug = true;
 
 const FormError = ({ error }) => {
   if (!error) return null;
@@ -18,17 +18,28 @@ const FormError = ({ error }) => {
 const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
   const textareaRef = useRef(null);
 
-  const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType, initialValue?.textInputType));
   const [showPreview, setShowPreview] = useState(previewInitialValue);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
-    content: initialValue?.content || "",
-    textOutputType: inputOutputMapping[selectedOutputType].textOutputType,
-    textInputType: inputOutputMapping[selectedOutputType].textInputType,
+    content: "",
+    textOutputType: "",
+    textInputType: "",
   });
 
-  const handleFormUpdate = (newContent, newTextOutputType, newTextInputType) => {
+  const detailedName = useMemo(() => {
+    const detailedName = getDetailedName(formData.textOutputType, formData.textInputType);
+    return detailedName;
+  }, [formData.textInputType, formData.textOutputType]);
+
+  const handleFormUpdate = (newContent, newOutputType) => {
+    // if (!newOutputType) {
+    //   setError(`Invalid newOutputType : '${newOutputType}'`);
+    //   console.error("Invalid newOutputType", newOutputType);
+    //   return;
+    // }
+    const { textInputType: newTextInputType, textOutputType: newTextOutputType } = getInpOupDetailsForKey(newOutputType);
+    console.log("newTextInputType: ",newTextInputType," , newTextOutputType: ",newTextOutputType);
     let validationError = "";
     if (newTextOutputType === SupportedOutFormats.YAML && newContent) {
       try {
@@ -43,9 +54,9 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       if (!isValid) validationError = message;
     }
 
-    if (!newContent?.trim()) {
-      validationError = "Content is empty";
-    }
+    // if (!newContent?.trim()) {
+    //   validationError = "Content is empty";
+    // }
 
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -63,14 +74,14 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
   };
 
   const handleChangeOutputTypes = (newOutputType) => {
+    // console.log("newOutputType: ", newOutputType);
     if (!newOutputType) {
       setError(`Invalid newOutputType : '${newOutputType}'`);
       console.error("Invalid newOutputType", newOutputType);
       return;
     }
-    setSelectedOutputType(newOutputType);
-    const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
-    handleFormUpdate(null, textOutputType, textInputType);
+    // setSelectedOutputType(newOutputType);
+    handleFormUpdate(formData.content, newOutputType);
   };
 
   const updateFormContent = (content = "") => {
@@ -87,15 +98,11 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
         Select Output Type:
       </label>
       <select
-        value={selectedOutputType}
-        title={inputOutputMapping[selectedOutputType]?.detailedName || ""}
+        // value={selectedOutputType}
+        title={detailedName || ""}
         onChange={(event) => handleChangeOutputTypes(event.target.value)}
       >
-        {Object.keys(inputOutputMapping).map((outputType) => (
-          <option key={outputType} value={outputType}>
-            {outputType.replace(/_/g, " ")}
-          </option>
-        ))}
+        {getComboOptions()}
       </select>
 
       {formData.textInputType === SupportedInputComponents.textArea && (
@@ -146,7 +153,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       )}
 
       {showPreview && <SmartPreviewer data={formData} />}
-      {debug && <JSONDataViewer metadata={{ formData, selectedOutputType }} title="selectedOutputType" />}
+      {debug && <JSONDataViewer metadata={{ formData }} title="selectedOutputType" />}
     </div>
   );
 };

@@ -12,7 +12,7 @@ export const SupportedInputComponents = {
   ckEditor: "CKEditor",
 };
 
-export const inputOutputMapping = {
+const inputOutputMapping = {
   RT_from_RT: {
     detailedName: "RawText from RawText",
     textOutputType: SupportedOutFormats.TEXT,
@@ -45,7 +45,46 @@ export const inputOutputMapping = {
   },
 };
 
-export const getKeyName = (textOutputType, textInputType) =>
+const getKeyName = (textOutputType, textInputType) =>
   Object.keys(inputOutputMapping).find(
     (key) => inputOutputMapping[key].textOutputType === textOutputType && inputOutputMapping[key].textInputType === textInputType
-  ) || "HTML_FROM_RT";
+  ) || "";
+
+const getDetailedNameForKey = (key = "") => {
+  if (!key || typeof key !== "string") return "";
+
+  return inputOutputMapping[key]?.detailedName || "";
+};
+
+export const getDetailedName = (textOutputType, textInputType) => {
+  const key = getKeyName(textOutputType, textInputType);
+  const detailedName = getDetailedNameForKey(key);
+  return detailedName;
+};
+
+export const getInpOupDetailsForKey = (key = "") => {
+//   console.log("[getInpOupDetailsForKey]: key: '", key, "'");
+  if (!key || typeof key !== "string") {
+    return {
+      textOutputType: "",
+      textInputType: "",
+    };
+  }
+
+  const obj = inputOutputMapping[key.trim()] || {};
+//   console.log("obj", JSON.stringify(obj))
+  return {
+    textOutputType: obj.textOutputType || "",
+    textInputType: obj.textInputType || "",
+  };
+};
+
+export const getComboOptions = () => (
+  <>
+    {Object.keys(inputOutputMapping).map((outputType) => (
+      <option key={outputType} value={outputType}>
+        {outputType.replace(/_/g, " ")}
+      </option>
+    ))}
+  </>
+);

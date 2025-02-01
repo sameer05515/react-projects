@@ -26,44 +26,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
     textInputType: inputOutputMapping[selectedOutputType].textInputType,
   });
 
-  // useEffect(() => {
-  //   const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
-  //   if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
-  //     setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
-  //   }
-  // }, [selectedOutputType]);
-
-  // useEffect(() => {
-  //   const { textOutputType, content } = formData;
-
-  //   let error = "";
-  //   if (textOutputType === SupportedOutFormats.YAML && content) {
-  //     try {
-  //       yaml.load(content);
-  //     } catch (e) {
-  //       error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-  //     }
-  //   }
-
-  //   if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-  //     const { isValid, message } = buildTree(content);
-  //     if (!isValid) error = message;
-  //   }
-
-  //   if (!content.trim()) error = "Content is empty";
-
-  //   if (textareaRef.current) {
-  //     textareaRef.current.style.height = "auto";
-  //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
-  //   }
-
-  //   // onError(error);
-  //   // onChange(formData);
-  // }, [formData.content, formData.textOutputType]);
-
   const handleFormUpdate = (newContent, newTextOutputType, newTextInputType) => {
-    // const { textOutputType, content } = formData;
-
     let validationError = "";
     if (newTextOutputType === SupportedOutFormats.YAML && newContent) {
       try {
@@ -95,11 +58,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       textOutputType: newTextOutputType && prev.textOutputType !== newTextOutputType ? newTextOutputType : prev.textOutputType,
       textInputType: newTextInputType && prev.textInputType !== newTextInputType ? newTextInputType : prev.textInputType,
     }));
-
-    // onError(error);
-    // onChange(formData);
   };
-  // , [formData.content, formData.textOutputType]);
 
   const handleChangeOutputTypes = (newOutputType) => {
     if (!newOutputType) {
@@ -109,12 +68,7 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
     setSelectedOutputType(newOutputType);
     const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
     handleFormUpdate(null, textOutputType, textInputType);
-    // if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
-    //   setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
-    // }
   };
-  // const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
-  // const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
 
   const updateFormContent = (content = "") => {
     if (!content) {
@@ -122,7 +76,6 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       return;
     }
     handleFormUpdate(content);
-    // setFormData((prev) => ({ ...prev, content: content }));
   };
 
   return (
@@ -186,8 +139,6 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
     </div>
   );
 };
-
-// const labelStyle = { fontWeight: "bold" };
 
 const styles = {
   textarea: {

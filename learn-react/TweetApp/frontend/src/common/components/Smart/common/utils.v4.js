@@ -40,7 +40,7 @@ const inputOutputMapping = {
   },
   SKELETON_From_TIS: {
     detailedName: "Tabbed Indented String (TIS) format text, input from RawText. Will show parsing error if invalid YAML text given",
-    textOutputType: SupportedOutFormats.SKELETON,
+    textOutputType: SupportedOutFormats.TIS_to_SKELETON,
     textInputType: SupportedInputComponents.textArea,
   },
 };

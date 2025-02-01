@@ -33,13 +33,8 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
   }, [formData.textInputType, formData.textOutputType]);
 
   const handleFormUpdate = (newContent, newOutputType) => {
-    // if (!newOutputType) {
-    //   setError(`Invalid newOutputType : '${newOutputType}'`);
-    //   console.error("Invalid newOutputType", newOutputType);
-    //   return;
-    // }
     const { textInputType: newTextInputType, textOutputType: newTextOutputType } = getInpOupDetailsForKey(newOutputType);
-    console.log("newTextInputType: ",newTextInputType," , newTextOutputType: ",newTextOutputType);
+    // console.log("newOutputType: ", newOutputType, " , newTextInputType: ", newTextInputType, " , newTextOutputType: ", newTextOutputType);
     let validationError = "";
     if (newTextOutputType === SupportedOutFormats.YAML && newContent) {
       try {

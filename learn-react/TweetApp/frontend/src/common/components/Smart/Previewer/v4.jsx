@@ -1,13 +1,13 @@
 import yaml from "js-yaml";
 import React, { useMemo } from "react";
+import CopyButton from "../../../../components/memory-maps/copy-to-clipboard/CopyButton";
+import { isValidString } from "../../../service/basic-validations";
 import { addUniqueIdsToTree } from "../../../util/id-adder-util";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import MarkdownComponent from "../../markdown-component/MarkdownComponent";
 import Tree from "../../tree-viewer/TreeViewer";
-import CopyButton from "../../../../components/memory-maps/copy-to-clipboard/CopyButton";
 import { SupportedOutFormats } from "../common/utils.v4";
-import { isValidString } from "../../../service/basic-validations";
 
 const debug = false;
 

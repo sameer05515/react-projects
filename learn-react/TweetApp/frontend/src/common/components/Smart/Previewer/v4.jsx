@@ -26,7 +26,9 @@ const getSPProcessedData = (data) => {
       yamlProcessedData = yaml.load(content);
       if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) resultData = yamlProcessedData;
     } catch (e) {
-      errorMessage = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+      errorMessage = e.mark
+        ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
+        : `Error parsing YAML: ${e.message}`;
     }
   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
     const { data: skeletonData, isValid, message } = buildTree(content);
@@ -38,7 +40,10 @@ const getSPProcessedData = (data) => {
 };
 
 const SmartPreviewerV4 = ({ data }) => {
-  const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(() => getSPProcessedData(data), [data]);
+  const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(
+    () => getSPProcessedData(data),
+    [data]
+  );
 
   return (
     <>
@@ -69,7 +74,9 @@ const SmartPreviewerV4 = ({ data }) => {
         </>
       )}
 
-      {!Object.values(SupportedOutFormats).includes(textOutputType) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
+      {!Object.values(SupportedOutFormats).includes(textOutputType) && (
+        <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>
+      )}
 
       {debug && <CopyButton buttonText="Copy Skeleton As Yaml" textToCopy="" onCopy={() => {}} />}
       {debug && <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />}

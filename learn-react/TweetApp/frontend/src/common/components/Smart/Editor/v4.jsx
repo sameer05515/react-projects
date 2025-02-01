@@ -1,11 +1,18 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
-import { getDetailedName, SupportedInputComponents, SupportedOutFormats, getInpOupDetailsForKey, getComboOptions } from "../common/utils.v4";
+import {
+  getDetailedName,
+  SupportedInputComponents,
+  SupportedOutFormats,
+  getInpOupDetailsForKey,
+  getComboOptions,
+  getKeyName,
+} from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 
 const debug = true;
@@ -27,12 +34,13 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
     textInputType: "",
   });
 
-  const detailedName = useMemo(() => {
+  const { detailedName, selectedOutputType } = useMemo(() => {
+    const selectedOutputType = getKeyName(formData.textOutputType, formData.textInputType);
     const detailedName = getDetailedName(formData.textOutputType, formData.textInputType);
-    return detailedName;
+    return { detailedName, selectedOutputType };
   }, [formData.textInputType, formData.textOutputType]);
 
-  const handleFormUpdate = (newContent, newOutputType) => {
+  const handleFormUpdate = useCallback((newContent, newOutputType) => {
     const { textInputType: newTextInputType, textOutputType: newTextOutputType } = getInpOupDetailsForKey(newOutputType);
 
     let validationError = "";
@@ -62,26 +70,39 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       textOutputType: newTextOutputType && prev.textOutputType !== newTextOutputType ? newTextOutputType : prev.textOutputType,
       textInputType: newTextInputType && prev.textInputType !== newTextInputType ? newTextInputType : prev.textInputType,
     }));
-  };
+  }, []);
 
-  const handleChangeOutputTypes = (newOutputType) => {
-    if (!newOutputType) {
-      setError(`Invalid newOutputType : '${newOutputType}'`);
-      console.error("Invalid newOutputType", newOutputType);
-      return;
+  useEffect(() => {
+    if (initialValue) {
+      const keyName = getKeyName(initialValue?.textOutputType, initialValue.textInputType);
+      handleFormUpdate(initialValue?.content, keyName);
     }
+  }, [handleFormUpdate, initialValue]);
 
-    handleFormUpdate(formData.content, newOutputType);
-  };
+  const handleChangeOutputTypes = useCallback(
+    (newOutputType, content) => {
+      if (!newOutputType) {
+        setError(`Invalid newOutputType : '${newOutputType}'`);
+        console.error("Invalid newOutputType", newOutputType);
+        return;
+      }
 
-  const updateFormContent = (content = "") => {
-    if (!content) {
-      setError(`Invalid content : '${content}'`);
-      console.error("Invalid content", content);
-      return;
-    }
-    handleFormUpdate(content);
-  };
+      handleFormUpdate(content, newOutputType);
+    },
+    [handleFormUpdate]
+  );
+
+  const updateFormContent = useCallback(
+    (content = "") => {
+      if (!content) {
+        setError(`Invalid content : '${content}'`);
+        console.error("Invalid content", content);
+        return;
+      }
+      handleFormUpdate(content);
+    },
+    [handleFormUpdate]
+  );
 
   return (
     <div>
@@ -89,9 +110,9 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
         Select Output Type:
       </label>
       <select
-        // value={selectedOutputType}
+        value={selectedOutputType}
         title={detailedName || ""}
-        onChange={(event) => handleChangeOutputTypes(event.target.value)}
+        onChange={(event) => handleChangeOutputTypes(event.target.value, formData.content)}
       >
         {getComboOptions()}
       </select>

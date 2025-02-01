@@ -107,8 +107,8 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
     }
 
-    onError(error);
-    onChange(formData);
+    // onError(error);
+    // onChange(formData);
   }, [formData.content, formData.textOutputType]);
 
   const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);

@@ -8,8 +8,6 @@ import { getSmartPreviewerProcessedData } from "../common/utils.v4";
 
 const debug = false;
 
-
-
 const SmartPreviewerV4 = ({ data }) => {
   const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(
     () => getSmartPreviewerProcessedData(data),

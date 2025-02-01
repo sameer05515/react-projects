@@ -49,10 +49,6 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       if (!isValid) validationError = message;
     }
 
-    // if (!newContent?.trim()) {
-    //   validationError = "Content is empty";
-    // }
-
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;

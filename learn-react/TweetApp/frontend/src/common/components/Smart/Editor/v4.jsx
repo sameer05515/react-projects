@@ -3,7 +3,6 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
-import CustomButton from "../../custom-button/CustomButton";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import {
   getDetailedName,
@@ -15,7 +14,7 @@ import {
 } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 
-const debug = true;
+const debug = false;
 
 const FormError = ({ error }) => {
   if (!error) return null;
@@ -57,10 +56,10 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
       if (!isValid) validationError = message;
     }
 
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
-    }
+    // if (textareaRef.current) {
+    //   textareaRef.current.style.height = "auto";
+    //   textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
+    // }
 
     setError(validationError);
 
@@ -105,54 +104,54 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
   );
 
   return (
-    <div>
-      <label htmlFor="outputType" style={{ fontWeight: "bold" }}>
-        Select Output Type:
-      </label>
-      <select
-        value={selectedOutputType}
-        title={detailedName || ""}
-        onChange={(event) => handleChangeOutputTypes(event.target.value, formData.content)}
-      >
-        {getComboOptions()}
-      </select>
+    <div className="container">
+      <div className="form-floating">
+        <select
+          className="form-select"
+          id="OutputTypeCombobox"
+          aria-label="Floating label select example"
+          value={selectedOutputType}
+          title={detailedName || ""}
+          onChange={(event) => handleChangeOutputTypes(event.target.value, formData.content)}
+        >
+          {getComboOptions()}
+        </select>
+        <label htmlFor="OutputTypeCombobox" style={{ fontWeight: "bold" }}>
+          Select Output Type:
+        </label>
+      </div>
 
       {formData.textInputType === SupportedInputComponents.textArea && (
-        <div>
-          <label htmlFor="content" style={{ fontWeight: "bold" }}>
-            Content:
-          </label>
+        <div className="form-floating">
           <textarea
             ref={textareaRef}
             id="content"
             name="content"
-            value={formData.content}
+            className="form-control"
+            defaultValue={formData.content}
             onChange={(e) => updateFormContent(e.target.value)}
             style={{
-              width: "100%",
-              padding: "10px",
-              fontSize: "16px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              resize: "none",
-              overflow: "hidden",
+              height: "100px",
             }}
           />
+          <label htmlFor="content" style={{ fontWeight: "bold" }}>
+            Content:
+          </label>
         </div>
       )}
 
       {formData.textInputType === SupportedInputComponents.ckEditor && (
-        <div>
-          <label htmlFor="ckeditor" style={{ fontWeight: "bold" }}>
-            Content:
-          </label>
+        <div className="form-floating">
           <CKEditor
             id="ckeditor"
-            name="content"
+            name="ckeditorContent"
             editor={ClassicEditor}
             data={formData.content}
             onChange={(event, editor) => updateFormContent(editor.getData())}
           />
+          {/* <label htmlFor="ckeditorContent" style={{ fontWeight: "bold" }}>
+            Content:
+          </label> */}
         </div>
       )}
 
@@ -160,7 +159,9 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
 
       {formData.content && (
         <div>
-          <b>Preview:</b> <CustomButton onClick={() => setShowPreview((prev) => !prev)}>{showPreview ? "Hide" : "Show"}</CustomButton>
+          <button className="btn btn-info btn-sm p-1 m-1 text-uppercase" onClick={() => setShowPreview((prev) => !prev)}>
+            {showPreview ? "Hide Preview" : "Show Preview"}
+          </button>
         </div>
       )}
 

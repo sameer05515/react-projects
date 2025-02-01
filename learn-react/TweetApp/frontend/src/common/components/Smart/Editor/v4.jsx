@@ -20,40 +20,40 @@ const SmartEditorV4 = ({ initialValue, preview: previewInitialValue = true, onCh
     textInputType: inputOutputMapping[selectedOutputType].textInputType,
   });
 
-  useEffect(() => {
-    const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
-    if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
-      setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
-    }
-  }, [selectedOutputType]);
+  // useEffect(() => {
+  //   const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
+  //   if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
+  //     setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
+  //   }
+  // }, [selectedOutputType]);
 
-  useEffect(() => {
-    const { textOutputType, content } = formData;
+  // useEffect(() => {
+  //   const { textOutputType, content } = formData;
 
-    let error = "";
-    if (textOutputType === SupportedOutFormats.YAML && content) {
-      try {
-        yaml.load(content);
-      } catch (e) {
-        error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-      }
-    }
+  //   let error = "";
+  //   if (textOutputType === SupportedOutFormats.YAML && content) {
+  //     try {
+  //       yaml.load(content);
+  //     } catch (e) {
+  //       error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+  //     }
+  //   }
 
-    if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-      const { isValid, message } = buildTree(content);
-      if (!isValid) error = message;
-    }
+  //   if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
+  //     const { isValid, message } = buildTree(content);
+  //     if (!isValid) error = message;
+  //   }
 
-    if (!content.trim()) error = "Content is empty";
+  //   if (!content.trim()) error = "Content is empty";
 
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
-    }
+  //   if (textareaRef.current) {
+  //     textareaRef.current.style.height = "auto";
+  //     textareaRef.current.style.height = `${textareaRef.current.scrollHeight * 1.3}px`;
+  //   }
 
-    // onError(error);
-    // onChange(formData);
-  }, [formData.content, formData.textOutputType]);
+  //   // onError(error);
+  //   // onChange(formData);
+  // }, [formData.content, formData.textOutputType]);
 
   const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);
   const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
@@ -117,5 +117,4 @@ const styles = {
   labelStyle: { fontWeight: "bold" },
 };
 
-export default SmartEditorV4 ;
-
+export default SmartEditorV4;

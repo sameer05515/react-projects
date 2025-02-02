@@ -6,6 +6,7 @@ import CustomButton from "../../../common/components/custom-button/CustomButton"
 // import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import SmartPreviewerV4 from "../../../common/components/Smart/Editor/v4";
 import ModalV3 from "../../../common/hoc/modal/ModalV3";
+import FormMessageBuilder from "../../../common/components/FormMessages/Builder";
 
 const SmartEditorV4Dashboard_V1_0_0 = () => {
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);
@@ -21,12 +22,16 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
         if (data.content.trim().length < 10) {
           resolve({
             isError: true,
-            messages: [{ type: "error", message: "Content is too short. Minimum 10 characters required." }],
+            // messages: [{ type: "error", message: "Content is too short. Minimum 10 characters required." }],
+            messages: FormMessageBuilder.builder()
+              .appendError("Content is too short. Minimum 10 characters required.")
+              .build(),
           });
         } else {
           resolve({
             isError: false,
-            messages: [{ type: "info", message: "Saved successfully!" }],
+            // messages: [{ type: "info", message: "Saved successfully!" }],
+            messages: FormMessageBuilder.builder().appendInfo("Saved successfully!").build(),
           });
         }
       }, 1000); // Simulate async delay

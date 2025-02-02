@@ -66,7 +66,7 @@ export const updateThinkTankItem = async (uniqueId = "", data) => {
     }
 
     return interactWithApi({
-      method: "post",
+      method: "patch",
       endpointUrl: `${BASE_URL}${ENDPOINTS.WITH_THINK_TANK_UID(uniqueId)}`,
       body: data,
     });

@@ -21,8 +21,7 @@ const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-
 const SmartEditorV4 = ({
   initialValue,
   preview: previewInitialValue = true,
-  onChange = () => {},
-  onError = () => {},
+  onSubmit = async () => ({ isError: false, messages: [] }),
 }) => {
   const textareaRef = useRef(null);
 
@@ -94,6 +93,24 @@ const SmartEditorV4 = ({
     [handleFormUpdate]
   );
 
+  const handleSave = async () => {
+    const result = await onSubmit(formData);
+    console.log("result: ",result);
+    if (result.isError) {
+      setError(result.messages.map((msg) => msg.text).join(", "));
+    } else {
+      alert("Saved successfully!");
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      content: initialValue.content || "",
+      textOutputType: initialValue.textOutputType || "",
+      textInputType: initialValue.textInputType || "",
+    });
+  };
+
   return (
     <div className="container">
       {/* Output Type Selection */}
@@ -142,6 +159,18 @@ const SmartEditorV4 = ({
           />
         </div>
       )}
+
+      
+
+      {/* Buttons */}
+      <div className="d-flex justify-content-end mt-2">
+        <button className="btn btn-outline-secondary me-2" onClick={handleReset}>
+          Reset
+        </button>
+        <button className="btn btn-primary" onClick={handleSave}>
+          Save
+        </button>
+      </div>
 
       <FormError error={error} />
 

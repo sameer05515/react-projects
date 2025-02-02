@@ -1,16 +1,14 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import yaml from "js-yaml";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import {
   getDetailedName,
   SupportedInputComponents,
-  SupportedOutFormats,
   getInpOupDetailsForKey,
   getComboOptions,
   getKeyName,
+  validateSmartContent,
 } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 
@@ -27,8 +25,6 @@ const SmartEditorV4 = ({
   preview: previewInitialValue = true,
   onSubmit = async () => ({ isError: false, messages: [] }),
 }) => {
-  // const textareaRef = useRef(null);
-
   const [showPreview, setShowPreview] = useState(previewInitialValue);
   const [error, setError] = useState("");
 
@@ -46,25 +42,10 @@ const SmartEditorV4 = ({
     [formData.textInputType, formData.textOutputType]
   );
 
-  const validateContent = (content, outputType) => {
-    try {
-      if (outputType === SupportedOutFormats.YAML) yaml.load(content);
-      if (outputType === SupportedOutFormats.TIS_to_SKELETON) {
-        const { isValid, message } = buildTree(content);
-        if (!isValid) return message;
-      }
-    } catch (e) {
-      return e.mark
-        ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-        : `Error parsing YAML: ${e.message}`;
-    }
-    return "";
-  };
-
   const handleFormUpdate = useCallback((newContent, newOutputType) => {
     if (newContent == null) return;
     const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
-    const validationError = validateContent(newContent, textOutputType);
+    const validationError = validateSmartContent(newContent, textOutputType);
     setError(validationError);
 
     setFormData((prev) => ({

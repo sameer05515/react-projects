@@ -127,3 +127,19 @@ export const getSmartPreviewerProcessedData = (data) => {
 
   return { content, textOutputType, yamlProcessedData, resultData, errorMessage };
 };
+
+
+//--------------------
+
+export const validateSmartContent = (content, outputType) => {
+  try {
+    if (outputType === SupportedOutFormats.YAML) yaml.load(content);
+    if (outputType === SupportedOutFormats.TIS_to_SKELETON) {
+      const { isValid, message } = buildTree(content);
+      if (!isValid) return message;
+    }
+  } catch (e) {
+    return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+  }
+  return "";
+};

@@ -1,7 +1,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import JSONDataViewer from "../../json-data-viewer/JSONDataViewer";
 import {
@@ -23,7 +23,7 @@ const SmartEditorV4 = ({
   preview: previewInitialValue = true,
   onSubmit = async () => ({ isError: false, messages: [] }),
 }) => {
-  const textareaRef = useRef(null);
+  // const textareaRef = useRef(null);
 
   const [showPreview, setShowPreview] = useState(previewInitialValue);
   const [error, setError] = useState("");
@@ -133,7 +133,7 @@ const SmartEditorV4 = ({
       {formData.textInputType === SupportedInputComponents.textArea && (
         <div className="form-floating">
           <textarea
-            ref={textareaRef}
+            // ref={textareaRef}
             id="content"
             name="content"
             className="form-control"

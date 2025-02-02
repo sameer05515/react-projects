@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Modal.module.css";
 
-export const ModalV3 = ({ isOpen, onClose, closeOnEscKey, showCloseButton = false, children }) => {
+const ModalV3 = ({ isOpen, onClose, closeOnEscKey, showCloseButton = false, children }) => {
   if (!isOpen) return null;
 
   return (

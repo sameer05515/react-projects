@@ -5,10 +5,12 @@ import ToggleablePanel from "../../../common/components/toggleable-panel/Togglea
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 // import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import SmartPreviewerV4 from "../../../common/components/Smart/Editor/v4";
+import ModalV3 from "../../../common/hoc/modal/ModalV3";
 
 const SmartEditorV4Dashboard_V1_0_0 = () => {
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);
   const selectedData = useMemo(() => smartPreviewerData[selectedDataIndex], [selectedDataIndex]);
+  const [showModal, setShowModal] = useState(false);
   // Mock async validation function
   const handleEditorSubmit = async (data) => {
     console.log("Submitting data:", data);
@@ -41,6 +43,9 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
         <CustomButton onClick={() => setSelectedDataIndex((prev) => (prev + 1) % smartPreviewerData.length)}>
           Next
         </CustomButton>
+        <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
+          Show Modal
+        </button>
       </div>
       {/* <ToggleablePanel showContent={false} title="Normal Textarea">
         <textarea value={selectedData.data.content} rows={20} style={textareaStyle} />
@@ -48,6 +53,11 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
       {/* <ToggleablePanel showContent={false} title="SmartEditorV3">
         <SmartEditorV3 initialValue={selectedData.data} />
       </ToggleablePanel> */}
+      {showModal && (
+        <ModalV3 isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
+          <SmartEditorV4 initialValue={selectedData.data} onSubmit={handleEditorSubmit} />
+        </ModalV3>
+      )}
       <ToggleablePanel showContent={false} title="SmartEditorV4[_unstable]">
         <SmartEditorV4 initialValue={selectedData.data} onSubmit={handleEditorSubmit} />
       </ToggleablePanel>

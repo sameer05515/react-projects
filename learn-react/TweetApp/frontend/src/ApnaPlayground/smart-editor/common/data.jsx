@@ -82,7 +82,16 @@ export const smartPreviewerDataArray = [
             textOutputType: 'skeleton',
             textInputType: 'TextArea'
         }
-    }
+    },
+    {
+        id: 'show-empty-content',
+        title: 'show-empty-content',
+        expectation: `
+        1. [Passed]: [Should show errors for invalid TIS]: Both SmartEditorV3 and SmartEditorV4[_unstable] should successfully parse the string and render with help of their respective SmartPreviewer(s)
+            Note: 'SmartEditorV4[_unstable]' (will be referred as 'SmartEditorV4' in susequent discussion)
+        `,
+        data: null
+    },
 ];
 
 export const observations = `

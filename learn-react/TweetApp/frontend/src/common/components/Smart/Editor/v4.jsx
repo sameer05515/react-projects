@@ -19,7 +19,11 @@ const debug = false;
 const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
 const SmartEditorV4 = ({
-  initialValue,
+  initialValue = {
+    content: "",
+    textOutputType: "",
+    textInputType: "",
+  },
   preview: previewInitialValue = true,
   onSubmit = async () => ({ isError: false, messages: [] }),
 }) => {
@@ -72,7 +76,10 @@ const SmartEditorV4 = ({
 
   useEffect(() => {
     if (initialValue)
-      handleFormUpdate(initialValue.content, getKeyName(initialValue.textOutputType, initialValue.textInputType));
+      handleFormUpdate(
+        initialValue?.content || "",
+        getKeyName(initialValue.textOutputType, initialValue.textInputType)
+      );
   }, [handleFormUpdate, initialValue]);
 
   const handleChangeOutputTypes = useCallback(
@@ -105,9 +112,9 @@ const SmartEditorV4 = ({
 
   const handleReset = () => {
     setFormData({
-      content: initialValue.content || "",
-      textOutputType: initialValue.textOutputType || "",
-      textInputType: initialValue.textInputType || "",
+      content: initialValue?.content || "",
+      textOutputType: initialValue?.textOutputType || "",
+      textInputType: initialValue?.textInputType || "",
     });
   };
 

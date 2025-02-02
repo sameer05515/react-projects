@@ -11,7 +11,7 @@ const ENDPOINTS = {
 
 const prepareErrorResponse = (error = "", defaultMessage = "") => {
   const errorMessage = prepareErrorMessage(error, defaultMessage || "Unexpected Error occurred!");
-  console.error(errorMessage, error);
+  //   console.error(errorMessage, error);
   return { data: null, isError: true, message: errorMessage };
 };
 // possible values of method: "get" | "put" | "post" | "patch" | "delete" | "patch"
@@ -54,6 +54,22 @@ export const saveThinkTankItem = async (
       throw new Error("Invalid data");
     }
     return interactWithApi({ method: "post", endpointUrl: `${BASE_URL}${ENDPOINTS.BASE()}`, body: data });
+  } catch (error) {
+    return prepareErrorResponse(error, `An unexpected error occurred while fetching ThinkTankItems`);
+  }
+};
+
+export const updateThinkTankItem = async (uniqueId = "", data) => {
+  try {
+    if (!data || !uniqueId) {
+      throw new Error("Invalid data");
+    }
+
+    return interactWithApi({
+      method: "post",
+      endpointUrl: `${BASE_URL}${ENDPOINTS.WITH_THINK_TANK_UID(uniqueId)}`,
+      body: data,
+    });
   } catch (error) {
     return prepareErrorResponse(error, `An unexpected error occurred while fetching ThinkTankItems`);
   }

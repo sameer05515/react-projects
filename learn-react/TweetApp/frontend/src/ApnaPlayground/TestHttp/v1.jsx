@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { prepareErrorMessage } from "../../common/hooks/useConsolidated/message-preparation-utils";
+import { myTodos } from "../../components/my-reports/ThinkTank/data";
 import {
   fetchThinkTankItems,
   saveThinkTankItem,
   updateThinkTankItem,
 } from "../../components/my-reports/ThinkTank/utils/ThinkTankApiServices";
-import { myTodos } from "../../components/my-reports/ThinkTank/data";
-import { prepareErrorMessage } from "../../common/hooks/useConsolidated/message-preparation-utils";
 import { delayForMS } from "../sample-promises";
+
+const ALLOWED_SAVE_OF_HARDCODED_DATA = false;
 
 const convertToISTDateWithTime = (dateStr, minutes = 10) => {
   console.log(dateStr, "", minutes, "\n========================\n");
@@ -42,6 +44,7 @@ const TestHttpV1 = () => {
       .catch((err) => console.error(err));
 
   const checkAnyInvalidCreateDate = () => {
+    setMessages([]);
     const myMap = {};
     for (let todo of myTodos) {
       if (!myMap[todo.createdDate]) {
@@ -58,6 +61,12 @@ const TestHttpV1 = () => {
 
   const saveAllOldTodos = async () => {
     setMessages([]);
+    if (!ALLOWED_SAVE_OF_HARDCODED_DATA) {
+      const errMsg =
+        "This button action was one time activity and now it has been blocked for sake of blocking unneccssary rendandant data in database";
+      setMessages((prev) => [{ id: `msg_no_${prev.length + 1}`, type: "error", message: errMsg }, ...prev]);
+      return;
+    }
     const myMap = {};
     for (let todo of myTodos) {
       try {

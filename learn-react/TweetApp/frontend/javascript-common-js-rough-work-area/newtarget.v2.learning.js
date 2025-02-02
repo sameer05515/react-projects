@@ -23,6 +23,7 @@ class A {
   };
 }
 
+//=======================================================
 try {
   const myA1 = new A(); // Error: Direct instantiation is not allowed.
   myA1.doSomething();
@@ -32,3 +33,7 @@ try {
 
 const myA2 = A.builder(); // This works, using the builder method
 myA2.doSomething("Learning new.target");
+
+//===========================
+// const aa=new A._InternalBuilder();
+// aa.doSomething("Learning new.target");

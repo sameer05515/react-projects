@@ -11,10 +11,11 @@ import {
   validateSmartContent,
 } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
+import FormMessagesV1 from "../../FormMessages/v1";
 
 const debug = false;
 
-const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
+// const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
 const SmartEditorV4 = ({
   initialValue = {
@@ -158,7 +159,8 @@ const SmartEditorV4 = ({
         </button>
       </div>
 
-      <FormError error={error} />
+      {/* <FormError error={error} /> */}
+      {<FormMessagesV1 messages={[{ type: "error", message: error }]} />}
 
       {/* Preview Button */}
       {formData.content && (

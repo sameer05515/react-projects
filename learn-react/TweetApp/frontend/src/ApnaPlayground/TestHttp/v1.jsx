@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import {
   fetchThinkTankItems,
   saveThinkTankItem,
+  updateThinkTankItem,
 } from "../../components/my-reports/ThinkTank/utils/ThinkTankApiServices";
 import { myTodos } from "../../components/my-reports/ThinkTank/data";
 import { prepareErrorMessage } from "../../common/hooks/useConsolidated/message-preparation-utils";
+import { delayForMS } from "../sample-promises";
 
 const convertToISTDateWithTime = (dateStr, minutes = 10) => {
   console.log(dateStr, "", minutes, "\n========================\n");
@@ -56,9 +58,13 @@ const TestHttpV1 = () => {
 
   const saveAllOldTodos = async () => {
     setMessages([]);
-    // const myMap = {};
+    const myMap = {};
     for (let todo of myTodos) {
       try {
+        if (!myMap[todo.createdDate]) {
+          myMap[todo.createdDate] = 10;
+        }
+        //================= Save phase
         const saveResp = await saveThinkTankItem({ smartContent: todo.smartContent, itemType: todo.itemType });
         if (saveResp.isError) {
           throw new Error(saveResp.message);
@@ -66,6 +72,23 @@ const TestHttpV1 = () => {
         const uniqueId = saveResp.data.uniqueId;
         const saveMsg = `Successfully recieved uniqueId: ${uniqueId}`;
         setMessages((prev) => [{ id: `msg_no_${prev.length + 1}`, type: "success", message: saveMsg }, ...prev]);
+        await delayForMS(300);
+
+        //================= Update phase
+        const minutes = myMap[todo.createdDate] + 1;
+
+        const updateResp = await updateThinkTankItem(uniqueId, {
+          ...todo,
+          createdDate: convertToISTDateWithTime(todo.createdDate, minutes),
+        });
+        if (updateResp.isError) {
+          throw new Error(updateResp.message);
+        }
+        const updateMsg = `Successfully updated uniqueId: ${uniqueId}`;
+        setMessages((prev) => [{ id: `msg_no_${prev.length + 1}`, type: "success", message: updateMsg }, ...prev]);
+
+        myMap[todo.createdDate] = minutes;
+        await delayForMS(300);
       } catch (error) {
         const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
         setMessages((prev) => [{ id: `msg_no_${prev.length + 1}`, type: "error", message: errMsg }, ...prev]);
@@ -75,6 +98,9 @@ const TestHttpV1 = () => {
 
   return (
     <div className="container-fluid">
+      <div>
+        <h1>Total Todos: {myTodos.length}</h1>
+      </div>
       <button className="btn btn-outline-primary btn-sm" onClick={() => setMessages([])}>
         Clear Messages
       </button>
@@ -96,7 +122,9 @@ const TestHttpV1 = () => {
           Array.isArray(messages) &&
           messages.map(({ id, message, type }) => (
             <div key={id}>
-              <span className={type === "success" ? "text-bg-success" : "text-bg-danger"}>{message}</span>
+              <span className={type === "success" ? "text-bg-success" : "text-bg-danger"}>
+                [{new Date().toString()}]: {message}
+              </span>
             </div>
           ))}
       </div>

@@ -27,7 +27,7 @@ const SmartEditorV4 = ({
   onSubmit = async () => ({ isError: false, messages: [] }),
 }) => {
   const [showPreview, setShowPreview] = useState(previewInitialValue);
-  const [error, setError] = useState("");
+  const [formMessages, setFormMessages] = useState([]);
 
   const [formData, setFormData] = useState({
     content: "",
@@ -47,7 +47,7 @@ const SmartEditorV4 = ({
     if (newContent == null) return;
     const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
     const validationError = validateSmartContent(newContent, textOutputType);
-    setError(validationError);
+    setFormMessages(validationError);
 
     setFormData((prev) => ({
       content: newContent,
@@ -66,7 +66,10 @@ const SmartEditorV4 = ({
 
   const handleChangeOutputTypes = useCallback(
     (newOutputType) => {
-      if (typeof newOutputType !== "string") return setError(`Invalid newOutputType: '${newOutputType}'`);
+      if (typeof newOutputType !== "string") {
+        setFormMessages([{ type: "error", message: `Invalid newOutputType: '${newOutputType}'` }]);
+        return;
+      }
       handleFormUpdate(formData.content || "", newOutputType);
     },
     [handleFormUpdate, formData.content]
@@ -75,7 +78,7 @@ const SmartEditorV4 = ({
   const updateFormContent = useCallback(
     (content = "") => {
       if (!content?.trim()) {
-        setError("Content cannot be empty");
+        setFormMessages([{ type: "error", message: "Content cannot be empty" }]);
       }
       handleFormUpdate(content || "");
     },
@@ -86,9 +89,9 @@ const SmartEditorV4 = ({
     const result = await onSubmit(formData);
     console.log("result: ", result);
     if (result.isError) {
-      setError(result.messages.map((msg) => msg.text).join(", "));
+      setFormMessages([...result.messages] || [{ type: "error", message: "Some unexpected error occurred!" }]);
     } else {
-      alert("Saved successfully!");
+      setFormMessages([...result.messages]);
     }
   };
 
@@ -160,7 +163,7 @@ const SmartEditorV4 = ({
       </div>
 
       {/* <FormError error={error} /> */}
-      {<FormMessagesV1 messages={[{ type: "error", message: error }]} />}
+      {<FormMessagesV1 messages={formMessages} />}
 
       {/* Preview Button */}
       {formData.content && (

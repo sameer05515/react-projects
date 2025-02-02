@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ClassSuffixForStatus,
   getFilteredTodos,
@@ -10,9 +10,13 @@ import {
   // sortTodosByUrgencyAndImportance,
   Status,
 } from "./Item.dto";
-import { myTodos } from "./data";
+// import { myTodos } from "./data";
 import pipe from "../../../common/service/pipe-util";
 import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
+import { fetchThinkTankItems } from "./utils/ThinkTankApiServices";
+import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+
+const debug = true;
 
 const FilterActionTypes = {
   SHOW_ALL: "show-all",
@@ -99,9 +103,16 @@ const List = ({ todos = [] }) => {
     const statusClassName = ClassSuffixForStatus[status];
     const statusStr = <span className={`badge text-bg-${statusClassName}`}> {status} </span>;
 
-    const urgentStr = <span className={`badge text-bg-${isUrgent ? "danger" : "warning"}`}> {!isUrgent ? "Not" : ""} Urgent </span>;
+    const urgentStr = (
+      <span className={`badge text-bg-${isUrgent ? "danger" : "warning"}`}> {!isUrgent ? "Not" : ""} Urgent </span>
+    );
 
-    const importantStr = <span className={`badge text-bg-${isImportant ? "dark" : "warning"}`}> {!isImportant ? "Not" : ""} Important </span>;
+    const importantStr = (
+      <span className={`badge text-bg-${isImportant ? "dark" : "warning"}`}>
+        {" "}
+        {!isImportant ? "Not" : ""} Important{" "}
+      </span>
+    );
 
     const hasGroomedStr = (
       <div>
@@ -150,6 +161,21 @@ const List = ({ todos = [] }) => {
 
 const ThinkTankEditorV1 = () => {
   //   const [filteredTodos, setFilteredTodos] = useState([]);
+  const [myTodos, setMyTodos] = useState([]);
+  const handleFetchThinkTankItems = useCallback(() => {
+    fetchThinkTankItems({})
+      .then((response) => {
+        if (!response.isError) {
+          setMyTodos([...response.data]);
+        }
+
+        console.log(response);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  useEffect(() => {
+    handleFetchThinkTankItems();
+  }, [handleFetchThinkTankItems]);
   const [filteredTodos, setFilteredTodos] = useState(() =>
     pipe(
       // sortTodosByGroomed,
@@ -159,37 +185,43 @@ const ThinkTankEditorV1 = () => {
       (todos) => todos.reverse()
     )(myTodos)
   );
-  const handleGroupBtnClick = useCallback((actionType = FilterActionTypes.SHOW_ALL) => {
-    setFilteredTodos(
-      pipe(
-        (todos) => getFilteredTodos(todos, FilterActions[actionType]),
-        // sortTodosByGroomed,
-        // sortTodosByUrgencyAndImportance,
-        // sortTodosByStatus,
-        // (todos) => sortTodosByCreatedDate(todos, false),
-        (todos) => todos.reverse()
-      )(myTodos)
-    );
-  }, []);
+  const handleGroupBtnClick = useCallback(
+    (actionType = FilterActionTypes.SHOW_ALL) => {
+      setFilteredTodos(
+        pipe(
+          (todos) => getFilteredTodos(todos, FilterActions[actionType]),
+          // sortTodosByGroomed,
+          // sortTodosByUrgencyAndImportance,
+          // sortTodosByStatus,
+          // (todos) => sortTodosByCreatedDate(todos, false),
+          (todos) => todos.reverse()
+        )(myTodos)
+      );
+    },
+    [myTodos]
+  );
   return (
     <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
       <h1>Welcome</h1>
 
       <h1>My Think-Tank - (older name My-ToDo List):v1</h1>
-      <h2>This modules is TO REDUCE STRESS AND IF THEY ARE "VALID ASK"s, then take action on them accordingly in near future.</h2>
+      <h2>
+        This modules is TO REDUCE STRESS AND IF THEY ARE "VALID ASK"s, then take action on them accordingly in near
+        future.
+      </h2>
       <details>
         Here we will put all our To-dos, in below format
         <pre>[Date]:[Status- (Open/Closed)]- Title of to-do Description (As short as possible)</pre>
-
-        We are developing this component as editor for current logged-in user. <br/>
+        We are developing this component as editor for current logged-in user. <br />
         For now we will support both database data as well as raw data created in tool.
-
       </details>
 
       <h3>My List</h3>
       <ButtonGroup onBGroupItemClick={handleGroupBtnClick} />
       {/* <div id="to-do-list-div"></div> */}
       <List todos={filteredTodos} />
+
+      {debug && <JSONDataViewer metadata={{ myTodos }} title="my-To-Dos-from-server" />}
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
 } from "../common/utils.v4";
 import SmartPreviewer from "../Previewer/v4";
 import FormMessagesV1 from "../../FormMessages/v1";
+import FormMessageBuilder from "../../FormMessages/Builder";
 
 const debug = true;
 
@@ -48,7 +49,8 @@ const SmartEditorV4 = ({
     const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
     const validationError = validateSmartContent(newContent, textOutputType);
     if (validationError) {
-      setFormMessages([{ type: "error", message: validationError }]);
+      // setFormMessages([{ type: "error", message: validationError }]);
+      setFormMessages(FormMessageBuilder.builder().appendError(validationError).build());
     }
 
     setFormData((prev) => ({
@@ -69,7 +71,8 @@ const SmartEditorV4 = ({
   const handleChangeOutputTypes = useCallback(
     (newOutputType) => {
       if (typeof newOutputType !== "string") {
-        setFormMessages([{ type: "error", message: `Invalid newOutputType: '${newOutputType}'` }]);
+        // setFormMessages([{ type: "error", message: `Invalid newOutputType: '${newOutputType}'` }]);
+        setFormMessages(FormMessageBuilder.builder().appendError(`Invalid newOutputType: '${newOutputType}'`).build());
         return;
       }
       handleFormUpdate(formData.content || "", newOutputType);
@@ -82,6 +85,7 @@ const SmartEditorV4 = ({
       setFormMessages([]);
       if (!content?.trim()) {
         setFormMessages([{ type: "error", message: "Content cannot be empty" }]);
+        // setFormMessages(FormMessageBuilder.builder().appendError("Content cannot be empty").build());
       }
       handleFormUpdate(content || "");
     },
@@ -90,15 +94,18 @@ const SmartEditorV4 = ({
 
   const handleSave = async () => {
     const result = await onSubmit(formData);
-    console.log("result: ", result);
     if (result.isError) {
-      setFormMessages([...result.messages] || [{ type: "error", message: "Some unexpected error occurred!" }]);
+      // setFormMessages([...result.messages] || [{ type: "error", message: "Some unexpected error occurred!" }]);
+      setFormMessages([
+        ...(result.messages || FormMessageBuilder.builder().appendError("Some unexpected error occurred!").build()),
+      ]);
     } else {
       setFormMessages([...result.messages]);
     }
   };
 
   const handleReset = () => {
+    setFormMessages([]);
     setFormData({
       content: initialValue?.content || "",
       textOutputType: initialValue?.textOutputType || "",

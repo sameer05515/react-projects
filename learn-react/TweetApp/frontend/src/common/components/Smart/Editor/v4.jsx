@@ -79,6 +79,7 @@ const SmartEditorV4 = ({
 
   const updateFormContent = useCallback(
     (content = "") => {
+      setFormMessages([]);
       if (!content?.trim()) {
         setFormMessages([{ type: "error", message: "Content cannot be empty" }]);
       }

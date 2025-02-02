@@ -139,7 +139,7 @@ const SmartEditorV4 = ({
             className="form-control"
             value={formData.content}
             onChange={(e) => updateFormContent(e.target.value)}
-            style={{ height: "100px" }}
+            style={{ height: "300px" }}
           />
           <label htmlFor="content" style={{ fontWeight: "bold" }}>
             Content:

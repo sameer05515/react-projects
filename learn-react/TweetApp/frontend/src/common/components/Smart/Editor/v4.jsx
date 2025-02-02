@@ -95,7 +95,7 @@ const SmartEditorV4 = ({
 
   const handleSave = async () => {
     const result = await onSubmit(formData);
-    console.log("result: ",result);
+    console.log("result: ", result);
     if (result.isError) {
       setError(result.messages.map((msg) => msg.text).join(", "));
     } else {
@@ -159,8 +159,6 @@ const SmartEditorV4 = ({
           />
         </div>
       )}
-
-      
 
       {/* Buttons */}
       <div className="d-flex justify-content-end mt-2">

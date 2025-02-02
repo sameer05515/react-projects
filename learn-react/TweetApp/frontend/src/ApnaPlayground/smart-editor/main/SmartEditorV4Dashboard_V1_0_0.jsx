@@ -21,12 +21,12 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
         if (data.content.trim().length < 10) {
           resolve({
             isError: true,
-            messages: [{ type: "error", text: "Content is too short. Minimum 10 characters required." }],
+            messages: [{ type: "error", message: "Content is too short. Minimum 10 characters required." }],
           });
         } else {
           resolve({
             isError: false,
-            messages: [{ type: "info", text: "Saved successfully!" }],
+            messages: [{ type: "info", message: "Saved successfully!" }],
           });
         }
       }, 1000); // Simulate async delay

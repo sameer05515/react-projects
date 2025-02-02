@@ -13,7 +13,7 @@ import {
 import SmartPreviewer from "../Previewer/v4";
 import FormMessagesV1 from "../../FormMessages/v1";
 
-const debug = false;
+const debug = true;
 
 // const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
@@ -24,7 +24,7 @@ const SmartEditorV4 = ({
     textInputType: "",
   },
   preview: previewInitialValue = true,
-  onSubmit = async () => ({ isError: false, messages: [] }),
+  onSubmit = async () => ({ isError: false, messages: [{ type: "info", message: "Action performed successfully!" }] }),
 }) => {
   const [showPreview, setShowPreview] = useState(previewInitialValue);
   const [formMessages, setFormMessages] = useState([]);
@@ -47,7 +47,9 @@ const SmartEditorV4 = ({
     if (newContent == null) return;
     const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
     const validationError = validateSmartContent(newContent, textOutputType);
-    setFormMessages(validationError);
+    if (validationError) {
+      setFormMessages([{ type: "error", message: validationError }]);
+    }
 
     setFormData((prev) => ({
       content: newContent,
@@ -178,7 +180,7 @@ const SmartEditorV4 = ({
         </div>
       )}
 
-      {debug && <JSONDataViewer metadata={{ formData }} title="selectedOutputType" />}
+      {debug && <JSONDataViewer metadata={{ formData, formMessages }} title="selectedOutputType" />}
     </div>
   );
 };

@@ -3,8 +3,25 @@ import {
   fetchThinkTankItems,
   saveThinkTankItem,
 } from "../../components/my-reports/ThinkTank/utils/ThinkTankApiServices";
+import { myTodos } from "../../components/my-reports/ThinkTank/data";
+
+const convertToISTDateWithTime = (dateStr) => {
+  if (!dateStr || typeof dateStr !== "string") {
+    throw new Error("Date string should be non-null and a string");
+  }
+
+  // Parse date in IST by appending the time
+  const parsedDate = new Date(`${dateStr} 10:00:00 GMT+0530`);
+
+  if (isNaN(parsedDate)) {
+    throw new Error(`Invalid date format: ${dateStr}`);
+  }
+
+  return parsedDate.toISOString(); // Converts to UTC format for API
+};
 
 const TestHttpV1 = () => {
+  // const [messages, setMessages] = useState([]);
   const handleFetchThninkTankItems = () =>
     fetchThinkTankItems({})
       .then((response) => console.log(response))
@@ -19,6 +36,17 @@ const TestHttpV1 = () => {
     })
       .then((response) => console.log(response))
       .catch((err) => console.error(err));
+
+const checkAnyInvalidCreateDate=()=>{
+  const myMap={};
+  for(let todo of myTodos){
+    if(!myMap[todo.createdDate]){
+
+    }
+    console.log(todo.createdDate,"    :    ", convertToISTDateWithTime(todo.createdDate));
+  }
+}
+    
   return (
     <div className="container-fluid">
       <button className="btn btn-primary btn-sm mx-1" onClick={handleFetchThninkTankItems}>
@@ -26,6 +54,10 @@ const TestHttpV1 = () => {
       </button>
       <button className="btn btn-primary btn-sm mx-1" onClick={handleSaveThinkTankItem}>
         Save ThinkTank Item
+      </button>
+
+      <button className="btn btn-primary btn-sm mx-1" onClick={checkAnyInvalidCreateDate}>
+        Validate dates
       </button>
     </div>
   );

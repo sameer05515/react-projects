@@ -54,7 +54,12 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
         <SmartEditorV3 initialValue={selectedData.data} />
       </ToggleablePanel> */}
       {showModal && (
-        <ModalV3 isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
+        <ModalV3
+          title={selectedData?.data ? "Update" : "Save"}
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          showCloseButton={true}
+        >
           <SmartEditorV4 initialValue={selectedData.data} onSubmit={handleEditorSubmit} />
         </ModalV3>
       )}

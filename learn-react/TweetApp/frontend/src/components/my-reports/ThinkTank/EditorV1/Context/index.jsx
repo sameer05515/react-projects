@@ -28,6 +28,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTTItem, setSelectedTTItem] = useState(null);
   const [selectedPurpose, setSelectedPurpose] = useState("");
+  const [selectedShowFilterAction, setSelectedShowFilterAction] = useState(FilterActionTypes.SHOW_ALL);
 
   const openModalForPurpose = useCallback((purpose = "", thinkTankItem = {}) => {
     try {
@@ -59,31 +60,32 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
 
   const refreshList = useCallback(() => handleFetchThinkTankItems(), [handleFetchThinkTankItems]);
 
-  const [filteredTodos, setFilteredTodos] = useState(() =>
-    pipe(
-      // sortTodosByGroomed,
-      // sortTodosByUrgencyAndImportance,
-      // sortTodosByStatus,
-      // sortTodosByCreatedDate
-      (todos) => todos.reverse()
-    )(myTodos)
+  const filteredTodos = useMemo(
+    () =>
+      pipe(
+        (todos) => getFilteredTodos(todos, FilterActions[selectedShowFilterAction]),
+        // sortTodosByGroomed,
+        // sortTodosByUrgencyAndImportance,
+        // sortTodosByStatus,
+        // sortTodosByCreatedDate
+        (todos) => todos.reverse()
+      )(myTodos),
+    [myTodos, selectedShowFilterAction]
   );
 
-  const handleGroupBtnClick = useCallback(
-    (actionType = FilterActionTypes.SHOW_ALL) => {
-      setFilteredTodos(
-        pipe(
-          (todos) => getFilteredTodos(todos, FilterActions[actionType]),
-          // sortTodosByGroomed,
-          // sortTodosByUrgencyAndImportance,
-          // sortTodosByStatus,
-          // (todos) => sortTodosByCreatedDate(todos, false),
-          (todos) => todos.reverse()
-        )(myTodos)
-      );
-    },
-    [myTodos]
-  );
+  const handleGroupBtnClick = useCallback((actionType = FilterActionTypes.SHOW_ALL) => {
+    setSelectedShowFilterAction(actionType);
+    // setFilteredTodos(
+    //   pipe(
+    //     (todos) => getFilteredTodos(todos, FilterActions[actionType]),
+    //     // sortTodosByGroomed,
+    //     // sortTodosByUrgencyAndImportance,
+    //     // sortTodosByStatus,
+    //     // (todos) => sortTodosByCreatedDate(todos, false),
+    //     (todos) => todos.reverse()
+    //   )(myTodos)
+    // );
+  }, []);
 
   const handleUpdateThinkTankItem = useCallback(
     async (data, purpose, uniqueId) => {

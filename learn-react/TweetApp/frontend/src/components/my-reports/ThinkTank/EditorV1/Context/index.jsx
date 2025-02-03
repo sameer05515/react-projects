@@ -28,7 +28,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTTItem, setSelectedTTItem] = useState(null);
   const [selectedPurpose, setSelectedPurpose] = useState("");
-  const [selectedShowFilterAction, setSelectedShowFilterAction] = useState(FilterActionTypes.SHOW_ALL);
+  const [selectedShowFilterAction, setSelectedShowFilterAction] = useState(FilterActionTypes.SHOW_OPEN_ONLY);
 
   const openModalForPurpose = useCallback((purpose = "", thinkTankItem = {}) => {
     try {
@@ -73,7 +73,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [myTodos, selectedShowFilterAction]
   );
 
-  const handleGroupBtnClick = useCallback((actionType = FilterActionTypes.SHOW_ALL) => {
+  const handleGroupBtnClick = useCallback((actionType = FilterActionTypes.SHOW_OPEN_ONLY) => {
     setSelectedShowFilterAction(actionType);
   }, []);
 

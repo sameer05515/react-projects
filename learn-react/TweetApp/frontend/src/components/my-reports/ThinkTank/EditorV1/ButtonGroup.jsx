@@ -32,6 +32,7 @@ const ButtonGroup = () => {
           name="btnradio"
           id="show-open-todos-btn"
           autoComplete="off"
+          defaultChecked
           onClick={() => handleLinkClick(FilterActionTypes.SHOW_OPEN_ONLY)}
         />
         <label className="btn btn-outline-primary btn-sm" htmlFor="show-open-todos-btn">
@@ -55,8 +56,7 @@ const ButtonGroup = () => {
           className="btn-check"
           name="btnradio"
           id="show-all-todos-btn"
-          autoComplete="off"
-          defaultChecked
+          autoComplete="off"          
           onClick={() => handleLinkClick(FilterActionTypes.SHOW_ALL)}
         />
         <label className="btn btn-outline-primary btn-sm" htmlFor="show-all-todos-btn">

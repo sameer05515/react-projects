@@ -33,7 +33,10 @@ export const PurposeToOpenModal = {
   UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM: "update-smart-content-of-existing-tt-item",
 };
 
-const isValidPurpose = (purpose = "") => Object.values(PurposeToOpenModal).includes(purpose);
+const isValidPurpose = (purpose = "") => {
+  const isValid= Object.values(PurposeToOpenModal).includes(purpose);
+  return isValid;
+};
 
 const ThinkTankEditorV1Context = createContext();
 

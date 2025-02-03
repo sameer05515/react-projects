@@ -1,15 +1,16 @@
 import React from "react";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
-import SmartEditorV4 from "../../../../common/components/Smart/Editor/v4";
+
 import ModalV3 from "../../../../common/hoc/modal/ModalV3";
 import ButtonGroup from "./ButtonGroup";
-import { ThinkTankEditorV1ContextProvider, useThinkTankEditorV1Context } from "./Context";
+import { PurposeToOpenModal, ThinkTankEditorV1ContextProvider, useThinkTankEditorV1Context } from "./Context";
 import List from "./List";
 
 const debug = true;
 
 const ThinkTankEditorV1 = () => {
-  const { myTodos, filteredTodos, showModal, setShowModal, handleEditorSubmit } = useThinkTankEditorV1Context();
+  const { myTodos, filteredTodos, showModal, setShowModal, ModalChildrenComponent, openModalForPurpose, modalTitle } =
+    useThinkTankEditorV1Context();
 
   return (
     <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
@@ -28,16 +29,19 @@ const ThinkTankEditorV1 = () => {
       </details>
 
       <h3>My List</h3>
-      <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
-        Show Modal
+      <button
+        className="btn btn-primary btn-sm"
+        onClick={() => openModalForPurpose(PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE, null)}
+      >
+        Show Modal For Testing
       </button>
       <ButtonGroup />
       {/* <div id="to-do-list-div"></div> */}
       <List todos={filteredTodos} />
 
       {showModal && (
-        <ModalV3 title={"Save"} isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
-          <SmartEditorV4 initialValue={{}} onSubmit={handleEditorSubmit} />
+        <ModalV3 title={modalTitle} isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
+          {ModalChildrenComponent}
         </ModalV3>
       )}
 

@@ -10,7 +10,7 @@ import {
   // sortTodosByGroomed,
   // sortTodosByStatus,
   // sortTodosByUrgencyAndImportance,
-  Status
+  Status,
 } from "../Item.dto";
 
 export const FilterActionTypes = {
@@ -28,7 +28,6 @@ const FilterActions = {
 const ThinkTankEditorV1Context = createContext();
 
 export const ThinkTankEditorV1ContextProvider = ({ children }) => {
-
   const [myTodos, setMyTodos] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleFetchThinkTankItems = useCallback(() => {
@@ -94,7 +93,13 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       }, 1000); // Simulate async delay
     });
   };
-  return <ThinkTankEditorV1Context.Provider value={{myTodos,showModal,filteredTodos,setShowModal,handleGroupBtnClick,handleEditorSubmit}}>{children}</ThinkTankEditorV1Context.Provider>;
+  return (
+    <ThinkTankEditorV1Context.Provider
+      value={{ myTodos, showModal, filteredTodos, setShowModal, handleGroupBtnClick, handleEditorSubmit }}
+    >
+      {children}
+    </ThinkTankEditorV1Context.Provider>
+  );
 };
 
 // Hook to use the context

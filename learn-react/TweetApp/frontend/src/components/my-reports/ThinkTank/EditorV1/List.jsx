@@ -30,22 +30,30 @@ const ListItem = ({ todo }) => {
     todo || {};
   const { openModalForPurpose } = useThinkTankEditorV1Context();
 
-  const createdDateStr = createdDate ? (
-    <span className="badge rounded-pill text-bg-secondary"> Created On: {createdDate} </span>
-  ) : (
-    <span className="badge rounded-pill text-bg-danger"> Created On: Missing </span>
+  const createdDateStr = (
+    <span className={`badge rounded-pill text-bg-${createdDate ? "secondary" : "danger"}`}>
+      Created On: {createdDate || "Missing"}
+    </span>
   );
 
-  const closedOnStr = closedOn ? <span className="badge rounded-pill text-bg-secondary">Closed On: {closedOn} </span> : null;
+  const closedOnStr = closedOn ? (
+    <span className="badge rounded-pill text-bg-secondary">Closed On: {closedOn} </span>
+  ) : null;
   const statusClassName = ClassSuffixForStatus[status];
   const statusStr = <span className={`badge rounded-pill text-bg-${statusClassName}`}> {status} </span>;
 
   const urgentStr = (
-    <span className={`badge rounded-pill text-bg-${isUrgent ? "danger" : "warning"}`}> {!isUrgent ? "Not" : ""} Urgent </span>
+    <span className={`badge rounded-pill text-bg-${isUrgent ? "danger" : "warning"}`}>
+      {" "}
+      {!isUrgent ? "Not" : ""} Urgent{" "}
+    </span>
   );
 
   const importantStr = (
-    <span className={`badge rounded-pill text-bg-${isImportant ? "dark" : "warning"}`}> {!isImportant ? "Not" : ""} Important </span>
+    <span className={`badge rounded-pill text-bg-${isImportant ? "dark" : "warning"}`}>
+      {" "}
+      {!isImportant ? "Not" : ""} Important{" "}
+    </span>
   );
 
   const hasGroomedStr = (

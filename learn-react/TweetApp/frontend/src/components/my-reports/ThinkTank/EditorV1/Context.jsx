@@ -37,7 +37,6 @@ const ThinkTankEditorV1Context = createContext();
 export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const [myTodos, setMyTodos] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  // const [modalTitle, setModalTitle] = useState(false);
   const [selectedTTItem, setSelectedTTItem] = useState(null);
   const [selectedPurpose, setSelectedPurpose] = useState("");
 
@@ -62,9 +61,11 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       })
       .catch((err) => console.error(err));
   }, []);
+
   useEffect(() => {
     handleFetchThinkTankItems();
   }, [handleFetchThinkTankItems]);
+
   const [filteredTodos, setFilteredTodos] = useState(() =>
     pipe(
       // sortTodosByGroomed,
@@ -74,6 +75,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       (todos) => todos.reverse()
     )(myTodos)
   );
+
   const handleGroupBtnClick = useCallback(
     (actionType = FilterActionTypes.SHOW_ALL) => {
       setFilteredTodos(

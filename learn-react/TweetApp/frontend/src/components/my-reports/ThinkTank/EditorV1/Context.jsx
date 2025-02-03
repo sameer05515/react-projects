@@ -12,7 +12,7 @@ import {
   // sortTodosByUrgencyAndImportance,
   Status,
 } from "../Item.dto";
-import { fetchThinkTankItems, saveThinkTankItem } from "../utils/ThinkTankApiServices";
+import { fetchThinkTankItems, saveThinkTankItem, updateThinkTankItem } from "../utils/ThinkTankApiServices";
 import { prepareErrorMessage } from "../../../../common/hooks/useConsolidated/message-preparation-utils";
 
 export const FilterActionTypes = {
@@ -32,6 +32,8 @@ export const PurposeToOpenModal = {
   SAVE_NEW_TODO: "save-new-to-do",
   UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM: "update-smart-content-of-existing-tt-item",
 };
+
+const isValidPurpose = (purpose = "") => Object.values(PurposeToOpenModal).includes(purpose);
 
 const ThinkTankEditorV1Context = createContext();
 
@@ -93,6 +95,37 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [myTodos]
   );
 
+  const handleUpdateThinkTankItem = useCallback(async (data, purpose, uniqueId) => {
+    try {
+      if (!isValidPurpose(purpose)) {
+        throw new Error("Not a valid purpose: " + purpose);
+      }
+      if (data.content.trim().length < 10) {
+        throw new Error("Content is too short. Minimum 10 characters required.");
+      }
+      if (!uniqueId) {
+        throw new Error("Not a valid uniqueId: " + uniqueId);
+      }
+
+      const saveResp = await updateThinkTankItem(uniqueId, { smartContent: data, itemType: "" });
+      if (saveResp.isError) {
+        throw new Error(saveResp.message);
+      }
+
+      return {
+        isError: false,
+        // messages: [{ type: "info", message: "Saved successfully!" }],
+        messages: FormMessageBuilder.builder().appendInfo("Think tank item updated successfully!").build(),
+      };
+    } catch (error) {
+      const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
+      return {
+        isError: true,
+        messages: FormMessageBuilder.builder().appendError(errMsg).build(),
+      };
+    }
+  }, []);
+
   const handleSaveThinkTankItem = useCallback(async (data) => {
     try {
       if (data.content.trim().length < 10) {
@@ -150,30 +183,40 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       return { ModalChildrenComponent: null, modalTitle: "" };
     }
     switch (selectedPurpose) {
-      case PurposeToOpenModal.SAVE_NEW_TODO:
-        return {
-          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleSaveThinkTankItem} />,
-          modalTitle: "Save a new Think Tank Item",
-        };
       case PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE:
         return {
           ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleSampleEditorSubmitJustToTest} />,
           modalTitle: "Just to test",
         };
+
+      case PurposeToOpenModal.SAVE_NEW_TODO:
+        return {
+          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleSaveThinkTankItem} />,
+          modalTitle: "Save a new Think Tank Item",
+        };
+
       case PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM:
         return {
           ModalChildrenComponent: (
             <SmartEditorV4
               initialValue={selectedTTItem?.smartContent || {}}
-              onSubmit={handleSampleEditorSubmitJustToTest}
+              onSubmit={(data) => handleUpdateThinkTankItem(data, selectedPurpose, selectedTTItem?.uniqueId)}
             />
           ),
           modalTitle: "Update Think Tank Item Smart Content",
         };
+
       default:
         return { ModalChildrenComponent: null, modalTitle: "" };
     }
-  }, [handleSampleEditorSubmitJustToTest, handleSaveThinkTankItem, selectedPurpose, selectedTTItem]);
+  }, [
+    handleSampleEditorSubmitJustToTest,
+    handleSaveThinkTankItem,
+    handleUpdateThinkTankItem,
+    selectedPurpose,
+    selectedTTItem?.smartContent,
+    selectedTTItem?.uniqueId,
+  ]);
 
   return (
     <ThinkTankEditorV1Context.Provider

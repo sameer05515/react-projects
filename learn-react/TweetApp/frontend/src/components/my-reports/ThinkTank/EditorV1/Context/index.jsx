@@ -14,6 +14,7 @@ import {
 } from "../../Item.dto";
 import { fetchThinkTankItems, saveThinkTankItem, updateThinkTankItem } from "../../utils/ThinkTankApiServices";
 import { prepareErrorMessage } from "../../../../../common/hooks/useConsolidated/message-preparation-utils";
+import { isValidString } from "../../../../../common/service/basic-validations";
 
 export const FilterActionTypes = {
   SHOW_ALL: "show-all",
@@ -33,9 +34,18 @@ export const PurposeToOpenModal = {
   UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM: "update-smart-content-of-existing-tt-item",
 };
 
-const isValidPurpose = (purpose = "") => {
-  const isValid = Object.values(PurposeToOpenModal).includes(purpose);
-  return { isValid, message: isValid ? "" : "Not a valid pupose: " + purpose };
+const ValidationStrategies = {
+  THROW_ERROR: "THROW_ERROR",
+  RETURN_RESULT: "RETURN_RESULT",
+};
+
+const validatePurposeWithStrategy = (purpose = "", strategy = ValidationStrategies.RETURN_RESULT) => {
+  const isValid = isValidString(purpose) && Object.values(PurposeToOpenModal).includes(purpose);
+  const message = isValid ? "" : "Not a valid pupose: " + purpose;
+  if (!isValid && strategy === ValidationStrategies.THROW_ERROR) {
+    throw new Error(message);
+  }
+  return { isValid, message };
 };
 
 const ThinkTankEditorV1Context = createContext();
@@ -103,10 +113,9 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const handleUpdateThinkTankItem = useCallback(
     async (data, purpose, uniqueId) => {
       try {
-        const purposeValidationResult = isValidPurpose(purpose);
-        if (!purposeValidationResult.isValid) {
-          throw new Error(purposeValidationResult.message);
-        }
+        
+        validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
+        
         if (!uniqueId) {
           throw new Error("Not a valid uniqueId: " + uniqueId);
         }

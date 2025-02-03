@@ -9,16 +9,16 @@ import {
   // sortTodosByStatus,
   // sortTodosByUrgencyAndImportance,
   Status,
-} from "./Item.dto";
+} from "../Item.dto";
 // import { myTodos } from "./data";
-import pipe from "../../../common/service/pipe-util";
-import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
-import { fetchThinkTankItems } from "./utils/ThinkTankApiServices";
-import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
-import FormMessageBuilder from "../../../common/components/FormMessages/Builder";
-import ModalV3 from "../../../common/hoc/modal/ModalV3";
-import SmartEditorV4 from "../../../common/components/Smart/Editor/v4";
-import { ThinkTankEditorV1ContextProvider } from "./EditorV1Context";
+import pipe from "../../../../common/service/pipe-util";
+import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
+import { fetchThinkTankItems } from "../utils/ThinkTankApiServices";
+import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
+import FormMessageBuilder from "../../../../common/components/FormMessages/Builder";
+import ModalV3 from "../../../../common/hoc/modal/ModalV3";
+import SmartEditorV4 from "../../../../common/components/Smart/Editor/v4";
+import { ThinkTankEditorV1ContextProvider } from "./Context";
 
 const debug = true;
 

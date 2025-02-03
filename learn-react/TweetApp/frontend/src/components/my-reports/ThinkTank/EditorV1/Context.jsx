@@ -12,7 +12,8 @@ import {
   // sortTodosByUrgencyAndImportance,
   Status,
 } from "../Item.dto";
-import { fetchThinkTankItems } from "../utils/ThinkTankApiServices";
+import { fetchThinkTankItems, saveThinkTankItem } from "../utils/ThinkTankApiServices";
+import { prepareErrorMessage } from "../../../../common/hooks/useConsolidated/message-preparation-utils";
 
 export const FilterActionTypes = {
   SHOW_ALL: "show-all",
@@ -92,7 +93,34 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [myTodos]
   );
 
-  const handleSampleEditorSubmitJustToTest = async (data) => {
+  const handleSaveThinkTankItem = useCallback(async (data) => {
+    try {
+      if (data.content.trim().length < 10) {
+        throw new Error("Content is too short. Minimum 10 characters required.");
+      }
+      const saveResp = await saveThinkTankItem({ smartContent: data, itemType: "" });
+      if (saveResp.isError) {
+        throw new Error(saveResp.message);
+      }
+
+      return {
+        isError: false,
+        // messages: [{ type: "info", message: "Saved successfully!" }],
+        messages: FormMessageBuilder.builder()
+          .appendInfo("New Think tank item Saved successfully!")
+          .appendInfo("New uniqueid is " + saveResp.data.uniqueId)
+          .build(),
+      };
+    } catch (error) {
+      const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
+      return {
+        isError: true,
+        messages: FormMessageBuilder.builder().appendError(errMsg).build(),
+      };
+    }
+  }, []);
+
+  const handleSampleEditorSubmitJustToTest = useCallback(async (data) => {
     console.log("Submitting data:", data);
 
     return new Promise((resolve) => {
@@ -115,7 +143,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
         }
       }, 1000); // Simulate async delay
     });
-  };
+  }, []);
 
   const { ModalChildrenComponent, modalTitle } = useMemo(() => {
     if (!selectedPurpose || !Object.values(PurposeToOpenModal).includes(selectedPurpose)) {
@@ -124,7 +152,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     switch (selectedPurpose) {
       case PurposeToOpenModal.SAVE_NEW_TODO:
         return {
-          ModalChildrenComponent: <div>Soon we will provide an Empty smart editor popup</div>,
+          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleSaveThinkTankItem} />,
           modalTitle: "Save a new Think Tank Item",
         };
       case PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE:
@@ -145,7 +173,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       default:
         return { ModalChildrenComponent: null, modalTitle: "" };
     }
-  }, [selectedPurpose, selectedTTItem]);
+  }, [handleSampleEditorSubmitJustToTest, handleSaveThinkTankItem, selectedPurpose, selectedTTItem]);
 
   return (
     <ThinkTankEditorV1Context.Provider

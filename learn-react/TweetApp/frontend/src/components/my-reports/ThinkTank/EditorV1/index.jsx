@@ -1,6 +1,5 @@
 import React from "react";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
-
 import ModalV3 from "../../../../common/hoc/modal/ModalV3";
 import ButtonGroup from "./ButtonGroup";
 import { PurposeToOpenModal, ThinkTankEditorV1ContextProvider, useThinkTankEditorV1Context } from "./Context";

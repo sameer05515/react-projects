@@ -75,16 +75,6 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
 
   const handleGroupBtnClick = useCallback((actionType = FilterActionTypes.SHOW_ALL) => {
     setSelectedShowFilterAction(actionType);
-    // setFilteredTodos(
-    //   pipe(
-    //     (todos) => getFilteredTodos(todos, FilterActions[actionType]),
-    //     // sortTodosByGroomed,
-    //     // sortTodosByUrgencyAndImportance,
-    //     // sortTodosByStatus,
-    //     // (todos) => sortTodosByCreatedDate(todos, false),
-    //     (todos) => todos.reverse()
-    //   )(myTodos)
-    // );
   }, []);
 
   const handleUpdateThinkTankItem = useCallback(

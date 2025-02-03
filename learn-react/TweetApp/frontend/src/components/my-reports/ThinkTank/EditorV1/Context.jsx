@@ -108,7 +108,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
         throw new Error("Content is too short. Minimum 10 characters required.");
       }
 
-      const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data, itemType: "" });
+      const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data });
       if (updateResp.isError) {
         throw new Error(updateResp.message);
       }

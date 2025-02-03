@@ -14,7 +14,7 @@ import SmartPreviewer from "../Previewer/v4";
 import FormMessagesV1 from "../../FormMessages/v1";
 import FormMessageBuilder from "../../FormMessages/Builder";
 
-const debug = true;
+const debug = false;
 
 // const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 

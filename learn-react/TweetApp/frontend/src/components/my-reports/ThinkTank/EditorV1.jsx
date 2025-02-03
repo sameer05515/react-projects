@@ -15,6 +15,9 @@ import pipe from "../../../common/service/pipe-util";
 import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
 import { fetchThinkTankItems } from "./utils/ThinkTankApiServices";
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+import FormMessageBuilder from "../../../common/components/FormMessages/Builder";
+import ModalV3 from "../../../common/hoc/modal/ModalV3";
+import SmartEditorV4 from "../../../common/components/Smart/Editor/v4";
 
 const debug = true;
 
@@ -162,6 +165,7 @@ const List = ({ todos = [] }) => {
 const ThinkTankEditorV1 = () => {
   //   const [filteredTodos, setFilteredTodos] = useState([]);
   const [myTodos, setMyTodos] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const handleFetchThinkTankItems = useCallback(() => {
     fetchThinkTankItems({})
       .then((response) => {
@@ -200,6 +204,31 @@ const ThinkTankEditorV1 = () => {
     },
     [myTodos]
   );
+
+  const handleEditorSubmit = async (data) => {
+    console.log("Submitting data:", data);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Mock validation
+        if (data.content.trim().length < 10) {
+          resolve({
+            isError: true,
+            // messages: [{ type: "error", message: "Content is too short. Minimum 10 characters required." }],
+            messages: FormMessageBuilder.builder()
+              .appendError("Content is too short. Minimum 10 characters required.")
+              .build(),
+          });
+        } else {
+          resolve({
+            isError: false,
+            // messages: [{ type: "info", message: "Saved successfully!" }],
+            messages: FormMessageBuilder.builder().appendInfo("Saved successfully!").build(),
+          });
+        }
+      }, 1000); // Simulate async delay
+    });
+  };
   return (
     <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
       <h1>Welcome</h1>
@@ -217,9 +246,18 @@ const ThinkTankEditorV1 = () => {
       </details>
 
       <h3>My List</h3>
+      <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
+        Show Modal
+      </button>
       <ButtonGroup onBGroupItemClick={handleGroupBtnClick} />
       {/* <div id="to-do-list-div"></div> */}
       <List todos={filteredTodos} />
+
+      {showModal && (
+        <ModalV3 title={"Save"} isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
+          <SmartEditorV4 initialValue={{}} onSubmit={handleEditorSubmit} />
+        </ModalV3>
+      )}
 
       {debug && <JSONDataViewer metadata={{ myTodos }} title="my-To-Dos-from-server" />}
     </div>

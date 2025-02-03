@@ -109,6 +109,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       }
 
       const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data });
+
       if (updateResp.isError) {
         throw new Error(updateResp.message);
       }

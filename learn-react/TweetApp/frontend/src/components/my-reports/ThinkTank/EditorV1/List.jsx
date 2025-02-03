@@ -2,10 +2,14 @@ import React from "react";
 import { ClassSuffixForStatus, getHeaderForThinkTankItemType, Status } from "../Item.dto";
 // import { myTodos } from "./data";
 import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
-import { useThinkTankEditorV1Context } from "./Context";
+import { PurposeToOpenModal, useThinkTankEditorV1Context } from "./Context";
+import styles from "./list-item.styles.module.css";
+import { FaEdit } from "react-icons/fa";
 
 const ListItem = ({ todo }) => {
-  const { smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } = todo || {};
+  const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } =
+    todo || {};
+  const { openModalForPurpose } = useThinkTankEditorV1Context();
 
   const createdDateStr = createdDate ? (
     <span className="badge text-bg-secondary"> Created On: {createdDate} </span>
@@ -52,9 +56,23 @@ const ListItem = ({ todo }) => {
           <div className="fw-bold">{createdDateStr}</div>
           <div className="fw-bold">{closedOnStr}</div>
         </div>
-        <div className="col-12 col-md-9">
+        <div className={`col-12 col-md-9 ${styles.listItem}`}>
           {/* <span style={{ whiteSpace: "pre-wrap" }}> */}
           <SmartPreviewer data={smartContent} /> {/* </span> */}
+          {status !== Status.CLOSED && (
+            <span
+              className={styles.editIcon}
+              onClick={() =>
+                openModalForPurpose(PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM, {
+                  uniqueId,
+                  smartContent,
+                })
+              }
+              role="button"
+            >
+              <FaEdit size={18} />
+            </span>
+          )}
         </div>
       </div>
     </div>

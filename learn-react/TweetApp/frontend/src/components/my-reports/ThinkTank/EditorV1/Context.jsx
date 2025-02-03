@@ -128,7 +128,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       case PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE:
         return {
           ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleEditorSubmit} />,
-          modalTitle: "Vandana ki maa ka bhosda",
+          modalTitle: "Just to test",
         };
       case PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM:
         return {

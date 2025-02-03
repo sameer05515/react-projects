@@ -33,7 +33,7 @@ const ThinkTankEditorV1 = () => {
         className="btn btn-primary btn-sm"
         onClick={() => openModalForPurpose(PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE, null)}
       >
-        Show Modal For Testing
+        JUST TO TEST MODAL V3 and SmartEditorV4
       </button>
       <ButtonGroup />
       {/* <div id="to-do-list-div"></div> */}

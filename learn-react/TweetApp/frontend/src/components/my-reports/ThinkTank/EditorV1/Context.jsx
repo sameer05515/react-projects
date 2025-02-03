@@ -90,7 +90,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [myTodos]
   );
 
-  const handleEditorSubmit = async (data) => {
+  const handleSampleEditorSubmitJustToTest = async (data) => {
     console.log("Submitting data:", data);
 
     return new Promise((resolve) => {
@@ -127,13 +127,16 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
         };
       case PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE:
         return {
-          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleEditorSubmit} />,
+          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleSampleEditorSubmitJustToTest} />,
           modalTitle: "Just to test",
         };
       case PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM:
         return {
           ModalChildrenComponent: (
-            <SmartEditorV4 initialValue={selectedTTItem?.smartContent || {}} onSubmit={handleEditorSubmit} />
+            <SmartEditorV4
+              initialValue={selectedTTItem?.smartContent || {}}
+              onSubmit={handleSampleEditorSubmitJustToTest}
+            />
           ),
           modalTitle: "Update Think Tank Item Smart Content",
         };
@@ -150,7 +153,6 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
         filteredTodos,
         setShowModal,
         handleGroupBtnClick,
-        handleEditorSubmit,
         ModalChildrenComponent,
         openModalForPurpose,
         modalTitle,

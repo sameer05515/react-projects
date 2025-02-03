@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import { FilterActionTypes, useThinkTankEditorV1Context } from "./Context";
+import { FilterActionTypes, PurposeToOpenModal, useThinkTankEditorV1Context } from "./Context";
 
 const ButtonGroup = () => {
-  const { handleGroupBtnClick: onBGroupItemClick } = useThinkTankEditorV1Context();
+  const { handleGroupBtnClick: onBGroupItemClick, openModalForPurpose } = useThinkTankEditorV1Context();
   const handleLinkClick = useCallback(
     (actionType = FilterActionTypes.SHOW_ALL) => {
       onBGroupItemClick?.(actionType);
@@ -13,9 +13,10 @@ const ButtonGroup = () => {
     <div>
       <div>
         <button
+          onClick={() => openModalForPurpose(PurposeToOpenModal.SAVE_NEW_TODO, null)}
           type="button"
-          class="btn btn-primary"
-          style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
+          class="btn btn-primary btn-sm"
+          // style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
         >
           Create New Think-Tank item
         </button>

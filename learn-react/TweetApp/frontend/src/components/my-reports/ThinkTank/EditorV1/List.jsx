@@ -8,11 +8,17 @@ import { PurposeToOpenModal } from "./Context/utils";
 import styles from "./list-item.styles.module.css";
 import SmartPreviewer from "../../../../common/components/Smart/Previewer/v4";
 
-const WithEditIcon = ({ className = "", children, showEditIcon = false, onEditIconClick = () => {} }) => (
+const WithEditIcon = ({
+  className = "",
+  children,
+  showEditIcon = false,
+  editIconTitle = "",
+  onEditIconClick = () => {},
+}) => (
   <div className={`${className} ${styles.listItem}`}>
     {children}
     {showEditIcon && (
-      <span className={styles.editIcon} onClick={onEditIconClick} role="button">
+      <span title={editIconTitle || ""} className={styles.editIcon} onClick={onEditIconClick} role="button">
         <FaEdit size={18} />
       </span>
     )}
@@ -90,6 +96,7 @@ const ListItem = ({ todo }) => {
         <WithEditIcon
           className="col-12 col-md-9"
           showEditIcon={status !== Status.CLOSED}
+          editIconTitle="Edit Smart Content"
           onEditIconClick={() =>
             openModalForPurpose(PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM, {
               uniqueId,

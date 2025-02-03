@@ -103,15 +103,14 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       if (!uniqueId) {
         throw new Error("Not a valid uniqueId: " + uniqueId);
       }
-      
+
       if (data.content.trim().length < 10) {
         throw new Error("Content is too short. Minimum 10 characters required.");
       }
 
-
-      const saveResp = await updateThinkTankItem(uniqueId, { smartContent: data, itemType: "" });
-      if (saveResp.isError) {
-        throw new Error(saveResp.message);
+      const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data, itemType: "" });
+      if (updateResp.isError) {
+        throw new Error(updateResp.message);
       }
 
       return {

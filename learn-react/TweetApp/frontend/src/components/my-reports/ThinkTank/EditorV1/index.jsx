@@ -9,8 +9,7 @@ import List from "./List";
 const debug = true;
 
 const ThinkTankEditorV1 = () => {
-  const { myTodos, filteredTodos, showModal, setShowModal, handleGroupBtnClick, handleEditorSubmit } =
-    useThinkTankEditorV1Context();
+  const { myTodos, filteredTodos, showModal, setShowModal, handleEditorSubmit } = useThinkTankEditorV1Context();
 
   return (
     <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
@@ -32,7 +31,7 @@ const ThinkTankEditorV1 = () => {
       <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
         Show Modal
       </button>
-      <ButtonGroup onBGroupItemClick={handleGroupBtnClick} />
+      <ButtonGroup />
       {/* <div id="to-do-list-div"></div> */}
       <List todos={filteredTodos} />
 

@@ -18,6 +18,7 @@ import MyFormWithValidationV2 from "./MyFormWithValidation/v2";
 import TestHttpV1 from "./TestHttp/v1";
 import ReactQueryBuilderDemoV1 from "./ReactQueryBuilderDemo/v1";
 import BootstrapClassUseV1 from "./BootstrapClassUse/v1";
+import ListWithEditIconV1 from "./ListWithEditIcon/v1";
 
 const Components = {
   MiscellaneousExamples,
@@ -39,7 +40,8 @@ const Components = {
   MyFormWithValidationV2,
   TestHttpV1,
   ReactQueryBuilderDemoV1,
-  BootstrapClassUseV1
+  BootstrapClassUseV1,
+  ListWithEditIconV1
 };
 
 export const componentNames = Object.keys(Components);

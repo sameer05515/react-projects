@@ -1,0 +1,14 @@
+.editIcon {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+    color: gray;
+    cursor: pointer;
+  }
+  
+  .listItem:hover .editIcon {
+    display: inline-block;
+  }
+  

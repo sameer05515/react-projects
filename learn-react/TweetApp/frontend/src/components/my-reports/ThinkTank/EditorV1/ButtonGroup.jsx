@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { FilterActionTypes, PurposeToOpenModal, useThinkTankEditorV1Context } from "./Context";
 
 const ButtonGroup = () => {
-  const { handleGroupBtnClick: onBGroupItemClick, openModalForPurpose } = useThinkTankEditorV1Context();
+  const { handleGroupBtnClick: onBGroupItemClick, openModalForPurpose, refreshList } = useThinkTankEditorV1Context();
   const handleLinkClick = useCallback(
     (actionType = FilterActionTypes.SHOW_ALL) => {
       onBGroupItemClick?.(actionType);
@@ -14,11 +14,14 @@ const ButtonGroup = () => {
       <div>
         <button
           onClick={() => openModalForPurpose(PurposeToOpenModal.SAVE_NEW_TODO, null)}
-          type="button"
-          class="btn btn-primary btn-sm"
+          // type="button"
+          className="btn btn-primary btn-sm"
           // style={{ "--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem", "--bs-btn-font-size": ".75rem" }}
         >
           Create New Think-Tank item
+        </button>
+        <button className="btn btn-primary btn-sm" onClick={refreshList}>
+          Refresh
         </button>
       </div>
       <div className="btn-group bg-info" role="group" aria-label="Basic radio toggle button group">

@@ -69,6 +69,8 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     handleFetchThinkTankItems();
   }, [handleFetchThinkTankItems]);
 
+  const refreshList = useCallback(() => handleFetchThinkTankItems(), [handleFetchThinkTankItems]);
+
   const [filteredTodos, setFilteredTodos] = useState(() =>
     pipe(
       // sortTodosByGroomed,
@@ -223,6 +225,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   return (
     <ThinkTankEditorV1Context.Provider
       value={{
+        refreshList,
         myTodos,
         showModal,
         filteredTodos,

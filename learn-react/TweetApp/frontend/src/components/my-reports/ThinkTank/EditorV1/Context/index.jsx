@@ -57,13 +57,15 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const [selectedPurpose, setSelectedPurpose] = useState("");
 
   const openModalForPurpose = useCallback((purpose = "", thinkTankItem = {}) => {
-    if (!Object.values(PurposeToOpenModal).includes(purpose)) {
-      console.error("Not a valid pupose: " + purpose);
-      return;
+    try {
+      validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
+
+      setShowModal(true);
+      setSelectedTTItem(thinkTankItem);
+      setSelectedPurpose(purpose);
+    } catch (error) {
+      console.error(prepareErrorMessage(error, "Something unexpected occurred!"));
     }
-    setShowModal(true);
-    setSelectedTTItem(thinkTankItem);
-    setSelectedPurpose(purpose);
   }, []);
 
   const handleFetchThinkTankItems = useCallback(() => {

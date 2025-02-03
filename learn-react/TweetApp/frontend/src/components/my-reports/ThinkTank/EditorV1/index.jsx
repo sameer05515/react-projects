@@ -1,7 +1,5 @@
 import React from "react";
-// import { myTodos } from "./data";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
-
 import SmartEditorV4 from "../../../../common/components/Smart/Editor/v4";
 import ModalV3 from "../../../../common/hoc/modal/ModalV3";
 import ButtonGroup from "./ButtonGroup";

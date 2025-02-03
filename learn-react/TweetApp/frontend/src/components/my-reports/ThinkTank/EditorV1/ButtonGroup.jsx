@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
-import { FilterActionTypes, PurposeToOpenModal, useThinkTankEditorV1Context } from "./Context";
+import { useThinkTankEditorV1Context } from "./Context";
+import { FilterActionTypes, PurposeToOpenModal } from "./Context/utils";
 
 const ButtonGroup = () => {
   const { handleGroupBtnClick: onBGroupItemClick, openModalForPurpose, refreshList } = useThinkTankEditorV1Context();

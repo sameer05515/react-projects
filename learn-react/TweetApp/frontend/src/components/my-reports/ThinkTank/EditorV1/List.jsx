@@ -1,10 +1,11 @@
 import React from "react";
 import { ClassSuffixForStatus, getHeaderForThinkTankItemType, Status } from "../Item.dto";
 // import { myTodos } from "./data";
-import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
-import { PurposeToOpenModal, useThinkTankEditorV1Context } from "./Context";
-import styles from "./list-item.styles.module.css";
 import { FaEdit } from "react-icons/fa";
+import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
+import { useThinkTankEditorV1Context } from "./Context";
+import { PurposeToOpenModal } from "./Context/utils";
+import styles from "./list-item.styles.module.css";
 
 const ListItem = ({ todo }) => {
   const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } =

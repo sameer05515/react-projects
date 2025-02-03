@@ -22,7 +22,7 @@ const SmartPreviewerV4 = ({ data }) => {
         return <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: content }} />;
 
       case SupportedOutFormats.MARKDOWN:
-        return <MarkdownComponent markdownText={content} />;
+        return <MarkdownComponent additionalStyle={{ backgroundColor: "transparent" }} markdownText={content} />;
 
       case SupportedOutFormats.YAML:
         return (

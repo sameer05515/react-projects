@@ -97,65 +97,73 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [myTodos]
   );
 
-  const handleUpdateThinkTankItem = useCallback(async (data, purpose, uniqueId) => {
-    try {
-      if (!isValidPurpose(purpose)) {
-        throw new Error("Not a valid purpose: " + purpose);
-      }
-      if (!uniqueId) {
-        throw new Error("Not a valid uniqueId: " + uniqueId);
-      }
+  const handleUpdateThinkTankItem = useCallback(
+    async (data, purpose, uniqueId) => {
+      try {
+        if (!isValidPurpose(purpose)) {
+          throw new Error("Not a valid purpose: " + purpose);
+        }
+        if (!uniqueId) {
+          throw new Error("Not a valid uniqueId: " + uniqueId);
+        }
 
-      if (data.content.trim().length < 10) {
-        throw new Error("Content is too short. Minimum 10 characters required.");
+        if (data.content.trim().length < 10) {
+          throw new Error("Content is too short. Minimum 10 characters required.");
+        }
+
+        const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data });
+
+        if (updateResp.isError) {
+          throw new Error(updateResp.message);
+        }
+        refreshList();
+        return {
+          isError: false,
+          // messages: [{ type: "info", message: "Saved successfully!" }],
+          messages: FormMessageBuilder.builder().appendInfo("Think tank item updated successfully!").build(),
+        };
+      } catch (error) {
+        const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
+        return {
+          isError: true,
+          messages: FormMessageBuilder.builder().appendError(errMsg).build(),
+        };
       }
+    },
+    [refreshList]
+  );
 
-      const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data });
+  const handleSaveThinkTankItem = useCallback(
+    async (data) => {
+      try {
+        if (data.content.trim().length < 10) {
+          throw new Error("Content is too short. Minimum 10 characters required.");
+        }
+        const saveResp = await saveThinkTankItem({ smartContent: data, itemType: "" });
+        if (saveResp.isError) {
+          throw new Error(saveResp.message);
+        }
 
-      if (updateResp.isError) {
-        throw new Error(updateResp.message);
+        refreshList();
+
+        return {
+          isError: false,
+          // messages: [{ type: "info", message: "Saved successfully!" }],
+          messages: FormMessageBuilder.builder()
+            .appendInfo("New Think tank item Saved successfully!")
+            .appendInfo("New uniqueid is " + saveResp.data.uniqueId)
+            .build(),
+        };
+      } catch (error) {
+        const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
+        return {
+          isError: true,
+          messages: FormMessageBuilder.builder().appendError(errMsg).build(),
+        };
       }
-
-      return {
-        isError: false,
-        // messages: [{ type: "info", message: "Saved successfully!" }],
-        messages: FormMessageBuilder.builder().appendInfo("Think tank item updated successfully!").build(),
-      };
-    } catch (error) {
-      const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
-      return {
-        isError: true,
-        messages: FormMessageBuilder.builder().appendError(errMsg).build(),
-      };
-    }
-  }, []);
-
-  const handleSaveThinkTankItem = useCallback(async (data) => {
-    try {
-      if (data.content.trim().length < 10) {
-        throw new Error("Content is too short. Minimum 10 characters required.");
-      }
-      const saveResp = await saveThinkTankItem({ smartContent: data, itemType: "" });
-      if (saveResp.isError) {
-        throw new Error(saveResp.message);
-      }
-
-      return {
-        isError: false,
-        // messages: [{ type: "info", message: "Saved successfully!" }],
-        messages: FormMessageBuilder.builder()
-          .appendInfo("New Think tank item Saved successfully!")
-          .appendInfo("New uniqueid is " + saveResp.data.uniqueId)
-          .build(),
-      };
-    } catch (error) {
-      const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
-      return {
-        isError: true,
-        messages: FormMessageBuilder.builder().appendError(errMsg).build(),
-      };
-    }
-  }, []);
+    },
+    [refreshList]
+  );
 
   const handleSampleEditorSubmitJustToTest = useCallback(async (data) => {
     console.log("Submitting data:", data);

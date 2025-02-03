@@ -34,8 +34,8 @@ export const PurposeToOpenModal = {
 };
 
 const isValidPurpose = (purpose = "") => {
-  const isValid= Object.values(PurposeToOpenModal).includes(purpose);
-  return isValid;
+  const isValid = Object.values(PurposeToOpenModal).includes(purpose);
+  return { isValid, message: isValid ? "" : "Not a valid pupose: " + purpose };
 };
 
 const ThinkTankEditorV1Context = createContext();
@@ -103,8 +103,9 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const handleUpdateThinkTankItem = useCallback(
     async (data, purpose, uniqueId) => {
       try {
-        if (!isValidPurpose(purpose)) {
-          throw new Error("Not a valid purpose: " + purpose);
+        const purposeValidationResult = isValidPurpose(purpose);
+        if (!purposeValidationResult.isValid) {
+          throw new Error(purposeValidationResult.message);
         }
         if (!uniqueId) {
           throw new Error("Not a valid uniqueId: " + uniqueId);

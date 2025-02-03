@@ -113,9 +113,8 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   const handleUpdateThinkTankItem = useCallback(
     async (data, purpose, uniqueId) => {
       try {
-        
         validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
-        
+
         if (!uniqueId) {
           throw new Error("Not a valid uniqueId: " + uniqueId);
         }
@@ -204,7 +203,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   }, []);
 
   const { ModalChildrenComponent, modalTitle } = useMemo(() => {
-    if (!selectedPurpose || !Object.values(PurposeToOpenModal).includes(selectedPurpose)) {
+    if (!validatePurposeWithStrategy(selectedPurpose).isValid) {
       return { ModalChildrenComponent: null, modalTitle: "" };
     }
     switch (selectedPurpose) {

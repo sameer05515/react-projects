@@ -8,6 +8,17 @@ import { PurposeToOpenModal } from "./Context/utils";
 import styles from "./list-item.styles.module.css";
 import SmartPreviewer from "../../../../common/components/Smart/Previewer/v4";
 
+const WithEditIcon = ({ className = "", children, showEditIcon = false, onEditIconClick = () => {} }) => (
+  <div className={`${className} ${styles.listItem}`}>
+    {children}
+    {showEditIcon && (
+      <span className={styles.editIcon} onClick={onEditIconClick} role="button">
+        <FaEdit size={18} />
+      </span>
+    )}
+  </div>
+);
+
 const ListItem = ({ todo }) => {
   const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } =
     todo || {};
@@ -58,9 +69,9 @@ const ListItem = ({ todo }) => {
           <div className="fw-bold">{createdDateStr}</div>
           <div className="fw-bold">{closedOnStr}</div>
         </div>
-        <div className={`col-12 col-md-9 ${styles.listItem}`}>
-          {/* <span style={{ whiteSpace: "pre-wrap" }}> */}
-          <SmartPreviewer data={smartContent} /> {/* </span> */}
+        {/* <div className={`col-12 col-md-9 ${styles.listItem}`}>
+          
+          <SmartPreviewer data={smartContent} /> 
           {status !== Status.CLOSED && (
             <span
               className={styles.editIcon}
@@ -75,7 +86,19 @@ const ListItem = ({ todo }) => {
               <FaEdit size={18} />
             </span>
           )}
-        </div>
+        </div> */}
+        <WithEditIcon
+          className="col-12 col-md-9"
+          showEditIcon={status !== Status.CLOSED}
+          onEditIconClick={() =>
+            openModalForPurpose(PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM, {
+              uniqueId,
+              smartContent,
+            })
+          }
+        >
+          <SmartPreviewer data={smartContent} />
+        </WithEditIcon>
       </div>
     </div>
   );

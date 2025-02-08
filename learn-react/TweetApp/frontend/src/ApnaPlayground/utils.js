@@ -20,6 +20,7 @@ import ReactQueryBuilderDemoV1 from "./ReactQueryBuilderDemo/v1";
 import BootstrapClassUseV1 from "./BootstrapClassUse/v1";
 import ListWithEditIconV1 from "./ListWithEditIcon/v1";
 import MetaLearningCycleV1 from "./MetaLearningCycle/v1";
+import MetaLearningCycleV2 from "./MetaLearningCycle/v2";
 
 const Components = {
   MiscellaneousExamples,
@@ -43,7 +44,8 @@ const Components = {
   ReactQueryBuilderDemoV1,
   BootstrapClassUseV1,
   ListWithEditIconV1,
-  MetaLearningCycleV1
+  MetaLearningCycleV1,
+  MetaLearningCycleV2
 };
 
 export const componentNames = Object.keys(Components);

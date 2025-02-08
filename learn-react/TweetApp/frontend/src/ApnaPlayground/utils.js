@@ -21,6 +21,7 @@ import BootstrapClassUseV1 from "./BootstrapClassUse/v1";
 import ListWithEditIconV1 from "./ListWithEditIcon/v1";
 import MetaLearningCycleV1 from "./MetaLearningCycle/v1";
 import MetaLearningCycleV2 from "./MetaLearningCycle/v2";
+import MetaLearningCycleV3 from "./MetaLearningCycle/v3";
 
 const Components = {
   MiscellaneousExamples,
@@ -45,7 +46,8 @@ const Components = {
   BootstrapClassUseV1,
   ListWithEditIconV1,
   MetaLearningCycleV1,
-  MetaLearningCycleV2
+  MetaLearningCycleV2,
+  MetaLearningCycleV3
 };
 
 export const componentNames = Object.keys(Components);

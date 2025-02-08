@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./styles.v2.module.css";
 import { availableOutputTypes, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
+import MetaLearningCycleV3 from "../../ApnaPlayground/MetaLearningCycle/v3";
 
 const values = ["Stay calm", "Review", "Prioritize", "Revise", "Practice", "Retrospect"].map((val, idx) => ({
   id: `idx_${idx + 1}`,
@@ -44,6 +45,7 @@ const WelcomeV2 = () => {
           }}
         />
       </div>
+      <MetaLearningCycleV3/>
     </div>
   );
 };

@@ -1,10 +1,12 @@
 import { JSX } from "react";
 import JSXRendererV1 from "./JSXRenderer/v1";
 import JSXRendererV2 from "./JSXRenderer/v2";
+import AdminPageV2 from "./AdminPage/v2";
 
 const Components: Record<string, () => JSX.Element> = {
   JSXRendererV1,
   JSXRendererV2,
+  AdminPageV2
 };
 
 export const componentNames = Object.keys(Components);

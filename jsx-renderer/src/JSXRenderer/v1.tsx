@@ -1,7 +1,7 @@
 import * as Babel from "@babel/standalone";
 import React, { JSX, useState } from "react";
 
-const JSXRenderer = () => {
+const JSXRendererV1 = () => {
   const [inputJSX, setInputJSX] = useState<string>("");
   const [renderedJSX, setRenderedJSX] = useState<JSX.Element | string>("");
 
@@ -48,4 +48,4 @@ const JSXRenderer = () => {
   );
 };
 
-export default JSXRenderer;
+export default JSXRendererV1;

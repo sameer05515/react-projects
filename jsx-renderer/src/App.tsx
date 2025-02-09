@@ -1,4 +1,4 @@
-import JSXRenderer from "./JSXRenderer/v1"
+import JSXRendererV1 from "./JSXRenderer/v1"
 
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
 
   return (
    <>
-   <JSXRenderer/>
+   <JSXRendererV1/>
    </>
   )
 }

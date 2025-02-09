@@ -1,9 +1,19 @@
 import * as Babel from "@babel/standalone";
-import React, { JSX, useState } from "react";
+import React, { JSX, useMemo, useState } from "react";
+import { getDataForSelectedIndex } from "./data";
 
 const JSXRendererV1 = () => {
   const [inputJSX, setInputJSX] = useState<string>("");
   const [renderedJSX, setRenderedJSX] = useState<JSX.Element | string>("");
+
+  const [selectedDataIndex, setSelectedDataIndex] = useState(0);
+  const { next } = useMemo(() => {
+    const myData = getDataForSelectedIndex(selectedDataIndex);
+    if (myData.data && myData.next >= 0) {
+      setInputJSX(myData.data);
+    }
+    return myData;
+  }, [selectedDataIndex]);
 
   const handleRender = () => {
     try {
@@ -16,7 +26,7 @@ const JSXRendererV1 = () => {
         `return ${transpiledCode}`
       )(React);
 
-      setRenderedJSX(evaluatedComponent);
+      setRenderedJSX(() => evaluatedComponent);
     } catch (error) {
       setRenderedJSX(
         `⚠️ Error: ${
@@ -42,6 +52,15 @@ const JSXRendererV1 = () => {
         className="mt-2 p-2 bg-blue-500 text-white"
       >
         Render
+      </button>
+      <button
+        className="ml-1 mt-2 p-2 bg-blue-500 text-white"
+        onClick={() => {
+          setSelectedDataIndex(next);
+          setRenderedJSX(() => "");
+        }}
+      >
+        Next Data
       </button>
       <div className="mt-4 border p-4">{renderedJSX}</div>
     </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import * as Babel from "@babel/standalone";
+import prepareErrorMessage from "../../../common/utils/prepareErrorMessage";
 
-const JSXRendererV2 = () => {
+const JSXRenderer = () => {
   const [componentCode, setComponentCode] = useState(`
     function CustomCard({ title, description }) {
       return (
@@ -30,12 +31,12 @@ const JSXRendererV2 = () => {
 
       if (!transpiledComponentCode) throw new Error("Invalid Component Code!");
 
-      // 2️⃣ Create a function to define the component dynamically
+      // 2️⃣ Define the component dynamically
       const createComponent = new Function(
         "React",
-        `return ${transpiledComponentCode}`
+        transpiledComponentCode + "; return CustomCard;"
       );
-      const CustomComponent = createComponent(React);
+      const CustomCard = createComponent(React);
 
       // 3️⃣ Transpile JSX input string
       const transpiledJSX = Babel.transform(`(${jsxInput})`, {
@@ -47,21 +48,15 @@ const JSXRendererV2 = () => {
       // 4️⃣ Evaluate JSX with the dynamically defined component
       const renderFunction = new Function(
         "React",
-        "CustomComponent",
+        "CustomCard",
         `return ${transpiledJSX}`
       );
-      const element = renderFunction(React, CustomComponent);
+      const element = renderFunction(React, CustomCard);
 
       // 5️⃣ Render the element
       setRenderedComponent(element);
     } catch (error) {
-      setError(
-        `⚠️ Error: ${
-          error instanceof Error
-            ? error.message
-            : "Some error occurred: " + JSON.stringify(error, null, 2)
-        }`
-      );
+      setError(prepareErrorMessage(error));
       setRenderedComponent(null);
     }
   };
@@ -111,4 +106,4 @@ const JSXRendererV2 = () => {
   );
 };
 
-export default JSXRendererV2;
+export default JSXRenderer;

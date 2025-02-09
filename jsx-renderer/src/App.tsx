@@ -11,7 +11,7 @@
 import { Route, Routes, Link } from "react-router-dom";
 import TestingDashboard from "./ApnaPlayground";
 // import Home from "../pages/Home";
-// import About from "../pages/AboutThisProject";
+import AboutThisProject from "./AboutThisProject/v1";
 import NotFound from "./NotFound/v1";
 import { Outlet } from "react-router-dom";
 
@@ -83,7 +83,7 @@ function Home() {
   );
 }
 
-const AboutThisProject = () => <>AboutThisProject</>;
+// const AboutThisProject = () => <>AboutThisProject</>;
 
 function App() {
   return (

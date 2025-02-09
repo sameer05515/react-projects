@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import JSXRendererV1 from "../JSXRenderer/v1";
+import JSXRendererV1 from "./JSXRenderer/v1";
 
 const Components: Record<string, () => JSX.Element> = {
   JSXRendererV1

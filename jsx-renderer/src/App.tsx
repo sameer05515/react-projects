@@ -9,10 +9,10 @@
 // }
 
 import { Route, Routes, Link } from "react-router-dom";
-import TestingDashboard from "./ApnaPlayground";
+import TestingDashboard from "./pages/ApnaPlayground";
 // import Home from "../pages/Home";
-import AboutThisProject from "./AboutThisProject/v1";
-import NotFound from "./NotFound/v1";
+import AboutThisProject from "./pages/AboutThisProject/v1";
+import NotFound from "./pages/NotFound/v1";
 import { Outlet } from "react-router-dom";
 
 function Layout(/**{ children }: { children: React.ReactNode }*/) {

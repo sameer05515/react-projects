@@ -25,6 +25,8 @@ const SmartEditorV4 = ({
     textInputType: "",
   },
   preview: previewInitialValue = true,
+  disableSaveButton = false,
+  disableResetButton = false,
   onSubmit = async () => ({ isError: false, messages: [{ type: "info", message: "Action performed successfully!" }] }),
 }) => {
   const [showPreview, setShowPreview] = useState(previewInitialValue);
@@ -164,10 +166,10 @@ const SmartEditorV4 = ({
 
       {/* Buttons */}
       <div className="d-flex justify-content-end mt-2">
-        <button className="btn btn-outline-secondary me-2" onClick={handleReset}>
+        <button className="btn btn-outline-secondary me-2" onClick={handleReset} disabled={disableResetButton === true}>
           Reset
         </button>
-        <button className="btn btn-primary" onClick={handleSave}>
+        <button className="btn btn-primary" onClick={handleSave} disabled={disableSaveButton === true}>
           Save
         </button>
       </div>

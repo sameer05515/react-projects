@@ -1,14 +1,11 @@
-import JSXRendererV1 from "./JSXRenderer/v1"
-
+import JSXRendererV1 from "./JSXRenderer/v1";
 
 function App() {
-  
-
   return (
-   <>
-   <JSXRendererV1/>
-   </>
-  )
+    <>
+      <JSXRendererV1 />
+    </>
+  );
 }
 
-export default App
+export default App;

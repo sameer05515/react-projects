@@ -1,8 +1,10 @@
 import { JSX } from "react";
 import JSXRendererV1 from "./JSXRenderer/v1";
+import JSXRendererV2 from "./JSXRenderer/v2";
 
 const Components: Record<string, () => JSX.Element> = {
-  JSXRendererV1
+  JSXRendererV1,
+  JSXRendererV2,
 };
 
 export const componentNames = Object.keys(Components);
@@ -11,8 +13,12 @@ const componentCount = componentNames.length;
 export const calculateNextPrev = (selectedIndex: number) =>
   selectedIndex >= 0
     ? {
-        next: componentNames[(selectedIndex + 1 + componentCount) % componentCount],
-        prev: componentNames[(selectedIndex - 1 + componentCount) % componentCount],
+        next: componentNames[
+          (selectedIndex + 1 + componentCount) % componentCount
+        ],
+        prev: componentNames[
+          (selectedIndex - 1 + componentCount) % componentCount
+        ],
       }
     : { next: "", prev: "" };
 

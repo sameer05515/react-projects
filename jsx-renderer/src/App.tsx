@@ -1,4 +1,4 @@
-import JSXRenderer from "./component/JSXRenderer"
+import JSXRenderer from "./JSXRenderer/v1"
 
 
 function App() {

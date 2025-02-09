@@ -57,7 +57,58 @@ const MetaLearningCycleV3 = () => {
           </div>
         </div>
       </div>
-      <div className="p-4 vh-100 font-monospace lh-lg">
+      <div className="row p-4 vh-100 lh-lg">
+        <div className="col-md-12">
+          <b>Summary : </b> Meta Learning to Learn 10x Fast
+        </div>
+        <div className="col-md-6">
+          <div>
+            <b>Neuroscience Behind Learning</b>
+            <p>
+              <span>* Neuroplasticity: Brain forms stronger connections with Practice</span> <br />
+              <span>* Dopamine: Motivation and reward system that keeps you engaged</span>
+            </p>
+          </div>
+          <div>
+            <b>4 Stages of Learning</b>
+            <ol>
+              <li>
+                <b>Discomfort: </b> Initial struggle when learning something new.
+              </li>
+              <li>
+                <b>Improvement: </b> Confidence grows with progress.
+              </li>
+              <li>
+                <b>Plateau: </b> Frustrating phase where results show down.
+              </li>
+              <li>
+                <b>Success: </b> Mastery achieved with persistence
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <b>5 ways to learn faster</b>
+          <ul>
+            <li>
+              <b>80/20 Rule: </b> Focus on the 20% that gives 80% of the results.
+            </li>
+            <li>
+              <b>Clear Intentions: </b> Ask yourself why you are learning to stay motivated.
+            </li>
+            <li>
+              <b>Teach Others: </b> Explaining what you learn helps retention.
+            </li>
+            <li>
+              <b>Get Feedback: </b> Learn faster by correcting mistakes in real-time.
+            </li>
+            <li>
+              <b>Shift your Identity: </b> Embrace mistakes and grow from them.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="p-4 vh-100 lh-lg">
         <MDSectionV7 mdFileUrl="/meta-learning/v1.md" />
       </div>
     </>

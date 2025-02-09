@@ -22,10 +22,34 @@ const ThinkTankEditorV1 = () => {
         future.
       </h2>
       <details>
-        Here we will put all our To-dos, in below format
+        <div style={{whiteSpace:"pre-wrap"}}>
+        {`Here we will put all our To-dos, in below format
         <pre>[Date]:[Status- (Open/Closed)]- Title of to-do Description (As short as possible)</pre>
         We are developing this component as editor for current logged-in user. <br />
         For now we will support both database data as well as raw data created in tool.
+
+        Glossary
+        U = Urgent, NU = Not-Urgent
+        I = Important, NI = Not-Important
+        G = Groomed, NG = Not Groomed   
+
+        MY Think Tank Items:
+        Why?
+          - TO store Any random idea coming in mind, on which I want to take action later. Below are some possible types.
+            - default type: Yet to be decided
+            - Questions to SELF 
+            - To-do, Task, Goal, Plan
+            - Reminders, 
+            - My routine
+            - My-Daily-Updates		
+            - Some templates , like
+              - template having a format we can use to define a todo, so that it can be elaborated in single line and can be implemented easily.
+            - New Requirement
+            - Bug-Fix
+            - Remembrables etc
+            
+          - Aim is TO REDUCE STRESS AND IF THEY ARE "VALID ASK"s, then take appropriate actions them in near future`}
+        </div>
       </details>
 
       <h3>My List</h3>

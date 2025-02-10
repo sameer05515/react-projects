@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Outlet,
-  createSearchParams,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import {
-  createLink,
-  fetchLinksByUniqueId,
-  updateLink,
-} from "../../redux/slices/linksSlice";
+import { createLink, fetchLinksByUniqueId, updateLink } from "../../redux/slices/linksSlice";
 import "./Links.css";
+import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
+import { SmartPreviewer } from "../../common/components/Smart/Editor/v3";
+import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
 
 const ViewLink = () => {
   const navigate = useNavigate();
@@ -55,16 +48,9 @@ const ViewLink = () => {
     <>
       <div>
         {/* <div><code>{JSON.stringify(linkDetails)}</code></div> */}
-        <CustomButton onClick={() => navigate(`/links-mgmt/${id}/edit`)}>
-          EditLink
-        </CustomButton>
+        <CustomButton onClick={() => navigate(`/links-mgmt/${id}/edit`)}>EditLink</CustomButton>
         <CustomButton onClick={() => addNewLink(id)}> Add Child </CustomButton>
-        <CustomButton
-          onClick={() => addNewLink(linkDetails ? linkDetails.parentId : "")}
-        >
-          {" "}
-          Add Sibling{" "}
-        </CustomButton>
+        <CustomButton onClick={() => addNewLink(linkDetails ? linkDetails.parentId : "")}> Add Sibling </CustomButton>
       </div>
       {/* <div><b>View Link details for :</b> {id} </div> */}
       {linkDetails && (
@@ -85,10 +71,23 @@ const ViewLink = () => {
               <b>linkUrl:</b>{" "}
             </span>{" "}
             {linkDetails.linkUrl} <br />
-            <span>
+            {/* <span>
               <b>description:</b>{" "}
             </span>{" "}
-            {linkDetails.description} <br />
+            {linkDetails.description} <br /> */}
+            <div style={styles.descriptionStyle}>
+              <ToggleablePanel showContent={true} title={"Descriptions:"}>
+                {linkDetails.descriptions?.map((descr, idx) => (
+                  <ToggleablePanel
+                    key={idx}
+                    showContent={linkDetails.descriptions.length === 1}
+                    title={`Description #${idx + 1}`}
+                  >
+                    <SmartPreviewer data={descr} />
+                  </ToggleablePanel>
+                ))}
+              </ToggleablePanel>
+            </div>
             {linkDetails.children && linkDetails.children.length > 0 ? (
               <div>
                 <b>Children:</b>
@@ -112,18 +111,13 @@ const ViewLink = () => {
         </>
       )}
       <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+      <JSONDataViewer metadata={{linkDetails}} title="linkDetails"/>
     </>
   );
 };
 
 // Reusable form component
-const LinkForm = ({
-  formData,
-  formErrors,
-  handleInputChange,
-  validateForm,
-  handleSubmit,
-}) => {
+const LinkForm = ({ formData, formErrors, handleInputChange, validateForm, handleSubmit }) => {
   return (
     <div>
       {formErrors.length > 0 && (
@@ -137,34 +131,15 @@ const LinkForm = ({
       )}
       <div>
         <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
       </div>
       <div>
         <label htmlFor="linkUrl">Link Url:</label>
-        <input
-          type="text"
-          id="linkUrl"
-          name="linkUrl"
-          value={formData.linkUrl}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="text" id="linkUrl" name="linkUrl" value={formData.linkUrl} onChange={handleInputChange} required />
       </div>
       <div>
         <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-        />
+        <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} />
       </div>
       <CustomButton onClick={handleSubmit}>Save Changes</CustomButton>
     </div>
@@ -347,9 +322,7 @@ const LinksBase = () => {
           <ul>
             {links.map((link) => (
               <li key={link.uniqueId}>
-                <span onClick={() => handleLinkSelection(link)}>
-                  {link.name}
-                </span>
+                <span onClick={() => handleLinkSelection(link)}>{link.name}</span>
                 {getLinksJSX(link.children)}
               </li>
             ))}
@@ -371,9 +344,7 @@ const LinksBase = () => {
     <div className="linksContainer">
       <div className="left-section">
         {/* <pre>{links && JSON.stringify(links)}</pre> */}
-        <CustomButton onClick={() => handleButtonClick("create")}>
-          Create Link
-        </CustomButton>
+        <CustomButton onClick={() => handleButtonClick("create")}>Create Link</CustomButton>
         {getLinksJSX(links)}
       </div>
       {/* -- left-section */}

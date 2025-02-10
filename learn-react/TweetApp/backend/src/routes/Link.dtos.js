@@ -5,7 +5,7 @@ const linkResponseDTO = (linkData) => ({
     parentId: linkData.parentId,
     linkType: linkData.linkType,
     linkUrl: linkData.linkUrl,
-    description: linkData.description,
+    descriptions: linkData.descriptions,
     children: linkData.children || [], // Add children field, or an empty array if it doesn't exist
     ancestors: linkData.ancestors || [],
 });

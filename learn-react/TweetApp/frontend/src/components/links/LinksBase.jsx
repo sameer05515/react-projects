@@ -209,7 +209,7 @@ const CreateLink = () => {
     if (smartEditorError) {
       errors.push(smartEditorError);
     }
-    
+
     if (!formData.linkUrl.trim()) {
       errors.push("linkUrl is required");
     }
@@ -288,8 +288,8 @@ const EditLink = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const links = useSelector((state) => state.links.flatData);
-  const [link, setLink] = useState(null);
+  // const links = useSelector((state) => state.links.flatData);
+  // const [link, setLink] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState([]);
   const [formData, setFormData] = useState({
@@ -328,7 +328,7 @@ const EditLink = () => {
         setLoading(true);
         apiRequest({ method: "get", url: `${BACKEND_APPLICATION_BASE_URL}/links/${id}` })
           .then((response) => {
-            setLink(response.data);
+            // setLink(response.data);
             setFormData(response.data);
           })
           .catch((error) => {

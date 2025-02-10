@@ -1,11 +1,11 @@
 import { isValidString } from "../../../../../common/service/basic-validations";
 import {
-    // sortTodosByCreatedDate,
-    // sortTodosByCreatedDate,
-    // sortTodosByGroomed,
-    // sortTodosByStatus,
-    // sortTodosByUrgencyAndImportance,
-    Status
+  // sortTodosByCreatedDate,
+  // sortTodosByCreatedDate,
+  // sortTodosByGroomed,
+  // sortTodosByStatus,
+  // sortTodosByUrgencyAndImportance,
+  Status,
 } from "../../Item.dto";
 
 export const FilterActionTypes = {
@@ -24,6 +24,8 @@ export const PurposeToOpenModal = {
   BAS_AISE_HI_TESTING_KE_LIYE: "just-to-test",
   SAVE_NEW_TODO: "save-new-to-do",
   UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM: "update-smart-content-of-existing-tt-item",
+  UPDATE_GROOMING_NOTGrooming_OF_EXISTING_TTITEM_WITH_REASON:
+    "update-grooming-notGrooming-of-existing-tt-item-with-reason",
 };
 
 export const ValidationStrategies = {

@@ -239,6 +239,12 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
           modalTitle: "Update Think Tank Item Smart Content",
         };
 
+      case PurposeToOpenModal.UPDATE_GROOMING_NOTGrooming_OF_EXISTING_TTITEM_WITH_REASON:
+        return {
+          ModalChildrenComponent:(<>To be implemented</>),
+          modalTitle: "Please specify why this TT Item should be considered groomed or not-groomed?",
+        }
+
       default:
         return { ModalChildrenComponent: null, modalTitle: "" };
     }

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
+const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
 
 const childSchema = new mongoose.Schema({
   name: {
@@ -37,6 +38,7 @@ const linkSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  descriptions: [smartContentSchema],
   // children: [childSchema], // Define children field as an array of objects
 });
 

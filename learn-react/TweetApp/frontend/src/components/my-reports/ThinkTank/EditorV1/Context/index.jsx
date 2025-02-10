@@ -77,10 +77,52 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     setSelectedShowFilterAction(actionType);
   }, []);
 
-  const handleUpdateThinkTankItem = useCallback(
+  const handleUpdateThinkTankItemWithReason = useCallback(
     async (data, purpose, uniqueId) => {
       try {
         validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
+
+        if (!uniqueId) {
+          throw new Error("Not a valid uniqueId: " + uniqueId);
+        }
+
+        if (data.content.trim().length < 10) {
+          throw new Error("Content is too short. Minimum 10 characters required.");
+        }
+
+        const updateResp = await updateThinkTankItem(uniqueId, { smartContent: data });
+
+        if (updateResp.isError) {
+          throw new Error(updateResp.message);
+        }
+        refreshList();
+        return {
+          isError: false,
+          // messages: [{ type: "info", message: "Saved successfully!" }],
+          messages: FormMessageBuilder.builder().appendInfo("Think tank item updated successfully!").build(),
+        };
+      } catch (error) {
+        const errMsg = prepareErrorMessage(error, "Something unexpected occurred!");
+        return {
+          isError: true,
+          messages: FormMessageBuilder.builder().appendError(errMsg).build(),
+        };
+      }
+    },
+    [refreshList]
+  );
+
+  const handleUpdateThinkTankItemDescription = useCallback(
+    async (data, purpose, uniqueId) => {
+      try {
+        validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
+
+        if (purpose !== PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM) {
+          throw new Error(
+            "This method should only be used to update smart content of an existing ThinkTank Item. Invalid Purpose: " +
+              purpose
+          );
+        }
 
         if (!uniqueId) {
           throw new Error("Not a valid uniqueId: " + uniqueId);
@@ -191,7 +233,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
           ModalChildrenComponent: (
             <SmartEditorV4
               initialValue={selectedTTItem?.smartContent || {}}
-              onSubmit={(data) => handleUpdateThinkTankItem(data, selectedPurpose, selectedTTItem?.uniqueId)}
+              onSubmit={(data) => handleUpdateThinkTankItemDescription(data, selectedPurpose, selectedTTItem?.uniqueId)}
             />
           ),
           modalTitle: "Update Think Tank Item Smart Content",
@@ -203,7 +245,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   }, [
     handleSampleEditorSubmitJustToTest,
     handleSaveThinkTankItem,
-    handleUpdateThinkTankItem,
+    handleUpdateThinkTankItemDescription,
     selectedPurpose,
     selectedTTItem?.smartContent,
     selectedTTItem?.uniqueId,

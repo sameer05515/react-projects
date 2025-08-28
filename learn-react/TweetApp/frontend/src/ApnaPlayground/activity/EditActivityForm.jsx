@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function EditActivityForm({ data, onSave, onCancel }) {
   const [activityName, setActivityName] = useState(data.activityName);

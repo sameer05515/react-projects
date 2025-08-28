@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { AiFillForward as NextIcon, AiFillBackward as PrevIcon } from "react-icons/ai";
+import { /**AiFillForward as NextIcon,*/ AiFillBackward as PrevIcon } from "react-icons/ai";
 
 const BootstrapClassUseV1 = () => {
   return (

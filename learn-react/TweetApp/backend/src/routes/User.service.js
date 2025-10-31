@@ -29,7 +29,11 @@ const registerUser = async (userData) => {
         await newUser.save();
 
         // Create and send a JWT token
-        const token = jwt.sign({ userId: newUser._id }, 'your-secret-key', {
+        const jwtSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+        if (!process.env.JWT_SECRET) {
+            console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable for production.');
+        }
+        const token = jwt.sign({ userId: newUser._id }, jwtSecret, {
             expiresIn: '1h',
         });
 
@@ -56,7 +60,11 @@ const loginUser = async (username, password) => {
         }
 
         // If the username and password are correct, generate a JWT token
-        const token = jwt.sign({ userId: user._id, userName: user.name }, 'your-secret-key', { expiresIn: '1h' });
+        const jwtSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+        if (!process.env.JWT_SECRET) {
+            console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable for production.');
+        }
+        const token = jwt.sign({ userId: user._id, userName: user.name }, jwtSecret, { expiresIn: '1h' });
 
         return token;
     } catch (error) {

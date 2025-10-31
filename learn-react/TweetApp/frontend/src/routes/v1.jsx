@@ -49,7 +49,6 @@ import {
 import RelatedNodesBaseV1 from "../components/related-nodes/v1/RelatedNodesBaseV1";
 import ViewNode from "../components/related-nodes/v1/sub-components/ViewNode";
 import ResumeForm from "../components/resume/ResumeForm";
-// import SettingDashboard from "../components/settings/SettingDashboard";
 import TagBase, {
   AddSubTagComp,
   CreateTag,
@@ -136,8 +135,7 @@ const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
           <Route path="/resume-mgmt" element={<ResumeForm />} />
 
           {/** ----- SETTINGS MANAGEMENT ---------------------- */}
-
-          {/* <Route path="/settings" element={<SettingDashboard />} /> */}
+          {/* Settings dashboard has been moved to ApnaPlayground */}
 
           {/** ----- TOPICS MANAGEMENT ---------------------- */}
 
@@ -310,7 +308,7 @@ const Layout = () => {
   }, []);
 
   const performBootstrap = useCallback(() => {
-    console.log("Performing bootstrap");
+    // Bootstrap: Load initial data for the application
     dispatch(fetchTasks());
     dispatch(fetchTags());
     dispatch(fetchTopics());

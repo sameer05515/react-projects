@@ -3,12 +3,17 @@ const fs = require('fs');
 
 // MySQL configuration
 const mysqlConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: 'admin@123',
-  database: 'interview_mgmt',
+  host: process.env.MYSQL_HOST || 'localhost',
+  user: process.env.MYSQL_USER || 'root',
+  password: process.env.MYSQL_PASSWORD || 'admin@123',
+  database: process.env.MYSQL_DATABASE || 'interview_mgmt',
   insecureAuth: true,
 };
+
+// Security warning for hardcoded credentials
+if (!process.env.MYSQL_PASSWORD) {
+  console.warn('WARNING: Using default MySQL password. Set MYSQL_PASSWORD environment variable for production.');
+}
 
 // Create MySQL connection
 const mysqlConnection = mysql.createConnection(mysqlConfig);

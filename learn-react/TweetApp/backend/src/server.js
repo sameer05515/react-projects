@@ -15,13 +15,12 @@ const MONGODB_URI =
 
 const docRoutes = require("./routes/doc.routes");
 
-const tweetRoutesV1 = require("./routes/Tweet.v1.routes"); // Import the tweets routes
+const tweetRoutesV1 = require("./routes/Tweet.v1.routes");
 const tweetRoutesV2 = require("./routes/Tweet.v2.routes");
 const activityRoutes = require("./routes/Activity.routes");
 const tasksRouter = require("./routes/Task.routes");
-const userRoutes = require("./routes/User.routes"); // Import the user registration router
-// Import the tag router
-const tagRouter = require("./routes/Tag.routes"); // Replace with the correct path
+const userRoutes = require("./routes/User.routes");
+const tagRouter = require("./routes/Tag.routes");
 const topicRouter = require("./routes/Topic.routes");
 const comparableObjectRouter = require("./routes/ComparableObject.routes");
 const wordRouter = require("./routes/Word.routes");
@@ -39,37 +38,40 @@ const cgptRouter = require("./routes/ChatGPTConversation.routes");
 const thinkTankRouter = require("./routes/ThinkTank.v1.routes");
 const thinkTankStatsRouter= require('./routes/ThinkTank.v1.stats.routes')
 
-// mongoose.connect("mongodb://127.0.0.1:27017/mongodb_test", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
 mongoose.connect(MONGODB_URI, {
-  // Use process.env.MONGODB_URI
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// app.use(
-//   cors({
-//     origin: `http://127.0.0.1:${REACT_PORT}`,
-//   })
-// );
-// Enable CORS globally
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL 
+    : `http://127.0.0.1:${REACT_PORT}`,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+if (process.env.NODE_ENV === 'development') {
+  // In development, allow all origins for easier testing
+  app.use(cors());
+  console.warn('WARNING: CORS is enabled for all origins in development mode.');
+} else {
+  // In production, use restricted CORS
+  app.use(cors(corsOptions));
+}
 
 // Middleware
-// app.use(bodyParser.json());
-// Increase the limit for JSON and URL-encoded payloads
-app.use(bodyParser.json({ limit: "100mb" }));
-app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+// Increase the limit for JSON and URL-encoded payloads (adjust based on actual needs)
+const bodyParserLimit = process.env.BODY_PARSER_LIMIT || "10mb";
+app.use(bodyParser.json({ limit: bodyParserLimit }));
+app.use(bodyParser.urlencoded({ limit: bodyParserLimit, extended: true }));
 
 app.use("/tweets/v1", tweetRoutesV1);
 app.use("/tweets/v2", tweetRoutesV2);
 app.use("/activities", activityRoutes);
 app.use("/tasks", tasksRouter);
 app.use("/api/users", userRoutes);
-// Use the tag router
 app.use("/tags", tagRouter);
 app.use("/topics", topicRouter);
 app.use("/c-objects", comparableObjectRouter);
@@ -85,7 +87,7 @@ app.use("/node-story", relatedNodeRouter);
 app.use("/consolidated-reporting", consolidatedReportingRouter);
 app.use("/cgpt", cgptRouter);
 app.use("/think-tank/v1", thinkTankRouter);
-app.use("/think-tank/v1",thinkTankStatsRouter)
+app.use("/think-tank/v1/stats", thinkTankStatsRouter);
 
 // Serve Swagger documentation at /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

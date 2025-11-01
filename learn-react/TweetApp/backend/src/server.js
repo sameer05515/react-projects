@@ -110,4 +110,7 @@ app.listen(PORT, () => {
   console.log(
     `[${new Date()}] :- Server is running on http://localhost:${PORT}`
   );
+  console.log(
+    `[${new Date()}] :- Swagger API documentation is available at http://localhost:${PORT}/api-docs`
+  );  
 });

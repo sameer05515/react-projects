@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    private static final String[] FREE_RESOURCE_URLS = {
+    public static final String[] FREE_RESOURCE_URLS = {
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**",

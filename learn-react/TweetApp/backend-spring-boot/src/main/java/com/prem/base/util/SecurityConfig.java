@@ -2,7 +2,6 @@ package com.prem.base.util;
 
 import com.prem.base.filter.AuthoritiesLoggingAfterFilter;
 import com.prem.base.filter.JwtRequestFilter;
-import com.prem.base.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

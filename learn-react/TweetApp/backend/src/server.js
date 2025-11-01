@@ -1,116 +1,102 @@
 /**
- * This is the main server file for the Node.js backend application.
- * It sets up the Express app, configures middleware, connects to the MongoDB database,
- * handles CORS (Cross-Origin Resource Sharing), and registers API route handlers.
- * Additionally, it serves the API documentation using Swagger UI.
+ * Main server initialization for the Node.js backend application.
+ * Sets up Express, middleware, MongoDB, CORS, API documentation, and routes.
  */
 
-// Import required modules
-const express = require("express"); // Web framework for Node.js
-const mongoose = require("mongoose"); // MongoDB ODM (Object Data Modeling)
-const bodyParser = require("body-parser"); // Middleware for parsing JSON and urlencoded data
-const cors = require("cors"); // Middleware to enable CORS
-require("dotenv").config(); // Loads environment variables from a .env file
+require("dotenv").config(); // Load environment variables ASAP
 
-// Swagger for API documentation
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 
-// Initialize Express application
+// App & port configuration
 const app = express();
+const PORT = process.env.PORT || 3003;
+const REACT_PORT = process.env.REACT_PORT || 3002;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test";
 
-// Define ports and MongoDB URI using environment variables with fallbacks
-const PORT = process.env.PORT || 3003; // Port the server listens on
-const REACT_PORT = process.env.REACT_PORT || 3002; // Port for React frontend (dev)
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test"; // MongoDB connection string
+// Routers map for maintainability and easy extension
+const routers = [
+  { path: "/tweets/v1", handler: "./routes/tweet/Tweet.v1.routes" },
+  { path: "/tweets/v2", handler: "./routes/tweet/Tweet.v2.routes" },
+  { path: "/activities", handler: "./routes/activity/Activity.routes" },
+  { path: "/tasks", handler: "./routes/task/Task.routes" },
+  { path: "/api/users", handler: "./routes/user/User.routes" },
+  { path: "/tags", handler: "./routes/tag/Tag.routes" },
+  { path: "/topics", handler: "./routes/topic/Topic.routes" },
+  { path: "/c-objects", handler: "./routes/comparable-object/ComparableObject.routes" },
+  { path: "/api/words", handler: "./routes/word/Word.routes" },
+  { path: "/my-resume", handler: "./routes/my-resume/MyResume.routes" },
+  { path: "/links", handler: "./routes/link/Link.routes" },
+  { path: "/intvw-mgmt/v1/categories", handler: "./routes/interview-mgmt/InterviewMgmt.v1.routes" },
+  { path: "/pinned-items", handler: "./routes/pinned-item/PinnedItem.routes" },
+  { path: "/intvw-mgmt/v2", handler: "./routes/interview-mgmt/InterviewMgmt.v2.routes" },
+  { path: "/memory-maps", handler: "./routes/memory-map/MemoryMap.routes" },
+  { path: "/node-story", handler: "./routes/related-node/RelatedNode.routes" },
+  { path: "/consolidated-reporting", handler: "./routes/consolidated-reporting/ConsolidatedReporting.routes" },
+  { path: "/cgpt", handler: "./routes/chatgpt/ChatGPTConversation.routes" },
+  { path: "/think-tank/v1", handler: "./routes/think-tank/ThinkTank.v1.routes" },
+  { path: "/think-tank/v1/stats", handler: "./routes/think-tank/ThinkTank.v1.stats.routes" },
+];
 
-// Import routers for different features/resources
+// General documentation routes at root
 const docRoutes = require("./routes/docs/doc.routes");
-const tweetRoutesV1 = require("./routes/tweet/Tweet.v1.routes");
-const tweetRoutesV2 = require("./routes/tweet/Tweet.v2.routes");
-const activityRoutes = require("./routes/activity/Activity.routes");
-const tasksRouter = require("./routes/task/Task.routes");
-const userRoutes = require("./routes/user/User.routes");
-const tagRouter = require("./routes/tag/Tag.routes");
-const topicRouter = require("./routes/topic/Topic.routes");
-const comparableObjectRouter = require("./routes/comparable-object/ComparableObject.routes");
-const wordRouter = require("./routes/word/Word.routes");
-const myResumeRouter = require("./routes/my-resume/MyResume.routes");
-const linkRouter = require("./routes/link/Link.routes");
-const interviewMgmtRouter = require("./routes/interview-mgmt/InterviewMgmt.v1.routes");
-const interviewMgmtV2Router = require("./routes/interview-mgmt/InterviewMgmt.v2.routes");
-const pinnedItemRouter = require("./routes/pinned-item/PinnedItem.routes");
-const memoryMapRouter = require("./routes/memory-map/MemoryMap.routes");
-const relatedNodeRouter = require("./routes/related-node/RelatedNode.routes");
-const consolidatedReportingRouter = require("./routes/consolidated-reporting/ConsolidatedReporting.routes");
-const cgptRouter = require("./routes/chatgpt/ChatGPTConversation.routes");
-const thinkTankRouter = require("./routes/think-tank/ThinkTank.v1.routes");
-const thinkTankStatsRouter = require('./routes/think-tank/ThinkTank.v1.stats.routes');
 
-// Connect to MongoDB database
+// Start MongoDB connection early
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.connection.on("error", err => {
+  console.error(`MongoDB connection error: ${err}`);
+  process.exit(1);
+});
 
-// Configure CORS options based on environment (dev or prod)
+// CORS configuration and usage
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.FRONTEND_URL // Restrict to frontend URL in production
-    : `http://127.0.0.1:${REACT_PORT}`, // Allow localhost frontend in development
+  origin: process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_URL
+    : `http://127.0.0.1:${REACT_PORT}`,
   credentials: true,
   optionsSuccessStatus: 200,
 };
 
-if (process.env.NODE_ENV === 'development') {
-  // In development, allow all origins (for testing and local dev)
+if (process.env.NODE_ENV === "development") {
   app.use(cors());
-  console.warn('WARNING: CORS is enabled for all origins in development mode.');
+  console.warn("WARNING: CORS is enabled for all origins in development mode.");
 } else {
-  // In production, restrict CORS to specified allowed origins
   app.use(cors(corsOptions));
 }
 
-// Configure middleware for parsing JSON and URL-encoded bodies with increased limits
+// Body parser middleware with configurable limit
 const bodyParserLimit = process.env.BODY_PARSER_LIMIT || "10mb";
 app.use(bodyParser.json({ limit: bodyParserLimit }));
 app.use(bodyParser.urlencoded({ limit: bodyParserLimit, extended: true }));
 
-// Register route handlers under their respective base paths
-app.use("/tweets/v1", tweetRoutesV1);
-app.use("/tweets/v2", tweetRoutesV2);
-app.use("/activities", activityRoutes);
-app.use("/tasks", tasksRouter);
-app.use("/api/users", userRoutes);
-app.use("/tags", tagRouter);
-app.use("/topics", topicRouter);
-app.use("/c-objects", comparableObjectRouter);
-app.use("/api/words", wordRouter);
-app.use("/my-resume", myResumeRouter);
-app.use("/links", linkRouter);
-app.use("/intvw-mgmt/v1/categories", interviewMgmtRouter);
-app.use("/pinned-items", pinnedItemRouter);
-app.use("/intvw-mgmt/v2", interviewMgmtV2Router);
-app.use("/memory-maps", memoryMapRouter);
-app.use("/node-story", relatedNodeRouter);
-app.use("/consolidated-reporting", consolidatedReportingRouter);
-app.use("/cgpt", cgptRouter);
-app.use("/think-tank/v1", thinkTankRouter);
-app.use("/think-tank/v1/stats", thinkTankStatsRouter);
+// Register all routers dynamically
+routers.forEach(({ path, handler }) => {
+  app.use(path, require(handler));
+});
 
-// Serve Swagger API documentation at /api-docs
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// Serve general documentation routes at root
+// Register general documentation routes
 app.use("", docRoutes);
 
-// Start the Express server and log startup message
+// Serve Swagger API documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Global error handler (add more robust error handling if desired)
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(
-    `[${new Date()}] :- Server is running on http://localhost:${PORT}`
-  );
-  console.log(
-    `[${new Date()}] :- Swagger API documentation is available at http://localhost:${PORT}/api-docs`
-  );  
+  const baseUrl = `http://localhost:${PORT}`;
+  console.log(`[${new Date().toISOString()}] Server running at ${baseUrl}`);
+  console.log(`[${new Date().toISOString()}] Swagger API docs: ${baseUrl}/api-docs`);
 });

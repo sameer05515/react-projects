@@ -1,20 +1,31 @@
-# Use an official Node runtime as the base image
-FROM node:lts-buster-slim AS development
+# Start from the official Node.js LTS Bookworm slim image (newer, more secure)
+FROM node:lts-bookworm-slim
 
-# Set the working directory in the container
+# Update system packages and install security patches
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set and create app directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Install dependencies only when needed
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --no-optional
 
-# Install dependencies
-RUN npm install --force
+# Create non-root user for better security
+RUN groupadd -r nodejs && useradd -r -g nodejs nodejs
 
-# Copy the entire project to the working directory
-COPY . .
+# Copy application source (everything except what's in .dockerignore)
+COPY --chown=nodejs:nodejs . .
 
-# Expose port 3003 to the outside world
+# Switch to non-root user
+USER nodejs
+
+# Expose the port your app runs on (if using 3003)
 EXPOSE 3003
 
-# Command to run the application
+# Set environment variables for production (optional)
+ENV NODE_ENV=production
+
+# Start the application
 CMD ["npm", "start"]

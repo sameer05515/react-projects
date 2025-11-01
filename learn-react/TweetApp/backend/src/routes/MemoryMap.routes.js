@@ -8,7 +8,36 @@ const {
     fetchMemoryMapByUniqueId
 } = require('./MemoryMap.service');
 
-// Route to save a new MemoryMap
+/**
+ * @swagger
+ * tags:
+ *   - name: MemoryMap
+ *     description: API for MemoryMap operations
+ */
+
+/**
+ * @swagger
+ * /memory-maps:
+ *   post:
+ *     summary: Create a new MemoryMap
+ *     tags: [MemoryMap]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       201:
+ *         description: The created MemoryMap.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad request
+ */
 router.post('/', async (req, res) => {
     try {
         const memoryMap = await saveMemoryMap(req.body);
@@ -18,7 +47,36 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Route to update an existing MemoryMap by uniqueId
+/**
+ * @swagger
+ * /memory-maps/{uniqueId}:
+ *   put:
+ *     summary: Update an existing MemoryMap by uniqueId
+ *     tags: [MemoryMap]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique identifier of the MemoryMap
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: Updated MemoryMap
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad request
+ */
 router.put('/:uniqueId', async (req, res) => {
     try {
         const memoryMap = await updateMemoryMap(req.params.uniqueId, req.body);
@@ -28,7 +86,36 @@ router.put('/:uniqueId', async (req, res) => {
     }
 });
 
-// Route to update an existing MemoryMap by uniqueId, for given skeleton
+/**
+ * @swagger
+ * /memory-maps/{uniqueId}/append-skeleton:
+ *   put:
+ *     summary: Append a skeleton to an existing MemoryMap by uniqueId
+ *     tags: [MemoryMap]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique identifier of the MemoryMap
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: Updated MemoryMap with appended skeleton
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad request
+ */
 router.put('/:uniqueId/append-skeleton', async (req, res) => {
     try {
         const memoryMap = await updateMemoryMapForGivenSkeleton(req.params.uniqueId, req.body);
@@ -38,7 +125,24 @@ router.put('/:uniqueId/append-skeleton', async (req, res) => {
     }
 });
 
-// Route to fetch all MemoryMaps
+/**
+ * @swagger
+ * /memory-maps:
+ *   get:
+ *     summary: Get all MemoryMaps
+ *     tags: [MemoryMap]
+ *     responses:
+ *       200:
+ *         description: Array of MemoryMaps
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/', async (req, res) => {
     try {
         const memoryMaps = await fetchAllMemoryMaps();
@@ -48,7 +152,29 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route to fetch a MemoryMap by uniqueId
+/**
+ * @swagger
+ * /memory-maps/{uniqueId}:
+ *   get:
+ *     summary: Get a MemoryMap by uniqueId
+ *     tags: [MemoryMap]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique identifier of the MemoryMap
+ *     responses:
+ *       200:
+ *         description: The MemoryMap with the given uniqueId
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: MemoryMap not found
+ */
 router.get('/:uniqueId', async (req, res) => {
     try {
         const memoryMap = await fetchMemoryMapByUniqueId(req.params.uniqueId);

@@ -1,7 +1,7 @@
 // models/Task.js
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid"); // Import the v4 function from the uuid library
-const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
+const smartContentSchema = require('../common/SmartContent.schema'); // Import the smartContentSchema
 
 // const activitySchema = new mongoose.Schema({
 //   uniqueId: { type: String, default: uuidv4, unique: true },

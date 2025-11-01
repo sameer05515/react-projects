@@ -1,6 +1,6 @@
-const { Category, Question, Answer } = require("./InterviewMgmt.v2.model");
-const { Topic, TopicSection } = require("./Topic.model");
-const Task = require("./Task.model");
+const { Category, Question, Answer } = require("../interview-mgmt/InterviewMgmt.v2.model");
+const { Topic, TopicSection } = require("../topic/Topic.model");
+const Task = require("../task/Task.model");
 
 const selectFields = {
     uniqueId: 1,

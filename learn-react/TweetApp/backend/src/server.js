@@ -26,27 +26,27 @@ const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test"; // MongoDB connection string
 
 // Import routers for different features/resources
-const docRoutes = require("./routes/doc.routes");
-const tweetRoutesV1 = require("./routes/Tweet.v1.routes");
-const tweetRoutesV2 = require("./routes/Tweet.v2.routes");
-const activityRoutes = require("./routes/Activity.routes");
-const tasksRouter = require("./routes/Task.routes");
-const userRoutes = require("./routes/User.routes");
-const tagRouter = require("./routes/Tag.routes");
-const topicRouter = require("./routes/Topic.routes");
-const comparableObjectRouter = require("./routes/ComparableObject.routes");
-const wordRouter = require("./routes/Word.routes");
-const myResumeRouter = require("./routes/MyResume.routes");
-const linkRouter = require("./routes/Link.routes");
-const interviewMgmtRouter = require("./routes/InterviewMgmt.v1.routes");
-const interviewMgmtV2Router = require("./routes/InterviewMgmt.v2.routes");
-const pinnedItemRouter = require("./routes/PinnedItem.routes");
-const memoryMapRouter = require("./routes/MemoryMap.routes");
-const relatedNodeRouter = require("./routes/RelatedNode.routes");
-const consolidatedReportingRouter = require("./routes/ConsolidatedReporting.routes");
-const cgptRouter = require("./routes/ChatGPTConversation.routes");
-const thinkTankRouter = require("./routes/ThinkTank.v1.routes");
-const thinkTankStatsRouter = require('./routes/ThinkTank.v1.stats.routes');
+const docRoutes = require("./routes/docs/doc.routes");
+const tweetRoutesV1 = require("./routes/tweet/Tweet.v1.routes");
+const tweetRoutesV2 = require("./routes/tweet/Tweet.v2.routes");
+const activityRoutes = require("./routes/activity/Activity.routes");
+const tasksRouter = require("./routes/task/Task.routes");
+const userRoutes = require("./routes/user/User.routes");
+const tagRouter = require("./routes/tag/Tag.routes");
+const topicRouter = require("./routes/topic/Topic.routes");
+const comparableObjectRouter = require("./routes/comparable-object/ComparableObject.routes");
+const wordRouter = require("./routes/word/Word.routes");
+const myResumeRouter = require("./routes/my-resume/MyResume.routes");
+const linkRouter = require("./routes/link/Link.routes");
+const interviewMgmtRouter = require("./routes/interview-mgmt/InterviewMgmt.v1.routes");
+const interviewMgmtV2Router = require("./routes/interview-mgmt/InterviewMgmt.v2.routes");
+const pinnedItemRouter = require("./routes/pinned-item/PinnedItem.routes");
+const memoryMapRouter = require("./routes/memory-map/MemoryMap.routes");
+const relatedNodeRouter = require("./routes/related-node/RelatedNode.routes");
+const consolidatedReportingRouter = require("./routes/consolidated-reporting/ConsolidatedReporting.routes");
+const cgptRouter = require("./routes/chatgpt/ChatGPTConversation.routes");
+const thinkTankRouter = require("./routes/think-tank/ThinkTank.v1.routes");
+const thinkTankStatsRouter = require('./routes/think-tank/ThinkTank.v1.stats.routes');
 
 // Connect to MongoDB database
 mongoose.connect(MONGODB_URI, {

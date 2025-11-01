@@ -40,7 +40,7 @@ const options = {
       }
     ],
   },
-  apis: ['./src/routes/*.js'], // Path to route files for API docs
+  apis: ['./src/routes/**/*.js'], // Path to route files for API docs
 };
 
 const swaggerSpec = swaggerJSDoc(options);

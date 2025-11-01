@@ -13,8 +13,8 @@ const {
   updateNestedCommentInTweet,
 } = require("./Tweet.v2.service");
 
-const { SuccessCongratulations } = require('./common/server-responses/customResponseTypes');
-const routerResponseHandler = require('./common/middlewares/routerResponseHandler');
+const { SuccessCongratulations } = require('../common/server-responses/customResponseTypes');
+const routerResponseHandler = require('../common/middlewares/routerResponseHandler');
 const { StatusCodes } = require('http-status-codes');
 
 /**

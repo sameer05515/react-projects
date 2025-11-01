@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uuid = require('uuid');
-const smartContentSchema = require('./common/SmartContent.schema'); // Import the smartContentSchema
+const smartContentSchema = require('../common/SmartContent.schema'); // Import the smartContentSchema
 
 // Base schema for common fields
 const baseSchema = {

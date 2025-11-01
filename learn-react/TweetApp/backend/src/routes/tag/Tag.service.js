@@ -1,9 +1,9 @@
 // Tag.service.js
 
 const Tag = require('./Tag.model');
-const {getTopicsByTagId, getTopicSectionsByTagId} = require('./Topic.service');
-const {getTasksByTagId} = require('./Task.service');
-const {getQuestionsByTagId} = require('./InterviewMgmt.v2.service')
+const {getTopicsByTagId, getTopicSectionsByTagId} = require('../topic/Topic.service');
+const {getTasksByTagId} = require('../task/Task.service');
+const {getQuestionsByTagId} = require('../interview-mgmt/InterviewMgmt.v2.service')
 
 const createTag = async (tagData) => {
   try {

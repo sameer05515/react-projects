@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { Question } = require('./InterviewMgmt.v2.model');
+const { v4: uuidv4 } = require('uuid');
+const { Question } = require('../interview-mgmt/InterviewMgmt.v2.model');
 
 const pinnedItemSchema = new mongoose.Schema({
     uniqueId: {

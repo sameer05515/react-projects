@@ -3,7 +3,7 @@ const {
   ValidationError,
   DatabaseError,
   NotFoundError,
-} = require('./common/server-responses/customResponseTypes');
+} = require('../common/server-responses/customResponseTypes');
 
 // Utility function to fetch a tweet by ID and throw an error if not found
 const findTweetById = async (tweetId) => {

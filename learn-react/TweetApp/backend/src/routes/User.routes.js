@@ -11,7 +11,53 @@ const {
     updateUserById
 } = require('./User.service');
 
-// Register a new user
+/**
+ * @swagger
+ * tags:
+ *   - name: User
+ *     description: API for user operations
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - password
+ *               - email
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.post('/register', async (req, res) => {
     try {
         const result = await registerUser(req.body);
@@ -21,7 +67,46 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login user
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Login successful, returns JWT token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       401:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.post('/login', async (req, res) => {
     try {
         const token = await loginUser(req.body.username, req.body.password);
@@ -31,7 +116,31 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Get all users
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.get('/', async (req, res) => {
     try {
         const users = await getAllUsers();
@@ -41,7 +150,36 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Update user role to admin
+/**
+ * @swagger
+ * /users/{userId}/admin:
+ *   put:
+ *     summary: Update user role to admin
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to promote to admin
+ *     responses:
+ *       200:
+ *         description: The updated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.put('/:userId/admin', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -52,7 +190,36 @@ router.put('/:userId/admin', async (req, res) => {
     }
 });
 
-// Get user by ID
+/**
+ * @swagger
+ * /users/{userId}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user
+ *     responses:
+ *       200:
+ *         description: The user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.get('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -63,7 +230,43 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
-// Update user by ID
+/**
+ * @swagger
+ * /users/{userId}:
+ *   put:
+ *     summary: Update user by ID
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: The updated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
 router.put('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;

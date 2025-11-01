@@ -9,7 +9,39 @@ const {
 
 const router = express.Router();
 
-// Get all ThinkTankItems
+/**
+ * @swagger
+ * tags:
+ *   - name: ThinkTank
+ *     description: API for ThinkTank items (v1)
+ */
+
+/**
+ * @swagger
+ * /think-tank:
+ *   get:
+ *     summary: Get all ThinkTankItems
+ *     tags: [ThinkTank]
+ *     responses:
+ *       200:
+ *         description: List of all ThinkTankItems
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to fetch ThinkTankItems
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Error fetching ThinkTankItems
+ */
 router.get("/", async (req, res) => {
   try {
     const tweets = await ThinkTankItemModel.find();
@@ -20,9 +52,55 @@ router.get("/", async (req, res) => {
 });
 
 /**
- * @route   POST /think-tank
- * @desc    Create a new ThinkTankItem
- * @access  Public
+ * @swagger
+ * /think-tank:
+ *   post:
+ *     summary: Create a new ThinkTankItem
+ *     tags: [ThinkTank]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               itemType:
+ *                 type: string
+ *                 description: The type of the ThinkTankItem
+ *               smartContent:
+ *                 type: object
+ *                 description: The content object
+ *                 properties:
+ *                   content:
+ *                     type: string
+ *                 required:
+ *                   - content
+ *     responses:
+ *       201:
+ *         description: ThinkTankItem created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid smartContent. 'content' field is required and cannot be empty.
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 router.post("/", async (req, res) => {
   try {
@@ -60,94 +138,76 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * @route   PATCH /think-tank/:id
- * @desc    Partially update a ThinkTankItem
- * @access  Public
- */
-// router.patch("/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updateFields = req.body;
-
-//     // Allowed fields for update
-//     const allowedFields = [
-//       "smartContent",
-//       "status",
-//       "closedOn",
-//       "isUrgent",
-//       "isImportant",
-//       "hasGroomed",
-//       "itemType",
-//       "createdDate",
-//     ];
-
-//     // Validate incoming fields
-//     const filteredUpdates/**: any*/ = {};
-//     for (const key of Object.keys(updateFields)) {
-//       if (allowedFields.includes(key)) {
-//         filteredUpdates[key] = updateFields[key];
-//       }
-//     }
-
-//     // If no valid fields are provided
-//     if (Object.keys(filteredUpdates).length === 0) {
-//       return res
-//         .status(400)
-//         .json({ error: "No valid fields provided for update." });
-//     }
-
-//     // Validate `status` if present
-//     if (
-//       filteredUpdates.status &&
-//       !Object.values(Status).includes(filteredUpdates.status)
-//     ) {
-//       return res.status(400).json({ error: "Invalid status value." });
-//     }
-
-//     // Validate `itemType` if present
-//     if (
-//       filteredUpdates.itemType &&
-//       !Object.values(ThinkTankItemType).includes(filteredUpdates.itemType)
-//     ) {
-//       return res.status(400).json({ error: "Invalid itemType value." });
-//     }
-
-//     // Validate `smartContent` structure if present
-//     if (filteredUpdates.smartContent) {
-//       if (
-//         typeof filteredUpdates.smartContent !== "object" ||
-//         !filteredUpdates.smartContent.content?.trim()
-//       ) {
-//         return res
-//           .status(400)
-//           .json({
-//             error:
-//               "Invalid smartContent. 'content' field is required and cannot be empty.",
-//           });
-//       }
-//     }
-
-//     // Update item in database
-//     const updatedItem = await ThinkTankItemModel.findByIdAndUpdate(
-//       id,
-//       { $set: filteredUpdates },
-//       { new: true, runValidators: true }
-//     );
-
-//     if (!updatedItem) {
-//       return res.status(404).json({ error: "ThinkTankItem not found." });
-//     }
-
-//     res.json(updatedItem);
-//   } catch (error) {
-//     console.error("Error updating ThinkTankItem:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-/**
- * @desc Partially update a ThinkTankItem by uniqueId
- * @route PATCH /think-tank/:uniqueId
+ * @swagger
+ * /think-tank/{uniqueId}:
+ *   patch:
+ *     summary: Partially update a ThinkTankItem by uniqueId
+ *     tags: [ThinkTank]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the ThinkTankItem
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               smartContent:
+ *                 type: object
+ *                 properties:
+ *                   content:
+ *                     type: string
+ *               status:
+ *                 type: string
+ *                 description: Status value (must match Status enum)
+ *               closedOn:
+ *                 type: string
+ *                 format: date-time
+ *                 nullable: true
+ *               isUrgent:
+ *                 type: boolean
+ *               isImportant:
+ *                 type: boolean
+ *               hasGroomed:
+ *                 type: boolean
+ *               itemType:
+ *                 type: string
+ *                 description: Item type value (must match ThinkTankItemType enum)
+ *               createdDate:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       200:
+ *         description: ThinkTankItem updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Invalid input or ThinkTankItem not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid status value.
+ *       404:
+ *         description: ThinkTankItem not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: ThinkTankItem not found.
  */
 async function updateThinkTankItem(
   uniqueId /**: string*/,

@@ -8,7 +8,36 @@ const {
     updateRelationInConnectedNodes
 } = require('./RelatedNode.service');
 
-// Route to save a new RelatedNode
+/**
+ * @swagger
+ * tags:
+ *   - name: RelatedNode
+ *     description: API for RelatedNode operations
+ */
+
+/**
+ * @swagger
+ * /related-nodes:
+ *   post:
+ *     summary: Create a new RelatedNode
+ *     tags: [RelatedNode]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       201:
+ *         description: The created RelatedNode.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad request.
+ */
 router.post('/', async (req, res) => {
     try {
         const relatedNode = await saveRelatedNode(req.body);
@@ -18,10 +47,33 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Route to update an existing Node's relation and the other related node aasociated by withId
+/**
+ * @swagger
+ * /related-nodes/upsert-relation:
+ *   put:
+ *     summary: Update relation in connected nodes
+ *     description: Update an existing Node's relation and the other related node associated by withId
+ *     tags: [RelatedNode]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: RelatedNode relation updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Invalid input or update failed
+ */
 router.put('/upsert-relation', async (req, res) => {
     try {
-        console.log('[RelatedNode.routes.js]: relationData: ',JSON.stringify(req.body));
+        console.log('[RelatedNode.routes.js]: relationData: ', JSON.stringify(req.body));
         const relatedNode = await updateRelationInConnectedNodes(req.body);
         res.status(200).json(relatedNode);
     } catch (error) {
@@ -29,7 +81,36 @@ router.put('/upsert-relation', async (req, res) => {
     }
 });
 
-// Route to update an existing RelatedNode by uniqueId
+/**
+ * @swagger
+ * /related-nodes/{uniqueId}:
+ *   put:
+ *     summary: Update a RelatedNode by uniqueId
+ *     tags: [RelatedNode]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the RelatedNode
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *     responses:
+ *       200:
+ *         description: RelatedNode updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       400:
+ *         description: Bad request
+ */
 router.put('/:uniqueId', async (req, res) => {
     try {
         const relatedNode = await updateRelatedNode(req.params.uniqueId, req.body);
@@ -39,9 +120,24 @@ router.put('/:uniqueId', async (req, res) => {
     }
 });
 
-
-
-// Route to fetch all RelatedNodes
+/**
+ * @swagger
+ * /related-nodes:
+ *   get:
+ *     summary: Get all RelatedNodes
+ *     tags: [RelatedNode]
+ *     responses:
+ *       200:
+ *         description: List of all RelatedNodes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Server error
+ */
 router.get('/', async (req, res) => {
     try {
         const relatedNodes = await fetchAllRelatedNodes();
@@ -51,7 +147,29 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route to fetch a RelatedNode by uniqueId
+/**
+ * @swagger
+ * /related-nodes/{uniqueId}:
+ *   get:
+ *     summary: Get a RelatedNode by uniqueId
+ *     tags: [RelatedNode]
+ *     parameters:
+ *       - in: path
+ *         name: uniqueId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique identifier of the RelatedNode
+ *     responses:
+ *       200:
+ *         description: RelatedNode found and returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: RelatedNode not found
+ */
 router.get('/:uniqueId', async (req, res) => {
     try {
         const relatedNode = await fetchRelatedNodeByUniqueId(req.params.uniqueId);

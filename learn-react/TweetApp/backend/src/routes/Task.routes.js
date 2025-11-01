@@ -1,11 +1,19 @@
 /**
  * @swagger
- * /api/tasks:
+ * tags:
+ *   - name: Task
+ *     description: API for Task operations
+ */
+
+/**
+ * @swagger
+ * /tasks:
  *   get:
  *     summary: Get all tasks
  *     description: Retrieve a list of all tasks.
+ *     tags: [Task]
  *     responses:
- *       '200':
+ *       200:
  *         description: A list of tasks.
  *         content:
  *           application/json:
@@ -13,14 +21,24 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Task'
+ *       500:
+ *         description: Failed to get tasks.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-
+ 
 /**
  * @swagger
- * /api/tasks/{id}:
+ * /tasks/{id}:
  *   get:
  *     summary: Get a specific task by ID
  *     description: Retrieve a task by its ID.
+ *     tags: [Task]
  *     parameters:
  *       - in: path
  *         name: id
@@ -29,22 +47,39 @@
  *           type: string
  *         description: The ID of the task to retrieve.
  *     responses:
- *       '200':
+ *       200:
  *         description: The requested task.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       '404':
+ *       404:
  *         description: Task not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-
+ 
 /**
  * @swagger
- * /api/tasks:
+ * /tasks:
  *   post:
  *     summary: Create a new task
  *     description: Create a new task with the provided details.
+ *     tags: [Task]
  *     requestBody:
  *       description: The task to create.
  *       required: true
@@ -53,22 +88,30 @@
  *           schema:
  *             $ref: '#/components/schemas/Task'
  *     responses:
- *       '201':
+ *       201:
  *         description: The newly created task.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       '400':
+ *       400:
  *         description: Bad request. Invalid task details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-
+ 
 /**
  * @swagger
- * /api/tasks/{id}:
+ * /tasks/{id}:
  *   put:
  *     summary: Update a task by ID
  *     description: Update an existing task with new details.
+ *     tags: [Task]
  *     parameters:
  *       - in: path
  *         name: id
@@ -84,24 +127,39 @@
  *           schema:
  *             $ref: '#/components/schemas/Task'
  *     responses:
- *       '200':
+ *       200:
  *         description: The updated task.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Task'
- *       '404':
- *         description: Task not found.
- *       '400':
+ *       400:
  *         description: Bad request. Invalid task details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Task not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-
+ 
 /**
  * @swagger
- * /api/tasks/{id}:
+ * /tasks/{id}:
  *   delete:
  *     summary: Delete a task by ID
  *     description: Delete a task by its ID.
+ *     tags: [Task]
  *     parameters:
  *       - in: path
  *         name: id
@@ -110,13 +168,27 @@
  *           type: string
  *         description: The ID of the task to delete.
  *     responses:
- *       '204':
- *         description: Task deleted successfully.
- *       '404':
+ *       204:
+ *         description: Task deleted successfully. No content.
+ *       404:
  *         description: Task not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
-
-
 
 const express = require("express");
 const router = express.Router();
@@ -137,6 +209,9 @@ router.get("/:id", async (req, res) => {
   const uniqueId = req.params.id;
   try {
     const task = await TaskService.getTaskById(uniqueId);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found." });
+    }
     res.json(task);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -161,6 +236,9 @@ router.put("/:id", async (req, res) => {
 
   try {
     const task = await TaskService.updateTask(taskId, updatedTask);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found." });
+    }
     res.json(task);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -171,7 +249,10 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const taskId = req.params.id;
   try {
-    await TaskService.deleteTask(taskId);
+    const deleted = await TaskService.deleteTask(taskId);
+    if (!deleted) {
+      return res.status(404).json({ message: "Task not found." });
+    }
     res.sendStatus(204);
   } catch (err) {
     res.status(500).json({ message: err.message });

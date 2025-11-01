@@ -103,6 +103,23 @@ public class UserService {
         return userUtil.convertToResponse(user);
     }
 
+    public void deleteUserById(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomValidationException("User not found"));
+        userRepository.delete(user);
+    }
+
+    public UserDto getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomValidationException("User not found"));
+        user.setPassword(null); // Exclude password
+        return userUtil.convertToResponse(user);
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 //    private String generateToken(User user) {
 //        return Jwts.builder()
 //                .setSubject(user.getUsername())

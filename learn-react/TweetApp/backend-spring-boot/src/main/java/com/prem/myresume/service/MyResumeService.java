@@ -7,4 +7,8 @@ public interface MyResumeService {
     List<MyResumeDto> upsertMyResumes(List<MyResumeDto> dtoList);
 
     MyResumeDto getResumeByUniqueId(String uniqueId);
+
+    List<MyResumeDto> getAllResumes();
+
+    void deleteResumeByUniqueId(String uniqueId);
 }

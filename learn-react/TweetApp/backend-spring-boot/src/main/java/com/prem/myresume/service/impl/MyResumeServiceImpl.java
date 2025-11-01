@@ -49,6 +49,21 @@ public class MyResumeServiceImpl implements MyResumeService {
                 .orElseThrow(() -> new CustomValidationException(CustomErrorCode.RESUME_NOT_FOUND, uniqueId));
     }
 
+    @Override
+    public List<MyResumeDto> getAllResumes() {
+        return myResumeRepository.findAll()
+                .stream()
+                .map(myResumeUtil::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteResumeByUniqueId(String uniqueId) {
+        MyResume resume = myResumeRepository.findByUniqueId(uniqueId)
+                .orElseThrow(() -> new CustomValidationException(CustomErrorCode.RESUME_NOT_FOUND, uniqueId));
+        myResumeRepository.delete(resume);
+    }
+
     private MyResume convertToEntity(MyResumeDto dto) {
         String uniqueId = dto.getUniqueId();
         return myResumeRepository.findByUniqueId(uniqueId)

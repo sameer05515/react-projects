@@ -78,7 +78,7 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
   return (
     <div className="mb-5">
       <CollapsibleMenu isCollapsed={isCollapsed}>
-        <ul className="flex flex-wrap items-center gap-2 rounded-lg bg-[#2C3E50] text-white px-0 py-2 shadow-lg">
+        <ul className="flex flex-wrap items-center gap-2 rounded-lg bg-menu-dark text-white px-0 py-2 shadow-lg">
           {links
             .filter((l) => l.isModule)
             .map(({ linkPath, linkHeader }, idx) => (
@@ -87,11 +87,11 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
                 className={
                   "px-4 py-2 text-xs rounded transition-colors duration-300" +
                   (isPathActive(linkPath())
-                    ? " bg-[#34495E]"
-                    : " hover:bg-[#34495E]") +
+                    ? " bg-menu-darker"
+                    : " hover:bg-menu-darker") +
                   (isPathActive(linkPath())
-                    ? " text-[#FFC107] font-bold text-sm"
-                    : " text-[#ECF0F1]")
+                    ? " text-menu-yellow font-bold text-sm"
+                    : " text-menu-light")
                 }
               >
                 <NavLink
@@ -99,8 +99,8 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
                   className={
                     "no-underline" +
                     (isPathActive(linkPath())
-                      ? " text-[#FFC107] font-bold text-sm"
-                      : " text-[#ECF0F1]")
+                      ? " text-menu-yellow font-bold text-sm"
+                      : " text-menu-light")
                   }
                   onClick={() => handleLinkClick(linkHeader)}
                 >
@@ -113,7 +113,7 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
             <li className="px-4 py-2 text-xs ml-auto">
               <button
                 onClick={handleLogout}
-                className="bg-[#E74C3C] text-white border-none px-4 py-2 rounded transition-colors duration-300 font-bold cursor-pointer hover:bg-[#C0392B]"
+                className="bg-menu-red text-white border-none px-4 py-2 rounded transition-colors duration-300 font-bold cursor-pointer hover:bg-menu-red-dark"
               >
                 Logout
               </button>

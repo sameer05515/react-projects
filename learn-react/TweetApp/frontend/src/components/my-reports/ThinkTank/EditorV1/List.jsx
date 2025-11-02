@@ -6,6 +6,7 @@ import { useThinkTankEditorV1Context } from "./Context";
 import { PurposeToOpenModal } from "./Context/utils";
 import SmartPreviewer from "../../../../common/components/Smart/Previewer/v4";
 import WithEditIcon from "../../../../common/components/WithEditIcon/v2";
+import Badge from "../../../../common/components/badge/Badge";
 
 const ListItem = ({ todo }) => {
   const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } =
@@ -13,36 +14,33 @@ const ListItem = ({ todo }) => {
   const { openModalForPurpose } = useThinkTankEditorV1Context();
 
   const createdDateStr = (
-    <span className={`badge rounded-pill text-bg-${createdDate ? "secondary" : "danger"}`}>
+    <Badge color={createdDate ? "secondary" : "danger"}>
       Created On: {createdDate || "Missing"}
-    </span>
+    </Badge>
   );
 
   const closedOnStr = closedOn ? (
-    <span className="badge rounded-pill text-bg-secondary">Closed On: {closedOn} </span>
+    <Badge color="secondary">Closed On: {closedOn} </Badge>
   ) : null;
   const statusClassName = ClassSuffixForStatus[status];
-  // const statusStr = <span className={`badge rounded-pill text-bg-${statusClassName}`}> {status} </span>;
 
   const urgentStr = (
-    <span className={`badge rounded-pill text-bg-${isUrgent ? "danger" : "warning"}`}>
-      {" "}
-      {!isUrgent ? "Not" : ""} Urgent{" "}
-    </span>
+    <Badge color={isUrgent ? "danger" : "warning"}>
+      {!isUrgent ? "Not" : ""} Urgent
+    </Badge>
   );
 
   const importantStr = (
-    <span className={`badge rounded-pill text-bg-${isImportant ? "dark" : "warning"}`}>
-      {" "}
-      {!isImportant ? "Not" : ""} Important{" "}
-    </span>
+    <Badge color={isImportant ? "dark" : "warning"}>
+      {!isImportant ? "Not" : ""} Important
+    </Badge>
   );
 
   const hasGroomedStr = (
     <div>
-      <span className={`badge rounded-pill text-end text-break mb-3 text-bg-${hasGroomed ? "success" : "danger"}`}>
+      <Badge color={hasGroomed ? "success" : "danger"} className="text-right mb-3 block">
         {hasGroomed === true ? "Groomed" : "This Todo is Not Fully Groomed Yet"}
-      </span>
+      </Badge>
     </div>
   );
 
@@ -50,17 +48,23 @@ const ListItem = ({ todo }) => {
     return null;
   }
 
+  // Get background color for status
+  const statusBgColor = {
+    info: "bg-blue-50 border-blue-200",
+    success: "bg-green-50 border-green-200",
+    warning: "bg-yellow-50 border-yellow-200",
+  };
+
   return (
-    <div className={`shadow rounded p-3 mb-5 mt-2 list-group-item list-group-item-${statusClassName}`}>
-      <div className="row">
-        <div className="col-12 col-md-3">
+    <div className={`shadow rounded p-3 mb-5 mt-2 border ${statusBgColor[statusClassName] || "bg-gray-50 border-gray-200"}`}>
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="w-full md:w-1/4">
           {status !== Status.CLOSED && hasGroomedStr}
 
-          <div className="fw-bold">Item Type: {getHeaderForThinkTankItemType(itemType)}</div>
+          <div className="font-bold mb-2">Item Type: {getHeaderForThinkTankItemType(itemType)}</div>
 
-          {/* <div className="fw-bold">{statusStr}</div> */}
           <WithEditIcon
-            className="fw-bold"
+            className="font-bold mb-2"
             showEditIcon={status !== Status.CLOSED}
             editIconTitle="Edit Smart Content"
             onEditIconClick={() =>
@@ -70,35 +74,17 @@ const ListItem = ({ todo }) => {
               })
             }
           >
-            <span className={`badge rounded-pill text-bg-${statusClassName}`}> {status} </span>
+            <Badge color={statusClassName}>{status}</Badge>
           </WithEditIcon>
 
-          <div className="fw-bold">
+          <div className="font-bold mb-2 flex flex-wrap gap-2">
             {urgentStr} {importantStr}
           </div>
-          <div className="fw-bold">{createdDateStr}</div>
-          <div className="fw-bold">{closedOnStr}</div>
+          <div className="font-bold mb-2">{createdDateStr}</div>
+          <div className="font-bold">{closedOnStr}</div>
         </div>
-        {/* <div className={`col-12 col-md-9 ${styles.listItem}`}>
-          
-          <SmartPreviewer data={smartContent} /> 
-          {status !== Status.CLOSED && (
-            <span
-              className={styles.editIcon}
-              onClick={() =>
-                openModalForPurpose(PurposeToOpenModal.UPDATE_SMART_CONTENT_OF_EXISTING_TTITEM, {
-                  uniqueId,
-                  smartContent,
-                })
-              }
-              role="button"
-            >
-              <FaEdit size={18} />
-            </span>
-          )}
-        </div> */}
         <WithEditIcon
-          className="col-12 col-md-9"
+          className="w-full md:w-3/4"
           showEditIcon={status !== Status.CLOSED}
           editIconTitle="Edit Smart Content"
           onEditIconClick={() =>
@@ -122,7 +108,7 @@ const List = () => {
     return <div>todos are not valid array!</div>;
   }
   return (
-    <ul className="list-group">
+    <ul className="space-y-4">
       {filteredTodos.map((todo, idx) => (
         <ListItem key={`idx_${idx + 1}`} todo={todo} />
       ))}

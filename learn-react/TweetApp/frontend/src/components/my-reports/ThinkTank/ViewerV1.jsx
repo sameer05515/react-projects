@@ -10,6 +10,7 @@ import {
 import { myTodos } from "./data";
 import pipe from "../../../common/service/pipe-util";
 import { availableOutputTypes, SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
+import Badge from "../../../common/components/badge/Badge";
 
 const FilterActionTypes = {
   SHOW_ALL: "show-all",
@@ -25,29 +26,35 @@ const FilterActions = {
 
 // Component for Filter Buttons
 const FilterButtons = ({ onFilterChange }) => {
+  const [selectedFilter, setSelectedFilter] = useState(FilterActionTypes.SHOW_ALL);
+  
   const filters = [
     { label: "Show Open", id: "show-open-todos-btn", action: FilterActionTypes.SHOW_OPEN_ONLY },
     { label: "Show Closed", id: "show-closed-todos-btn", action: FilterActionTypes.SHOW_CLOSED_ONLY },
     { label: "Show All", id: "show-all-todos-btn", action: FilterActionTypes.SHOW_ALL },
   ];
 
+  const handleFilterClick = (action) => {
+    setSelectedFilter(action);
+    onFilterChange(action);
+  };
+
   return (
-    <div className="btn-group bg-info" role="group" aria-label="Filter Buttons">
+    <div className="inline-flex rounded-lg overflow-hidden border border-blue-600 bg-blue-50" role="group" aria-label="Filter Buttons">
       {filters.map(({ label, id, action }) => (
-        <React.Fragment key={id}>
-          <input
-            type="radio"
-            className="btn-check"
-            name="btnradio"
-            id={id}
-            autoComplete="off"
-            defaultChecked={action === FilterActionTypes.SHOW_ALL}
-            onClick={() => onFilterChange(action)}
-          />
-          <label className="btn btn-outline-primary" htmlFor={id}>
-            {label}
-          </label>
-        </React.Fragment>
+        <button
+          key={id}
+          type="button"
+          id={id}
+          onClick={() => handleFilterClick(action)}
+          className={`px-4 py-2 text-sm font-medium transition-colors ${
+            selectedFilter === action
+              ? "bg-blue-600 text-white"
+              : "bg-transparent text-blue-600 hover:bg-blue-100"
+          } ${action !== FilterActionTypes.SHOW_ALL ? "border-l border-blue-600" : ""}`}
+        >
+          {label}
+        </button>
       ))}
     </div>
   );
@@ -56,37 +63,43 @@ const FilterButtons = ({ onFilterChange }) => {
 // Component for a Single Todo Item
 const ListItem = ({ name, createdDate, status, closedOn, isUrgent, isImportant }) => {
   const createdDateStr = createdDate ? (
-    <span className="badge text-bg-secondary">Created On: {createdDate}</span>
+    <Badge color="secondary">Created On: {createdDate}</Badge>
   ) : (
-    <span className="badge text-bg-danger">Created On: Missing</span>
+    <Badge color="danger">Created On: Missing</Badge>
   );
 
-  const closedOnStr = closedOn && <span className="badge text-bg-secondary">Closed On: {closedOn}</span>;
+  const closedOnStr = closedOn && <Badge color="secondary">Closed On: {closedOn}</Badge>;
 
   const statusClassName = ClassSuffixForStatus[status];
-  const statusStr = <span className={`badge text-bg-${statusClassName}`}>{status}</span>;
+  const statusStr = <Badge color={statusClassName}>{status}</Badge>;
 
-  const urgentStr = <span className={`badge text-bg-${isUrgent ? "danger" : "warning"}`}>{isUrgent ? "Urgent" : "Not Urgent"}</span>;
+  const urgentStr = <Badge color={isUrgent ? "danger" : "warning"}>{isUrgent ? "Urgent" : "Not Urgent"}</Badge>;
 
-  const importantStr = <span className={`badge text-bg-${isImportant ? "dark" : "warning"}`}>{isImportant ? "Important" : "Not Important"}</span>;
+  const importantStr = <Badge color={isImportant ? "dark" : "warning"}>{isImportant ? "Important" : "Not Important"}</Badge>;
+
+  // Get background color for status
+  const statusBgColor = {
+    info: "bg-blue-50 border-blue-200",
+    success: "bg-green-50 border-green-200",
+    warning: "bg-yellow-50 border-yellow-200",
+  };
 
   return (
-    <div className={`shadow rounded p-3 mb-5 mt-2 list-group-item list-group-item-${statusClassName}`}>
-      <span className="whitespace-pre-wrap">
+    <div className={`shadow rounded p-3 mb-5 mt-2 border ${statusBgColor[statusClassName] || "bg-gray-50 border-gray-200"}`}>
+      <span className="whitespace-pre-wrap block mb-2">
         {/* {name} */}
         <SmartPreviewer data={{ content: name, textOutputType: availableOutputTypes.HTML }} />
       </span>
-      <br />
-      <span className="fw-bold">
+      <div className="flex flex-wrap gap-2 font-bold">
         {statusStr} {urgentStr} {importantStr} {createdDateStr} {closedOnStr}
-      </span>
+      </div>
     </div>
   );
 };
 
 // Component for the Todo List
 const List = ({ todos = [] }) => (
-  <ul className="list-group col-8">
+  <ul className="space-y-4 w-full max-w-4xl">
     {todos.map((todo, idx) => (
       <ListItem key={`todo_${idx}`} {...todo} />
     ))}
@@ -109,16 +122,20 @@ const ThinkTankViewerV1 = () => {
   }, []);
 
   return (
-    <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
-      <h1>Welcome</h1>
-      <h1>My-ToDo List- v2</h1>
-      <details>
-        <summary>Instructions</summary>
-        Here we will put all our To-dos, in the below format:
-        <pre>[Date]: [Status (Open/Closed)] - Title of to-do Description (As short as possible)</pre>
+    <div className="w-full min-h-screen bg-green-600 p-2 bg-opacity-75">
+      <h1 className="text-2xl font-bold mb-4">Welcome</h1>
+      <h1 className="text-2xl font-bold mb-4">My-ToDo List- v2</h1>
+      <details className="mb-4">
+        <summary className="cursor-pointer font-semibold">Instructions</summary>
+        <div className="mt-2">
+          Here we will put all our To-dos, in the below format:
+          <pre className="bg-gray-100 p-2 rounded mt-2">[Date]: [Status (Open/Closed)] - Title of to-do Description (As short as possible)</pre>
+        </div>
       </details>
-      <h3>My List</h3>
-      <FilterButtons onFilterChange={handleFilterChange} />
+      <h3 className="text-xl font-semibold mb-4">My List</h3>
+      <div className="mb-4">
+        <FilterButtons onFilterChange={handleFilterChange} />
+      </div>
       <List todos={filteredTodos} />
     </div>
   );

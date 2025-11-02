@@ -13,11 +13,11 @@ const ThinkTankEditorV1 = () => {
     useThinkTankEditorV1Context();
 
   return (
-    <div className="container-fluid min-vh-100 bg-success p-2 bg-opacity-75">
-      <h1>Welcome</h1>
+    <div className="w-full min-h-screen bg-green-600 p-2 bg-opacity-75">
+      <h1 className="text-2xl font-bold mb-4">Welcome</h1>
 
-      <h1>My Think-Tank - (older name My-ToDo List):v1</h1>
-      <h2>
+      <h1 className="text-2xl font-bold mb-4">My Think-Tank - (older name My-ToDo List):v1</h1>
+      <h2 className="text-xl mb-4">
         This modules is TO REDUCE STRESS AND IF THEY ARE "VALID ASK"s, then take action on them accordingly in near
         future.
       </h2>
@@ -52,41 +52,19 @@ const ThinkTankEditorV1 = () => {
         </div>
       </details>
 
-      {/* <div className="row">
-        <div className="col-md-12">
-          <h3>My List</h3>
+      <div className="flex items-center mb-4">
+        <div className="w-full md:w-1/2">
+          <h3 className="text-xl font-semibold">My List</h3>
         </div>
-        <div className="col-md-6">
+        <div className="w-full md:w-1/2 flex justify-end gap-2">
           <button
-            className="btn btn-primary btn-sm"
-            onClick={() => openModalForPurpose(PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE, null)}
-          >
-            JUST TO TEST MODAL V3 and SmartEditorV4
-          </button>
-        </div>
-        <div className="col-md-6 justify-content-end">
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={() => openModalForPurpose(PurposeToOpenModal.Open_Show_Statistics, null)}
-          >
-            Show Statistics
-          </button>
-        </div>
-      </div> */}
-
-      <div className="row align-items-center">
-        <div className="col-md-6">
-          <h3>My List</h3>
-        </div>
-        <div className="col-md-6 d-flex justify-content-end">
-          <button
-            className="btn btn-primary btn-sm me-2"
+            className="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition-colors"
             onClick={() => openModalForPurpose(PurposeToOpenModal.BAS_AISE_HI_TESTING_KE_LIYE, null)}
           >
             JUST TO TEST MODAL V3 and SmartEditorV4
           </button>
           <button
-            className="btn btn-primary btn-sm"
+            className="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition-colors"
             onClick={() => openModalForPurpose(PurposeToOpenModal.Open_Show_Statistics, null)}
           >
             Show Statistics

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import useDataFetching from "../../common/hooks/useDataFetching/v2";
-import { createLink, fetchLinks, fetchLinksByUniqueId, updateLink } from "../../redux/slices/linksSlice";
+import { createLink, fetchLinks, fetchLinksByUniqueId, selectLinksStateCombined, updateLink } from "../../redux/slices/linksSlice";
 import "./Links.css";
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import { SmartEditor, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
@@ -16,9 +16,8 @@ const ViewLink = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const linkDetails = useSelector((state) => state.links.linkDetails);
-  const loading = useSelector((state) => state.links.loading);
-  const error = useSelector((state) => state.links.error);
+  // Use combined selector to optimize multiple useSelector calls
+  const { linkDetails, loading, error } = useSelector(selectLinksStateCombined);
 
   const handleLinkSelection = (selectedItem) => {
     navigate(`/links-mgmt/${selectedItem.uniqueId}`);
@@ -462,9 +461,8 @@ const LinksBase = () => {
     (state) => state.links
   );
 
-  const links = useSelector((state) => state.links.data);
-  const status = useSelector((state) => state.links.loading);
-  const error = useSelector((state) => state.links.error);
+  // Use combined selector to optimize multiple useSelector calls
+  const { links, loading: status, error } = useSelector(selectLinksStateCombined);
 
   const handleButtonClick = (path) => {
     navigate(path);
@@ -492,11 +490,11 @@ const LinksBase = () => {
     );
   };
 
-  if (status === "loading") {
+  if (status === "pending" || status === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === "failed") {
+  if (status === "rejected" || status === "failed" || error) {
     return <div>Error: {error}</div>;
   }
 

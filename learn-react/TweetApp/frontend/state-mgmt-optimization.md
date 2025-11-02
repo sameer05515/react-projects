@@ -144,7 +144,7 @@ const filteredTags = useMemo(
 
 ---
 
-### 4. **Multiple useSelector Calls Per Component**
+### 🏋️🎯🤖4. **Multiple useSelector Calls Per Component**
 **Current Issue:** Components making multiple `useSelector` calls instead of single optimized selector.
 
 **Impact:** 🟠 **HIGH** - Multiple subscriptions, potential unnecessary re-renders

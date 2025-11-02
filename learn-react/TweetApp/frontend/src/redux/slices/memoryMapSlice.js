@@ -193,3 +193,19 @@ export const selectPrevMemoryMapUniqueId = createSelector(
     return flatMemoryMapList[prevIndex].uniqueId;
   }
 );
+
+// Combined selector for common memory map state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for memoryMaps, loading, error, and selectedId
+export const selectMemoryMapsStateCombined = createSelector(
+  [
+    selectAllTreeMemoryMaps,
+    selectSelectedMemoryMapUniqueId,
+    selectMemoryMapsState,
+  ],
+  (memoryMaps, selectedId, memoryMapsState) => ({
+    memoryMaps,
+    loading: memoryMapsState.loading,
+    error: memoryMapsState.error,
+    selectedId,
+  })
+);

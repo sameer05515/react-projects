@@ -140,10 +140,10 @@ export default taskSlice.reducer;
 export const { setSelectedTaskUniqueId } = taskSlice.actions;
 
 /* ============== Selectors ======================*/
-const selectTasksState = (state) => state.tasks;
+const selectTasksStateBase = (state) => state.tasks;
 
 export const selectAllTreeTasks = createSelector(
-  selectTasksState,
+  selectTasksStateBase,
   (tasksState) => tasksState.data
 );
 
@@ -154,7 +154,7 @@ export const selectAllFlatTasks = createSelector(
 );
 
 export const selectSelectedTaskUniqueId = createSelector(
-  selectTasksState,
+  selectTasksStateBase,
   (tasksState) => tasksState.selectedTaskUniqueId
 );
 
@@ -186,4 +186,20 @@ export const selectPrevTaskUniqueId = createSelector(
     const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
     return flatTaskList[prevIndex].uniqueId;
   }
+);
+
+// Combined selector for common task state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for tasks, status, error, and selectedId
+export const selectTasksStateCombined = createSelector(
+  [
+    selectAllTreeTasks,
+    selectSelectedTaskUniqueId,
+    selectTasksStateBase,
+  ],
+  (tasks, selectedId, tasksState) => ({
+    tasks,
+    status: tasksState.status,
+    error: tasksState.error,
+    selectedId,
+  })
 );

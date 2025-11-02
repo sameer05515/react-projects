@@ -11,8 +11,7 @@ import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
 import useDataFetching from "../../common/hooks/useDataFetching/v2";
 import {
   fetchTasks,
-  selectAllTreeTasks,
-  selectSelectedTaskUniqueId,
+  selectTasksStateCombined,
 } from "../../redux/slices/taskSlice";
 import TaskCardViewDashboard from "./sub-components/common/TaskCardViewDashboard";
 import { prepareTaskTitle } from "./sub-components/common/taskUtils";
@@ -42,18 +41,16 @@ const TaskBase = () => {
 const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tasks = useSelector(selectAllTreeTasks);
-  const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
   const selectedElementRef = useRef(null);
 
   // Fetch tasks data only when component mounts (with smart caching)
-  const { loading: tasksLoading, error: tasksError } = useDataFetching(
+  useDataFetching(
     fetchTasks,
     (state) => state.tasks
   );
 
-  const status = useSelector((state) => state.tasks.status);
-  const error = useSelector((state) => state.tasks.error);
+  // Use combined selector to optimize multiple useSelector calls
+  const { tasks, status, error, selectedId: selectedTaskUniqueId } = useSelector(selectTasksStateCombined);
 
   useEffect(() => {
     if (selectedElementRef.current) {

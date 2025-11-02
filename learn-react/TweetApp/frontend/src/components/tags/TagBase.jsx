@@ -25,6 +25,7 @@ import {
   selectNextTagUniqueId,
   selectPrevTagUniqueId,
   selectSelectedTagUniqueId,
+  selectTagsStateCombined,
   setSelectedTagUniqueId,
   updateTag,
 } from "../../redux/slices/tagsSlice";
@@ -56,8 +57,6 @@ const TagBase = () => {
 const ListTags = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tags = useSelector(selectAllTreeTags);
-  const selectedTagUniqueId = useSelector(selectSelectedTagUniqueId);
   const selectedElementRef = useRef(null);
 
   // Fetch tags data only when component mounts (with smart caching)
@@ -66,8 +65,8 @@ const ListTags = () => {
     (state) => state.tags
   );
 
-  const status = useSelector((state) => state.tags.loading);
-  const error = useSelector((state) => state.tags.error);
+  // Use combined selector to optimize multiple useSelector calls
+  const { tags, loading: status, error, selectedId: selectedTagUniqueId } = useSelector(selectTagsStateCombined);
 
   useEffect(() => {
     if (selectedElementRef.current) {
@@ -89,11 +88,11 @@ const ListTags = () => {
     navigate(`${selectedItem.uniqueId}`);
   };
 
-  if (status === "loading") {
+  if (status === "pending" || status === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === "failed") {
+  if (status === "rejected" || status === "failed" || error) {
     return <div>Error: {error}</div>;
   }
 

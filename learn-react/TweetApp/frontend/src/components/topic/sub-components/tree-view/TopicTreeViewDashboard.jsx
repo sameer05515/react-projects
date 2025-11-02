@@ -8,7 +8,8 @@ import TooltipSpan from "../../../../common/components/tooltip-span/TooltipSpan"
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
 import useDataFetching from "../../../../common/hooks/useDataFetching/v2";
 import {
-  fetchTopics, selectAllTreeTopics, selectSelectedTopicUniqueId
+  fetchTopics,
+  selectTopicsStateCombined
 } from "../../../../redux/slices/topicSlice";
 import { fetchTags } from "../../../../redux/slices/tagsSlice";
 import { TopicMgmtStyles as styles } from "../styles";
@@ -16,13 +17,11 @@ import { TopicMgmtStyles as styles } from "../styles";
 const TopicTreeViewDashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const topics = useSelector(selectAllTreeTopics);
-    const selectedTopicUniqueId = useSelector(selectSelectedTopicUniqueId);
     const selectedElementRef = useRef(null);
 
     // Fetch topics and tags data only when component mounts (with smart caching)
     // Tags are needed for CreateTopic component
-    const { loading: topicsLoading, error: topicsError } = useDataFetching(
+    useDataFetching(
       fetchTopics,
       (state) => state.topics
     );
@@ -33,8 +32,8 @@ const TopicTreeViewDashboard = () => {
       (state) => state.tags
     );
 
-    const status = useSelector((state) => state.topics.loading);
-    const error = useSelector((state) => state.topics.error);
+    // Use combined selector to optimize multiple useSelector calls
+    const { topics, loading: status, error, selectedId: selectedTopicUniqueId } = useSelector(selectTopicsStateCombined);
     
   
     useEffect(() => {
@@ -57,11 +56,11 @@ const TopicTreeViewDashboard = () => {
       navigate(`${selectedItem.uniqueId}`);
     };
       
-    if (status === "loading") {
+    if (status === "pending" || status === "loading") {
       return <div>Loading...</div>;
     }
   
-    if (status === "failed") {
+    if (status === "rejected" || status === "failed" || error) {
       return <div>Error: {error}</div>;
     }
   

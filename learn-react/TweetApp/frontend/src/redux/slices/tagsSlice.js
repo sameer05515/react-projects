@@ -222,3 +222,19 @@ export const getTagForUniqueId = (uniqueId = "") =>
     console.trace("Tag options ka request aaya");
     return flatTagList.find((t) => t.uniqueId === uniqueId) || null;
   });
+
+// Combined selector for common tag state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for tags, loading, error, and selectedId
+export const selectTagsStateCombined = createSelector(
+  [
+    selectAllTreeTags,
+    selectSelectedTagUniqueId,
+    selectTagsState,
+  ],
+  (tags, selectedId, tagsState) => ({
+    tags,
+    loading: tagsState.loading,
+    error: tagsState.error,
+    selectedId,
+  })
+);

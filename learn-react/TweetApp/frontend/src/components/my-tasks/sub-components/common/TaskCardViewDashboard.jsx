@@ -7,6 +7,7 @@ import {
   fetchTasks,
   saveTask,
   selectAllFlatTasks,
+  selectTasksStateCombined,
   updateTask,
 } from "../../../../redux/slices/taskSlice";
 import TaskList from "./TaskList";
@@ -22,9 +23,9 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
+  // Use combined selector for tasks, status, and error
+  const { tasks: tasksTree, status, error } = useSelector(selectTasksStateCombined);
   const tasks = useSelector(selectAllFlatTasks);
-  const status = useSelector((state) => state.tasks.status);
-  const error = useSelector((state) => state.tasks.error);
 
   if (status === "loading") {
     return <div>Loading...</div>;

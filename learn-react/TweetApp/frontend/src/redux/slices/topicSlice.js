@@ -263,3 +263,19 @@ export const selectPrevTopicUniqueId = createSelector(
     return flatTopicList[prevIndex].uniqueId;
   }
 );
+
+// Combined selector for common topic state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for topics, loading, error, and selectedId
+export const selectTopicsStateCombined = createSelector(
+  [
+    selectAllTreeTopics,
+    selectSelectedTopicUniqueId,
+    selectTopicsState,
+  ],
+  (topics, selectedId, topicsState) => ({
+    topics,
+    loading: topicsState.loading,
+    error: topicsState.error,
+    selectedId,
+  })
+);

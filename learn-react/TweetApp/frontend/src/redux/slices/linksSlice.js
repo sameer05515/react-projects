@@ -216,3 +216,20 @@ export const selectPrevLinkUniqueId = createSelector(
     return flatLinkList[prevIndex].uniqueId;
   }
 );
+
+// Combined selector for common link state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for links, loading, error, selectedId, and linkDetails
+export const selectLinksStateCombined = createSelector(
+  [
+    selectAllTreeLinks,
+    selectSelectedLinkUniqueId,
+    selectLinksState,
+  ],
+  (links, selectedId, linksState) => ({
+    links,
+    loading: linksState.loading,
+    error: linksState.error,
+    selectedId,
+    linkDetails: linksState.linkDetails,
+  })
+);

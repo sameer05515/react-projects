@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const swaggerUi = require("swagger-ui-express");
+const redoc = require("redoc-express");
 const swaggerSpec = require("./swagger");
 
 // App & port configuration
@@ -85,8 +86,65 @@ routers.forEach(({ path, handler }) => {
 // Register general documentation routes
 app.use("", docRoutes);
 
-// Serve Swagger API documentation
+// Serve Swagger UI API documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Serve Redoc API documentation (alternative, more modern UI)
+app.get(
+  "/redoc",
+  redoc({
+    title: "SmartNote API Documentation",
+    specUrl: "/api-docs-json",
+  })
+);
+
+// Serve OpenAPI JSON spec for Redoc (with cleaned invalid references)
+app.get("/api-docs-json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  
+  // Create a deep copy to avoid modifying the original spec
+  const cleanedSpec = JSON.parse(JSON.stringify(swaggerSpec));
+  
+  // Ensure components.schemas exists (even if empty)
+  if (!cleanedSpec.components) {
+    cleanedSpec.components = {};
+  }
+  if (!cleanedSpec.components.schemas) {
+    cleanedSpec.components.schemas = {};
+  }
+  
+  // Function to recursively remove invalid $ref references
+  function cleanInvalidRefs(obj, path = '') {
+    if (Array.isArray(obj)) {
+      obj.forEach((item, index) => cleanInvalidRefs(item, `${path}[${index}]`));
+    } else if (obj && typeof obj === 'object') {
+      for (const key in obj) {
+        if (key === '$ref' && typeof obj[key] === 'string') {
+          const refPath = obj[key];
+          // Check if it's a schema reference
+          if (refPath.startsWith('#/components/schemas/')) {
+            const schemaName = refPath.replace('#/components/schemas/', '');
+            // If schema doesn't exist, replace with a generic object schema
+            if (!cleanedSpec.components.schemas[schemaName]) {
+              // Replace $ref with inline schema
+              delete obj.$ref;
+              obj.type = 'object';
+              obj.additionalProperties = true;
+              obj.description = `Schema definition for ${schemaName} (placeholder)`;
+            }
+          }
+        } else {
+          cleanInvalidRefs(obj[key], path ? `${path}.${key}` : key);
+        }
+      }
+    }
+  }
+  
+  // Clean the spec
+  cleanInvalidRefs(cleanedSpec);
+  
+  res.send(cleanedSpec);
+});
 
 // Global error handler (add more robust error handling if desired)
 app.use((err, req, res, next) => {
@@ -98,5 +156,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   const baseUrl = `http://localhost:${PORT}`;
   console.log(`[${new Date().toISOString()}] Server running at ${baseUrl}`);
-  console.log(`[${new Date().toISOString()}] Swagger API docs: ${baseUrl}/api-docs`);
+  console.log(`[${new Date().toISOString()}] Swagger UI docs: ${baseUrl}/api-docs`);
+  console.log(`[${new Date().toISOString()}] Redoc docs: ${baseUrl}/redoc`);
 });

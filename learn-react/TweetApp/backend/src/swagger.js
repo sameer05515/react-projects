@@ -53,7 +53,8 @@ const options = {
           bearerFormat: 'JWT',
           description: 'Enter your JWT token in the format: Bearer {token}'
         }
-      }
+      },
+      schemas: {} // Initialize empty schemas object to prevent $ref errors
       // Optionally: You can add reusable schemas here later via $ref
     },
     security: [

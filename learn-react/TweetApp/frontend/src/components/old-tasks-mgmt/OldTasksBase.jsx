@@ -1,8 +1,5 @@
 import React, { useReducer, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { Button } from "react-bootstrap";
+import CustomButton from "../../common/components/custom-button/CustomButton";
 import * as PageModes from "../../common/constants/taskPageModes";
 import ViewTask from "./sub-components/ViewTask";
 import SaveDataComponent from "./sub-components/SaveData";
@@ -49,83 +46,50 @@ function OldTasksBase() {
     setSelectedItem(item);
   };
   return (
-    <Container>
-      {/* <Row>
-                <Col sm={3}>
-                    <Row>
-                        <Col>
-                            <Button onClick={showAdd}>Add</Button>
-                        </Col>
-                    </Row>
-                    <Row>
-
-                    </Row>
-                </Col>
-                <Col sm={9}>2 of 2</Col>
-            </Row> */}
-      <Row>
-        <Col sm={5}>
-          <div className="bg-blue-200">
-            <Button onClick={showAdd}>Add</Button>
-            {/* <Button onClick={showAdd}>Previous</Button>
-            <Button onClick={showAdd}>Next</Button> */}
+    <div className="container mx-auto px-4 py-4">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="w-full md:w-5/12">
+          <div className="bg-blue-200 p-2 rounded mb-4">
+            <CustomButton onClick={showAdd}>Add</CustomButton>
           </div>
-
-          {/* <div>
-            List of items
-            <ul>
-              <li>
-                <div onClick={showData}>item description</div>
-              </li>
-            </ul>
-          </div> */}
           <DataList itemSelectionHandler={showData} />
-        </Col>
+        </div>
 
-        <Col sm={7}>
-          {/* {pageMode} */}
+        <div className="w-full md:w-7/12">
           {pageMode && pageMode === PageModes.NO_SELECTION && (
-            <div>Please select any item</div>
+            <div className="p-4 text-gray-600">Please select any item</div>
           )}
 
           {pageMode && pageMode === PageModes.SHOW_ITEM && (
             <div>
               <ViewTask id={selectedId} itemEditHandler={editData} />
-              {/* <Button onClick={showAdd}>Edit</Button>
-              <Button onClick={showAdd}>Delete</Button> */}
             </div>
           )}
 
           {pageMode && pageMode === PageModes.NEW_ITEM && (
             <div>
-              {/* Add form */}
-              {/* <CreateNewTask /> */}
               <SaveDataComponent />
-              {/* <Button onClick={showAdd}>Save</Button>
-              <Button onClick={showAdd}>Cancel</Button> */}
             </div>
           )}
 
           {pageMode && pageMode === PageModes.EDIT && (
             <div>
-              {/* Edit form
-              <Button onClick={showAdd}>Update</Button>
-              <Button onClick={showAdd}>Cancel</Button> */}
               <EditDataComponent savedData={selectedItem} />
             </div>
           )}
 
           {pageMode && pageMode === PageModes.DELETE && (
-            <div>
-              delete form
-              <Button onClick={showAdd}>Yes</Button>
-              <Button onClick={showAdd}>No</Button>
+            <div className="p-4">
+              <p className="mb-4">Are you sure you want to delete this item?</p>
+              <div className="flex gap-2">
+                <CustomButton onClick={showAdd}>Yes</CustomButton>
+                <CustomButton onClick={showAdd}>No</CustomButton>
+              </div>
             </div>
           )}
-          {/* <SearchDataComponent/> */}
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }
 

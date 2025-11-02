@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../common/components/Smart/Editor/v3";
 
@@ -8,7 +7,6 @@ const TagForm = ({
   onSubmit = () => { },
   onCancel: handleCancel = () => { },
 }) => {
-  const dispatch = useDispatch();
   const [formErrors, setFormErrors] = useState([]);
   const [smartEditorError, setSmartEditorError] = useState(null);
 

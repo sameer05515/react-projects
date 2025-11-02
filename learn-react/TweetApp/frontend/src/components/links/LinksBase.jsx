@@ -472,7 +472,6 @@ const EditLink = () => {
 };
 
 const LinksBase = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Fetch links data only when component mounts (with smart caching)

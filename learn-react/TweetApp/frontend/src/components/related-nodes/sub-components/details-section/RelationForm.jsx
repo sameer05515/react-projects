@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import Select from "react-select";
 import JSONPreview from "../common/JSONPreview";
@@ -22,8 +22,8 @@ export const RelationForm = ({
     onClose = () => {},
 }) => {
     const {
-        SharedService: { updateNodeByUniqueId, refreshNodes, updateRelationInConnectedNodes },
-        sharedData: { styles, selectedNode: nodeInfo, allNodes },
+        SharedService: { refreshNodes, updateRelationInConnectedNodes },
+        sharedData: { selectedNode: nodeInfo, allNodes },
     } = useSharedConfigurations();
     
     const [formData, setFormData] = useState({
@@ -39,6 +39,11 @@ export const RelationForm = ({
     const [finalString, setFinalString] = useState(null);
     const [formErrors, setFormErrors] = useState([]);
 
+    const getNodeNameForId = useCallback((id) => {
+        if (!id) return "";
+        return allNodes.find((node) => node.uniqueId === id)?.name || "";
+    }, [allNodes]);
+
     useEffect(() => {
         setFinalString(
             getRelationStringForId(
@@ -48,7 +53,7 @@ export const RelationForm = ({
                 formData.showReverseRelationName
             )
         );
-    }, [formData]);
+    }, [formData, getNodeNameForId]);
 
     const nodeOptions = allNodes
     ?.filter((node) =>
@@ -59,11 +64,6 @@ export const RelationForm = ({
         label: node.name,
         value: node.uniqueId,
     }));
-
-    const getNodeNameForId = (id) => {
-        if (!id) return "";
-        return allNodes.find((node) => node.uniqueId === id)?.name || "";
-    };
 
     const handleInputChange = (name, value) => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));

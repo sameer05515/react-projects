@@ -12,7 +12,6 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 const SearchInterviewMgmtRouterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const topicFormStyle = {};
 
   const [formData, setFormData] = useState({
     title: "",

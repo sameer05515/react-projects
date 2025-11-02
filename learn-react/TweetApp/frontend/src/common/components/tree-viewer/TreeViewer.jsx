@@ -14,7 +14,7 @@ const TreeNode = ({
   const [expanded, setExpanded] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
 
-  const checkIfIdOfNodeOrItsOneOfTheChildren = (id, currentNode) => {
+  const checkIfIdOfNodeOrItsOneOfTheChildren = useCallback((id, currentNode) => {
     if (!id) return false;
     if (id === currentNode[uniqueIdFieldName]) return true;
     if (currentNode.children && currentNode.children.length > 0) {
@@ -23,13 +23,13 @@ const TreeNode = ({
       );
     }
     return false;
-  };
+  }, [uniqueIdFieldName]);
 
   const shouldExpand = useMemo(() => {
     return (
       checkIfIdOfNodeOrItsOneOfTheChildren(selectedNodeId, node) || expandAll
     );
-  }, [selectedNodeId, node, expandAll]);
+  }, [selectedNodeId, node, expandAll, checkIfIdOfNodeOrItsOneOfTheChildren]);
 
   useEffect(() => {
     if (shouldExpand) {

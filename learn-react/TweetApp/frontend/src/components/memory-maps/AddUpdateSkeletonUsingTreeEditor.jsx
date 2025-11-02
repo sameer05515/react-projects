@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchMemoryMaps, updateMemoryMapForGivenSkeleton } from "../../redux/slices/memoryMapSlice";
@@ -69,6 +69,22 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
   });
 
+  const previewSkeleton = useCallback(() => {
+    if (!formData.skeleton?.trim()) {
+      //setErrorMessage("Please provide some valid skeleton text!!");
+      return;
+    }
+    const { data: treeData, isValid, message } = buildTree(formData.skeleton);
+
+    if (isValid) {
+      setIsValidSkeleton(true);
+      setResultData(addUniqueIdsToTree(treeData, "preview_Skeleton".toUpperCase(), false));
+    } else {
+      setIsValidSkeleton(false);
+      setErrorMessage(message || "Missing Error message");
+    }
+  }, [formData.skeleton]);
+
   const handleRightClick = (event, selectedMap) => {
     event.preventDefault();
     if (!selectedMap) return;
@@ -79,7 +95,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
 
   useEffect(() => {
     previewSkeleton();
-  }, []);
+  }, [previewSkeleton]);
 
   // Find a node by uniqueId
   // const findNodeById = (nodes, id) => {
@@ -211,22 +227,6 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     dispatch(fetchMemoryMaps());
     toast.success("MemoryMap's skeleton upserted successfully");
     // navigate(-1);
-  };
-
-  const previewSkeleton = () => {
-    if (!formData.skeleton?.trim()) {
-      //setErrorMessage("Please provide some valid skeleton text!!");
-      return;
-    }
-    const { data: treeData, isValid, message } = buildTree(formData.skeleton);
-
-    if (isValid) {
-      setIsValidSkeleton(true);
-      setResultData(addUniqueIdsToTree(treeData, "preview_Skeleton".toUpperCase(), false));
-    } else {
-      setIsValidSkeleton(false);
-      setErrorMessage(message || "Missing Error message");
-    }
   };
 
   const handleAddChildrenOrSiblingsNodesSubmit = (data) => {

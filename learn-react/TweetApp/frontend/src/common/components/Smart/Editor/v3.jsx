@@ -1,7 +1,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { addUniqueIdsToTree } from "../../../util/id-adder-util";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
@@ -73,9 +73,9 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
     if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
       setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
     }
-  }, [selectedOutputType]);
+  }, [selectedOutputType, formData.textOutputType, formData.textInputType]);
 
-  useEffect(() => {
+  const handleFormDataChange = useCallback(() => {
     const { textOutputType, content } = formData;
 
     let error = "";
@@ -101,7 +101,11 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
 
     onError(error);
     onChange(formData);
-  }, [formData.content, formData.textOutputType]);
+  }, [formData, onError, onChange]);
+
+  useEffect(() => {
+    handleFormDataChange();
+  }, [formData.content, formData.textOutputType, handleFormDataChange]);
 
   const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);
   const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));

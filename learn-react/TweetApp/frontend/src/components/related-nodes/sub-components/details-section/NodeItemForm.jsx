@@ -4,7 +4,6 @@ import FloatingButton from "../../../../common/components/floating-button/Floati
 import Select from "react-select";
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
 import {
-    deleteObjectById,
     updateOrAdd,
     generateOptions,
     CONSTANTS, NODE_ITEM_TYPES
@@ -18,12 +17,12 @@ export const NodeItemForm = ({
 }) => {
     const {
         SharedService: { refreshNodes, createNode, updateNodeByUniqueId },
-        sharedData: { selectedNode, styles, allNodes },
+        sharedData: { selectedNode, allNodes },
     } = useSharedConfigurations();
 
     const [formErrors, setFormErrors] = useState([]);
     const [showRelationForm, setShowRelationForm] = useState(false);
-    const [selectedRelation, setSelectedRelation] = useState(null);
+    const selectedRelation = null; // Reserved for future edit relation functionality
     const [formData, setFormData] = useState({
         uniqueId: initialFormData.uniqueId || "",
         name: initialFormData.name || "",
@@ -67,18 +66,6 @@ export const NodeItemForm = ({
 
     const handleInputChange = ({ target: { name, value } }) => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleRelationEdit = (det = null) => {
-        setSelectedRelation(det ? { ...det } : null);
-        setShowRelationForm(true);
-    };
-
-    const handleRelationDelete = (uniqueId) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            relations: deleteObjectById(prevData.relations, uniqueId),
-        }));
     };
 
     const mergeRelation = (detailData) => {

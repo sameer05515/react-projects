@@ -18,6 +18,8 @@ const HoverableSpan = ({
         case "MouseLeave":
           setIsHovered(false);
           return;
+        default:
+          return;
       }
     }
   };

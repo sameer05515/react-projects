@@ -79,11 +79,6 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     });
   };
 
-  const handleEditorChange = (event, editor) => {
-    const data = editor.getData();
-    setFormData({ ...formData, description: data });
-  };
-
   const handleSaveTask = (event) => {
     event.preventDefault();
     if (!validateForm()) {

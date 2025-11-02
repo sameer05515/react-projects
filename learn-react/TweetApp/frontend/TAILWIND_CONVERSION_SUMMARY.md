@@ -126,22 +126,33 @@ className={`text-xs cursor-pointer ${
 | `whiteSpace: "pre-wrap"` | `whitespace-pre-wrap` |
 | `cursor: "pointer"` | `cursor-pointer` |
 
-## Remaining Work
+## Detailed Conversion Plan
 
-### High Priority
-1. `frontend/src/components/links/LinksBase.jsx` - Needs conversion
-2. `frontend/src/components/my-tasks/sub-components/common/TaskList.jsx` - Needs conversion
-3. `frontend/src/components/my-tasks/sub-components/common/TaskForm.jsx` - Needs conversion
-4. Form components (TaskForm, TagForm, TopicSectionForm) - Many inline styles
+For a comprehensive conversion plan with phases, priorities, patterns, and best practices, see:
+**[TAILWIND_CONVERSION_PLAN.md](./TAILWIND_CONVERSION_PLAN.md)**
 
-### Medium Priority
-1. Card components (TaskCard, TagCard, TopicCard) - Multiple inline styles
-2. Common components (ToggleablePanel, TreeViewer) - Some inline styles
-3. Interview management components - Multiple inline styles
+The plan includes:
+- **6 Phases** of conversion work (10 weeks estimated)
+- **115+ files** categorized by priority
+- **Conversion patterns** for common scenarios
+- **Testing strategy** and success metrics
+- **Best practices** and guidelines
 
-### Low Priority
-1. ApnaPlayground components - Test/demo components, lower priority
-2. Miscellaneous examples - Lower priority
+## Remaining Work Overview
+
+### High Priority (Phase 1) - Core Components
+- Form components (TaskForm, TagForm, AnswerForm, QuestionForm, etc.)
+- Card components (TaskCard, TagCard, AnswerCard, QuestionCard, etc.)
+- List/display components (TaskList, etc.)
+
+### Medium Priority (Phase 2-3) - Shared & Feature Components
+- Common UI components (FloatingButton, ContainerComponent, etc.)
+- Smart Editor/Previewer components
+- Links, Memory Maps, Related Nodes components
+
+### Low Priority (Phase 4-5) - Demo & Test Components
+- ApnaPlayground components (test/demo components)
+- Miscellaneous examples
 
 ## Notes
 

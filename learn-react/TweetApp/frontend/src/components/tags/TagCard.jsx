@@ -48,9 +48,9 @@ const TagCard = ({
     return (
       <>
         {childTagList && childTagList.length > 0 && (
-          <ul style={styles.ulStyle}>
+          <ul className="list-none pl-0">
             {childTagList.map((t) => (
-              <li style={styles.liStyles} key={t.uniqueId}>
+              <li className="ml-4 pb-1" key={t.uniqueId}>
                 <HoverableSpan onClick={() => onChildTagClick(t)}>{t.name}</HoverableSpan>
                 {populateChildren(t.children)}
               </li>
@@ -65,9 +65,9 @@ const TagCard = ({
     return (
       <>
         {sectionsList && sectionsList.length > 0 && (
-          <ul style={styles.ulStyle}>
+          <ul className="list-none pl-0">
             {sectionsList.map((t) => (
-              <li style={styles.liStyles} key={t.uniqueId}>
+              <li className="ml-4 pb-1" key={t.uniqueId}>
                 {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type || TagLinkedItemType.question === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
 
                 {TagLinkedItemType.topicSection === type && (

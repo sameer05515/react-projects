@@ -336,20 +336,20 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
 
           {resultData.length > 0 && isValidSkeleton && (
             <div className="border border-gray-300 mt-5 w-full h-[50vh] overflow-auto">
-            <Tree
-              data={resultData}
-              expandAll={true}
-              areNodesDraggable={true}
-              onDragStart={(node) => setDraggedNode(node)}
-              onDrop={(node) => handleDrop(node)}
-              renderNode={(node) => (
-                <>
-                  <TreeNodeItem node={node} isSelected={selectedTreeNode?.uniqueId === node.uniqueId} onTreeNodeSelection={setSelectedTreeNode} onItemRightClick={handleRightClick} />
-                </>
-              )}
-            />
-          </div>
-        )}
+              <Tree
+                data={resultData}
+                expandAll={true}
+                areNodesDraggable={true}
+                onDragStart={(node) => setDraggedNode(node)}
+                onDrop={(node) => handleDrop(node)}
+                renderNode={(node) => (
+                  <>
+                    <TreeNodeItem node={node} isSelected={selectedTreeNode?.uniqueId === node.uniqueId} onTreeNodeSelection={setSelectedTreeNode} onItemRightClick={handleRightClick} />
+                  </>
+                )}
+              />
+            </div>
+          )}
         {/* <textarea
                     style={styles.textarea}
                     value={formData.skeleton}

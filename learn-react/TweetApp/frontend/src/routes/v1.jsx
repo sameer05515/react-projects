@@ -4,13 +4,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import GlobalBreadcrumbV2 from "../common/components/global-breadcrumbs/GlobalBreadcrumbV2";
 import ToggleableIcon from "../common/components/toggleable-icon/ToggleableIcon";
 import LoadingSpinner from "../common/components/LoadingSpinner";
-import { fetchAllQuestions } from "../redux/slices/interviewMgmtSlice";
-import { fetchLinks } from "../redux/slices/linksSlice";
-import { fetchMemoryMaps } from "../redux/slices/memoryMapSlice";
 import { fetchPinnedItems } from "../redux/slices/pinnedItemSlice";
-import { fetchTags } from "../redux/slices/tagsSlice";
-import { fetchTasks } from "../redux/slices/taskSlice";
-import { fetchTopics } from "../redux/slices/topicSlice";
 
 // Critical components loaded synchronously (needed immediately)
 import Welcome from "./Welcome/v2";
@@ -321,23 +315,17 @@ const Layout = () => {
         className={`relative pl-6 pt-1 min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-black text-white" : "bg-white text-black"}`}
       >
         {/* Breadcrumb component at the top */}
-        <ToggleableIcon
-          label={"Dark Mode"}
-          isContentVisible={isDarkMode}
-          additionalStyleForContainer={{
-            // Inline style needed for absolute, because ToggleableIcon likely doesn't support className for container:
-            // we're leaving here ONLY position, but moved others to className
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            cursor: "pointer",
-          }}
-          toggleSymbols={{
-            showSymbol: "Lite Mode",
-            hideSymbol: "Dark mode",
-          }}
-          onToggle={() => toggleMode()}
-        />
+        <div className="absolute top-2.5 right-2.5 cursor-pointer">
+          <ToggleableIcon
+            label={"Dark Mode"}
+            isContentVisible={isDarkMode}
+            toggleSymbols={{
+              showSymbol: "Lite Mode",
+              hideSymbol: "Dark mode",
+            }}
+            onToggle={() => toggleMode()}
+          />
+        </div>
         <GlobalBreadcrumbV2 />
         <div>
           <Outlet /> {/* Render the child routes */}

@@ -1,21 +1,21 @@
 /**
  * Welcome component serves as a simple, styled welcome header for the app.
  * 
- * - It imports a CSS module for scoped styles.
  * - Renders a header with a highlighted greeting message ("Welcome Bro!!").
- * - The message is styled via CSS classes: `header` for the header and `highlight` for the span.
+ * - Uses Tailwind CSS for styling.
  * 
  * This component is used as the initial landing page/header after login or at the root.
  */
 
 import React from "react";
-import classes from "./styles.module.css";
 
 const Welcome = () => {
   return (
-    <header className={classes.header}>
-      <h1>
-        <span className={classes.highlight}>Welcome Bro!!</span>
+    <header className="text-center py-8 px-4 bg-gradient-to-r from-blue-50 to-slate-50">
+      <h1 className="text-4xl md:text-5xl font-extrabold">
+        <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Welcome Bro!!
+        </span>
       </h1>
     </header>
   );

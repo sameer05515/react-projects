@@ -61,16 +61,14 @@ const TagForm = ({
     }
   };
   return (
-    <div>
-      <div>
-        <span>
-          <h2>{formData.uniqueId ? "Update Tag" : "Save Tag"}</h2>
-        </span>
-        <br />
-       
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="mb-4">
+        <h2 className="text-2xl font-bold text-gray-800">
+          {formData.uniqueId ? "Update Tag" : "Save Tag"}
+        </h2>
       </div>
-      <div>
-        <label htmlFor="name" style={styles.labelStyle}>
+      <div className="flex items-center mb-4">
+        <label htmlFor="name" className="w-[15%] font-bold text-gray-700">
           Name:
         </label>
         <input
@@ -79,12 +77,12 @@ const TagForm = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          style={styles.pairedComponentStyle} // Apply paired component style
+          className="w-[85%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
       </div>
 
-      <div style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}>
+      <div className="border border-gray-300 p-1.5 m-1.5 rounded">
         <SmartEditor
           initialValue={formData.smartContent}
           onChange={handleSmartEditorChange}
@@ -92,41 +90,23 @@ const TagForm = ({
         />
       </div>
 
-      {/* <div>
-        <b>formData: </b>
-        <pre>{`JSON.stringify(formData, null, 2) : ${JSON.stringify(formData, null, 2)}`}</pre>
-      </div> */}
       {formErrors.length > 0 && (
-        <div>
+        <div className="mt-4">
           {formErrors.map((error, index) => (
-            <span key={index} style={styles.error}>
+            <span key={index} className="block text-red-600 text-sm mt-1.5">
               {error}
             </span>
           ))}
         </div>
       )}
-      <CustomButton onClick={(e) => handleSubmit(e)}>
-        {formData.uniqueId ? "Update " : "Save "}Changes
-      </CustomButton>
-      <CustomButton onClick={handleCancel}>Cancel</CustomButton>
+      <div className="mt-4 flex gap-2">
+        <CustomButton onClick={(e) => handleSubmit(e)}>
+          {formData.uniqueId ? "Update " : "Save "}Changes
+        </CustomButton>
+        <CustomButton onClick={handleCancel}>Cancel</CustomButton>
+      </div>
     </div>
   )
-};
-
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-  labelStyle: {
-    width: "15%", // Set label width to 25%
-    fontWeight: "bold", // Make label text bold
-  },
-  pairedComponentStyle: {
-    width: "85%", // Set paired component width to 75%
-  },
 };
 
 export default TagForm;

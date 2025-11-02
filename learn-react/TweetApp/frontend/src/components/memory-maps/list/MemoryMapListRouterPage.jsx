@@ -7,9 +7,10 @@ import {
 } from "../../../common/components/Smart/Editor/v3";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
+import useDataFetching from "../../../common/hooks/useDataFetching/v2";
 import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
 import { buildTree } from "../../../common/util/indentation-based-string-parser-to-tree-data";
-import { selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
+import { fetchMemoryMaps, selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
 // import PopupMenuV3 from "../../miscelleneous/misc/sub-components/PopupMenuV3";
 import PopupMenuV3 from "../../../ApnaPlayground/MiscellaneousExamples/PopupMenu/v3";
 import CopyButton from "../copy-to-clipboard/CopyButton";
@@ -20,6 +21,13 @@ import { styles } from "./util";
 const MemoryMapList = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Fetch memory maps data only when component mounts (with smart caching)
+  useDataFetching(
+    fetchMemoryMaps,
+    (state) => state.memoryMaps
+  );
+
   const memoryMaps = useSelector(selectAllTreeMemoryMaps);
   const [selectedMemoryMap, setSelectedMemoryMap] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);

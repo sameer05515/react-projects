@@ -8,7 +8,7 @@ import {
 } from "../../common/components/Smart/Editor/v3";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import useDataFetching from "../../common/hooks/useDataFetching/v2";
 import {
   fetchTasks,
   selectAllTreeTasks,
@@ -43,10 +43,17 @@ const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tasks = useSelector(selectAllTreeTasks);
-  const status = useSelector((state) => state.tasks.status);
-  const error = useSelector((state) => state.tasks.error);
   const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
   const selectedElementRef = useRef(null);
+
+  // Fetch tasks data only when component mounts (with smart caching)
+  const { loading: tasksLoading, error: tasksError } = useDataFetching(
+    fetchTasks,
+    (state) => state.tasks
+  );
+
+  const status = useSelector((state) => state.tasks.status);
+  const error = useSelector((state) => state.tasks.error);
 
   useEffect(() => {
     if (selectedElementRef.current) {

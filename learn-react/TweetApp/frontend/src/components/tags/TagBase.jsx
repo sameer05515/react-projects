@@ -57,12 +57,17 @@ const ListTags = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tags = useSelector(selectAllTreeTags);
+  const selectedTagUniqueId = useSelector(selectSelectedTagUniqueId);
+  const selectedElementRef = useRef(null);
+
+  // Fetch tags data only when component mounts (with smart caching)
+  useDataFetching(
+    fetchTags,
+    (state) => state.tags
+  );
+
   const status = useSelector((state) => state.tags.loading);
   const error = useSelector((state) => state.tags.error);
-
-  const selectedTagUniqueId = useSelector(selectSelectedTagUniqueId);
-
-  const selectedElementRef = useRef(null);
 
   useEffect(() => {
     if (selectedElementRef.current) {

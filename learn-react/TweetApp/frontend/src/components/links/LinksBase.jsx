@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CustomButton from "../../common/components/custom-button/CustomButton";
-import { createLink, fetchLinksByUniqueId, updateLink } from "../../redux/slices/linksSlice";
+import useDataFetching from "../../common/hooks/useDataFetching/v2";
+import { createLink, fetchLinks, fetchLinksByUniqueId, updateLink } from "../../redux/slices/linksSlice";
 import "./Links.css";
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import { SmartEditor, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
@@ -452,11 +453,17 @@ const EditLink = () => {
 };
 
 const LinksBase = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Fetch links data only when component mounts (with smart caching)
+  useDataFetching(
+    fetchLinks,
+    (state) => state.links
+  );
+
   const links = useSelector((state) => state.links.data);
-  const status = useSelector((state) => state.links.status);
+  const status = useSelector((state) => state.links.loading);
   const error = useSelector((state) => state.links.error);
 
   const handleButtonClick = (path) => {

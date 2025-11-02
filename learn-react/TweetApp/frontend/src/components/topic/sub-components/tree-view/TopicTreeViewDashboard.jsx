@@ -6,21 +6,35 @@ import {
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import TooltipSpan from "../../../../common/components/tooltip-span/TooltipSpan";
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
+import useDataFetching from "../../../../common/hooks/useDataFetching/v2";
 import {
   fetchTopics, selectAllTreeTopics, selectSelectedTopicUniqueId
 } from "../../../../redux/slices/topicSlice";
+import { fetchTags } from "../../../../redux/slices/tagsSlice";
 import { TopicMgmtStyles as styles } from "../styles";
 
 const TopicTreeViewDashboard = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const topics = useSelector(selectAllTreeTopics);
+    const selectedTopicUniqueId = useSelector(selectSelectedTopicUniqueId);
+    const selectedElementRef = useRef(null);
+
+    // Fetch topics and tags data only when component mounts (with smart caching)
+    // Tags are needed for CreateTopic component
+    const { loading: topicsLoading, error: topicsError } = useDataFetching(
+      fetchTopics,
+      (state) => state.topics
+    );
+    
+    // Also fetch tags since they're needed for topic creation/editing
+    useDataFetching(
+      fetchTags,
+      (state) => state.tags
+    );
+
     const status = useSelector((state) => state.topics.loading);
     const error = useSelector((state) => state.topics.error);
-    const navigate = useNavigate();
-  
-    const selectedTopicUniqueId = useSelector(selectSelectedTopicUniqueId);
-  
-    const selectedElementRef = useRef(null);
     
   
     useEffect(() => {

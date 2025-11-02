@@ -309,37 +309,9 @@ const Layout = () => {
     setIsDarkMode((prevMode) => !prevMode);
   }, []);
 
-  // Load data on-demand based on current route
+  // Load pinned items only on home page (used globally across routes)
   useEffect(() => {
-    const pathname = location.pathname;
-    
-    // Load data conditionally based on route
-    if (pathname.startsWith('/task-mgmt') || pathname === '/') {
-      dispatch(fetchTasks());
-    }
-    
-    if (pathname.startsWith('/tags') || pathname === '/') {
-      dispatch(fetchTags());
-    }
-    
-    if (pathname.startsWith('/topic-mgmt') || pathname === '/') {
-      dispatch(fetchTopics());
-    }
-    
-    if (pathname.startsWith('/interview-mgmt') || pathname === '/') {
-      dispatch(fetchAllQuestions());
-    }
-    
-    if (pathname.startsWith('/links-mgmt') || pathname === '/') {
-      dispatch(fetchLinks());
-    }
-    
-    if (pathname.startsWith('/memory-maps') || pathname === '/') {
-      dispatch(fetchMemoryMaps());
-    }
-    
-    // Pinned items are used across multiple routes, load on initial visit
-    if (pathname === '/') {
+    if (location.pathname === '/') {
       dispatch(fetchPinnedItems());
     }
   }, [dispatch, location.pathname]);

@@ -18,15 +18,23 @@ const TextDiffViewer = ({ oldContent, newContent }) => {
 
     return (
         <div>
-            <div style={styles.buttonContainer}>
+            <div className="mb-2.5">
                 <button
-                    style={viewMode === 'inline' ? styles.activeButton : styles.button}
+                    className={`px-4 py-2 mr-2.5 text-sm cursor-pointer rounded transition-colors ${
+                        viewMode === 'inline'
+                            ? "bg-blue-600 text-white border border-blue-600"
+                            : "bg-gray-100 border border-gray-300 hover:bg-gray-200"
+                    }`}
                     onClick={() => setViewMode('inline')}
                 >
                     In-line View
                 </button>
                 <button
-                    style={viewMode === 'sideBySide' ? styles.activeButton : styles.button}
+                    className={`px-4 py-2 mr-2.5 text-sm cursor-pointer rounded transition-colors ${
+                        viewMode === 'sideBySide'
+                            ? "bg-blue-600 text-white border border-blue-600"
+                            : "bg-gray-100 border border-gray-300 hover:bg-gray-200"
+                    }`}
                     onClick={() => setViewMode('sideBySide')}
                 >
                     Side-by-Side View
@@ -34,49 +42,49 @@ const TextDiffViewer = ({ oldContent, newContent }) => {
             </div>
 
             {viewMode === 'inline' ? (
-                <div style={styles.diffContainer}>
+                <div className="whitespace-pre-wrap font-mono leading-6 bg-gray-100 p-2.5 rounded border border-gray-300">
                     {diff.map((part, index) => {
-                        const style = part.added
-                            ? styles.added
+                        const className = part.added
+                            ? "bg-green-200 no-underline"
                             : part.removed
-                            ? styles.removed
-                            : styles.normal;
+                            ? "bg-red-200 line-through"
+                            : "bg-transparent";
 
                         return (
-                            <span key={index} style={style}>
+                            <span key={index} className={className}>
                                 {part.value}
                             </span>
                         );
                     })}
                 </div>
             ) : (
-                <div style={styles.sideBySideContainer}>
-                    <div style={styles.codeSection}>
-                        <h3>Old Content</h3>
-                        <pre style={styles.code}>
+                <div className="flex justify-between gap-4">
+                    <div className="w-[48%] border border-gray-300 rounded overflow-y-auto h-[300px] bg-gray-100">
+                        <h3 className="font-semibold p-2 bg-gray-200 border-b border-gray-300">Old Content</h3>
+                        <pre className="p-2.5 font-mono text-sm leading-6">
                             {oldContentWithLines.map(({ lineNumber, content }) => {
-                                const lineStyle = diff.some(d => d.value.includes(content) && d.removed)
-                                    ? styles.removedLine
-                                    : styles.normalLine;
+                                const lineClassName = diff.some(d => d.value.includes(content) && d.removed)
+                                    ? "bg-red-200"
+                                    : "bg-transparent";
                                 return (
-                                    <div key={lineNumber} style={{ ...styles.line, ...lineStyle }}>
-                                        <span style={styles.lineNumber}>{lineNumber}</span>{' '}
+                                    <div key={lineNumber} className={`flex ${lineClassName}`}>
+                                        <span className="inline-block w-[30px] text-right pr-2.5 text-gray-500 select-none">{lineNumber}</span>{' '}
                                         <span>{content}</span>
                                     </div>
                                 );
                             })}
                         </pre>
                     </div>
-                    <div style={styles.codeSection}>
-                        <h3>New Content</h3>
-                        <pre style={styles.code}>
+                    <div className="w-[48%] border border-gray-300 rounded overflow-y-auto h-[300px] bg-gray-100">
+                        <h3 className="font-semibold p-2 bg-gray-200 border-b border-gray-300">New Content</h3>
+                        <pre className="p-2.5 font-mono text-sm leading-6">
                             {newContentWithLines.map(({ lineNumber, content }) => {
-                                const lineStyle = diff.some(d => d.value.includes(content) && d.added)
-                                    ? styles.addedLine
-                                    : styles.normalLine;
+                                const lineClassName = diff.some(d => d.value.includes(content) && d.added)
+                                    ? "bg-green-200"
+                                    : "bg-transparent";
                                 return (
-                                    <div key={lineNumber} style={{ ...styles.line, ...lineStyle }}>
-                                        <span style={styles.lineNumber}>{lineNumber}</span>{' '}
+                                    <div key={lineNumber} className={`flex ${lineClassName}`}>
+                                        <span className="inline-block w-[30px] text-right pr-2.5 text-gray-500 select-none">{lineNumber}</span>{' '}
                                         <span>{content}</span>
                                     </div>
                                 );
@@ -87,89 +95,6 @@ const TextDiffViewer = ({ oldContent, newContent }) => {
             )}
         </div>
     );
-};
-
-const styles = {
-    buttonContainer: {
-        marginBottom: '10px',
-    },
-    button: {
-        padding: '8px 16px',
-        marginRight: '10px',
-        fontSize: '14px',
-        cursor: 'pointer',
-        backgroundColor: '#f0f0f0',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-    },
-    activeButton: {
-        padding: '8px 16px',
-        marginRight: '10px',
-        fontSize: '14px',
-        cursor: 'pointer',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: '1px solid #007bff',
-        borderRadius: '4px',
-    },
-    diffContainer: {
-        whiteSpace: 'pre-wrap',
-        fontFamily: 'monospace',
-        lineHeight: '1.5',
-        backgroundColor: '#f5f5f5',
-        padding: '10px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-    },
-    added: {
-        backgroundColor: '#d4fcbc',
-        textDecoration: 'none',
-    },
-    removed: {
-        backgroundColor: '#fbb6c2',
-        textDecoration: 'line-through',
-    },
-    normal: {
-        backgroundColor: 'transparent',
-    },
-    sideBySideContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    codeSection: {
-        width: '48%',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        overflowY: 'auto',
-        height: '300px',
-        backgroundColor: '#f5f5f5',
-    },
-    code: {
-        padding: '10px',
-        fontFamily: 'monospace',
-        fontSize: '14px',
-        lineHeight: '1.5',
-    },
-    line: {
-        display: 'flex',
-    },
-    lineNumber: {
-        display: 'inline-block',
-        width: '30px',
-        textAlign: 'right',
-        paddingRight: '10px',
-        color: '#999',
-        userSelect: 'none',
-    },
-    normalLine: {
-        backgroundColor: 'transparent',
-    },
-    addedLine: {
-        backgroundColor: '#d4fcbc',
-    },
-    removedLine: {
-        backgroundColor: '#fbb6c2',
-    },
 };
 
 export default TextDiffViewer;

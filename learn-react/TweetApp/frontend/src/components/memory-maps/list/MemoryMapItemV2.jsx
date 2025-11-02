@@ -1,5 +1,4 @@
 import React from "react";
-import { styles } from "./util";
 import {
     SmartPreviewer,
     availableOutputTypes as SupportedTextFormats,
@@ -11,16 +10,12 @@ const MemoryMapItemV2 = ({
     onMemoryMapSelection,
     onItemRightClick,
 }) => (
-    <div style={styles.memoryMapItemV2}>
+    <div className="text-[10px] my-0.5 flex cursor-pointer hover:bg-gray-50 rounded px-1 py-0.5 transition-colors">
         <span
-            style={{
-                ...styles.memoryMapName,
-                fontWeight: isSelected ? "bold" : "normal",
-            }}
+            className={`break-words ${isSelected ? "font-bold text-blue-700" : "font-normal"}`}
             onClick={() => onMemoryMapSelection(memoryMap)}
             onContextMenu={(e) => onItemRightClick(e, memoryMap)}
         >
-            {/* {memoryMap.name} */}
             <SmartPreviewer
                 data={{
                     content: memoryMap.name,
@@ -28,9 +23,6 @@ const MemoryMapItemV2 = ({
                 }}
                 markdownStyles={{fontSize:'10px'}}
             />
-            {/* <MarkdownComponent
-                markdownText={memoryMap.name || "**tree node name is missing!**"}
-            /> */}
         </span>
     </div>
 );

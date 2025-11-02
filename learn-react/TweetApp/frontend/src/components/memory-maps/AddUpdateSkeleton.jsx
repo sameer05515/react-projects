@@ -11,63 +11,7 @@ import TextDiffViewer from "./diff/TextDiffViewerV2";
 import { addUniqueIdsToTree } from "../../common/util/id-adder-util";
 import { SkeletonTextType } from "./util/constants";
 
-// Define styles in a JSON object
-const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        marginTop: "20px",
-        padding: "0 20px",  // Add padding to the container
-    },
-    textarea: {
-        width: "90vw",
-        height: "100px",
-        marginBottom: "10px",
-        padding: "10px",
-        fontSize: "16px",
-        borderRadius: "4px",
-        border: "1px solid #ccc",
-        boxSizing: "border-box",
-        resize: "none",  // Disable manual resizing
-    },
-    button: {
-        padding: "10px 20px",
-        fontSize: "16px",
-        borderRadius: "4px",
-        border: "none",
-        backgroundColor: "#007bff",
-        color: "#fff",
-        cursor: "pointer",
-        marginTop: "10px",
-        transition: "background-color 0.3s ease",
-    },
-    buttonHover: {
-        backgroundColor: "#0056b3", // Darker blue for hover state
-    },
-    buttonFocus: {
-        outline: "2px solid #0056b3", // Outline on focus for accessibility
-    },
-    buttonContainer: {
-        display: "flex",
-        flexDirection: "row",
-        gap: "10px", // Adds spacing between buttons
-        marginTop: "10px",
-    },
-    errorMessage: {
-        color: "red",
-        fontWeight: "bold",
-        marginBottom: "10px",
-    },
-    treeContainer: {
-        marginTop: "20px",
-        width: "100%",  // Ensures the tree takes full width of container
-    },
-    diffContainer: {
-        marginTop: "20px",
-        width: "100%",  // Ensures the diff viewer takes full width of container
-    },
-};
+// Styles moved to Tailwind CSS classes
 
 export const AddUpdateSkeletonForMemoryMapItem = () => {
     const location = useLocation();
@@ -129,72 +73,61 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
     };
 
     return (
-        <div>
-            <h2> {formData?.skeleton ? "Update " : "Add "}Skeleton</h2>
+        <div className="max-w-6xl mx-auto p-6">
+            <h2 className="text-2xl font-bold mb-4"> {formData?.skeleton ? "Update " : "Add "}Skeleton</h2>
             {!initialFormData?.uniqueId ? (
-                <p>Invalid memory map provided. Unable to process!!</p>
+                <p className="text-red-600 font-semibold">Invalid memory map provided. Unable to process!!</p>
             ) : (
-                <h3>{initialFormData?.name}</h3>
+                <h3 className="text-xl font-semibold mb-4 text-blue-900">{initialFormData?.name}</h3>
             )}
 
-            {errorMessage && <span style={styles.errorMessage}>{errorMessage}</span>}
+            {errorMessage && <span className="text-red-600 font-bold mb-2.5 block">{errorMessage}</span>}
 
-            <div style={styles.container}>
+            <div className="flex flex-col items-start mt-5 px-5">
                 <textarea
-                    style={styles.textarea}
+                    className="w-[90vw] max-w-full h-[100px] mb-2.5 p-2.5 text-base rounded border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={formData.skeleton}
                     onChange={(e) => {
                         setIsValidSkeleton(false);
                         setFormData((prev) => ({ ...prev, skeleton: e.target.value }));
                     }
                     }
+                    placeholder="Enter skeleton text..."
                 />
 
                 {formData.skeleton.trim() && (
                     <button
-                        style={styles.button}
+                        className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer mt-2.5 transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         onClick={previewSkeleton}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-                        onFocus={(e) => e.currentTarget.style.outline = styles.buttonFocus.outline}
-                        onBlur={(e) => e.currentTarget.style.outline = 'none'}
                     >
                         Validate and preview rendered skeleton
                     </button>
                 )}
 
-                <div style={styles.buttonContainer}>
+                <div className="flex flex-row gap-2.5 mt-2.5">
                     {formData?.skeleton?.trim() && isValidSkeleton && resultData?.length > 0 && (
                         <button
-                            style={styles.button}
+                            className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             onClick={upsertSkeleton}
-                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-                            onFocus={(e) => e.currentTarget.style.outline = styles.buttonFocus.outline}
-                            onBlur={(e) => e.currentTarget.style.outline = 'none'}
                         >
                             Upsert
                         </button>
                     )}
                     <button
-                        style={styles.button}
+                        className="px-5 py-2.5 text-base rounded border-none bg-gray-600 text-white cursor-pointer transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
                         onClick={() => navigate(-1)}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
-                        onFocus={(e) => e.currentTarget.style.outline = styles.buttonFocus.outline}
-                        onBlur={(e) => e.currentTarget.style.outline = 'none'}
                     >
                         Cancel
                     </button>
                 </div>
 
                 {resultData.length > 0 && isValidSkeleton && (
-                    <div style={styles.treeContainer}>
+                    <div className="mt-5 w-full">
                         <Tree data={resultData} />
                     </div>
                 )}
 
-                <div style={styles.diffContainer}>
+                <div className="mt-5 w-full">
                     <TextDiffViewer oldContent={initialFormData?.skeleton} newContent={formData?.skeleton} />
                 </div>
             </div>

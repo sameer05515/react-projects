@@ -241,9 +241,9 @@ const MemoryMapForm = ({
                 />
             )}
 
-            <h3>{formData.uniqueId ? "Edit" : "Add"}</h3>
-            <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-                <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>
+            <h3 className="text-2xl font-bold mb-4">{formData.uniqueId ? "Edit" : "Add"}</h3>
+            <div className="flex items-center p-2.5 mb-4">
+                <label htmlFor="name" className="w-[9%] font-bold text-gray-700">
                     Name
                 </label>
                 <input
@@ -253,14 +253,14 @@ const MemoryMapForm = ({
                     placeholder="Name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    style={{ width: "90%" }}
+                    className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
 
-            <div style={{ display: "block", padding: "10px" }}>
-                <div>
+            <div className="block p-2.5 mb-4">
+                <div className="mb-2">
                     <label
-                        style={{ width: "9%", fontWeight: "bold" }}
+                        className="w-[9%] font-bold text-gray-700 inline-block"
                         htmlFor="description"
                     >
                         Details:
@@ -274,31 +274,16 @@ const MemoryMapForm = ({
                         Add
                     </CustomButton>
                 </div>
-                <div>
+                <div className="space-y-2">
                     {formData.details &&
                         formData.details.map((det, index) => (
-                            <div key={index} style={{ display: "flex", padding: "5px" }}>
-                                <div
-                                    style={{
-                                        width: "90%",
-                                        border: "1px solid #999",
-                                        borderRadius: "4px",
-                                    }}
-                                >
+                            <div key={index} className="flex p-1">
+                                <div className="w-[90%] border border-gray-600 rounded">
                                     {det.smartContent && (
                                         <SmartPreviewer data={det.smartContent} />
                                     )}
                                 </div>
-                                <div
-                                    style={{
-                                        width: "5%",
-                                        border: "1px solid #999",
-                                        borderRadius: "4px",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
+                                <div className="w-[5%] border border-gray-600 rounded flex justify-center items-center">
                                     <FloatingButton
                                         floatingChildrenStyle={{ width: "50px", height: "80px" }}
                                         showButtonText={false}
@@ -306,13 +291,13 @@ const MemoryMapForm = ({
                                         iconName={"FaSettings"}
                                     >
                                         <CustomButton
-                                            style={{ marginTop: "5px" }}
+                                            className="mt-1"
                                             title={"Edit"}
                                             iconName={"FaEdit"}
                                             onClick={() => editDetail(det)}
                                         />
                                         <CustomButton
-                                            style={{ marginTop: "5px" }}
+                                            className="mt-1"
                                             title={"Delete"}
                                             iconName={"FaDelete"}
                                             onClick={() => deleteDetail(det)}
@@ -324,10 +309,10 @@ const MemoryMapForm = ({
                 </div>
             </div>
 
-            <div style={{ display: "block", padding: "10px" }}>
-                <div>
+            <div className="block p-2.5 mb-4">
+                <div className="mb-2">
                     <label
-                        style={{ width: "9%", fontWeight: "bold" }}
+                        className="w-[9%] font-bold text-gray-700 inline-block"
                         htmlFor="description"
                     >
                         References:
@@ -336,29 +321,14 @@ const MemoryMapForm = ({
                         Add
                     </CustomButton>
                 </div>
-                <div>
+                <div className="space-y-2">
                     {formData.references &&
                         formData.references.map((det, index) => (
-                            <div key={index} style={{ display: "flex", padding: "5px" }}>
-                                <div
-                                    style={{
-                                        width: "90%",
-                                        border: "1px solid #999",
-                                        borderRadius: "4px",
-                                    }}
-                                >
+                            <div key={index} className="flex p-1">
+                                <div className="w-[90%] border border-gray-600 rounded">
                                     {det.itemMetadata && getTitleCompForRefData(det)}
                                 </div>
-                                <div
-                                    style={{
-                                        width: "5%",
-                                        border: "1px solid #999",
-                                        borderRadius: "4px",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
+                                <div className="w-[5%] border border-gray-600 rounded flex justify-center items-center">
                                     <FloatingButton
                                         floatingChildrenStyle={{ width: "50px", height: "80px" }}
                                         showButtonText={false}
@@ -366,7 +336,7 @@ const MemoryMapForm = ({
                                         iconName={"FaSettings"}
                                     >
                                         <CustomButton
-                                            style={{ marginTop: "5px" }}
+                                            className="mt-1"
                                             title={"Delete"}
                                             iconName={"FaDelete"}
                                             onClick={() => deleteReference(det)}
@@ -378,21 +348,21 @@ const MemoryMapForm = ({
                 </div>
             </div>
 
-            <div style={{ display: "block", padding: "10px" }}>
+            <div className="block p-2.5 mb-4">
                 {formErrors.length > 0 && (
-                    <div>
+                    <div className="space-y-1">
                         {formErrors.map((error, index) => (
-                            <span key={index} style={{ color: "red" }}>
+                            <span key={index} className="text-red-600 block">
                                 {error}
                             </span>
                         ))}
                     </div>
                 )}
             </div>
-            <div>
-                <pre>{JSON.stringify(formData, null, 2)}</pre>
+            <div className="mb-4 p-2 bg-gray-50 rounded border border-gray-200">
+                <pre className="text-xs overflow-auto">{JSON.stringify(formData, null, 2)}</pre>
             </div>
-            <div style={{ display: "block", margin: "10px" }}>
+            <div className="block m-2.5">
                 <CustomButton onClick={handleSubmitMemoryMap}>
                     {formData.uniqueId ? "Update" : "Create"}
                 </CustomButton>
@@ -446,20 +416,14 @@ const DetailPopup = ({
         <>
             <Popup headerText="Add detail" onClose={onClose}>
                 <div>
-                    <div style={{ display: "block", padding: "10px" }}>
+                    <div className="block p-2.5 mb-4">
                         <label
-                            style={{ width: "9%", fontWeight: "bold" }}
+                            className="w-[9%] font-bold text-gray-700 inline-block mb-2"
                             htmlFor="description"
                         >
                             Description:
                         </label>
-                        <div
-                            style={{
-                                border: "1px solid #ddd",
-                                padding: "5px",
-                                margin: "5px",
-                            }}
-                        >
+                        <div className="border border-gray-300 p-1 m-1 rounded">
                             <SmartEditor
                                 preview={false}
                                 initialValue={formData.smartContent}
@@ -471,9 +435,9 @@ const DetailPopup = ({
 
                     <div>
                         {formErrors.length > 0 && (
-                            <div>
+                            <div className="space-y-1">
                                 {formErrors.map((error, index) => (
-                                    <span key={index} style={styles.error}>
+                                    <span key={index} className="text-red-600 text-sm mt-1 block">
                                         {error}
                                     </span>
                                 ))}
@@ -481,7 +445,7 @@ const DetailPopup = ({
                         )}
                     </div>
 
-                    <div>
+                    <div className="flex gap-2 mt-4">
                         <CustomButton onClick={handleSubmit}>Submit</CustomButton>
                         <CustomButton onClick={onClose}>Cancel</CustomButton>
                     </div>
@@ -574,11 +538,13 @@ const ReferencePopup = ({
         <>
             <Popup headerText="Add Reference" onClose={onClose}>
                 <div>
-                    <pre>{JSON.stringify(formData, null, 2)}</pre>
-                    <div style={{ padding: "10px" }}>
+                    <div className="mb-4 p-2 bg-gray-50 rounded border border-gray-200">
+                        <pre className="text-xs overflow-auto">{JSON.stringify(formData, null, 2)}</pre>
+                    </div>
+                    <div className="p-2.5 mb-4">
                         <label
                             htmlFor="itemType"
-                            style={{ width: "20%", fontWeight: "bold" }}
+                            className="w-[20%] font-bold text-gray-700 inline-block mb-2"
                         >
                             Select Item type:
                         </label>
@@ -589,50 +555,46 @@ const ReferencePopup = ({
                     </div>
 
                     {formData?.itemType === ITEM_TYPES.TOPIC && (
-                        <div style={{ padding: "10px" }}>
+                        <div className="p-2.5 mb-4">
                             <label
                                 htmlFor="topics"
-                                style={{ width: "20%", fontWeight: "bold" }}
+                                className="w-[20%] font-bold text-gray-700 inline-block mb-2"
                             >
                                 Add Existing Topics:
                             </label>
                             <Select
                                 name="topics"
                                 options={topicOptions}
-                                // defaultValue={selectedOption}
-                                // value={topicOptions.filter((t) => t.value === formData.uniqueId)}
                                 onChange={(data) => handleTopicSelect(data, ITEM_TYPES.TOPIC)}
                                 styles={customStyles}
-                                menuPortalTarget={document.body} // Ensure the menu is rendered in the DOM
+                                menuPortalTarget={document.body}
                             />
                         </div>
                     )}
 
                     {formData?.itemType === ITEM_TYPES.LINK && (
-                        <div style={{ padding: "10px" }}>
+                        <div className="p-2.5 mb-4">
                             <label
                                 htmlFor="links"
-                                style={{ width: "20%", fontWeight: "bold" }}
+                                className="w-[20%] font-bold text-gray-700 inline-block mb-2"
                             >
                                 Add Existing Link:
                             </label>
                             <Select
                                 name="links"
                                 options={linkOptions}
-                                // defaultValue={selectedOption}
-                                // value={topicOptions.filter((t) => t.value === formData.uniqueId)}
                                 onChange={(data) => handleLinkSelect(data, ITEM_TYPES.LINK)}
                                 styles={customStyles}
-                                menuPortalTarget={document.body} // Ensure the menu is rendered in the DOM
+                                menuPortalTarget={document.body}
                             />
                         </div>
                     )}
 
                     <div>
                         {formErrors.length > 0 && (
-                            <div>
+                            <div className="space-y-1">
                                 {formErrors.map((error, index) => (
-                                    <span key={index} style={styles.error}>
+                                    <span key={index} className="text-red-600 text-sm mt-1 block">
                                         {error}
                                     </span>
                                 ))}
@@ -640,7 +602,7 @@ const ReferencePopup = ({
                         )}
                     </div>
 
-                    <div>
+                    <div className="flex gap-2 mt-4">
                         <CustomButton onClick={handleSubmit}>Submit</CustomButton>
                         <CustomButton onClick={onClose}>Cancel</CustomButton>
                     </div>
@@ -650,13 +612,6 @@ const ReferencePopup = ({
     );
 };
 
-const styles = {
-    error: {
-        color: "red",
-        fontSize: "14px",
-        marginTop: "5px",
-        display: "block",
-    },
-};
+// Styles moved to Tailwind CSS classes
 
 // export default CreateMemoryMapItemRouterPage

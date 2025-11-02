@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const MemoryMapBase = () => {
   return (
-    <div>
+    <div className="w-full">
       <Outlet />
     </div>
   );

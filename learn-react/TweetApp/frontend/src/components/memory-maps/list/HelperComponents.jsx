@@ -6,61 +6,12 @@ import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import { selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
 
-const styles = {
-  container: {
-    // border: "1px solid #ddd",
-    maxHeight: "75vh" /* Maximum height is 60% of the viewport height */,
-    overflow:
-      "auto" /* Scrollbars will appear if content exceeds these dimensions */,
-  },
-  header: {
-    border: "1px solid #ddd",
-    padding: "6px",
-  },
-  memoryMapList: {
-    border: "1px solid #ddd",
-    padding: "16px",
-    fontSize: "10px",
-    display: "flex",
-    flexDirection: "column",
-    width: "200px",
-  },
-  memoryMapItem: {
-    border: "1px solid #ddd",
-    padding: "4px",
-    margin: "2px",
-    display: "flex",
-  },
-  memoryMapItemV2: {
-    border: "1px solid #ddd",
-    padding: "4px",
-    fontSize: "10px",
-    margin: "2px",
-    display: "flex",
-  },
-  memoryMapName: {
-    flex: 4,
-    wordWrap: "break-word",
-    borderRight: "1px solid #ddd",
-  },
-  memoryMapActions: {
-    flex: 1,
-    borderRight: "1px solid #ddd",
-  },
-  showChildren: {
-    flex: 1,
-    borderRight: "1px solid #ddd",
-    cursor: "pointer",
-  },
-  jsonPreview: {
-    border: "1px solid #ddd",
-    padding: "6px",
-  },
-};
+// Styles moved to Tailwind - keeping empty object for backwards compatibility
+const styles = {};
 
 const JSONPreview = ({ data }) => (
-  <div style={styles.jsonPreview}>
-    <pre>{JSON.stringify(data, null, 2)}</pre>
+  <div className="border border-gray-300 p-1.5 bg-gray-50 rounded">
+    <pre className="text-xs overflow-auto">{JSON.stringify(data, null, 2)}</pre>
   </div>
 );
 
@@ -70,7 +21,7 @@ const Header = ({
   onPrevClick = () => {},
   onSearchTextChange = () => {},
 }) => (
-  <div style={styles.header}>
+  <div className="border border-gray-300 p-1.5 bg-gray-50 rounded mb-2 flex flex-col sm:flex-row gap-2 items-center">
     <ButtonGroup
       options={[
         {
@@ -94,13 +45,11 @@ const Header = ({
         },
       ]}
     />
-    {/* <CustomButton onClick={() => navigate("create")}>Create</CustomButton>
-        <CustomButton onClick={() => {onPrevClick && onPrevClick()}}>Previous</CustomButton>
-        <CustomButton onClick={() => {onNextClick && onNextClick()}}>Next</CustomButton> */}
     <input
       type="text"
       placeholder="Search memory map by title"
       onChange={(e) => onSearchTextChange && onSearchTextChange(e.target.value)}
+      className="flex-1 px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
     />
   </div>
 );
@@ -126,14 +75,14 @@ export const MemoryMapListV1 = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="max-h-[75vh] overflow-auto">
       <Header navigate={navigate} />
-      <h2>MemoryMapItems</h2>
+      <h2 className="text-xl font-bold mb-2 mt-4">MemoryMapItems</h2>
       <MemoryMapItems
         memoryMaps={memoryMaps}
         handleShowChildren={handleShowChildren}
       />
-      <h2>Tree</h2>
+      <h2 className="text-xl font-bold mb-2 mt-4">Tree</h2>
       <Tree
         data={memoryMaps}
         renderNode={(node) => (
@@ -141,7 +90,6 @@ export const MemoryMapListV1 = () => {
             node={node}
             onAddUpdateSkeleton={handleAddUpdateSkeleton}
             onEditMemoryMap={handleEditMemoryMap}
-            // onShowChildren={handleShowChildren}
           />
         )}
       />
@@ -151,7 +99,7 @@ export const MemoryMapListV1 = () => {
 };
 
 const MemoryMapItems = ({ memoryMaps, handleShowChildren }) => (
-  <div style={styles.memoryMapList}>
+  <div className="border border-gray-300 p-4 text-[10px] flex flex-col w-[200px]">
     {memoryMaps.map((m) => (
       <MemoryMapItem
         key={m.uniqueId}
@@ -163,11 +111,11 @@ const MemoryMapItems = ({ memoryMaps, handleShowChildren }) => (
 );
 
 const MemoryMapItem = ({ memoryMap, handleShowChildren }) => (
-  <div style={styles.memoryMapItem}>
-    <div style={styles.memoryMapName}>{memoryMap.name}</div>
-    <div style={styles.memoryMapActions}>Actions</div>
+  <div className="border border-gray-300 p-1 m-0.5 flex">
+    <div className="flex-[4] break-words border-r border-gray-300 pr-2">{memoryMap.name}</div>
+    <div className="flex-1 border-r border-gray-300 pr-2">Actions</div>
     <div
-      style={styles.showChildren}
+      className="flex-1 border-r border-gray-300 cursor-pointer hover:text-blue-600 transition-colors"
       onClick={() => handleShowChildren(memoryMap.uniqueId)}
     >
       Show Children

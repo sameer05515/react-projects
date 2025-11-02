@@ -13,19 +13,20 @@ function Comment({
 }) {
   
   return (
-    <div key={comment._id} className="comment">
-      <p className="timestamp">{formatTimestamp(comment.createdAt)}</p>
+    <div key={comment._id} className="mt-2.5 pl-5 border-l-2 border-gray-300">
+      <p className="text-xs text-gray-500 mb-2">{formatTimestamp(comment.createdAt)}</p>
       <EditableLabel
         text={comment.text}
         postUpdateClick={(updatedText) =>
           handleUpdateComment(tweetId, comment._id, updatedText)
         }
         labelStyle={{
-          fontWeight: "normal", // Apply normal style for comment
-          fontSize: "16px", // Set font size for comment
+          fontWeight: "normal",
+          fontSize: "16px",
         }}
+        className="font-normal text-base"
       />
-      <div className="nested-comments">        
+      <div className="mt-2.5 space-y-2">        
         <NewNestedComment
           tweetId={tweetId}
           commentId={comment._id}

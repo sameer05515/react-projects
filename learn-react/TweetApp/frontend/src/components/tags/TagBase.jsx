@@ -101,21 +101,21 @@ const ListTags = () => {
       <div className="linksContainer">
         <div className="left-section">
           {/* <pre>{links && JSON.stringify(links)}</pre> */}
-          <div style={{ margin: "10px 0" }}>
+          <div className="my-2.5">
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => handleButtonClick("create")}
             >
               Create Tag
             </CustomButton>
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => dispatch(fetchTags())}
             >
               Refresh
             </CustomButton>
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate(`/tags/search`)}
             >
               Search
@@ -133,13 +133,11 @@ const ListTags = () => {
                       ? selectedElementRef
                       : null
                   }
-                  style={{
-                    fontSize: "12px",
-                    ...(selectedTagUniqueId &&
-                    selectedTagUniqueId === tag.uniqueId
-                      ? styles.selected
-                      : {}),
-                  }}
+                  className={`text-xs cursor-pointer ${
+                    selectedTagUniqueId && selectedTagUniqueId === tag.uniqueId
+                      ? "font-bold text-green-600"
+                      : ""
+                  }`}
                   onClick={() => handleLinkSelection(tag)}
                 >
                   {tag.name}
@@ -519,28 +517,6 @@ const MoveToAnotherTagParent = () => {
   );
 };
 
-const styles = {
-  selected: {
-    fontWeight: "bold" /* Make selected link text bold */,
-    // fontSize: "22px" /* Increase font size for selected link */,
-    color: "green",
-  },
-  ulStyle: {
-    listStyleType: "none", // Remove bullets
-    paddingLeft: 0, // Remove left padding
-  },
-  liStyles: {
-    marginLeft: "15px", // Add some space between list items
-    paddingBottom: "3px",
-  },
-  tagStyle: {
-    backgroundColor: "#ccc", // Grey background color
-    border: "1px solid #999", // Grey border
-    padding: "2px 5px", // Adjust padding as needed
-    fontSize: "12px", // Small font size
-    borderRadius: "4px", // Rounded corners
-  },
-};
 
 const SearchTagRouterPage = () => {
   return <>Search Tag</>;

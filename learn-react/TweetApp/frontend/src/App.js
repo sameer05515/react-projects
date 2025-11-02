@@ -14,46 +14,39 @@ function App() {
   const history = useNavigate();
 
   useEffect(() => {
-    // Check authentication when App.js loads
-    // You can implement your authentication logic here
-    // For example, check if the user has a valid token
-    const token = getToken(); // Replace with your token retrieval logic
-
+    const token = getToken();
     if (token) {
       setIsAuthenticated(true);
     } else {
-      // If not authenticated and not on the /register route, redirect to the login page
       if (window.location.pathname !== "/register") {
         history("/login");
       }
     }
-    setLoading(false); // Loading completed
+    setLoading(false);
   }, [history]);
 
-  // Function to handle user login
   const handleLogin = useCallback(() => {
-    // Perform your authentication logic here
-    // If authentication is successful, set isAuthenticated to true
     setIsAuthenticated(true);
   }, []);
 
-  // Function to handle user logout
   const handleLogout = useCallback(() => {
-    // Perform logout logic here
-    // If logout is successful, set isAuthenticated to false
     clearToken();
     setIsAuthenticated(false);
     history("/login");
   }, [history]);
 
   if (loading) {
-    // Render loading state until authentication check is complete
-    return <div>Loading...</div>;
+    // Render loading state using tailwind classes
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <span className="text-lg text-gray-700">Loading...</span>
+      </div>
+    );
   }
 
   return (
     <>
-      <div>
+      <div className="z-[2000]">
         <ToastContainer
           position="top-center"
           autoClose={5000}

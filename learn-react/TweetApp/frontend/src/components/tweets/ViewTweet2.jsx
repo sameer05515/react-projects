@@ -14,21 +14,22 @@ function Tweet({
 }) {
   
   return (
-    <div key={tweet._id} className="tweet-card">
-      <p className="timestamp">{formatTimestamp(tweet.createdAt)}</p>
+    <div key={tweet._id} className="bg-white border border-gray-200 p-4 mb-5 rounded-lg shadow-sm">
+      <p className="text-xs text-gray-500 mb-3">{formatTimestamp(tweet.createdAt)}</p>
       <EditableLabel
         text={tweet.content}
         postUpdateClick={(updatedContent) =>
           handleUpdateTweet(tweet._id, updatedContent)
         }
         labelStyle={{
-          fontWeight: "bold", // Apply bold style for tweet
-          fontSize: "18px", // Set font size for tweet
+          fontWeight: "bold",
+          fontSize: "18px",
         }}
+        className="font-bold text-lg"
       />
 
-      <div className="comments-section">
-      <NewComment
+      <div className="mt-4 space-y-4">
+        <NewComment
           tweetId={tweet._id}
           handleAddComment={handleAddComment}          
         />

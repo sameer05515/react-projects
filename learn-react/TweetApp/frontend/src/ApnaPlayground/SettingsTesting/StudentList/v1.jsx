@@ -3,11 +3,11 @@ import ViewSwitcher from '../../../common/components/view-switcher/ViewSwitcher'
 
 const ListView = ({ students }) => {
   return (
-    <div>
-      <h2>List View</h2>
-      <ul>
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      <h2 className="text-2xl font-bold mb-4 text-blue-900">List View</h2>
+      <ul className="list-disc list-inside space-y-2">
         {students.map(student => (
-          <li key={student.id}>{student.name}</li>
+          <li key={student.id} className="text-gray-700">{student.name}</li>
         ))}
       </ul>
     </div>
@@ -16,38 +16,40 @@ const ListView = ({ students }) => {
 
 const CardView = ({ students }) => {
   return (
-    <div>
-      <h2>Card View</h2>
-      {students.map(student => (
-        <div key={student.id}>
-          <h3>{student.name}</h3>
-          <p>{student.address}</p>
-        </div>
-      ))}
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      <h2 className="text-2xl font-bold mb-4 text-blue-900">Card View</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {students.map(student => (
+          <div key={student.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h3 className="text-lg font-semibold text-blue-800 mb-2">{student.name}</h3>
+            <p className="text-gray-600">{student.address}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
 const TableView = ({ students }) => {
   return (
-    <div>
-      <h2>Table View</h2>
-      <table>
+    <div className="bg-white p-6 rounded-lg shadow-sm overflow-x-auto">
+      <h2 className="text-2xl font-bold mb-4 text-blue-900">Table View</h2>
+      <table className="w-full border-collapse">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Age</th>
-            <th>Major Subject</th>
+          <tr className="bg-gray-100 border-b border-gray-300">
+            <th className="p-3 text-left font-semibold text-gray-700">Name</th>
+            <th className="p-3 text-left font-semibold text-gray-700">Address</th>
+            <th className="p-3 text-left font-semibold text-gray-700">Age</th>
+            <th className="p-3 text-left font-semibold text-gray-700">Major Subject</th>
           </tr>
         </thead>
         <tbody>
           {students.map(student => (
-            <tr key={student.id}>
-              <td>{student.name}</td>
-              <td>{student.address}</td>
-              <td>{student.age}</td>
-              <td>{student.major}</td>
+            <tr key={student.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+              <td className="p-3 text-gray-700">{student.name}</td>
+              <td className="p-3 text-gray-600">{student.address}</td>
+              <td className="p-3 text-gray-700">{student.age}</td>
+              <td className="p-3 text-gray-700">{student.major}</td>
             </tr>
           ))}
         </tbody>

@@ -79,7 +79,7 @@ const ToDoBase = lazy(() => import("../components/my-reports/MyReportsBase"));
 
 const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Suspense fallback={<LoadingSpinner fullScreen />}>
         <Routes>
         {/**
@@ -293,9 +293,9 @@ const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
 
 const NotFound = () => {
   return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>Oops! Page not found.</p>
+    <div className="flex flex-col items-center justify-center min-h-[60vh]">
+      <h1 className="text-3xl font-bold text-red-600">404 Not Found</h1>
+      <p className="mt-2 text-lg text-gray-500 dark:text-gray-300">Oops! Page not found.</p>
     </div>
   );
 };
@@ -318,18 +318,15 @@ const Layout = () => {
   return (
     <>
       <div
-        style={{
-          backgroundColor: isDarkMode ? "black" : "white",
-          color: isDarkMode ? "white" : "black",
-          paddingLeft: "25px",
-          paddingTop: "5px",
-        }}
+        className={`relative pl-6 pt-1 min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-black text-white" : "bg-white text-black"}`}
       >
         {/* Breadcrumb component at the top */}
         <ToggleableIcon
           label={"Dark Mode"}
           isContentVisible={isDarkMode}
           additionalStyleForContainer={{
+            // Inline style needed for absolute, because ToggleableIcon likely doesn't support className for container:
+            // we're leaving here ONLY position, but moved others to className
             position: "absolute",
             top: "10px",
             right: "10px",
@@ -342,7 +339,7 @@ const Layout = () => {
           onToggle={() => toggleMode()}
         />
         <GlobalBreadcrumbV2 />
-        <div style={{}}>
+        <div>
           <Outlet /> {/* Render the child routes */}
         </div>
       </div>

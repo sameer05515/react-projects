@@ -6,7 +6,6 @@ import ListSection from "../../../../common/components/list-section/ListSection"
 import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
 import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
 import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
-import { topicAndSectionStyles as styles } from "../styles";
 
 const TopicSectionCard = ({
   data: ts,
@@ -54,13 +53,13 @@ const TopicSectionCard = ({
 
   return (
     <ToggleablePanel title={ts.name} showContent={true}>
-      <div key={ts.uniqueId} style={styles.tagContainerStyle}>
+      <div key={ts.uniqueId} className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
         <span
           ref={selectedSectionId === ts.uniqueId ? selectedElementRef : null}
         ></span>
 
         {/* Action Buttons */}
-        <div style={{ margin: "10px 0" }}>
+        <div className="my-2.5">
           <ListSection
             title=""
             errorMessage=""
@@ -68,7 +67,7 @@ const TopicSectionCard = ({
             renderItem={({ id, title, action }) => (
               <CustomButton
                 key={id}
-                style={{ ...styles.topicTagStyle, marginRight: "10px" }}
+                className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
                 onClick={action}
               >
                 {title}
@@ -83,7 +82,7 @@ const TopicSectionCard = ({
         {/* Tag List */}
         {filteredTags.length > 0 && (
           <ToggleablePanel
-            panelContainerStyle={styles.tagPanelStyle}
+            panelContainerStyle={{ backgroundColor: "lemonchiffon", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }}
             title="Tags:"
             showContent={true}
           >
@@ -94,7 +93,7 @@ const TopicSectionCard = ({
               renderItem={(tag) =>
                 tag && (
                   <HoverableSpan
-                    style={{ ...styles.topicTagStyle, margin: "5px" }}
+                    className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded m-1.5 inline-block cursor-pointer hover:bg-gray-400 transition-colors"
                     key={tag._id}
                     onClick={() => handleLinkedTagSelection(tag.uniqueId)}
                   >

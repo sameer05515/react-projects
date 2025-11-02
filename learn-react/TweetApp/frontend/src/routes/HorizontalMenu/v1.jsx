@@ -8,51 +8,6 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
   const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const menuStyle = {
-    backgroundColor: "#2C3E50",
-    color: "white",
-    padding: "10px 0",
-    borderRadius: "5px",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-  };
-
-  const selectedLinkStyle = {
-    color: "#FFC107",
-    fontSize: "15px",
-    fontWeight: "bold",
-  };
-
-  const listItemStyle = {
-    padding: "8px 15px",
-    fontSize: "10px",
-    transition: "background-color 0.3s ease, color 0.3s ease",
-  };
-
-  const linkStyle = {
-    color: "#ECF0F1",
-    textDecoration: "none",
-  };
-
-  const listItemHoverStyle = {
-    backgroundColor: "#34495E",
-    borderRadius: "5px",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#E74C3C",
-    color: "white",
-    border: "none",
-    padding: "8px 16px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    transition: "background-color 0.3s ease",
-  };
-
-  const buttonHoverStyle = {
-    backgroundColor: "#C0392B",
-  };
-
   const isPathActive = (path) => {
     const currentPath = window.location.pathname;
     return currentPath === path || currentPath.startsWith(path);
@@ -121,34 +76,45 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
   );
 
   return (
-    <div style={{ marginBottom: "20px" }}>
+    <div className="mb-5">
       <CollapsibleMenu isCollapsed={isCollapsed}>
-        <ul style={{ listStyle: "none", ...menuStyle }}>
+        <ul className="flex flex-wrap items-center gap-2 rounded-lg bg-[#2C3E50] text-white px-0 py-2 shadow-lg">
           {links
             .filter((l) => l.isModule)
             .map(({ linkPath, linkHeader }, idx) => (
               <li
                 key={`linkPath_${idx + 100}`}
-                style={{
-                  ...listItemStyle,
-                  ...(isPathActive(linkPath()) ? listItemHoverStyle : {}),
-                }}
+                className={
+                  "px-4 py-2 text-xs rounded transition-colors duration-300" +
+                  (isPathActive(linkPath())
+                    ? " bg-[#34495E]"
+                    : " hover:bg-[#34495E]") +
+                  (isPathActive(linkPath())
+                    ? " text-[#FFC107] font-bold text-sm"
+                    : " text-[#ECF0F1]")
+                }
               >
                 <NavLink
                   to={linkPath()}
-                  style={{
-                    ...linkStyle,
-                    ...(isPathActive(linkPath()) ? selectedLinkStyle : {}),
-                  }}
+                  className={
+                    "no-underline" +
+                    (isPathActive(linkPath())
+                      ? " text-[#FFC107] font-bold text-sm"
+                      : " text-[#ECF0F1]")
+                  }
+                  onClick={() => handleLinkClick(linkHeader)}
                 >
-                  <span onClick={() => handleLinkClick(linkHeader)}>{linkHeader}</span>
+                  {linkHeader}
                 </NavLink>
               </li>
             ))}
 
           {isAuthenticated && (
-            <li style={{ ...listItemStyle, marginLeft: "auto" }}>
-              <button onClick={handleLogout} style={{ ...buttonStyle }} onMouseEnter={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)} onMouseLeave={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}>
+            <li className="px-4 py-2 text-xs ml-auto">
+              <button
+                onClick={handleLogout}
+                className="bg-[#E74C3C] text-white border-none px-4 py-2 rounded transition-colors duration-300 font-bold cursor-pointer hover:bg-[#C0392B]"
+              >
                 Logout
               </button>
             </li>

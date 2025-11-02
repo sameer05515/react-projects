@@ -3,39 +3,6 @@ import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConst
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-  fontSize: "16px",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "10px",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  fontSize: "16px",
-  cursor: "pointer",
-};
-
-const containerStyle = {
-  maxWidth: "300px",
-  margin: "0 auto",
-  padding: "20px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-  backgroundColor: "#f5f5f5",
-};
-
-const labelStyle = {
-  display: "block",
-  fontWeight: "bold",
-};
-
 function Registration() {
   const [formData, setFormData] = useState({
     name: "",
@@ -111,33 +78,33 @@ function Registration() {
   };
 
   return (
-    <div style={containerStyle}>
-      <h2>Registration</h2>
+    <div className="max-w-xs mx-auto p-5 border border-gray-300 rounded-lg bg-gray-50">
+      <h2 className="text-2xl font-bold mb-4">Registration</h2>
       <form onSubmit={handleSubmit}>
-        <div style={labelStyle}>
-          <label htmlFor="name">Name:</label>
+        <div className="block mb-4">
+          <label htmlFor="name" className="block font-bold mb-2">Name:</label>
           <input
             type="text"
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="email">Email ID:</label>
+        <div className="block mb-4">
+          <label htmlFor="email" className="block font-bold mb-2">Email ID:</label>
           <input
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="username">Username:</label>
+        <div className="block mb-4">
+          <label htmlFor="username" className="block font-bold mb-2">Username:</label>
           <input
             type="text"
             id="username"
@@ -145,11 +112,11 @@ function Registration() {
             value={formData.username}
             onChange={handleChange}
             required
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="password">Password:</label>
+        <div className="block mb-4">
+          <label htmlFor="password" className="block font-bold mb-2">Password:</label>
           <input
             type="password"
             id="password"
@@ -157,11 +124,11 @@ function Registration() {
             value={formData.password}
             onChange={handleChange}
             required
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
+        <div className="block mb-4">
+          <label htmlFor="confirmPassword" className="block font-bold mb-2">Confirm Password:</label>
           <input
             type="password"
             id="confirmPassword"
@@ -169,28 +136,31 @@ function Registration() {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="mobileNumber">Mobile Number:</label>
+        <div className="block mb-4">
+          <label htmlFor="mobileNumber" className="block font-bold mb-2">Mobile Number:</label>
           <input
             type="tel"
             id="mobileNumber"
             name="mobileNumber"
             value={formData.mobileNumber}
             onChange={handleChange}
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        {passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
-        <button type="submit" style={buttonStyle}>
+        {passwordError && <div className="text-red-600 mb-2">{passwordError}</div>}
+        <button 
+          type="submit" 
+          className="w-full py-2 px-4 bg-blue-600 text-white border-none rounded text-base cursor-pointer hover:bg-blue-700 transition-colors mb-4"
+        >
           Register
         </button>
         <div>
           {/* Link to the login page */}
           <p>
-            Already have an account? <NavLink to="/login">Login</NavLink>
+            Already have an account? <NavLink to="/login" className="text-blue-600 hover:underline">Login</NavLink>
           </p>
         </div>
       </form>

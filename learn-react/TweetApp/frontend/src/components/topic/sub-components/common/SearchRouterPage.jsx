@@ -13,8 +13,6 @@ import {
 const SearchRouterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const topicFormStyle = {};
-  
     const [formData, setFormData] = useState({
       title: "",
     });
@@ -78,10 +76,10 @@ const SearchRouterPage = () => {
   
     return (
       <>
-        <h1>Search</h1>
-        <div style={topicFormStyle}>
-          <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-            <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>
+        <h1 className="text-2xl font-bold mb-4">Search</h1>
+        <div>
+          <div className="flex items-center p-2.5 mb-4">
+            <label htmlFor="title" className="w-[9%] font-bold">
               Title
             </label>
             <input
@@ -91,35 +89,40 @@ const SearchRouterPage = () => {
               placeholder="Search {currently only searching in name of topic. search in description will be available soon!}"
               value={formData.title}
               onChange={handleInputChange}
-              style={{ width: "90%" }}
+              className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <pre>{JSON.stringify(criteriaList)}</pre>
-          <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+          <pre className="bg-gray-100 p-2.5 rounded mb-4 overflow-auto">{JSON.stringify(criteriaList, null, 2)}</pre>
+          <div className="flex items-center p-2.5 mb-4">
             <label
               htmlFor="searchOptions"
-              style={{ width: "9%", fontWeight: "bold" }}
+              className="w-[9%] font-bold"
             >
               Search Options
             </label>
-            {Object.keys(criteriaList).map((criteria) => (
-              <div key={criteria}>
-                <label>
-                  <input
-                    type="checkbox"
-                    name={criteria}
-                    checked={criteriaList[criteria].value}
-                    onChange={handleChange}
-                    disabled={!criteriaList[criteria].editable}
-                  />
-                  {criteria.charAt(0).toUpperCase() + criteria.slice(1)}
-                </label>
-              </div>
-            ))}
+            <div className="flex gap-4">
+              {Object.keys(criteriaList).map((criteria) => (
+                <div key={criteria} className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name={criteria}
+                      checked={criteriaList[criteria].value}
+                      onChange={handleChange}
+                      disabled={!criteriaList[criteria].editable}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50"
+                    />
+                    <span className={!criteriaList[criteria].editable ? "text-gray-500" : ""}>
+                      {criteria.charAt(0).toUpperCase() + criteria.slice(1)}
+                    </span>
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
   
-        <div>
+        <div className="flex gap-2.5 mb-4">
           <CustomButton onClick={() => handleSearch()}>Search</CustomButton>
           <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
         </div>
@@ -127,13 +130,13 @@ const SearchRouterPage = () => {
         <div>
           {data && data.length > 0 && (
             <>
-              <b>Search Results:- </b>
-              <ul>
+              <b className="text-lg font-semibold block mb-2">Search Results:- </b>
+              <ul className="list-disc list-inside space-y-2">
                 {data.map((t) => (
-                  <li>
+                  <li key={t.uniqueId}>
                     <HoverableSpan
-                      key={t.uniqueId}
                       onClick={() => onChildTopicClick(t)}
+                      className="cursor-pointer text-blue-600 hover:text-blue-800 hover:underline"
                     >
                       {flatData?.find((ft) => ft.uniqueId === t.uniqueId)
                         ?.title || t.name}

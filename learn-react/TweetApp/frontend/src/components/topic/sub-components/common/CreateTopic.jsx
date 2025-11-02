@@ -96,13 +96,11 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
     setSmartEditorError(error);
   };
 
-  const formStyle = {};
-
   return (
-    <div style={formStyle}>
-      <h3>{topic && topic.uniqueId ? "Edit Topic" : "Add Topic"}</h3>
-      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-        <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>
+    <div>
+      <h3 className="text-xl font-bold mb-4">{topic && topic.uniqueId ? "Edit Topic" : "Add Topic"}</h3>
+      <div className="flex items-center p-2.5 mb-4">
+        <label htmlFor="name" className="w-[9%] font-bold">
           Name:
         </label>
         <input
@@ -111,7 +109,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           name="name"
           value={topicData.name}
           onChange={handleInputChange}
-          style={{ width: "90%" }}
+          className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       <div>
@@ -135,17 +133,13 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           </CustomButton>
         </div>
         {showDescr && (
-          <div
-            style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}
-          >
+          <div className="border border-gray-300 p-1.5 m-1.5 rounded">
             {/* {ReactHtmlParser(topicData.description || "")} */}
             <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html" }}/>
           </div>
         )}
 
-        <div
-          style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}
-        >
+        <div className="border border-gray-300 p-1.5 m-1.5 rounded">
           <SmartEditor
             preview={false}
             initialValue={topicData.smartContent}
@@ -155,11 +149,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         </div>
       </div>
 
-      {/* <div style={{ border: "1px solid #ddd", padding: "5px", margin: "5px" }}>
-        <SmartEditor initialValue={topicData.smartContent} onChange={handleSmartEditorChange} onError={handleSmartEditorError} />
-      </div> */}
-
-      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+      <div className="flex items-center p-2.5 mb-4">
         <label htmlFor="occurenceDate">Date:</label>
         <input
           type="date"
@@ -179,18 +169,18 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           onChange={handleTagSelect}
         />
       </div>
-      <div>
+      <div className="mb-4">
         {formErrors.length > 0 && (
           <div>
             {formErrors.map((error, index) => (
-              <span key={index} style={styles.error}>
+              <span key={index} className="text-red-600 text-sm block mt-1.5">
                 {error}
               </span>
             ))}
           </div>
         )}
       </div>
-      <div>
+      <div className="flex gap-2.5">
         <CustomButton onClick={(event) => handleSaveTopic(event)}>
           {topic ? "Save Changes" : "Create Topic"}
         </CustomButton>
@@ -201,20 +191,5 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   );
 }
 
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-  labelStyle: {
-    width: "15%", // Set label width to 25%
-    fontWeight: "bold", // Make label text bold
-  },
-  pairedComponentStyle: {
-    width: "85%", // Set paired component width to 75%
-  },
-};
 
 export default CreateTopic;

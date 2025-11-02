@@ -12,7 +12,6 @@ import {
   selectTopicsStateCombined
 } from "../../../../redux/slices/topicSlice";
 import { fetchTags } from "../../../../redux/slices/tagsSlice";
-import { TopicMgmtStyles as styles } from "../styles";
 
 const TopicTreeViewDashboard = () => {
     const dispatch = useDispatch();
@@ -65,37 +64,30 @@ const TopicTreeViewDashboard = () => {
     }
   
     return (
-      <div
-        style={{
-          display: "flex",
-          maxHeight: "95vh",
-          maxWidth: "95vw",
-          paddingLeft: "25px",
-        }}
-      >
-        <div style={{ flex: 1, overflow: "auto" }}>
+      <div className="flex max-h-[95vh] max-w-[95vw] pl-6">
+        <div className="flex-1 overflow-auto">
           {/* <pre>{links && JSON.stringify(links)}</pre> */}
-          <div style={{ margin: "10px 0" }}>
+          <div className="my-2.5">
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => handleButtonClick("create")}
             >
               Create Topic
             </CustomButton>
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => dispatch(fetchTopics())}
             >
               Refresh
             </CustomButton>
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate(`/topic-mgmt/search`)}
             >
               Search
             </CustomButton>
             <CustomButton
-              style={{ ...styles.tagStyle, marginRight: "10px" }}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate("/topic-mgmt/two-nodes")}
             >
               two-nodes
@@ -114,13 +106,11 @@ const TopicTreeViewDashboard = () => {
                         ? selectedElementRef
                         : null
                     }
-                    style={{
-                      fontSize: "12px",
-                      ...(selectedTopicUniqueId &&
-                      selectedTopicUniqueId === topic.uniqueId
-                        ? styles.selected
-                        : {}),
-                    }}
+                    className={`text-xs cursor-pointer ${
+                      selectedTopicUniqueId && selectedTopicUniqueId === topic.uniqueId
+                        ? "font-bold text-red-600 text-sm"
+                        : ""
+                    }`}
                     onClick={() => handleLinkSelection(topic)}
                   >
                     {/* {topic.name} */}
@@ -132,8 +122,8 @@ const TopicTreeViewDashboard = () => {
           )}
         </div>
         {/* -- left-section */}
-  
-        <div style={{ flex: 4, overflow: "auto", marginLeft: "20px" }}>
+
+        <div className="flex-[4] overflow-auto ml-5">
           <div>
             <Outlet />
           </div>

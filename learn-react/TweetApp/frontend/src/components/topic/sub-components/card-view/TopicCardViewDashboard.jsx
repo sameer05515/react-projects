@@ -67,24 +67,6 @@ function ListTopicsByCreatedDate() {
 
   const groupedTopics = groupTopicsByOccurenceDate(filteredTopics);
 
-  const listStyle = {
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  const groupStyle = {
-    border: "1px solid #ccc",
-    margin: "10px",
-    padding: "10px",
-  };
-
-  const itemStyle = {
-    border: "1px solid #ccc",
-    padding: "10px",
-    borderRadius: "10px", // Adding round borders
-    backgroundColor: "#f2f2f2", // Grey background color
-    marginBottom: "5px", // Adding vertical spacing of 5px
-  };
 
   return (
     <div>
@@ -105,31 +87,33 @@ function ListTopicsByCreatedDate() {
       )}
 
       {loading === "fulfilled" && (
-        <div style={listStyle}>
-          <div>
+        <div className="flex flex-col">
+          <div className="mb-4 flex gap-4 items-center">
             {/* Date range filter */}
-            <label htmlFor="startDate">Start Date: </label>
+            <label htmlFor="startDate" className="font-semibold">Start Date: </label>
             <input
               type="date"
               id="startDate"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <label htmlFor="endDate">End Date: </label>
+            <label htmlFor="endDate" className="font-semibold">End Date: </label>
             <input
               type="date"
               id="endDate"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {Object.keys(groupedTopics).map((occurenceDate) => (
-            <div key={occurenceDate} style={groupStyle}>
-              <h3>{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
+            <div key={occurenceDate} className="border border-gray-300 m-2.5 p-2.5 rounded">
+              <h3 className="text-lg font-bold mb-2">{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
               {groupedTopics[occurenceDate].map((topic) => (
                 <div
                   key={topic.topicId}
-                  style={itemStyle}
+                  className="border border-gray-300 p-2.5 rounded-[10px] bg-gray-100 mb-1.5 cursor-pointer hover:bg-gray-200 transition-colors"
                   onDoubleClick={() => handleEditTopic(topic)}
                 >
                   <TopicCard topic={topic} />

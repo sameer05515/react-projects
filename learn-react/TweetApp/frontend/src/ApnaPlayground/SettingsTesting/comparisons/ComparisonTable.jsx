@@ -5,24 +5,26 @@ const ComparisonTable = ({ expectations1, expectations2 }) => {
   const allHeaders = [...new Set([...expectations1.map(item => item.header), ...expectations2.map(item => item.header)])];
 
   return (
-    <table style={styles.table}>
-      <thead>
-        <tr>
-          <th style={styles.headerCell}>Header</th>
-          <th style={styles.expectationCell}>Expectations Set 1</th>
-          <th style={styles.expectationCell}>Expectations Set 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        {allHeaders.map(header => (
-          <tr key={header}>
-            <td style={styles.cell}>{header}</td>
-            <td style={styles.cell}>{getValuesForHeader(expectations1, header)}</td>
-            <td style={styles.cell}>{getValuesForHeader(expectations2, header)}</td>
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse my-5">
+        <thead>
+          <tr className="border-b border-gray-300">
+            <th className="bg-gray-100 p-2.5 text-left border-b border-gray-300">Header</th>
+            <th className="bg-gray-100 p-2.5 text-left border-b border-gray-300">Expectations Set 1</th>
+            <th className="bg-gray-100 p-2.5 text-left border-b border-gray-300">Expectations Set 2</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {allHeaders.map(header => (
+            <tr key={header} className="border-b border-gray-300 hover:bg-gray-50">
+              <td className="p-2.5 text-left">{header}</td>
+              <td className="p-2.5 text-left">{getValuesForHeader(expectations1, header)}</td>
+              <td className="p-2.5 text-left">{getValuesForHeader(expectations2, header)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
@@ -30,30 +32,6 @@ const ComparisonTable = ({ expectations1, expectations2 }) => {
 const getValuesForHeader = (expectations, header) => {
   const item = expectations.find(item => item.header === header);
   return item ? item.values.join(', ') : 'NA';
-};
-
-const styles = {
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    margin: '20px',
-  },
-  headerCell: {
-    backgroundColor: '#f2f2f2',
-    padding: '10px',
-    textAlign: 'left',
-    borderBottom: '1px solid #ddd',
-  },
-  expectationCell: {
-    padding: '10px',
-    textAlign: 'left',
-    borderBottom: '1px solid #ddd',
-  },
-  cell: {
-    padding: '10px',
-    textAlign: 'left',
-    borderBottom: '1px solid #ddd',
-  },
 };
 
 export default ComparisonTable;

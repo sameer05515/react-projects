@@ -84,13 +84,11 @@ const TaskTreeViewDashboard = () => {
                       ? selectedElementRef
                       : null
                   }
-                  style={{
-                    fontSize: "12px",
-                    ...(selectedTaskUniqueId &&
-                    selectedTaskUniqueId === t.uniqueId
-                      ? styles.selected
-                      : {}),
-                  }}
+                  className={`text-xs cursor-pointer ${
+                    selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId
+                      ? "font-bold text-green-600"
+                      : ""
+                  }`}
                   onClick={() => handleLinkSelection(t)}
                 >
                   {t.name}
@@ -137,13 +135,11 @@ const TaskTreeViewDashboard = () => {
                       ? selectedElementRef
                       : null
                   }
-                  style={{
-                    fontSize: "12px",
-                    ...(selectedTaskUniqueId &&
-                    selectedTaskUniqueId === t.uniqueId
-                      ? styles.selected
-                      : {}),
-                  }}
+                  className={`text-xs cursor-pointer ${
+                    selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId
+                      ? "font-bold text-red-600 text-sm"
+                      : ""
+                  }`}
                   onClick={() => handleLinkSelection(t)}
                 >
                   {/* {t.name} */}
@@ -184,13 +180,6 @@ const TaskTreeViewDashboard = () => {
 //     return queue;
 // };
 
-const styles = {
-  selected: {
-    fontWeight: "bold" /* Make selected link text bold */,
-    fontSize: "15px" /* Increase font size for selected link */,
-    color: "#e91140",
-  },
-};
 
 export default TaskBase;
 // export {

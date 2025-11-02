@@ -72,19 +72,17 @@ const AddSubTopicRouterPage = () => {
     });
   };
 
-  const topicFormStyle = {};
-
   return (
     <>
-      <div>
+      <div className="mb-4">
         <CustomButton onClick={handleCreateNewSubtopic}>
           Create new Sub-Topic
         </CustomButton>
       </div>
 
-      <div style={topicFormStyle}>
-        <div>
-          <label htmlFor="tags">Add Existing Topics:</label>
+      <div className="mb-4">
+        <div className="mb-4">
+          <label htmlFor="tags" className="block font-bold mb-2">Add Existing Topics:</label>
           <Select
             isMulti
             name="topics"
@@ -99,7 +97,7 @@ const AddSubTopicRouterPage = () => {
         </div>
       </div>
 
-      <div>
+      <div className="flex gap-2.5">
         <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
         <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
       </div>

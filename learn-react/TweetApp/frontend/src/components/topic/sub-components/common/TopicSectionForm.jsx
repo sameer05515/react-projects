@@ -104,8 +104,8 @@ const TopicSectionForm = ({
         <strong>Topic:</strong> {selectedTopic?.title || "Invalid Topic"}
       </p>
 
-      <div>
-        <label htmlFor="name" style={styles.labelStyle}>
+      <div className="mb-4">
+        <label htmlFor="name" className="block font-bold mb-1.5">
           Name:
         </label>
         <input
@@ -114,12 +114,12 @@ const TopicSectionForm = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          style={styles.inputStyle}
+          className="w-full px-2 py-2 mb-2.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
       </div>
 
-      <div style={styles.editorContainer}>
+      <div className="border border-gray-300 p-2.5 my-2.5 rounded">
         <SmartEditor
           initialValue={formData.smartContent}
           onChange={handleSmartEditorChange}
@@ -127,8 +127,8 @@ const TopicSectionForm = ({
         />
       </div>
 
-      <div>
-        <label htmlFor="tags">Tags:</label>
+      <div className="mb-4">
+        <label htmlFor="tags" className="block font-bold mb-2">Tags:</label>
         <Select
           isMulti
           name="tags"
@@ -139,16 +139,16 @@ const TopicSectionForm = ({
       </div>
 
       {formErrors.length > 0 && (
-        <div>
+        <div className="mb-2.5">
           {formErrors.map((error, index) => (
-            <span key={index} style={styles.error}>
+            <span key={index} className="text-red-600 text-sm block">
               {error}
             </span>
           ))}
         </div>
       )}
 
-      <div style={styles.buttonContainer}>
+      <div className="mt-5 flex gap-2.5">
         <CustomButton onClick={handleSubmit}>
           {formData.uniqueId ? "Update" : "Save"} Changes
         </CustomButton>
@@ -160,34 +160,5 @@ const TopicSectionForm = ({
   );
 };
 
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-  },
-  labelStyle: {
-    display: "block",
-    fontWeight: "bold",
-    marginBottom: "5px",
-  },
-  inputStyle: {
-    width: "100%",
-    padding: "8px",
-    marginBottom: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  editorContainer: {
-    border: "1px solid #ddd",
-    padding: "10px",
-    margin: "10px 0",
-  },
-  buttonContainer: {
-    marginTop: "20px",
-    display: "flex",
-    gap: "10px",
-  },
-};
 
 export default TopicSectionForm;

@@ -26,20 +26,25 @@ const ComparisonContainer = ({ additionalProp }) => {
   };
 
   return (
-    <div>
-      <h2>Comparison Container</h2>
-      <p>Additional Prop: {additionalProp}</p>
-      {(showForm || selectedItem) && (
-        <SaveUpdateComparableData
-          dataToEdit={selectedItem}
-          onSaveComplete={handleSaveUpdateComplete}
-        />
+    <div className="bg-white p-6 rounded-lg">
+      <h2 className="text-2xl font-bold mb-4 text-blue-900">Comparison Container</h2>
+      {additionalProp && (
+        <p className="mb-4 text-gray-600">Additional Prop: {additionalProp}</p>
       )}
-      {!showForm && <CustomButton onClick={() => setShowForm(true)}>Add</CustomButton>}
-      {/* Pass data prop to ComparableDataList */}
-      <ComparableDataList data={data} onDoubleClick={handleDoubleClick} />
-      {/* Pass dataToEdit prop to SaveUpdateComparableData */}
-      
+      <div className="mb-4">
+        {(showForm || selectedItem) && (
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <SaveUpdateComparableData
+              dataToEdit={selectedItem}
+              onSaveComplete={handleSaveUpdateComplete}
+            />
+          </div>
+        )}
+        {!showForm && !selectedItem && (
+          <CustomButton onClick={() => setShowForm(true)}>Add New Comparison</CustomButton>
+        )}
+      </div>
+      <ComparableDataList onDoubleClick={handleDoubleClick} />
     </div>
   );
 };

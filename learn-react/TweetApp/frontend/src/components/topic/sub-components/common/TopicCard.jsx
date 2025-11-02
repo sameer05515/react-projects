@@ -14,7 +14,6 @@ import Tree from "../../../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../../../common/hooks/useGlobalServiceProvider";
 import { formatDateToDDMMMYYYYWithTime, prepareQuestions } from "../../../../common/service/commonService";
 import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
-import { topicAndSectionStyles as styles } from "../styles";
 import TopicSectionCard from "./TopicSectionCard";
 
 const TopicCard = ({
@@ -114,19 +113,19 @@ const TopicCard = ({
       <div>
         <Breadcrumbs providedItem={topic} providedItemType={BreadcrumbItemType.TOPIC} ancestors={topic.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
         <h3>{topic.name}</h3>
-        <div style={{ ...styles.topicDatesStyle }}>
+        <div className="text-xs rounded mb-2.5">
           <ListSection
             title="Tags:"
             items={filteredTags}
             errorMessage={"No tags added yet!"}
             renderItem={(tag, idx) => (
-              <HoverableSpan style={{ ...styles.topicTagStyle, margin: "5px" }} key={tag._id || `tag_${idx + 1}`} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
+              <HoverableSpan className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded m-1.5 inline-block cursor-pointer hover:bg-gray-400 transition-colors" key={tag._id || `tag_${idx + 1}`} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
                 {tag.title}
               </HoverableSpan>
             )}
           />
         </div>
-        <div style={styles.topicDatesStyle}>
+        <div className="text-xs rounded mb-2.5">
           <ListSection
             title=""
             items={[
@@ -148,7 +147,7 @@ const TopicCard = ({
             ]}
             errorMessage=""
             renderItem={({ id, title, data }, idx) => (
-              <span key={id} style={{ marginRight: "10px" }}>
+              <span key={id} className="mr-2.5">
                 <b>{title}:</b>
                 {formatDateToDDMMMYYYYWithTime(data)}
               </span>
@@ -157,7 +156,7 @@ const TopicCard = ({
         </div>
       </div>
 
-      <div style={{ margin: "10px 0" }}>
+      <div className="my-2.5">
         <ListSection
           title=""
           errorMessage=""
@@ -183,27 +182,27 @@ const TopicCard = ({
             },
           ]}
           renderItem={({ title, action }, idx) => (
-            <CustomButton key={`action_buttons_${idx + 1}`} style={{ ...styles.topicTagStyle, marginRight: "10px" }} onClick={action}>
+            <CustomButton key={`action_buttons_${idx + 1}`} className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5" onClick={action}>
               {title}
             </CustomButton>
           )}
         />
 
-        <FloatingButton buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }} buttonText={"Show Pinned Topics"}>
+        <FloatingButton buttonStyle={{ backgroundColor: "#ccc", border: "1px solid #999", padding: "2px 5px", fontSize: "12px", borderRadius: "4px", marginRight: "10px" }} buttonText={"Show Pinned Topics"}>
           <ListSection
             title="List of all pinned Topics:-"
             errorMessage=""
             items={pinnedTopics}
             renderItem={(t) => (
-              <div style={styles.liStyles} key={t.uniqueId}>
+              <div className="ml-4 pb-1" key={t.uniqueId}>
                 <HoverableSpan onClick={() => onChildTopicClick({ uniqueId: t.linkedUniqueId })}>{t.title}</HoverableSpan>
               </div>
             )}
           />
         </FloatingButton>
 
-        <FloatingButton buttonStyle={{ ...styles.topicTagStyle, marginRight: "10px" }} buttonText={"?"}>
-          <div style={{ padding: "10px" }}>
+        <FloatingButton buttonStyle={{ backgroundColor: "#ccc", border: "1px solid #999", padding: "2px 5px", fontSize: "12px", borderRadius: "4px", marginRight: "10px" }} buttonText={"?"}>
+          <div className="p-2.5">
             If this <b>{`${topic.name}`}</b> is a topic, It should answer below questions
           </div>
           {topic.name && <DynamicDataRenderer data={prepareQuestions(topic.name)} />}
@@ -211,20 +210,20 @@ const TopicCard = ({
         <br />
       </div>
 
-      <ToggleablePanel panelContainerStyle={styles.sectionStyle} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
+      <ToggleablePanel panelContainerStyle={{ backgroundColor: "lightgoldenrodyellow", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
         <ListSection
           title=""
           errorMessage="No Sections Added Yet!!"
           items={topic.sections}
           renderItem={(t) => (
-            <div style={styles.liStyles} key={t.uniqueId}>
+            <div className="ml-4 pb-1" key={t.uniqueId}>
               <HoverableSpan onClick={() => onTopicSectionClick(t.uniqueId)}>{t.name}</HoverableSpan>
             </div>
           )}
         />
       </ToggleablePanel>
 
-      <ToggleablePanel showContent={topic?.children?.length > 0} title={`Child Topics [${topic?.children?.length || 0}]:-`} panelContainerStyle={styles.descriptionStyle}>
+      <ToggleablePanel showContent={topic?.children?.length > 0} title={`Child Topics [${topic?.children?.length || 0}]:-`} panelContainerStyle={{ backgroundColor: "lightgoldenrodyellow", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }}>
         <Tree
           data={topic.children}
           errorMessageOnNoData="No Child Topic Added Yet!!"
@@ -240,13 +239,14 @@ const TopicCard = ({
         showContent={showDescr}
         title={`${topic.smartContent ? "Smart" : "Raw"} Description:-`}
         panelContainerStyle={{
-          border: "1px solid #999", // Grey border
-          padding: "2px 5px", // Adjust padding as needed
+          border: "1px solid #999",
+          padding: "2px 5px",
           borderRadius: "4px",
           marginBottom: "10px",
           width: "67vw",
           overflow: "auto",
         }}
+        className="border border-gray-600 p-1 rounded mb-2.5 overflow-auto"
       >
         {topic.description && !topic.smartContent && (
           // ReactHtmlParser(topic.description || "")
@@ -256,7 +256,7 @@ const TopicCard = ({
       </ToggleablePanel>
 
       {topicSections && topicSections.length > 0 ? (
-        <ToggleablePanel panelContainerStyle={styles.topicSectionsStyle} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
+        <ToggleablePanel panelContainerStyle={{ border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
           <ListSection
             title=""
             errorMessage=""

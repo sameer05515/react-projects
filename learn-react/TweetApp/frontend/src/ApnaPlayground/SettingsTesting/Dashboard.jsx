@@ -8,12 +8,6 @@ import DisplayData from "./DisplayData/v1";
 import GoldRateCalculator from "./GoldRateCalculator/v1";
 import StudentList from "./StudentList/v1";
 
-const tabButtonStyle = {
-  padding: "10px",
-  border: "1px solid #ccc",
-  cursor: "pointer",
-};
-
 const TabNames = {
   goldRateCalculator: "goldRateCalculator",
   comparisonContainer: "ComparisonContainer",
@@ -56,92 +50,36 @@ function SettingDashboard() {
     },
   ];
 
+  const tabButtons = [
+    { key: TabNames.goldRateCalculator, label: "GoldRate Calculator" },
+    { key: TabNames.comparisonContainer, label: "Comparison Container" },
+    { key: TabNames.comparisonTableContainer, label: "Comparison Table Container" },
+    { key: TabNames.studentListContainer, label: "Student List Container" },
+    { key: TabNames.breadCrumbContainer, label: "BreadCrumb Container" },
+    { key: TabNames.CountFullStopLines, label: "CountFullStopLines Container" },
+    { key: TabNames.DisplayData, label: "DisplayData Container" },
+    { key: TabNames.ArrowConnectorExample, label: "ArrowConnectorExample Container" },
+  ];
+
   return (
-    <div style={{ paddingLeft: "20px" }}>
-      <h2>Setting Dashboard</h2>
-      <div style={{ display: "flex", gap: "10px", paddingLeft: "10px" }}>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.goldRateCalculator ? "#007bff" : "white",
-            color: activeTab === TabNames.goldRateCalculator ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.goldRateCalculator)}
-        >
-          GoldRate Calculator
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.comparisonContainer ? "#007bff" : "white",
-            color: activeTab === TabNames.comparisonContainer ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.comparisonContainer)}
-        >
-          Comparison Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.comparisonTableContainer ? "#007bff" : "white",
-            color: activeTab === TabNames.comparisonTableContainer ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.comparisonTableContainer)}
-        >
-          Comparison Table Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.studentListContainer ? "#007bff" : "white",
-            color: activeTab === TabNames.studentListContainer ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.studentListContainer)}
-        >
-          Student List Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.breadCrumbContainer ? "#007bff" : "white",
-            color: activeTab === TabNames.breadCrumbContainer ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.breadCrumbContainer)}
-        >
-          BreadCrumb Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.CountFullStopLines ? "#007bff" : "white",
-            color: activeTab === TabNames.CountFullStopLines ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.CountFullStopLines)}
-        >
-          CountFullStopLines Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.DisplayData ? "#007bff" : "white",
-            color: activeTab === TabNames.DisplayData ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.DisplayData)}
-        >
-          DisplayData Container
-        </button>
-        <button
-          style={{
-            ...tabButtonStyle,
-            background: activeTab === TabNames.ArrowConnectorExample ? "#007bff" : "white",
-            color: activeTab === TabNames.ArrowConnectorExample ? "white" : "black",
-          }}
-          onClick={() => handleTabChange(TabNames.ArrowConnectorExample)}
-        >
-          ArrowConnectorExample Container
-        </button>
+    <div className="max-w-7xl mx-auto p-6">
+      <h2 className="text-3xl font-bold mb-6 text-blue-900">Settings Dashboard</h2>
+      <div className="flex flex-wrap gap-2.5 mb-4">
+        {tabButtons.map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => handleTabChange(key)}
+            className={`px-4 py-2 rounded border border-gray-300 cursor-pointer transition-colors text-sm font-medium ${
+              activeTab === key
+                ? "bg-blue-600 text-white"
+                : "bg-white text-black hover:bg-gray-100"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
-      <div style={{ marginTop: "10px" }}>
+      <div className="mt-2.5 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         {activeTab === TabNames.goldRateCalculator && <GoldRateCalculator />}
         {activeTab === TabNames.comparisonContainer && <ComparisonContainer />}
         {activeTab === TabNames.comparisonTableContainer && <ComparisonTableContainer />}

@@ -6,48 +6,22 @@ const CustomButton = ({
   iconName,
   title = "",
   children,
+  className = "",
   style = {},
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const buttonStyle = {
-    display: "inline-block",
-    // padding: '10px 20px',
-    backgroundColor: isHovered ? "#0056b3" : "#0074d9",
-    color: isHovered ? "#ffffff" : "#000000", // Text color changes on hover
-    border: "none",
-    borderRadius: "10px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-  };
-
-  const buttonHoverStyle = {
-    backgroundColor: "#0056b3",
-  };
-
-  const iconStyle = {
-    marginRight: "5px",
-  };
-
-  const textStyle = {
-    marginLeft: "5px",
-  };
-
   return (
     <button
-      style={{ ...style, ...buttonStyle, ...(isHovered && buttonHoverStyle) }}
+      className={`inline-block bg-blue-600 text-white border-none rounded-[10px] cursor-pointer transition-colors hover:bg-blue-700 ${className}`}
+      style={style}
       title={title||''}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick?onClick:undefined}
     >
-      {/* {children} */}
       {iconName && (
-        <span style={iconStyle}>
+        <span className="mr-1.5">
           <IconComponent iconName={iconName} />
         </span>
       )}
-      {children && <span style={textStyle}>{children}</span>}
+      {children && <span className="ml-1.5">{children}</span>}
     </button>
   );
 };

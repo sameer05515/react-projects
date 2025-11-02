@@ -29,13 +29,22 @@ const CollapsibleMenu = ({ isCollapsed: isCollapsedInitialValue = true, children
     return (
         <div
             ref={menuRef}
-            style={isCollapsed ? styles.collapsedMenu : styles.expandedMenu}
+            className={`fixed left-0 top-0 h-screen bg-gray-800 z-[1000] transition-all duration-300
+                ${isCollapsed ? "w-5 flex items-center justify-center" : "w-52 text-white"}`}
         >
-            <button style={styles.toggleButton} onClick={toggleMenu}>
+            <button
+                className={`
+                    bg-transparent border-none text-white text-xs cursor-pointer outline-none p-2
+                    focus:outline-none
+                `}
+                onClick={toggleMenu}
+                tabIndex={0}
+                aria-label={isCollapsed ? "Expand menu" : "Collapse menu"}
+            >
                 {isCollapsed ? '>>' : '<<'}
             </button>
             {!isCollapsed && (
-                <div style={styles.menuContent}>
+                <div className="p-2">
                     {children}
                 </div>
             )}
@@ -47,44 +56,5 @@ const CollapsibleMenu = ({ isCollapsed: isCollapsedInitialValue = true, children
 //     isCollapsed: PropTypes.bool,
 //     children: PropTypes.node.isRequired,
 // };
-
-const styles = {
-    collapsedMenu: {
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        width: '20px',
-        height: '100vh',
-        backgroundColor: '#333',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'width 0.3s',
-        zIndex: 1000,
-    },
-    expandedMenu: {
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        width: '200px',
-        height: '100vh',
-        backgroundColor: '#333',
-        color: '#fff',
-        transition: 'width 0.3s',
-        zIndex: 1000,
-    },
-    toggleButton: {
-        backgroundColor: 'transparent',
-        border: 'none',
-        color: '#fff',
-        fontSize: '10px',
-        cursor: 'pointer',
-        outline: 'none',
-        padding: '10px',
-    },
-    menuContent: {
-        padding: '10px',
-    },
-};
 
 export default CollapsibleMenu;

@@ -72,36 +72,24 @@ const MoveToAnotherTopicParentRouterPage = () => {
       navigate(-1);
     };
   
-    const topicFormStyle = {};
-  
     const [selectedOption] = useState("");
-  
+
     return (
       <>
-        {/* {`Either create and add as subtopic of ${id}`} <br />
-              {`my selected topic : ${JSON.stringify(topic)}`} <br /> */}
-        {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
-        {/* <div>
-                  <CustomButton onClick={handleCreateNewSubtopic}>Create new Sub-Topic</CustomButton>
-              </div> */}
-  
-        {/* {`Or select existing subtopics from list.`} */}
-  
-        <div style={topicFormStyle}>
-          <p>{topic?.title}</p>
+        <div className="mb-4">
+          <p className="text-lg font-semibold mb-4">{topic?.title}</p>
           <div>
-            <label htmlFor="tags">Add Existing Topics:</label>
+            <label htmlFor="tags" className="block font-bold mb-2">Select New Parent Topic:</label>
             <Select
               name="topics"
               options={topicOptions}
               defaultValue={selectedOption}
-              // value={topicOptions.filter((t) => t.value === formData.uniqueId)}
               onChange={handleTaskSelect}
             />
           </div>
         </div>
-  
-        <div>
+
+        <div className="flex gap-2.5">
           <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
           <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
         </div>

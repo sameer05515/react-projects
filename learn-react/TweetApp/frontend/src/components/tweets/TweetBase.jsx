@@ -22,8 +22,8 @@ const TweetBase = () => {
   };
 
   return (
-    <div>
-      <h1>Tweet App</h1>
+    <div className="max-w-4xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
+      <h1 className="text-4xl font-bold text-center mb-8 text-blue-900">Tweet App</h1>
       <ListTweets tweets={tweets} handleTweetCreated={handleTweetCreated} refreshFunction={refreshTweets} />
     </div>
   );

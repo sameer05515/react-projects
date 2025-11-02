@@ -9,14 +9,15 @@ function NestedComment({
   formatTimestamp,
 }) {
   return (
-    <div key={nestedComment._id} className="nested-comment">
-      <p className="timestamp">{formatTimestamp(nestedComment.createdAt)}</p>
+    <div key={nestedComment._id} className="mt-2.5 pl-10 border-l-2 border-gray-400">
+      <p className="text-xs text-gray-500 mb-2">{formatTimestamp(nestedComment.createdAt)}</p>
       <EditableLabel
         text={nestedComment.text}
         labelStyle={{
-          fontStyle: "italic", // Apply italic style for nested comment
-          fontSize: "14px", // Set font size for nested comment
+          fontStyle: "italic",
+          fontSize: "14px",
         }}
+        className="italic text-sm"
         postUpdateClick={(updatedText) =>
           handleUpdateNestedComment(
             tweetId,

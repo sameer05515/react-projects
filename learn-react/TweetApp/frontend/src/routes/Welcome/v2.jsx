@@ -59,7 +59,7 @@ const WelcomeV2 = () => {
       </div>
 
       {/* Preview: Explanation about TweetApp's goal */}
-      <div style={{ whiteSpace: "pre-wrap" }}>
+      <div className="whitespace-pre-wrap">
         <SmartPreviewer
           data={{
             content: `

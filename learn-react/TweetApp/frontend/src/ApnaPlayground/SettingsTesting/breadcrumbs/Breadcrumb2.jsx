@@ -1,92 +1,44 @@
 import React from 'react';
-import './Breadcrumb2.css';
-
-
-const styles = {
-  ul: {
-    listStyleType: 'none',
-    margin: '0',
-    padding: '2em',
-    color: '#333',
-  },
-  li: {
-    display: 'inline-block',
-    position: 'relative',
-    paddingRight: '2em',
-    margin: '0',
-    overflow: 'hidden',
-  },
-  liAfter: {
-    content: '">"',
-    position: 'absolute',
-    display: 'inline-block',
-    right: '0',
-    width: '2em',
-    textAlign: 'center',
-    background: 'rgb(227,227,227)',
-    backgroundImage: 'linear-gradient(90deg, rgba(227,227,227,0.4) 0%, rgba(227,227,227,1) 35%)',
-    paddingLeft: '1em',
-  },
-  liLastChild: {
-    fontWeight: 'bold',
-  },
-  liLastChildAfter: {
-    content: '""',
-  },
-  a: {
-    textDecoration: 'none',
-    display: 'inline-block',
-    color: '#333',
-    whiteSpace: 'nowrap',
-    maxWidth: '2em',
-    transition: 'max-width 300ms ease-in-out',
-  },
-  aHover: {
-    textDecoration: 'underline',
-    maxWidth: '1000px',
-  },
-  liHover: {
-    paddingLeft: '0em',
-    background: 'transparent',
-  }
-};
 
 const Breadcrumb = () => {
+  const breadcrumbItems = [
+    { text: 'Home', href: '#' },
+    { text: 'First link', href: '#' },
+    { text: 'Second link', href: '#' },
+    { text: 'Another lengthier link', href: '#' },
+    { text: 'Final link in the hierarchy', href: '#' },
+    { text: 'Current page', href: null }
+  ];
+
   return (
-    <ul style={styles.ul}>
-      {[
-        { text: 'Home', href: '#' },
-        { text: 'First link', href: '#' },
-        { text: 'Second link', href: '#' },
-        { text: 'Another lengthier link', href: '#' },
-        { text: 'Final link in the hierarchy', href: '#' },
-        { text: 'Current page', href: null }
-      ].map((item, index, array) => (
-        <li
-          key={index}
-          style={{ 
-            ...styles.li, 
-            ...(index === array.length - 1 ? styles.liLastChild : {}) 
-          }}
-        >
-          {item.href ? (
-            <a 
-              href={item.href} 
-              style={styles.a}
-              onMouseEnter={e => e.target.style.maxWidth = styles.aHover.maxWidth}
-              onMouseLeave={e => e.target.style.maxWidth = styles.a.maxWidth}
-            >
-              {item.text}
-            </a>
-          ) : (
-            item.text
-          )}
-          <span
-            style={index === array.length - 1 ? styles.liLastChildAfter : styles.liAfter}
-          />
-        </li>
-      ))}
-    </ul>
+    <nav className="p-8" aria-label="Breadcrumb">
+      <ul className="list-none m-0 p-0 text-gray-700 flex flex-wrap items-center">
+        {breadcrumbItems.map((item, index, array) => (
+          <li
+            key={index}
+            className={`inline-block relative pr-8 m-0 overflow-hidden ${
+              index === array.length - 1 ? 'font-bold' : ''
+            }`}
+          >
+            {item.href ? (
+              <a 
+                href={item.href}
+                className="no-underline inline-block text-gray-700 whitespace-nowrap transition-all duration-300 hover:text-blue-600 hover:underline max-w-[2em] hover:max-w-[1000px]"
+              >
+                {item.text}
+              </a>
+            ) : (
+              <span className="text-gray-900">{item.text}</span>
+            )}
+            {index !== array.length - 1 && (
+              <span className="absolute right-0 inline-block w-8 text-center bg-gradient-to-r from-gray-200/40 to-gray-200 pl-4">
+                &gt;
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

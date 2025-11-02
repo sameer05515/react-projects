@@ -1,74 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, lazy, Suspense, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import Notifications from "./Notifications/v1";
-import Welcome from "./Welcome/v2";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import GlobalBreadcrumbV2 from "../common/components/global-breadcrumbs/GlobalBreadcrumbV2";
 import ToggleableIcon from "../common/components/toggleable-icon/ToggleableIcon";
-import ApnaPlaygroundBase from "../ApnaPlayground/v1";
-import TestRouterPage from "../ApnaPlayground/navigation-utils-examples/TestRouterPage";
-import InterviewMgmtBase from "../components/interview-mgmt/InterviewMgmtBase";
-import CategoryList from "../components/interview-mgmt/sub-components/CategoryListRouterPage";
-import CreateAnswer from "../components/interview-mgmt/sub-components/CreateAnswerRouterPage";
-import CreateQuestion from "../components/interview-mgmt/sub-components/CreateQuestionRouterPage";
-import EditAnswer from "../components/interview-mgmt/sub-components/EditAnswerRouterPage";
-import EditQuestion from "../components/interview-mgmt/sub-components/EditQuestionRouterPage";
-import MoveQuestionToAnotherParentQuestion from "../components/interview-mgmt/sub-components/MoveQuestionToAnotherParentQuestionRouterPage";
-import SearchInterviewMgmtRouterPage from "../components/interview-mgmt/sub-components/SearchInterviewMgmtRouterPage";
-import ViewQuestionDetails from "../components/interview-mgmt/sub-components/ViewQuestionDetailsRouterPage";
-import LinksBase, {
-  CreateLink,
-  EditLink,
-  ViewLink,
-} from "../components/links/LinksBase";
-import LoginUser from "./login/LoginUser";
-import Registration from "./login/Registration";
-import UserDashboard from "./login/UserDashboard";
-import { AddUpdateSkeletonForMemoryMapItem } from "../components/memory-maps/AddUpdateSkeleton";
-import { AddUpdateSkeletonUsingTreeEditorForMemoryMapItem } from "../components/memory-maps/AddUpdateSkeletonUsingTreeEditor";
-import {
-  CreateMemoryMapItem,
-  EditMemoryMapItem,
-} from "../components/memory-maps/CreateUpdateMemoryMapItemRouterPage";
-import MemoryMapBase from "../components/memory-maps/MemoryMapBase";
-import { MemoryMapList } from "../components/memory-maps/list/MemoryMapListRouterPage";
-import MyResumeComponent from "../components/my-resume/MyResumeComponent";
-import TaskBase from "../components/my-tasks/TaskBase";
-import AddSubTaskRouterPage from "../components/my-tasks/sub-components/common/AddSubTaskRouterPage";
-import CreateTaskRouterPage from "../components/my-tasks/sub-components/common/CreateTaskRouterPage";
-import EditTaskRouterPage from "../components/my-tasks/sub-components/common/EditTaskRouterPage";
-import ViewTaskRouterPage from "../components/my-tasks/sub-components/common/ViewTaskRouterPage";
-import OldTasksBase from "../components/old-tasks-mgmt/OldTasksBase";
-import RelatedNodesBase from "../components/related-nodes/RelatedNodesBase";
-import {
-  CreateRelatedNodeItem,
-  CreateRelation,
-  EditRelatedNodeItem,
-  EditRelation,
-} from "../components/related-nodes/sub-components/details-section/CreateUpdateNodeRouterPage";
-import RelatedNodesBaseV1 from "../components/related-nodes/v1/RelatedNodesBaseV1";
-import ViewNode from "../components/related-nodes/v1/sub-components/ViewNode";
-import ResumeForm from "../components/resume/ResumeForm";
-import TagBase, {
-  AddSubTagComp,
-  CreateTag,
-  EditTag,
-  MoveToAnotherTagParent,
-  SearchTagRouterPage,
-  ViewTag,
-} from "../components/tags/TagBase";
-import TopicBase from "../components/topic/TopicBase";
-import AddSubTopicComp from "../components/topic/sub-components/common/AddSubTopicRouterPage";
-import CreateSectionRouterPage from "../components/topic/sub-components/common/CreateSectionRouterPage";
-import CreateTopicComp from "../components/topic/sub-components/common/CreateTopicRouterPage";
-import EditSectionRouterPage from "../components/topic/sub-components/common/EditSectionRouterPage";
-import EditTopicComp from "../components/topic/sub-components/common/EditTopicRouterPage";
-import MoveToAnotherTopicParent from "../components/topic/sub-components/common/MoveToAnotherTopicParentRouterPage";
-import SearchTopicRouterPage from "../components/topic/sub-components/common/SearchRouterPage";
-import TwoNodeComponentV53 from "../components/topic/sub-components/common/TwoNodeComponentV5.3";
-import ViewTopic from "../components/topic/sub-components/common/ViewTopicRouterPage";
-import TweetBase from "../components/tweets/TweetBase";
-import WordList from "../components/words/WordList";
+import LoadingSpinner from "../common/components/LoadingSpinner";
 import { fetchAllQuestions } from "../redux/slices/interviewMgmtSlice";
 import { fetchLinks } from "../redux/slices/linksSlice";
 import { fetchMemoryMaps } from "../redux/slices/memoryMapSlice";
@@ -76,12 +11,77 @@ import { fetchPinnedItems } from "../redux/slices/pinnedItemSlice";
 import { fetchTags } from "../redux/slices/tagsSlice";
 import { fetchTasks } from "../redux/slices/taskSlice";
 import { fetchTopics } from "../redux/slices/topicSlice";
-import ToDoBase from "../components/my-reports/MyReportsBase";
+
+// Critical components loaded synchronously (needed immediately)
+import Welcome from "./Welcome/v2";
+import LoginUser from "./login/LoginUser";
+import Registration from "./login/Registration";
+import Notifications from "./Notifications/v1";
+
+// Lazy load all route components for code splitting
+const ApnaPlaygroundBase = lazy(() => import("../ApnaPlayground/v1"));
+const TestRouterPage = lazy(() => import("../ApnaPlayground/navigation-utils-examples/TestRouterPage"));
+const InterviewMgmtBase = lazy(() => import("../components/interview-mgmt/InterviewMgmtBase"));
+const CategoryList = lazy(() => import("../components/interview-mgmt/sub-components/CategoryListRouterPage"));
+const CreateAnswer = lazy(() => import("../components/interview-mgmt/sub-components/CreateAnswerRouterPage"));
+const CreateQuestion = lazy(() => import("../components/interview-mgmt/sub-components/CreateQuestionRouterPage"));
+const EditAnswer = lazy(() => import("../components/interview-mgmt/sub-components/EditAnswerRouterPage"));
+const EditQuestion = lazy(() => import("../components/interview-mgmt/sub-components/EditQuestionRouterPage"));
+const MoveQuestionToAnotherParentQuestion = lazy(() => import("../components/interview-mgmt/sub-components/MoveQuestionToAnotherParentQuestionRouterPage"));
+const SearchInterviewMgmtRouterPage = lazy(() => import("../components/interview-mgmt/sub-components/SearchInterviewMgmtRouterPage"));
+const ViewQuestionDetails = lazy(() => import("../components/interview-mgmt/sub-components/ViewQuestionDetailsRouterPage"));
+const LinksBase = lazy(() => import("../components/links/LinksBase").then(module => ({ default: module.default })));
+const CreateLink = lazy(() => import("../components/links/LinksBase").then(module => ({ default: module.CreateLink })));
+const EditLink = lazy(() => import("../components/links/LinksBase").then(module => ({ default: module.EditLink })));
+const ViewLink = lazy(() => import("../components/links/LinksBase").then(module => ({ default: module.ViewLink })));
+const UserDashboard = lazy(() => import("./login/UserDashboard"));
+const AddUpdateSkeletonForMemoryMapItem = lazy(() => import("../components/memory-maps/AddUpdateSkeleton").then(module => ({ default: module.AddUpdateSkeletonForMemoryMapItem })));
+const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = lazy(() => import("../components/memory-maps/AddUpdateSkeletonUsingTreeEditor").then(module => ({ default: module.AddUpdateSkeletonUsingTreeEditorForMemoryMapItem })));
+const CreateMemoryMapItem = lazy(() => import("../components/memory-maps/CreateUpdateMemoryMapItemRouterPage").then(module => ({ default: module.CreateMemoryMapItem })));
+const EditMemoryMapItem = lazy(() => import("../components/memory-maps/CreateUpdateMemoryMapItemRouterPage").then(module => ({ default: module.EditMemoryMapItem })));
+const MemoryMapBase = lazy(() => import("../components/memory-maps/MemoryMapBase"));
+const MemoryMapList = lazy(() => import("../components/memory-maps/list/MemoryMapListRouterPage").then(module => ({ default: module.MemoryMapList })));
+const MyResumeComponent = lazy(() => import("../components/my-resume/MyResumeComponent"));
+const TaskBase = lazy(() => import("../components/my-tasks/TaskBase"));
+const AddSubTaskRouterPage = lazy(() => import("../components/my-tasks/sub-components/common/AddSubTaskRouterPage"));
+const CreateTaskRouterPage = lazy(() => import("../components/my-tasks/sub-components/common/CreateTaskRouterPage"));
+const EditTaskRouterPage = lazy(() => import("../components/my-tasks/sub-components/common/EditTaskRouterPage"));
+const ViewTaskRouterPage = lazy(() => import("../components/my-tasks/sub-components/common/ViewTaskRouterPage"));
+const OldTasksBase = lazy(() => import("../components/old-tasks-mgmt/OldTasksBase"));
+const RelatedNodesBase = lazy(() => import("../components/related-nodes/RelatedNodesBase"));
+const CreateRelatedNodeItem = lazy(() => import("../components/related-nodes/sub-components/details-section/CreateUpdateNodeRouterPage").then(module => ({ default: module.CreateRelatedNodeItem })));
+const CreateRelation = lazy(() => import("../components/related-nodes/sub-components/details-section/CreateUpdateNodeRouterPage").then(module => ({ default: module.CreateRelation })));
+const EditRelatedNodeItem = lazy(() => import("../components/related-nodes/sub-components/details-section/CreateUpdateNodeRouterPage").then(module => ({ default: module.EditRelatedNodeItem })));
+const EditRelation = lazy(() => import("../components/related-nodes/sub-components/details-section/CreateUpdateNodeRouterPage").then(module => ({ default: module.EditRelation })));
+const RelatedNodesBaseV1 = lazy(() => import("../components/related-nodes/v1/RelatedNodesBaseV1"));
+const ViewNode = lazy(() => import("../components/related-nodes/v1/sub-components/ViewNode"));
+const ResumeForm = lazy(() => import("../components/resume/ResumeForm"));
+const TagBase = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.default })));
+const AddSubTagComp = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.AddSubTagComp })));
+const CreateTag = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.CreateTag })));
+const EditTag = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.EditTag })));
+const MoveToAnotherTagParent = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.MoveToAnotherTagParent })));
+const SearchTagRouterPage = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.SearchTagRouterPage })));
+const ViewTag = lazy(() => import("../components/tags/TagBase").then(module => ({ default: module.ViewTag })));
+const TopicBase = lazy(() => import("../components/topic/TopicBase"));
+const AddSubTopicComp = lazy(() => import("../components/topic/sub-components/common/AddSubTopicRouterPage"));
+const CreateSectionRouterPage = lazy(() => import("../components/topic/sub-components/common/CreateSectionRouterPage"));
+const CreateTopicComp = lazy(() => import("../components/topic/sub-components/common/CreateTopicRouterPage"));
+const EditSectionRouterPage = lazy(() => import("../components/topic/sub-components/common/EditSectionRouterPage"));
+const EditTopicComp = lazy(() => import("../components/topic/sub-components/common/EditTopicRouterPage"));
+const MoveToAnotherTopicParent = lazy(() => import("../components/topic/sub-components/common/MoveToAnotherTopicParentRouterPage"));
+const SearchTopicRouterPage = lazy(() => import("../components/topic/sub-components/common/SearchRouterPage"));
+const TwoNodeComponentV53 = lazy(() => import("../components/topic/sub-components/common/TwoNodeComponentV5.3"));
+const ViewTopic = lazy(() => import("../components/topic/sub-components/common/ViewTopicRouterPage"));
+const TweetBase = lazy(() => import("../components/tweets/TweetBase"));
+const WordList = lazy(() => import("../components/words/WordList"));
+const ToDoBase = lazy(() => import("../components/my-reports/MyReportsBase"));
 
 const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
   return (
     <div>
-      <Routes>
+      <Suspense fallback={<LoadingSpinner fullScreen />}>
+        <Routes>
         {/**
          * ----- Apna Playground ----------------------------
          * Test route- for arbitrary testing from scratch
@@ -285,7 +285,8 @@ const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
         {/** ----- NOT FOUND ---------------------- */}
 
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </Suspense>
     </div>
   );
 };
@@ -301,26 +302,47 @@ const NotFound = () => {
 
 const Layout = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleMode = useCallback(() => {
     setIsDarkMode((prevMode) => !prevMode);
   }, []);
 
-  const performBootstrap = useCallback(() => {
-    // Bootstrap: Load initial data for the application
-    dispatch(fetchTasks());
-    dispatch(fetchTags());
-    dispatch(fetchTopics());
-    dispatch(fetchAllQuestions());
-    dispatch(fetchLinks());
-    dispatch(fetchPinnedItems());
-    dispatch(fetchMemoryMaps());
-  }, [dispatch]);
-
+  // Load data on-demand based on current route
   useEffect(() => {
-    performBootstrap();
-  }, [performBootstrap]);
+    const pathname = location.pathname;
+    
+    // Load data conditionally based on route
+    if (pathname.startsWith('/task-mgmt') || pathname === '/') {
+      dispatch(fetchTasks());
+    }
+    
+    if (pathname.startsWith('/tags') || pathname === '/') {
+      dispatch(fetchTags());
+    }
+    
+    if (pathname.startsWith('/topic-mgmt') || pathname === '/') {
+      dispatch(fetchTopics());
+    }
+    
+    if (pathname.startsWith('/interview-mgmt') || pathname === '/') {
+      dispatch(fetchAllQuestions());
+    }
+    
+    if (pathname.startsWith('/links-mgmt') || pathname === '/') {
+      dispatch(fetchLinks());
+    }
+    
+    if (pathname.startsWith('/memory-maps') || pathname === '/') {
+      dispatch(fetchMemoryMaps());
+    }
+    
+    // Pinned items are used across multiple routes, load on initial visit
+    if (pathname === '/') {
+      dispatch(fetchPinnedItems());
+    }
+  }, [dispatch, location.pathname]);
   return (
     <>
       <div

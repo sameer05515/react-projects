@@ -77,7 +77,8 @@ const getNameWithAncestors = (task) => {
 };
 
 // Helper function to prepare flat data from tree-structured data
-const prepareTasksQueue = (list, prevQueue = []) => {
+// Export for use in selectors
+export const prepareTasksQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   if (list && list.length > 0) {
     list.forEach((t) => {
@@ -102,8 +103,7 @@ const prepareTasksQueue = (list, prevQueue = []) => {
 // Define an initial state for tasks
 const initialState = {
   selectedTaskUniqueId: null,
-  data: [],
-  flatData: [],
+  data: [], // Only store tree structure - flatData computed via selector
   status: "idle",
   error: null,
 };
@@ -125,7 +125,7 @@ const taskSlice = createSlice({
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
-        state.flatData = prepareTasksQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.status = "failed";
@@ -147,9 +147,10 @@ export const selectAllTreeTasks = createSelector(
   (tasksState) => tasksState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatTasks = createSelector(
-  selectTasksState,
-  (tasksState) => tasksState.flatData
+  [selectAllTreeTasks],
+  (treeTasks) => prepareTasksQueue(treeTasks)
 );
 
 export const selectSelectedTaskUniqueId = createSelector(

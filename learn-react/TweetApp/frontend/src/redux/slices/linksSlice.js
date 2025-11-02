@@ -83,7 +83,9 @@ const getNameWithAncestors = (link) => {
   return fullyQualifiedName;
 };
 
-const prepareLinksQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareLinksQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   
   if (list && list.length > 0) {
@@ -103,7 +105,6 @@ const prepareLinksQueue = (list, prevQueue = []) => {
           queue = [...queue, ...childQ];
       });
   }
-  // console.log(JSON.stringify(queue, null, 2));
   return queue;
 };
 
@@ -111,9 +112,8 @@ const linksSlice = createSlice({
   name: "links",
   initialState: {
     selectedLinkUniqueId: null,
-    data: [],
+    data: [], // Only store tree structure - flatData computed via selector
     linkDetails: {},
-    flatData:[],
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -134,8 +134,8 @@ const linksSlice = createSlice({
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;               
-        state.flatData = prepareLinksQueue(action.payload);
+        state.data = action.payload;
+        // flatData now computed via memoized selector
       })
       .addCase(fetchLinks.rejected, (state, action) => {
         state.loading = "rejected";
@@ -180,9 +180,10 @@ export const selectAllTreeLinks = createSelector(
   (linksState) => linksState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatLinks = createSelector(
-  selectLinksState,
-  (linksState) => linksState.flatData
+  [selectAllTreeLinks],
+  (treeLinks) => prepareLinksQueue(treeLinks)
 );
 
 export const selectSelectedLinkUniqueId = createSelector(

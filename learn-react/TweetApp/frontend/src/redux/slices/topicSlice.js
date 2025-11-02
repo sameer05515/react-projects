@@ -119,7 +119,9 @@ const getNameWithAncestors = (topic) => {
   return fullyQualifiedName;
 };
 
-const prepareTopicsQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareTopicsQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   
   if (list && list.length > 0) {
@@ -139,7 +141,6 @@ const prepareTopicsQueue = (list, prevQueue = []) => {
           queue = [...queue, ...childQ];
       });
   }
-  // console.log(JSON.stringify(queue, null, 2));
   return queue;
 };
 
@@ -147,8 +148,7 @@ const topicSlice = createSlice({
   name: "topics",
   initialState: {
     selectedTopicUniqueId: null,
-    data: [],
-    flatData:[],
+    data: [], // Only store tree structure - flatData computed via selector
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -170,7 +170,7 @@ const topicSlice = createSlice({
       .addCase(fetchTopics.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.data = action.payload;
-        state.flatData = prepareTopicsQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchTopics.rejected, (state, action) => {
         state.loading = "rejected";
@@ -227,9 +227,10 @@ export const selectAllTreeTopics = createSelector(
   (topicsState) => topicsState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatTopics = createSelector(
-  selectTopicsState,
-  (topicsState) => topicsState.flatData
+  [selectAllTreeTopics],
+  (treeTopics) => prepareTopicsQueue(treeTopics)
 );
 
 export const selectSelectedTopicUniqueId = createSelector(

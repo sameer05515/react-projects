@@ -72,7 +72,7 @@ const ListItem = ({ name, createdDate, status, closedOn, isUrgent, isImportant }
 
   return (
     <div className={`shadow rounded p-3 mb-5 mt-2 list-group-item list-group-item-${statusClassName}`}>
-      <span style={{ whiteSpace: "pre-wrap" }}>
+      <span className="whitespace-pre-wrap">
         {/* {name} */}
         <SmartPreviewer data={{ content: name, textOutputType: availableOutputTypes.HTML }} />
       </span>

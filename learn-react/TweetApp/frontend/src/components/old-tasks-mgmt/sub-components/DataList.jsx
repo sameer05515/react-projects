@@ -25,22 +25,17 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
   };
 
   return (
-    <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+    <div className="max-h-[400px] overflow-y-auto">
+      <ul className="list-none p-0">
         {dataList.map((item) => (
           <li
             key={item._id}
             onClick={() => showData(item._id)}
             onKeyDown={(e) => handleKeyDown(e, item._id)}
-            className={selectedItemId === item._id ? "selected-item" : ""}
-            style={{
-              fontWeight: selectedItemId === item._id ? "bold" : "normal",
-              padding: "15px",
-            }}
+            className={`${selectedItemId === item._id ? "selected-item font-bold" : "font-normal"} p-4 cursor-pointer hover:bg-gray-100 transition-colors`}
           >
             [ {format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB })} ] -
             : {item.title}
-            {/* <div dangerouslySetInnerHTML={{ __html: item.htmlText }} /> */}
           </li>
         ))}
       </ul>

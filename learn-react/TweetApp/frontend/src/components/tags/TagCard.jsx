@@ -131,36 +131,25 @@ const TagCard = ({
     );
   };
 
-  const tagStyle = {
-    backgroundColor: "#ccc",
-    border: "1px solid #999",
-    padding: "2px 5px",
-    fontSize: "12px",
-    borderRadius: "4px",
-  };
-
-  const datesStyle = {
-    fontSize: "12px",
-    borderRadius: "4px",
-  };
+  // Tailwind classes for tag buttons
+  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded";
 
   return (
     <>
-      <div>
-        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => traverseTag(-1)}>
+      <div className="mb-2.5">
+        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
-        <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
+        <CustomButton className={tagButtonClass} onClick={() => traverseTag(1)}>
           Next
         </CustomButton>
       </div>
 
-      <div>
-        {/* <div> */}
+      <div className="mb-4">
         <Breadcrumbs providedItem={tag} providedItemType={BreadcrumbItemType.TAG} ancestors={tag.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
-        <h3>{tag.name}</h3> <br />
-        <div style={datesStyle}>
-          <span style={{ marginRight: "10px" }}>
+        <h3 className="text-xl font-semibold mb-2">{tag.name}</h3>
+        <div className="text-xs rounded">
+          <span className="mr-2.5">
             <b>Created:</b> {formatDateToDDMMMYYYYWithTime(tag.createdDate)}
           </span>
           <span>
@@ -169,77 +158,66 @@ const TagCard = ({
         </div>
       </div>
 
-      <div style={{ margin: "10px 0" }}>
-        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={handleEdit}>
+      <div className="my-2.5 flex flex-wrap gap-2">
+        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={handleEdit}>
           Edit
         </CustomButton>
         {!showDescr && (
-          <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => setShowDescr(true)}>
+          <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => setShowDescr(true)}>
             Show Description
           </CustomButton>
         )}
         {showDescr && (
-          <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => setShowDescr(false)}>
+          <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => setShowDescr(false)}>
             Hide Description
           </CustomButton>
         )}
-        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => handleAddSubTag()}>
+        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => handleAddSubTag()}>
           Add Sub-Tag
         </CustomButton>
 
-        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => handleMoveAnotherParent()}>
+        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => handleMoveAnotherParent()}>
           Move to another parent
         </CustomButton>
-
-        <br />
       </div>
 
       {tag.children && tag.children.length > 0 && (
-        <div style={styles.descriptionStyle}>
+        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
           <b>Child Tags:-</b> <br />
           {populateChildren(tag.children)}
         </div>
       )}
 
       {tag.linkedTopics && tag.linkedTopics.length > 0 && (
-        <div style={styles.descriptionStyle}>
+        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
           <b>Linked Topics:-</b> <br />
           {populateLinkedItems(tag.linkedTopics, TagLinkedItemType.topic)}
         </div>
       )}
 
       {tag.linkedTopicSections && tag.linkedTopicSections.length > 0 && (
-        <div style={styles.descriptionStyle}>
+        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
           <b>Linked Topic Sections:-</b> <br />
           {populateLinkedItems(tag.linkedTopicSections, TagLinkedItemType.topicSection)}
         </div>
       )}
 
       {tag.linkedTasks && tag.linkedTasks.length > 0 && (
-        <div style={styles.descriptionStyle}>
+        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
           <b>Linked Tasks:-</b> <br />
           {populateLinkedItems(tag.linkedTasks, TagLinkedItemType.task)}
         </div>
       )}
 
       {tag.linkedQuestions && tag.linkedQuestions.length > 0 && (
-        <div style={styles.descriptionStyle}>
+        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
           <b>Linked Questions:-</b> <br />
           {populateLinkedItemsV1(tag.linkedQuestions, TagLinkedItemType.question)}
         </div>
       )}
 
       {showDescr && (
-        <div
-          style={{
-            border: "1px solid #999",
-            padding: "2px 5px",
-            borderRadius: "4px",
-            marginBottom: "10px",
-            width: "67vw",
-            overflow: "auto",
-          }}
-        >
+        <div className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5 w-[67vw] overflow-auto">
           <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
           {
             tag.description && !tag.smartContent && <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html" }} />
@@ -252,52 +230,16 @@ const TagCard = ({
 
       <JSONDataViewer metadata={{ tag }} title="Tag Data" />
 
-      <div>
-        <CustomButton style={{ ...tagStyle, marginRight: "10px" }} onClick={() => traverseTag(-1)}>
+      <div className="mt-4">
+        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
-        <CustomButton style={tagStyle} onClick={() => traverseTag(1)}>
+        <CustomButton className={tagButtonClass} onClick={() => traverseTag(1)}>
           Next
         </CustomButton>
       </div>
     </>
   );
-};
-
-const styles = {
-  selected: {
-    fontWeight: "bold",
-    fontSize: "22px",
-    color: "#e91140",
-  },
-  ulStyle: {
-    listStyleType: "none",
-    paddingLeft: 0,
-  },
-  liStyles: {
-    marginLeft: "15px",
-    paddingBottom: "3px",
-  },
-  sectionStyle: {
-    backgroundColor: "lightgoldenrodyellow",
-    border: "1px solid #999",
-    padding: "2px 5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  descriptionStyle: {
-    backgroundColor: "lightgoldenrodyellow",
-    border: "1px solid #999",
-    padding: "2px 5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  topicSectionsStyle: {
-    border: "1px solid #999",
-    padding: "2px 5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
 };
 
 const TagLinkedItemType = {

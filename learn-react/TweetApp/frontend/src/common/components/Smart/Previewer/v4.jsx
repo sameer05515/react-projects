@@ -19,7 +19,7 @@ const SmartPreviewerV4 = ({ data }) => {
         return <pre>{content}</pre>;
 
       case SupportedOutFormats.HTML:
-        return <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: content }} />;
+        return <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: content }} />;
 
       case SupportedOutFormats.MARKDOWN:
         return <MarkdownComponent additionalStyle={{ backgroundColor: "transparent" }} markdownText={content} />;
@@ -27,8 +27,8 @@ const SmartPreviewerV4 = ({ data }) => {
       case SupportedOutFormats.YAML:
         return (
           <>
-            <pre>{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-            {!!errorMessage && <span style={{ color: "red" }}>{errorMessage}</span>}
+            <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
+            {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
           </>
         );
 
@@ -40,13 +40,13 @@ const SmartPreviewerV4 = ({ data }) => {
               expandAll={true}
               renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
             />
-            {!!errorMessage && <span style={{ color: "red" }}>{errorMessage}</span>}
+            {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
             {debug && <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview" />}
           </>
         ) : null;
 
       default:
-        return <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>;
+        return <div className="whitespace-pre-wrap">{content}</div>;
     }
   };
 

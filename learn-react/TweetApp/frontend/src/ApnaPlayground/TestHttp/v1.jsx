@@ -126,7 +126,7 @@ const TestHttpV1 = () => {
       <button className="btn btn-primary btn-sm mx-1" onClick={saveAllOldTodos}>
         Save All Old Todos
       </button>
-      <div className="border border-primary" style={{ maxHeight: "300px", overflowY: "auto" }}>
+      <div className="border border-blue-600 max-h-[300px] overflow-y-auto p-2">
         {messages &&
           Array.isArray(messages) &&
           messages.map(({ id, message, type }) => (

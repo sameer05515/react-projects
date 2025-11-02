@@ -59,13 +59,9 @@ function EditableLabel({
       ) : (
         <div
           onDoubleClick={handleLabelClick}
-          style={{
-            ...labelStyle,
-            cursor: "pointer",
-            border: editable ? "1px solid #ccc" : "",
-          }}
+          className={`cursor-pointer ${editable ? "border border-gray-300" : ""}`}
+          style={labelStyle}
         >
-          {/* {ReactHtmlParser(text || placeholder)} */}
           <SmartPreviewer data={{ content: text || placeholder, textOutputType: "html" }}/>
         </div>
       )}

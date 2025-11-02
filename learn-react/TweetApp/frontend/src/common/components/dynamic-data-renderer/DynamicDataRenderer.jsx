@@ -12,9 +12,9 @@ const DynamicDataRenderer = ({ data = {} }) => {
       return value.toString();
     } else if (Array.isArray(value)) {
       return (
-        <ul style={styles.ulStyle}>
+        <ul className="list-none pl-0">
           {value.map((element, index) => (
-            <li style={styles.liStyles} key={index}>
+            <li className="ml-1.5 pb-0.5" key={index}>
               {renderValue(element)}
             </li>
           ))}
@@ -22,9 +22,9 @@ const DynamicDataRenderer = ({ data = {} }) => {
       );
     } else if (typeof value === "object" && value !== null) {
       return (
-        <ul style={styles.ulStyle}>
+        <ul className="list-none pl-0">
           {Object.keys(value).map((subKey, index) => (
-            <li style={styles.liStyles} key={index}>
+            <li className="ml-1.5 pb-0.5" key={index}>
               <strong>{subKey}:</strong> {renderValue(value[subKey])}
             </li>
           ))}
@@ -41,17 +41,6 @@ const DynamicDataRenderer = ({ data = {} }) => {
       {renderValue(data)}
     </div>
   );
-};
-
-const styles = {
-  ulStyle: {
-    listStyleType: 'none', // Remove bullets
-    paddingLeft: 0, // Remove left padding
-  },
-  liStyles: {
-    marginLeft: '7px', // Add some space between list items
-    paddingBottom: '3px'
-  }
 };
 
 export default DynamicDataRenderer;

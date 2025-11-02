@@ -159,16 +159,16 @@ const SmartEditor = ({
     };
 
     return (
-        <div>
-            SmartEditor
+        <div className="space-y-4">
+            <div className="font-semibold mb-2">SmartEditor</div>
             <div>
-                <label htmlFor="textOutputType" style={labelStyle}>
+                <label htmlFor="textOutputType" className="w-[15%] font-bold inline-block">
                     Text Output Type:
                 </label>
                 <select
                     value={selectedOutputTypeName}
                     onChange={handleChangeOutputTypes}
-                    style={{ marginLeft: "10px" }}
+                    className="ml-2.5 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                     {outputTypeList.map((view) => (
                         <option key={view.name} value={view.name}>
@@ -178,13 +178,13 @@ const SmartEditor = ({
                 </select>
             </div>
             <div>
-                <label htmlFor="textInputType" style={labelStyle}>
+                <label htmlFor="textInputType" className="w-[15%] font-bold inline-block">
                     Text Input Type:
                 </label>
                 <select
                     value={formData.textInputType}
                     onChange={handleChangeInputTypes}
-                    style={{ marginLeft: "10px" }}
+                    className="ml-2.5 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={selectedOutputTypeName !== availableOutputTypes.HTML}
                 >
                     {selectedOutputTypeName === availableOutputTypes.HTML &&
@@ -197,23 +197,22 @@ const SmartEditor = ({
             </div>
             {formData.textInputType === availableInputTypes.textArea && (
                 <div>
-                    <label htmlFor="content" style={labelStyle}>
+                    <label htmlFor="content" className="font-bold block mb-2">
                         Content:
                     </label>
-                    <br />
                     <textarea
                         ref={textareaRef}
                         id="content"
                         name="content"
                         value={formData.content}
                         onChange={handleInputChange}
-                        style={styles.textarea}
+                        className="w-full px-3 py-2.5 box-border text-base rounded border border-gray-300 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
             )}
             {formData.textInputType === availableInputTypes.ckEditor && (
                 <div>
-                    <label htmlFor="ckeditor" style={labelStyle}>
+                    <label htmlFor="ckeditor" className="font-bold block mb-2">
                         Content:
                     </label>
                     <CKEditor
@@ -226,7 +225,7 @@ const SmartEditor = ({
                 </div>
             )}
             {formData?.content && (
-                <div>
+                <div className="mb-2">
                     <b>Preview:</b>{" "}
                     <CustomButton
                         onClick={() => {
@@ -240,24 +239,6 @@ const SmartEditor = ({
             {showPreview && <SmartPreviewer data={formData} />}
         </div>
     );
-};
-
-const labelStyle = {
-    width: "15%", 
-    fontWeight: "bold", 
-};
-
-const styles = {
-    textarea: {
-        width: "100%",
-        padding: "10px",
-        boxSizing: "border-box",
-        fontSize: "16px",
-        borderRadius: "4px",
-        border: "1px solid #ccc",
-        resize: "none",
-        overflow: "hidden",
-    },
 };
 
 const SmartPreviewer = ({ data: initialValue }) => {
@@ -311,10 +292,10 @@ const SmartPreviewer = ({ data: initialValue }) => {
             {formData.textOutputType === availableOutputTypes.YAML && (
                 <div>
                     {errorMessage && (
-                        <div style={{ color: "red" }}>{errorMessage}</div>
+                        <div className="text-red-600">{errorMessage}</div>
                     )}
                     {!errorMessage && (
-                        <pre>{yamlProcessedData && JSON.stringify(yamlProcessedData, null, 2)}</pre>
+                        <pre className="bg-gray-100 p-4 rounded overflow-auto">{yamlProcessedData && JSON.stringify(yamlProcessedData, null, 2)}</pre>
                     )}
                 </div>
             )}

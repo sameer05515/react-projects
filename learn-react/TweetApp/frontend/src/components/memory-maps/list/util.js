@@ -1,5 +1,2 @@
-// Utility styles have been moved to Tailwind classes
-// This file is kept for backwards compatibility but styles are now applied inline using Tailwind
-export const styles = {
-    // Legacy styles object - components now use Tailwind classes directly
-};
+// All utility styles have been converted to Tailwind CSS classes
+// This file is kept for reference but no longer exports style objects

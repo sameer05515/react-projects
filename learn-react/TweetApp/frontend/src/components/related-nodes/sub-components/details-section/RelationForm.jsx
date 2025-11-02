@@ -131,8 +131,8 @@ export const RelationForm = ({
             </span>
             <JSONPreview data={formData} />
 
-            <div style={{ display: "flex", flexDirection: "column" }}>
-                <label htmlFor="name" style={{ fontWeight: "bold" }}>
+            <div className="flex flex-col mb-4">
+                <label htmlFor="name" className="font-bold mb-2">
                     Select Relation
                 </label>
                 <Select
@@ -145,7 +145,7 @@ export const RelationForm = ({
                 />
             </div>
 
-            <div>
+            <div className="mb-4">
                 <CustomCheckbox
                     title="Show reverse relation"
                     onChange={(checked) =>
@@ -155,8 +155,8 @@ export const RelationForm = ({
                 />
             </div>
 
-            <div style={{ padding: "10px" }}>
-                <label htmlFor="withId" style={{ fontWeight: "bold" }}>
+            <div className="p-2.5 mb-4">
+                <label htmlFor="withId" className="font-bold block mb-2">
                     Select With Node:
                 </label>
                 <Select
@@ -169,8 +169,8 @@ export const RelationForm = ({
                 />
             </div>
 
-            <div style={{ padding: "10px" }}>
-                <label htmlFor="type" style={{ fontWeight: "bold" }}>
+            <div className="p-2.5 mb-4">
+                <label htmlFor="type" className="font-bold block mb-2">
                     Select Direction Type:
                 </label>
                 <Select
@@ -186,21 +186,21 @@ export const RelationForm = ({
             </div>
 
             {formErrors.length > 0 && (
-                <div style={{ padding: "10px" }}>
+                <div className="p-2.5 mb-4">
                     {formErrors.map((error, index) => (
-                        <div key={index} style={{ color: "red" }}>
+                        <div key={index} className="text-red-600 text-sm">
                             {error}
                         </div>
                     ))}
                 </div>
             )}
 
-            <div>
+            <div className="mb-4">
                 <b>Final output string</b> <br />
                 {finalString}
             </div>
 
-            <div style={{ display: "block", margin: "10px" }}>
+            <div className="block my-2.5 mx-2.5 flex gap-2">
                 <CustomButton onClick={handleSubmit}>
                     {formData.uniqueId ? "Update" : "Create"}
                 </CustomButton>

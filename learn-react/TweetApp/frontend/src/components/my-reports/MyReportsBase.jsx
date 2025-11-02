@@ -13,8 +13,7 @@ const MyReportsBase = () => {
         <div>
           <NavLink
             to={`/my-reports?version=todo-v1`}
-            // className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm"
-            style={{ textAlign: "center" }}
+            className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm text-center block"
           >
             <div>Todo - Version 1 -</div>
           </NavLink>
@@ -25,8 +24,7 @@ const MyReportsBase = () => {
 
           <NavLink
             to={`/my-reports?version=todo-v2`}
-            // className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm"
-            style={{ textAlign: "center" }}
+            className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm text-center block"
           >
             <div>Todo - Version 2</div>
           </NavLink>
@@ -38,8 +36,7 @@ const MyReportsBase = () => {
 
           <NavLink
             to={`/my-reports?version=datasources-v1`}
-            // className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm"
-            style={{ textAlign: "center" }}
+            className="text-blue-600 dark:text-cyan-300 hover:underline font-medium text-sm text-center block"
           >
             <div>SourceDetails - Version 1</div>
           </NavLink>

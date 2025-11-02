@@ -110,10 +110,12 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
   }, []);
 
   return (
-    <div style={styles.formStyle}>
-      <h3>{category?.uniqueId ? "Edit Category" : "Add Category"}</h3>
-      <div style={styles.fieldRow}>
-        <label htmlFor="name" style={styles.labelStyle}>
+    <div className="max-w-4xl mx-auto p-6">
+      <h3 className="text-2xl font-bold mb-6 text-gray-800">
+        {category?.uniqueId ? "Edit Category" : "Add Category"}
+      </h3>
+      <div className="flex items-center p-2.5 mb-4">
+        <label htmlFor="name" className="w-[9%] font-bold text-gray-700">
           Name:
         </label>
         <input
@@ -122,11 +124,11 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          style={styles.inputStyle}
+          className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div style={styles.fieldRow}>
-        <label htmlFor="heading" style={styles.labelStyle}>
+      <div className="flex items-center p-2.5 mb-4">
+        <label htmlFor="heading" className="w-[9%] font-bold text-gray-700">
           Heading:
         </label>
         <input
@@ -135,11 +137,11 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           name="heading"
           value={formData.heading}
           onChange={handleInputChange}
-          style={styles.inputStyle}
+          className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div style={styles.fieldRow}>
-        <label htmlFor="rating" style={styles.labelStyle}>
+      <div className="flex items-center p-2.5 mb-4">
+        <label htmlFor="rating" className="w-[9%] font-bold text-gray-700">
           Rating:
         </label>
         <RatingComponent
@@ -151,9 +153,9 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           }}
         />
       </div>
-      <div>
-        <label htmlFor="description">Description:</label>
-        <div style={styles.smartEditorContainer}>
+      <div className="mb-4">
+        <label htmlFor="description" className="block font-semibold mb-2 text-gray-700">Description:</label>
+        <div className="border border-gray-300 p-1.5 m-1.5 rounded">
           <SmartEditor
             initialValue={formData.smartContent}
             onChange={handleSmartEditorChange}
@@ -161,8 +163,8 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           />
         </div>
       </div>
-      <div>
-        <label htmlFor="tags">Add Tags:</label>
+      <div className="mb-4">
+        <label htmlFor="tags" className="block font-semibold mb-2 text-gray-700">Add Tags:</label>
         <Select
           isMulti
           name="tags"
@@ -172,20 +174,21 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
         />
       </div>
       {formErrors.length > 0 && (
-        <div>
+        <div className="mt-4">
           {formErrors.map((error, index) => (
-            <span key={index} style={styles.error}>
+            <span key={index} className="block text-red-600 text-sm mt-1.5">
               {error}
             </span>
           ))}
         </div>
       )}
-      <div>
+      <div className="mt-6 flex gap-2">
         <CustomButton onClick={handleSaveCategory}>
           {category?.uniqueId ? "Update Changes" : "Save Changes"}
         </CustomButton>
         <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
-
+      </div>
+      <div className="mt-4">
         <JSONDataViewer
           metadata={{
             formData,
@@ -197,35 +200,6 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  formStyle: {
-    // your form styles here
-  },
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-  labelStyle: {
-    width: "9%",
-    fontWeight: "bold",
-  },
-  inputStyle: {
-    width: "90%",
-  },
-  fieldRow: {
-    display: "flex",
-    alignItems: "center",
-    padding: "10px",
-  },
-  smartEditorContainer: {
-    border: "1px solid #ddd",
-    padding: "5px",
-    margin: "5px",
-  },
 };
 
 export default CategoryForm;

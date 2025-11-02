@@ -126,15 +126,14 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     setSmartEditorError(error);
   };
 
-  const formStyle = {};
-
   return (
     <>
-      <div style={formStyle}>
-        <h3>{task && task._id && task.uniqueId ? "Edit Task" : "Add Task"}</h3>
-        {/* <pre>{`provided task object: ${JSON.stringify(task)}`}</pre> <br /> */}
-        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-          <label htmlFor="name" style={{ width: "9%", fontWeight: "bold" }}>
+      <div className="max-w-4xl mx-auto p-6">
+        <h3 className="text-2xl font-bold mb-6 text-gray-800">
+          {task && task._id && task.uniqueId ? "Edit Task" : "Add Task"}
+        </h3>
+        <div className="flex items-center p-2.5 mb-4">
+          <label htmlFor="name" className="w-[9%] font-bold text-gray-700">
             Name
           </label>
           <input
@@ -144,25 +143,17 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
             placeholder="Name"
             value={formData.name}
             onChange={handleInputChange}
-            style={{ width: "90%" }}
+            className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div style={{ padding: "10px" }}>
+        <div className="p-2.5 mb-4">
           <label
             htmlFor="description"
-            style={{ width: "9%", fontWeight: "bold" }}
+            className="block w-[9%] font-bold text-gray-700 mb-2"
           >
             Description
           </label>
-          {/* <CKEditor
-                        id="description"
-                        name="description"
-                        editor={ClassicEditor}
-                        data={formData.description}
-                        onChange={handleEditorChange}
-                        style={{ width: "90%" }}
-                    /> */}
           <SmartEditor
             preview={false}
             initialValue={formData.descriptions[0]}
@@ -172,10 +163,10 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
         </div>
 
         {/* Dropdown to select linked tasks */}
-        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+        <div className="flex items-center p-2.5 mb-4">
           <label
             htmlFor="linkedTasks"
-            style={{ width: "15%", fontWeight: "bold" }}
+            className="w-[15%] font-bold text-gray-700"
           >
             Linked Tasks:
           </label>
@@ -185,7 +176,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
             id="linkedTasks"
             value={formData.linkedTasks}
             onChange={handleLinkedTasksChange}
-            style={{ width: "90%" }}
+            className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {tasks
               .filter((task) => task.uniqueId !== formData?.uniqueId)
@@ -196,78 +187,63 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
               ))}
           </select>
         </div>
-        <div style={{ padding: "10px" }}>
-          <label htmlFor="tags" style={{ width: "20%", fontWeight: "bold" }}>
+        <div className="p-2.5 mb-4">
+          <label htmlFor="tags" className="block w-[20%] font-bold text-gray-700 mb-2">
             Add Tags:
           </label>
-          <Select
-            isMulti
-            name="tags"
-            options={tagOptions}
-            value={tagOptions.filter((tag) =>
-              formData.tags.includes(tag.value)
-            )}
-            onChange={handleTagSelect}
-            style={{ width: "90%" }}
-          />
+          <div className="w-[90%]">
+            <Select
+              isMulti
+              name="tags"
+              options={tagOptions}
+              value={tagOptions.filter((tag) =>
+                formData.tags.includes(tag.value)
+              )}
+              onChange={handleTagSelect}
+            />
+          </div>
         </div>
-        <div style={{ padding: "10px" }}>
+        <div className="p-2.5 mb-4">
           <label
             htmlFor="taskStatus"
-            style={{ width: "20%", fontWeight: "bold" }}
+            className="block w-[20%] font-bold text-gray-700 mb-2"
           >
             Select Task Status:
           </label>
-          <Select
-            name="taskStatus"
-            value={statusOptions.filter(
-              (task) => task.value === formData.taskStatus
-            )}
-            options={statusOptions}
-            onChange={handleStatusSelect}
-            placeholder="Select task status..."
-          />
+          <div className="w-[90%]">
+            <Select
+              name="taskStatus"
+              value={statusOptions.filter(
+                (task) => task.value === formData.taskStatus
+              )}
+              options={statusOptions}
+              onChange={handleStatusSelect}
+              placeholder="Select task status..."
+            />
+          </div>
         </div>
-        {/* Add other input fields for task properties */}
-        {/* style={{ textAlign: "right", marginTop: "10px" }} */}
-        <div>
+        
+        <div className="mt-4">
           {formErrors.length > 0 && (
             <div>
               {formErrors.map((error, index) => (
-                <span key={index} style={styles.error}>
+                <span key={index} className="block text-red-600 text-sm mt-1.5">
                   {error}
                 </span>
               ))}
             </div>
           )}
         </div>
-        <div>
+        <div className="mt-6 flex gap-2">
           <CustomButton onClick={(event) => handleSaveTask(event)}>
             Save
           </CustomButton>
           <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
         </div>
-        {/* <JSONDataViewer metadata={{formData}} title="X-Ray: For provided metadata"/> */}
         <JSONDataViewer metadata={{ formData }} />
       </div>
     </>
   );
-};
-
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-  labelStyle: {
-    width: "15%", // Set label width to 25%
-    fontWeight: "bold", // Make label text bold
-  },
-  pairedComponentStyle: {
-    width: "85%", // Set paired component width to 75%
-  },
 };
 
 export default TaskForm;

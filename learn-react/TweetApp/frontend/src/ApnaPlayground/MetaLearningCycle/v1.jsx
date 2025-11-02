@@ -10,52 +10,48 @@ const MetaLearningCycleV1 = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="position-relative" style={{ width: "24rem", height: "24rem" }}>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="relative w-96 h-96">
         {/* Background Circle */}
-        <div className="position-absolute w-100 h-100 rounded-circle bg-white shadow-lg"></div>
+        <div className="absolute w-full h-full rounded-full bg-white shadow-lg"></div>
 
         {/* Center Title & Description */}
-        <div className="position-absolute top-50 start-50 translate-middle text-center">
-          <h5 className="fw-bold">{title}</h5>
-          <p className="text-secondary">{description}</p>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+          <h5 className="font-bold">{title}</h5>
+          <p className="text-gray-600">{description}</p>
         </div>
 
         {/* Stages with Click Events */}
-        <div className="position-absolute top-0 start-50 translate-middle text-center">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-center">
           <div
-            className="rounded-circle bg-primary text-white p-3 shadow-sm cursor-pointer"
-            style={{ width: "100px", cursor: "pointer" }}
+            className="rounded-full bg-blue-600 text-white p-3 shadow-sm cursor-pointer w-[100px] hover:bg-blue-700 transition-colors"
             onClick={() => handleStageClick("Discomfort", "This is where you push yourself beyond your current abilities.")}
           >
             Discomfort
           </div>
         </div>
 
-        <div className="position-absolute top-50 end-0 translate-middle text-center">
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 text-center">
           <div
-            className="rounded-circle bg-success text-white p-3 shadow-sm cursor-pointer"
-            style={{ width: "100px", cursor: "pointer" }}
+            className="rounded-full bg-green-600 text-white p-3 shadow-sm cursor-pointer w-[100px] hover:bg-green-700 transition-colors"
             onClick={() => handleStageClick("Improvement", "You start to see progress and gain skills.")}
           >
             Improvement
           </div>
         </div>
 
-        <div className="position-absolute bottom-0 start-50 translate-middle text-center">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-center">
           <div
-            className="rounded-circle bg-warning text-white p-3 shadow-sm cursor-pointer"
-            style={{ width: "100px", cursor: "pointer" }}
+            className="rounded-full bg-yellow-600 text-white p-3 shadow-sm cursor-pointer w-[100px] hover:bg-yellow-700 transition-colors"
             onClick={() => handleStageClick("Plateau", "You reach a point where progress seems to slow down.")}
           >
             Plateau
           </div>
         </div>
 
-        <div className="position-absolute top-50 start-0 translate-middle text-center">
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 text-center">
           <div
-            className="rounded-circle bg-danger text-white p-3 shadow-sm cursor-pointer"
-            style={{ width: "100px", cursor: "pointer" }}
+            className="rounded-full bg-red-600 text-white p-3 shadow-sm cursor-pointer w-[100px] hover:bg-red-700 transition-colors"
             onClick={() => handleStageClick("Success", "You achieve your goals and experience mastery.")}
           >
             Success

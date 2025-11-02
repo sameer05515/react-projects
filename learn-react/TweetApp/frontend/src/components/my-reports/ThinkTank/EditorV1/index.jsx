@@ -22,7 +22,7 @@ const ThinkTankEditorV1 = () => {
         future.
       </h2>
       <details>
-        <div style={{ whiteSpace: "pre-wrap" }}>
+        <div className="whitespace-pre-wrap">
           {`Here we will put all our To-dos, in below format
         <pre>[Date]:[Status- (Open/Closed)]- Title of to-do Description (As short as possible)</pre>
         We are developing this component as editor for current logged-in user. <br />

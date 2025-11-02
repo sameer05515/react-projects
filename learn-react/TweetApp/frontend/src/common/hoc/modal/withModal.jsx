@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Modal.module.css";
 
 // interface ModalProps {
 //   isOpen: boolean;
@@ -21,16 +20,21 @@ const withModal = /**<P extends object>*/ (
 
     return (
       <div
-        className={styles.modalBackdrop}
+        className="fixed top-0 left-0 w-screen h-screen bg-black/60 flex justify-center items-center z-[1000]"
         onClick={() => closeOnEscKey && onClose()}
       >
         <div
-          className={styles.modalContent}
+          className="bg-white p-5 rounded-lg w-[90%] max-w-[60vw] max-h-[60vh] overflow-auto relative shadow-md"
           onClick={(e) => e.stopPropagation()}
         >
-          {showCloseButton && <button className={styles.closeButton} onClick={onClose}>
-            &times;
-          </button>}
+          {showCloseButton && (
+            <button 
+              className="absolute top-2.5 right-2.5 bg-transparent border-none text-xl cursor-pointer text-gray-800 hover:text-red-600 transition-colors" 
+              onClick={onClose}
+            >
+              &times;
+            </button>
+          )}
           <WrappedComponent {...props /**as P*/} />
         </div>
       </div>

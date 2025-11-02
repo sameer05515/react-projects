@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import styles from "./styles.module.css";
 
 /**
  * Note: This component is no longer in active development. please use [v2.jsx](./v2.jsx)
@@ -13,7 +12,7 @@ const CustomBackdropV1 = ({ shouldActive = "no" }) => {
 
   if (!isVisible) return null;
 
-  return <div className={styles.backdrop}></div>;
+  return <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-[1000]"></div>;
 };
 
 export default CustomBackdropV1;

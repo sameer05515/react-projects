@@ -6,8 +6,7 @@ import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import { selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
 
-// Styles moved to Tailwind - keeping empty object for backwards compatibility
-const styles = {};
+// All styles have been converted to Tailwind CSS classes
 
 const JSONPreview = ({ data }) => (
   <div className="border border-gray-300 p-1.5 bg-gray-50 rounded">

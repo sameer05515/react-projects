@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import styles from "./styles.v3.module.css";
+import styles from "./styles.v3.module.css"; // Keep CSS module for animations
 import {
   selectCustomBackdropV3CurrentDescription,
   selectCustomBackdropV3CurrentSubtitle,
@@ -79,10 +79,22 @@ const CustomBackdropV3 = () => {
   if (!isActive) return null;
 
   return (
-    <div className={styles.backdrop}>
-      {title && <h1 className={styles.title}>{title}</h1>}
-      {subtitle && <h2 className={styles.subtitle}>{subtitle}</h2>}
-      {description && <p className={styles.description}>{description}</p>}
+    <div className={`${styles.backdrop} fixed top-0 left-0 w-full h-full bg-black/75 z-[1000] flex flex-col items-center justify-center backdrop-blur-sm p-5 box-border transition-colors hover:bg-black/85`}>
+      {title && (
+        <h1 className={`${styles.title} text-white text-4xl font-sans drop-shadow-lg cursor-pointer my-2.5 transition-all hover:scale-105 hover:drop-shadow-xl`}>
+          {title}
+        </h1>
+      )}
+      {subtitle && (
+        <h2 className={`${styles.subtitle} text-gray-300 text-3xl font-sans drop-shadow-md my-2 transition-colors hover:text-white`}>
+          {subtitle}
+        </h2>
+      )}
+      {description && (
+        <p className={`${styles.description} text-gray-400 text-xl font-sans leading-relaxed text-center my-2.5 max-w-[80%] break-words transition-colors hover:text-gray-300`}>
+          {description}
+        </p>
+      )}
     </div>
   );
 };

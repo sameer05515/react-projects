@@ -108,30 +108,43 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
   const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
 
   return (
-    <div>
-      <label htmlFor="outputType" style={labelStyle}>
-        Select Output Type:
-      </label>
-      <select value={selectedOutputType} onChange={handleChangeOutputTypes}>
-        {Object.keys(inputOutputMapping).map((outputType) => (
-          <option key={outputType} value={outputType}>
-            {outputType.replace(/_/g, " ")}
-          </option>
-        ))}
-      </select>
+    <div className="space-y-4">
+      <div>
+        <label htmlFor="outputType" className="font-bold block mb-2">
+          Select Output Type:
+        </label>
+        <select 
+          value={selectedOutputType} 
+          onChange={handleChangeOutputTypes}
+          className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {Object.keys(inputOutputMapping).map((outputType) => (
+            <option key={outputType} value={outputType}>
+              {outputType.replace(/_/g, " ")}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {formData.textInputType === availableInputTypes.textArea && (
         <div>
-          <label htmlFor="content" style={labelStyle}>
+          <label htmlFor="content" className="font-bold block mb-2">
             Content:
           </label>
-          <textarea ref={textareaRef} id="content" name="content" value={formData.content} onChange={handleInputChange} style={styles.textarea} />
+          <textarea 
+            ref={textareaRef} 
+            id="content" 
+            name="content" 
+            value={formData.content} 
+            onChange={handleInputChange} 
+            className="w-full px-3 py-2.5 text-base rounded border border-gray-300 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
       )}
 
       {formData.textInputType === availableInputTypes.ckEditor && (
         <div>
-          <label htmlFor="ckeditor" style={labelStyle}>
+          <label htmlFor="ckeditor" className="font-bold block mb-2">
             Content:
           </label>
           <CKEditor id="ckeditor" name="content" editor={ClassicEditor} data={formData.content} onChange={handleEditorChange} />
@@ -139,7 +152,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
       )}
 
       {formData.content && (
-        <div>
+        <div className="mb-2">
           <b>Preview:</b> <CustomButton onClick={() => setShowPreview((prev) => !prev)}>{showPreview ? "Hide" : "Show"}</CustomButton>
         </div>
       )}
@@ -148,20 +161,6 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
       {debug && <JSONDataViewer metadata={{ formData, initialValue }} title="X-Ray: formData" />}
     </div>
   );
-};
-
-const labelStyle = { fontWeight: "bold" };
-
-const styles = {
-  textarea: {
-    width: "100%",
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    resize: "none",
-    overflow: "hidden",
-  },
 };
 
 const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } }) => {
@@ -197,8 +196,8 @@ const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } 
       )}
       {textOutputType === availableOutputTypes.YAML && (
         <div>
-          <pre>{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-          <span style={{ color: "red" }}>{errorMessage}</span>
+          <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
+          {errorMessage && <span className="text-red-600">{errorMessage}</span>}
         </div>
       )}
       {textOutputType === availableOutputTypes.SKELETON && resultData && resultData.length > 0 && (
@@ -208,12 +207,11 @@ const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } 
             expandAll={true}
             renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
           />
-          <span style={{ color: "red" }}>{errorMessage}</span>
-          {/* <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview"/> */}
+          {errorMessage && <span className="text-red-600">{errorMessage}</span>}
         </>
       )}
 
-      {(!textOutputType || !Object.values(availableOutputTypes).includes(textOutputType)) && <div style={{ whiteSpace: "pre-wrap" }}>{content}</div>}
+      {(!textOutputType || !Object.values(availableOutputTypes).includes(textOutputType)) && <div className="whitespace-pre-wrap">{content}</div>}
       {/* <JSONDataViewer metadata={{data,resultData,errorMessage  }} title="X-Ray"/> */}
     </>
   );

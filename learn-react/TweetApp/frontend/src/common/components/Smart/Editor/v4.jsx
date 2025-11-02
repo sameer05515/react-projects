@@ -128,7 +128,7 @@ const SmartEditorV4 = ({
         >
           {getComboOptions()}
         </select>
-        <label htmlFor="OutputTypeCombobox" style={{ fontWeight: "bold" }}>
+        <label htmlFor="OutputTypeCombobox" className="font-bold">
           Select Output Type:
         </label>
       </div>
@@ -137,7 +137,6 @@ const SmartEditorV4 = ({
       {formData.textInputType === SupportedInputComponents.textArea && (
         <div className="form-floating">
           <textarea
-            // ref={textareaRef}
             id="content"
             name="content"
             className="form-control"
@@ -145,7 +144,7 @@ const SmartEditorV4 = ({
             onChange={(e) => updateFormContent(e.target.value)}
             style={{ height: "300px" }}
           />
-          <label htmlFor="content" style={{ fontWeight: "bold" }}>
+          <label htmlFor="content" className="font-bold">
             Content:
           </label>
         </div>

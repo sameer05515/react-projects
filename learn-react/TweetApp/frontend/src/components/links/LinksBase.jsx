@@ -77,7 +77,7 @@ const ViewLink = () => {
               <b>description:</b>{" "}
             </span>{" "}
             {linkDetails.description} <br /> */}
-            <div style={styles.descriptionStyle}>
+            <div className="mt-4">
               <ToggleablePanel showContent={true} title={"Descriptions:"}>
                 {linkDetails.descriptions?.map((descr, idx) => (
                   <ToggleablePanel
@@ -243,38 +243,48 @@ const CreateLink = () => {
       /> */}
       <div>
         {formErrors.length > 0 && (
-          <div>
+          <div className="mb-4">
             {formErrors.map((error, index) => (
-              <span key={index} style={styles.error}>
+              <span key={index} className="block text-red-600 text-sm mt-1.5">
                 {error}
               </span>
             ))}
           </div>
         )}
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
+        <div className="mb-4">
+          <label htmlFor="name" className="block font-semibold mb-2 text-gray-700">Name:</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            value={formData.name} 
+            onChange={handleInputChange} 
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required 
+          />
         </div>
-        <div>
-          <label htmlFor="linkUrl">Link Url:</label>
+        <div className="mb-4">
+          <label htmlFor="linkUrl" className="block font-semibold mb-2 text-gray-700">Link Url:</label>
           <input
             type="text"
             id="linkUrl"
             name="linkUrl"
             value={formData.linkUrl}
             onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          {/* <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} /> */}
-          <SmartEditor
-            preview={false}
-            initialValue={formData.descriptions[0]}
-            onChange={handleSmartEditorChange}
-            onError={handleSmartEditorError}
-          />
+        <div className="mb-4">
+          <label htmlFor="description" className="block font-semibold mb-2 text-gray-700">Description:</label>
+          <div className="border border-gray-300 p-1.5 m-1.5 rounded">
+            <SmartEditor
+              preview={false}
+              initialValue={formData.descriptions[0]}
+              onChange={handleSmartEditorChange}
+              onError={handleSmartEditorError}
+            />
+          </div>
         </div>
         <CustomButton onClick={(e) => handleSaveTag(e)}>Save Changes</CustomButton>
         <JSONDataViewer metadata={{ formData }} title="X-Ray" />
@@ -411,38 +421,48 @@ const EditLink = () => {
       /> */}
       <div>
         {formErrors.length > 0 && (
-          <div>
+          <div className="mb-4">
             {formErrors.map((error, index) => (
-              <span key={index} style={styles.error}>
+              <span key={index} className="block text-red-600 text-sm mt-1.5">
                 {error}
               </span>
             ))}
           </div>
         )}
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
+        <div className="mb-4">
+          <label htmlFor="name" className="block font-semibold mb-2 text-gray-700">Name:</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            value={formData.name} 
+            onChange={handleInputChange} 
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required 
+          />
         </div>
-        <div>
-          <label htmlFor="linkUrl">Link Url:</label>
+        <div className="mb-4">
+          <label htmlFor="linkUrl" className="block font-semibold mb-2 text-gray-700">Link Url:</label>
           <input
             type="text"
             id="linkUrl"
             name="linkUrl"
             value={formData.linkUrl}
             onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          {/* <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} /> */}
-          <SmartEditor
-            preview={false}
-            initialValue={formData.descriptions[0]}
-            onChange={handleSmartEditorChange}
-            onError={handleSmartEditorError}
-          />
+        <div className="mb-4">
+          <label htmlFor="description" className="block font-semibold mb-2 text-gray-700">Description:</label>
+          <div className="border border-gray-300 p-1.5 m-1.5 rounded">
+            <SmartEditor
+              preview={false}
+              initialValue={formData.descriptions[0]}
+              onChange={handleSmartEditorChange}
+              onError={handleSmartEditorError}
+            />
+          </div>
         </div>
         <CustomButton onClick={(e) => handleSaveTag(e)}>Save Changes</CustomButton>
         <JSONDataViewer metadata={{ formData }} title="X-Ray" />
@@ -537,13 +557,13 @@ const Breadcrumbs = ({ parentId = "", ancestors: providedAncestors = [] }) => {
 
   return (
     <div>
-      <div style={breadcrumbStyle.breadcrumbsContainer}>
-        <span style={breadcrumbStyle.breadcrumbItem}>
-          <h1>Home</h1>
+      <div className="mb-5">
+        <span className="inline-block mr-1.5">
+          <h1 className="inline">Home</h1>
         </span>
         {ancestors.map((ancestor, index) => (
-          <span style={breadcrumbStyle.breadcrumbItem} key={index}>
-            <h2>/{ancestor.name}</h2>
+          <span className="inline-block mr-1.5" key={index}>
+            <h2 className="inline">/{ancestor.name}</h2>
           </span>
         ))}
       </div>
@@ -551,36 +571,6 @@ const Breadcrumbs = ({ parentId = "", ancestors: providedAncestors = [] }) => {
   );
 };
 
-const breadcrumbStyle = {
-  breadcrumbsContainer: {
-    marginBottom: "20px",
-  },
-  breadcrumbList: {
-    listStyleType: "none",
-    padding: "0",
-    margin: "0",
-  },
-  breadcrumbItem: {
-    display: "inline-block",
-    marginRight: "5px",
-  },
-  breadcrumbLink: {
-    color: "#007bff",
-    textDecoration: "none",
-  },
-  breadcrumbLinkHover: {
-    textDecoration: "underline",
-  },
-};
-
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-};
 
 export default LinksBase;
 export { CreateLink, EditLink, ViewLink };

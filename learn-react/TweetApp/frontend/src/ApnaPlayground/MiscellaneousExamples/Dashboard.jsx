@@ -23,15 +23,6 @@ export const customStyles = {
       fontStyle: "italic",
     }),
   },
-  buttonContainer: {
-    padding: "5px",
-    gap: "5px",
-  },
-  componentInfo: {
-    padding: "5px",
-    fontSize: "14px",
-    fontFamily: "Arial, sans-serif",
-  },
 };
 
 const SelectInput = ({ options, onChange, placeholder, value }) => (
@@ -103,7 +94,7 @@ const MiscellaneousExamples = () => {
         <b>Selected Component</b>: {componentLabel}
       </div>
 
-      <div style={customStyles.buttonContainer}>
+      <div className="p-1.5 gap-1.5">
         <SelectInput
           options={componentOptions}
           onChange={handleChange}
@@ -116,13 +107,13 @@ const MiscellaneousExamples = () => {
 
       <ToggleablePanel title="Details" showContent={false}>
         {selectedComponent && (
-          <div style={customStyles.componentInfo}>
+          <div className="p-1.5 text-sm font-sans">
             Module: <b>{moduleName || "Missing Module name"}</b>
             <br />
             Experimental Component: {expCAPLI ? "Yes " : "No "} <br />
             <b>{majorRelease ? "Major Release" : "Minor Release"}</b>
             <br />
-            <pre style={{ whiteSpace: "pre-wrap" }}>
+            <pre className="whitespace-pre-wrap">
               {displayLabel ||
                 `Display label missing for selected component: ${selectedComponent}`}
             </pre>

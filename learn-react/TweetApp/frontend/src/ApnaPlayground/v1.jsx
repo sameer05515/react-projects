@@ -22,26 +22,11 @@ import { componentNames, getComponentDetails } from "./utils";
  */
 const PlaygroundHeader = ({ param, next, prev }) => {
   return (
-    <div
-      style={{
-        width: "95vw",
-        display: "block",
-        alignItems: "center",
-      }}
-    >
+    <div className="w-[95vw] block items-center">
       {/* Top bar: Home/root link */}
-      <div
-        style={{
-          display: "flex",
-          justifyItems: "center",
-          fontWeight: "bold",
-          paddingTop: "4px",
-          paddingBottom: "4px",
-          width: "100%",
-        }}
-      >
+      <div className="flex items-center font-bold py-1 w-full">
         <NavLink
-          style={{ flex: 1, textAlign: "center" }}
+          className="flex-1 text-center hover:underline"
           to={param ? "/apna-playground" : "/"}
         >
           {param ? "TESTING PAGE HOME" : "ROOT"}
@@ -49,41 +34,20 @@ const PlaygroundHeader = ({ param, next, prev }) => {
       </div>
 
       {/* Navigation header: Previous, current, next links */}
-      <header
-        style={{
-          display: "flex",
-          color: "chocolate",
-          backgroundColor: "lightblue",
-          justifyItems: "center",
-          width: "100%",
-        }}
-      >
+      <header className="flex text-[chocolate] bg-blue-200 items-center w-full">
         {/* Previous tester navigation link, if available */}
         {prev && (
           <NavLink
             to={`/apna-playground?tester=${prev}`}
-            style={{
-              flex: 1,
-              textAlign: "left",
-              fontSize: 10,
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
+            className="flex-1 text-left text-[10px] flex justify-start items-center hover:underline"
           >
-            <PrevIcon style={{ marginRight: "4px" }} />
+            <PrevIcon className="mr-1" />
             <span>{prev}</span>
           </NavLink>
         )}
 
         {/* Info about the currently selected component tester */}
-        <span
-          style={{
-            flex: 3,
-            textAlign: "center",
-            fontSize: 13,
-            fontWeight: "bold",
-          }}
-        >
+        <span className="flex-[3] text-center text-[13px] font-bold">
           Current Tester: '{param || "None"}'
         </span>
 
@@ -91,17 +55,10 @@ const PlaygroundHeader = ({ param, next, prev }) => {
         {next && (
           <NavLink
             to={`/apna-playground?tester=${next}`}
-            style={{
-              flex: 1,
-              textAlign: "right",
-              fontSize: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
+            className="flex-1 text-right text-[10px] flex items-center justify-end hover:underline"
           >
             <span>{next}</span>
-            <NextIcon style={{ marginLeft: "4px" }} />
+            <NextIcon className="ml-1" />
           </NavLink>
         )}
       </header>
@@ -111,21 +68,12 @@ const PlaygroundHeader = ({ param, next, prev }) => {
 
       {/* If no component is currently selected, show links to all test components */}
       {!param && (
-        <div
-          style={{
-            display: "block",
-            justifyItems: "center",
-            fontWeight: "bold",
-            paddingTop: "4px",
-            paddingBottom: "4px",
-            width: "100%",
-          }}
-        >
+        <div className="block items-center font-bold py-1 w-full">
           {componentNames.map((name) => (
             <NavLink
               key={name}
               to={`/apna-playground?tester=${name}`}
-              style={{ textAlign: "center" }}
+              className="text-center block hover:underline"
             >
               <div>{name}</div>
             </NavLink>
@@ -154,11 +102,7 @@ const ApnaPlaygroundBaseV1 = () => {
   }, [param]);
 
   return (
-    <div
-      style={{
-        paddingLeft: "25px",
-      }}
-    >
+    <div className="pl-6">
       <div>
         {/* Navigation header */}
         <PlaygroundHeader param={param} next={next} prev={prev} />

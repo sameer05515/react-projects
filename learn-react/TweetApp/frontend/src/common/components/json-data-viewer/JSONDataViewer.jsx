@@ -10,8 +10,8 @@ const JSONDataViewer = ({ step = "", title = "", metadata = [], initialValueToSh
     const toggleMetadataVisibility = () => setShowMetadata(prev => !prev);
 
     return (
-        <div>
-            <span style={styles.title}>
+        <div className="mb-4">
+            <span className="font-bold">
                 {step && `Step: ${step} - `}{title || Default_Title_For_JSONDataViewer}
             </span>
             <ToggleableIcon
@@ -20,29 +20,12 @@ const JSONDataViewer = ({ step = "", title = "", metadata = [], initialValueToSh
                 onToggle={toggleMetadataVisibility}
             />
             {showMetadata && (
-                <div style={styles.metadataContainer}>
-                    <pre>{JSON.stringify(metadata, null, 2)}</pre>
+                <div className="max-h-[200px] max-w-[90vw] overflow-auto p-2.5 gap-2.5 border border-gray-300 rounded-md bg-gray-50 my-5 mx-1.5">
+                    <pre className="text-sm">{JSON.stringify(metadata, null, 2)}</pre>
                 </div>
             )}
         </div>
     );
-};
-
-const styles = {
-    title: {
-        fontWeight: 'bold',
-    },
-    metadataContainer: {
-        maxHeight: "200px",
-        maxWidth: "90vw",
-        overflow: "auto",
-        padding: "10px",
-        gap: "10px",
-        border: "1px solid #ddd",
-        borderRadius: "5px",
-        backgroundColor: "#f9f9f9",
-        margin: "20px 5px",
-    },
 };
 
 export default JSONDataViewer;

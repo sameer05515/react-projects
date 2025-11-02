@@ -4,7 +4,6 @@ import Select from "react-select";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import Details from "./sub-components/details-section/Details";
 import Playground from "./sub-components/playground-section/Playground";
-import { RelatedNodesBaseStyles as styles } from "./util/RelatedNodesBase.styles";
 import {
     SharedConfigurationsProvider,
     useSharedConfigurations,
@@ -22,29 +21,6 @@ const customSelectStyles = {
     }),
 };
 
-const containerStyle = {
-    ...styles.columnContainer,
-    ...styles.greenBorder,
-    height: "94vh",
-    width: "97vw",
-    overflow: "auto",
-    margin: "10px 30px",
-};
-
-const headerStyle = {
-    ...styles.rowContainer,
-    flex: 1,
-    ...styles.greenBorder,
-    width: "100%",
-};
-
-const contentStyle = {
-    ...styles.rowContainer,
-    flex: 10,
-    ...styles.greenBorder,
-    justifyContent: "space-between",
-    width: "100%",
-};
 
 const RelatedNodesBase = () => {
     const navigate = useNavigate();
@@ -67,17 +43,17 @@ const RelatedNodesBase = () => {
     };
 
     return (
-        <div style={containerStyle}>
-            <div>
+        <div className="flex flex-col items-start mt-5 px-5 border border-green-500 h-[94vh] w-[97vw] overflow-auto mx-[30px] my-2.5">
+            <div className="mb-4">
                 Once Node and relations are now being saved/updated/fetched in/from
                 database, now we will work to draw graphs with arrows for related nodes.
             </div>
-            <div style={headerStyle}>
+            <div className="flex flex-row gap-2.5 mt-2.5 border border-green-500 flex-1 w-full">
                 RelatedNodesBase <br />
                 search, and sorting <br />
                 <CustomButton onClick={() => navigate("create")}>Create</CustomButton>
                 <CustomButton onClick={() => refreshNodes()}>Refresh</CustomButton>
-                <div style={{ padding: "10px" }}>
+                <div className="p-2.5">
                     <Select
                         name="itemType"
                         options={nodeOptions}
@@ -88,7 +64,7 @@ const RelatedNodesBase = () => {
                     />
                 </div>
             </div>
-            <div style={contentStyle}>
+            <div className="flex flex-row gap-2.5 mt-2.5 border border-green-500 flex-[10] justify-between w-full">
                 <Playground />
                 <Details />
             </div>

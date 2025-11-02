@@ -14,7 +14,7 @@ const MetaLearningCycleV3 = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <div className={styles.container}>
           {/* Background Circle */}
           <div className="position-absolute w-100 h-100 rounded-circle bg-white shadow-lg"></div>

@@ -23,17 +23,17 @@ const ReactQueryBuilderDemoV1 = () => {
   const [query, setQuery] = useState(initialQuery);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h2>React Query Builder with Material UI</h2>
+    <div className="p-5 font-sans">
+      <h2 className="text-2xl font-bold mb-4">React Query Builder with Material UI</h2>
       <QueryBuilder
         fields={fields}
         query={query}
         onQueryChange={(newQuery) => setQuery(newQuery)}
         controlElements={materialControlElements}
       />
-      <div style={{ marginTop: "20px" }}>
-        <h3>Generated Query:</h3>
-        <pre>{JSON.stringify(query, null, 2)}</pre>
+      <div className="mt-5">
+        <h3 className="text-xl font-semibold mb-2">Generated Query:</h3>
+        <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(query, null, 2)}</pre>
       </div>
     </div>
   );

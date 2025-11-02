@@ -7,67 +7,33 @@ const ContainerComponent = ({
     footer /** = <p>This is the footer section.</p> */
 }) => {
 
-    const styles = {
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            border: '1px solid #ddd',
-            borderRadius: '5px',
-            padding: '16px',
-            // margin: '16px',
-            width: '95%',
-            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-        },
-        header: {
-            marginBottom: '2px',
-        },
-        content: {
-            display: 'flex',
-            justifyContent: 'space-between',
-        },
-        leftSection: {
-            flex: 1,
-            borderRight: '1px solid #ddd',
-            // padding: '16px',
-            // marginRight: '16px',
-        },
-        rightSection: {
-            flex: 5,
-            // padding: '16px',
-            // marginLeft: '16px',
-        },
-        footer: {
-            //marginTop: '16px',
-        },
-    };
-
     return (
-        <div style={styles.container}>
+        <div className="flex flex-col border border-gray-300 rounded-md p-4 w-[95%] shadow-md">
             {/* Header Section */}
             {header && (
-                <div style={styles.header}>
+                <div className="mb-0.5">
                     {typeof header === 'function' ? header() : header}
                 </div>
             )}
 
             {/* Main Content Section */}
-            {(leftSection || rightSection) && <div style={styles.content}>
-                {/* Left Section */}
-                <div style={styles.leftSection}>
-                    {/* <h2>Left Section</h2> */}
-                    {typeof leftSection === 'function' ? leftSection() : leftSection}
-                </div>
+            {(leftSection || rightSection) && (
+                <div className="flex justify-between">
+                    {/* Left Section */}
+                    <div className="flex-1 border-r border-gray-300">
+                        {typeof leftSection === 'function' ? leftSection() : leftSection}
+                    </div>
 
-                {/* Right Section */}
-                <div style={styles.rightSection}>
-                    {/* <h2>Right Section</h2> */}
-                    {typeof rightSection === 'function' ? rightSection() : rightSection}
+                    {/* Right Section */}
+                    <div className="flex-[5]">
+                        {typeof rightSection === 'function' ? rightSection() : rightSection}
+                    </div>
                 </div>
-            </div>}
+            )}
 
             {/* Footer Section */}
             {footer && (
-                <div style={styles.footer}>
+                <div>
                     {typeof footer === 'function' ? footer() : footer}
                 </div>
             )}

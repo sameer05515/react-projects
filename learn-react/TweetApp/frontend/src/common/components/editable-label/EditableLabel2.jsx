@@ -61,14 +61,8 @@ function EditableLabel({
         <>          
           <div
             onDoubleClick={handleLabelClick}
-            style={{
-              ...labelStyle, // Apply custom style passed via prop
-              //whiteSpace: "pre-wrap", // Allows wrapping within <pre>
-              cursor: "pointer", // Change cursor to pointer on hover
-              //padding: "10px", // Add padding for visual comfort
-              border: editable ? "1px solid #ccc" : "", // Add a border for clarity
-            }}
-            // dangerouslySetInnerHTML={{ __html: text || placeholder }}
+            className={`cursor-pointer ${editable ? "border border-gray-300" : ""}`}
+            style={labelStyle}
           >
             {ReactHtmlParser(text || placeholder)}
           </div>

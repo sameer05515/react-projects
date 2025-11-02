@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./modal.v3.module.css";
 
 const ModalV3 = ({ isOpen, onClose, closeOnEscKey = false, title = "Modal Title", children }) => {
   const modalRef = useRef(null);
@@ -38,21 +37,30 @@ const ModalV3 = ({ isOpen, onClose, closeOnEscKey = false, title = "Modal Title"
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
+    <div 
+      className="fixed top-0 left-0 w-screen h-screen bg-black/60 flex justify-center items-center z-[1000]"
+      onClick={onClose}
+    >
       <div
         ref={modalRef}
-        className={styles.modalContent}
+        className="bg-white rounded-lg overflow-hidden relative shadow-lg flex flex-col resize overflow-auto"
         style={{ width: `${size.width}px`, height: `${size.height}px` }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.modalHeader}>
-          <span className={styles.modalTitle}>{title}</span>
-          <button className={styles.closeButton} onClick={onClose}>
+        <div className="flex justify-between items-center p-2.5 bg-gray-100 border-b border-gray-300 cursor-grab">
+          <span className="text-lg font-bold">{title}</span>
+          <button 
+            className="bg-transparent border-none text-xl cursor-pointer text-gray-800 hover:text-red-600 transition-colors" 
+            onClick={onClose}
+          >
             &times;
           </button>
         </div>
-        <div className={styles.modalBody}>{children}</div>
-        <div className={styles.resizeHandle} onMouseDown={startResizing} />
+        <div className="flex-1 p-4 overflow-y-auto">{children}</div>
+        <div 
+          className="w-[15px] h-[15px] bg-gray-400 absolute bottom-0 right-0 cursor-nwse-resize" 
+          onMouseDown={startResizing} 
+        />
       </div>
     </div>
   );

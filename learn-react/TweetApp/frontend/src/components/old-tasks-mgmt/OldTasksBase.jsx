@@ -65,7 +65,7 @@ function OldTasksBase() {
             </Row> */}
       <Row>
         <Col sm={5}>
-          <div style={{ backgroundColor: "lightblue" }}>
+          <div className="bg-blue-200">
             <Button onClick={showAdd}>Add</Button>
             {/* <Button onClick={showAdd}>Previous</Button>
             <Button onClick={showAdd}>Next</Button> */}

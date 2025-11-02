@@ -15,24 +15,9 @@ const FloatingButton = ({
     setShow(!show);
   };
 
-  const childrenStyle = {
-    position: "absolute",
-    top: "30px",
-    left: "0",
-    padding: "10px",
-    border: "1px solid #ccc",
-    backgroundColor: "#fff",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
-    zIndex: "1000",
-    width: "500px", // Set the desired width here
-    fontSize: "12px",
-    height: "150px",
-    overflow: "auto",
-  };
-
   return (
     <>
-      <div style={{ position: "relative", display: "inline-block" }}>
+      <div className="relative inline-block">
         <CustomButton
           title={!showButtonText && buttonText}
           style={buttonStyle}
@@ -42,7 +27,10 @@ const FloatingButton = ({
           {showButtonText && buttonText}
         </CustomButton>
         {show && (
-          <div style={{ ...childrenStyle, ...floatingChildrenStyle }}>
+          <div 
+            className="absolute top-[30px] left-0 p-2.5 border border-gray-300 bg-white shadow-lg z-[1000] w-[500px] text-xs h-[150px] overflow-auto"
+            style={floatingChildrenStyle}
+          >
             {children || "Nothing to display!"}
           </div>
         )}

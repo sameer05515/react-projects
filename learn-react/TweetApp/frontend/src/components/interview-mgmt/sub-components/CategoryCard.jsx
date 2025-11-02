@@ -3,7 +3,6 @@ import HoverableSpan from "../../../common/components/HoverableSpan";
 import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
 import RatingComponent from "../../../common/components/RatingComponent";
 import { SmartPreviewer } from "../../../common/components/SmartEditor";
-import { styles } from "../common/util";
 
 const CategoryCard = ({
   category,
@@ -14,39 +13,30 @@ const CategoryCard = ({
     <>
       <div>
         <div>
-          <div style={styles.datesStyle}>
-            <span style={{ marginRight: "10px" }}>
+          <div className="text-xs rounded mb-2.5">
+            <span className="mr-2.5">
               <strong>Rating:</strong> {category.rating}
             </span>
-            <span style={{ marginRight: "10px" }}>
+            <span className="mr-2.5">
               <strong>Unique ID:</strong> {category.uniqueId}
             </span>
           </div>
-          <h2>
+          <h2 className="text-2xl font-bold mb-2">
             <b>Category: </b>
             <HtmlTextRendrer htmlString={category.heading} />
           </h2>
           <RatingComponent rating={category.rating} />
-          <div
-            style={{
-              border: "1px solid #999", // Grey border
-              padding: "2px 5px", // Adjust padding as needed
-              borderRadius: "4px",
-              marginBottom: "10px",
-              width: "67vw",
-              overflow: "auto",
-            }}
-          >
+          <div className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5 w-[67vw] overflow-auto">
             {category.smartContent && (
               <SmartPreviewer data={category.smartContent} />
             )}
           </div>
         </div>
         <div>
-          <div>
+          <div className="mb-2.5">
             <strong>{category?.questions?.length || 0} Questions</strong>
             <HoverableSpan
-              style={{ padding: "0px 5px" }}
+              className="px-1.5 py-0 cursor-pointer hover:underline"
               onClick={() => {
                 onCreateQuestionClick && onCreateQuestionClick();
               }}
@@ -54,15 +44,11 @@ const CategoryCard = ({
               Add New Question
             </HoverableSpan>
           </div>
-          <div style={{}}>
+          <div>
             {category?.questions.length > 0 &&
               category.questions.map((q, index) => (
                 <div
-                  style={{
-                    border: "1px solid black",
-                    padding: "10px",
-                    margin: "5px",
-                  }}
+                  className="border border-black p-2.5 m-1.5"
                   key={q.uniqueId}
                 >
                   <HoverableSpan onClick={() => onQuestionSelection(q)}>

@@ -28,7 +28,7 @@ const RatingComponent = ({
           <span
             key={starValue}
             onClick={() => handleRating(starValue)}
-            style={{ padding: 0,cursor:editable?'pointer':"" }}
+            className={`p-0 ${editable ? "cursor-pointer" : ""}`}
           >
             {starValue <= rating ? (
               <StarIcon style={{ color: "gold" }} />
@@ -38,7 +38,7 @@ const RatingComponent = ({
           </span>
         );
       })}{" "}
-      <span style={{ paddingLeft: "2px", fontWeight: "bold",  }}>       
+      <span className="pl-0.5 font-bold">       
         {rating}/{ratingScale}
       </span>
     </span>

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import styles from "./styles.module.css";
 import { selectIsBackdropActive } from "../../../redux/slices/backdropSlice";
 
 const FallbackDuration = 10000; // Fallback duration in ms
@@ -73,7 +72,7 @@ const CustomBackdropV2 = () => {
 
   if (!isActive) return null;
 
-  return <div className={styles.backdrop}></div>;
+  return <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-[1000]"></div>;
 };
 
 export default CustomBackdropV2;

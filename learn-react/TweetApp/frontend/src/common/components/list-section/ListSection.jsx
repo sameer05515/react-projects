@@ -5,34 +5,13 @@ const isNonEmptyArray = (input /**: unknown*/) => {
   return input !== null && Array.isArray(input) && input.length > 0;
 };
 
-const styles = {
-  container: {
-    border: "1px solid #ddd",
-    padding: "10px",
-    marginBottom: "10px",
-  },
-  errorText: {
-    color: "red",
-  },
-  boldText: {
-    fontWeight: "bold",
-  },
-};
-
-// interface ListSectionProps<T> {
-//     title?: string;
-//     items: T[] | null | undefined;
-//     renderItem: (item: T, index: number) => ReactNode;
-//     errorMessage: string;
-// }
-
 const ListSection = /**<T,>*/ (
   { title = "", items, renderItem, errorMessage } /**: ListSectionProps<T>*/
 ) => (
-  <div className="card">
+  <div className="border border-gray-300 p-2.5 mb-2.5 rounded">
     {title && title.trim().length > 0 && (
       <div className={classes["card-header"]}>
-        <span style={styles.boldText}>{title}</span>
+        <span className="font-bold">{title}</span>
       </div>
     )}
 
@@ -41,7 +20,7 @@ const ListSection = /**<T,>*/ (
         {items && isNonEmptyArray(items) ? (
           items.map(renderItem)
         ) : (
-          <span style={styles.errorText}>{errorMessage}</span>
+          <span className="text-red-600">{errorMessage}</span>
         )}
       </div>
     </div>

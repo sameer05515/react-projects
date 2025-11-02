@@ -9,19 +9,6 @@ const HoverableSpan = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const spanStyle = {
-    display: "inline-block",
-    // padding: '10px 20px',
-    backgroundColor: isHovered
-      ? isSelected ? "#00FFFF" : "#D3D3D3"
-      : isSelected ? "#96DED1" : "#E5E4E2",
-    color: isSelected ? "blue" : "black", // Text color changes on hover
-    // border: 'none',
-    // borderRadius: '10px',
-    cursor: isHoverable ? "pointer" : "",
-    transition: "background-color 0.3s",
-  };
-
   const handleMouseActivities = (activityType) => {
     if (isHoverable) {
       switch (activityType) {
@@ -35,9 +22,18 @@ const HoverableSpan = ({
     }
   };
 
+  // Determine background color based on state
+  const getBackgroundColor = () => {
+    if (isHovered) {
+      return isSelected ? "bg-cyan-300" : "bg-gray-300";
+    }
+    return isSelected ? "bg-teal-200" : "bg-gray-200";
+  };
+
   return (
     <span
-      style={{ ...style, ...spanStyle }}
+      className={`inline-block ${getBackgroundColor()} ${isSelected ? "text-blue-600" : "text-black"} ${isHoverable ? "cursor-pointer" : ""} transition-colors duration-300`}
+      style={style}
       onMouseEnter={() => handleMouseActivities("MouseEnter")}
       onMouseLeave={() => handleMouseActivities("MouseLeave")}
       onClick={onClick}

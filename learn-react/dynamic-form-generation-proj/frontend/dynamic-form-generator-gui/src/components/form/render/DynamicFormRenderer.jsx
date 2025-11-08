@@ -2,39 +2,49 @@ import React, { useState } from 'react';
 
 // Subcomponents for rendering different types of form fields
 
-const TextInputField = ({ id, label, value, onChange }) => (
-  <div>
-    <label htmlFor={id}>{label}</label>
+const TextInputField = ({ id, label, value, onChange, type = "text" }) => (
+  <div className="mb-4">
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
     <input 
-      type="text" 
+      type={type}
       id={id} 
       name={id} 
       value={value || ''} 
-      onChange={onChange} 
+      onChange={onChange}
+      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
     />
   </div>
 );
 
 const TextAreaField = ({ id, label, value, onChange }) => (
-  <div>
-    <label htmlFor={id}>{label}</label>
+  <div className="mb-4">
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
     <textarea 
       id={id} 
       name={id} 
       value={value || ''} 
-      onChange={onChange} 
+      onChange={onChange}
+      rows={4}
+      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical"
     />
   </div>
 );
 
 const SelectField = ({ id, label, value, options, onChange }) => (
-  <div>
-    <label htmlFor={id}>{label}</label>
+  <div className="mb-4">
+    <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
     <select 
       id={id} 
       name={id} 
       value={value || ''} 
       onChange={onChange}
+      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
     >
       <option value="">Select {label}</option>
       {options.map((option, index) => (
@@ -45,21 +55,24 @@ const SelectField = ({ id, label, value, options, onChange }) => (
 );
 
 const CheckboxField = ({ id, label, checked, onChange }) => (
-  <div>
-    <label>
+  <div className="mb-4">
+    <label htmlFor={id} className="flex items-center cursor-pointer">
       <input 
         type="checkbox" 
         id={id} 
         name={id} 
         checked={checked || false} 
-        onChange={onChange} 
+        onChange={onChange}
+        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
       />
-      {label}
+      <span className="ml-2 text-sm font-medium text-gray-700">
+        {label}
+      </span>
     </label>
   </div>
 );
 
-const DynamicForm = ({ schema, onSubmit }) => {
+const DynamicFormRenderer = ({ schema, onSubmit }) => {
   const [formData, setFormData] = useState({});
 
   const handleChange = (e, key) => {
@@ -78,7 +91,7 @@ const DynamicForm = ({ schema, onSubmit }) => {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       {Object.keys(schema).map(key => {
         const { label, type, options } = schema[key];
         switch (type) {
@@ -90,7 +103,8 @@ const DynamicForm = ({ schema, onSubmit }) => {
               <TextInputField 
                 key={key} 
                 id={key} 
-                label={label} 
+                label={label}
+                type={type}
                 value={formData[key] || ''} 
                 onChange={(e) => handleChange(e, key)} 
               />
@@ -130,9 +144,16 @@ const DynamicForm = ({ schema, onSubmit }) => {
             return null;
         }
       })}
-      <button onClick={handleSubmit}>Submit</button>
+      <div className="pt-4">
+        <button 
+          onClick={handleSubmit}
+          className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors shadow-sm"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };
 
-export default DynamicForm;
+export default DynamicFormRenderer;

@@ -1,0 +1,27 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: backend
+  
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/munshi
+      database: munshi
+
+logging:
+  level:
+    root: INFO
+    com.munshi.backend: DEBUG
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+

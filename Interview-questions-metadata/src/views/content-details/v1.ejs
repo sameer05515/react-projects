@@ -127,8 +127,8 @@
                 aria-expanded="true"
                 aria-controls="<%= dirId %>-content"
               >
-                <span id="<%= dirId %>-icon" class="text-sm transition-transform duration-200 transform rotate-90">▶</span>
-                <span class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <span id="<%= dirId %>-icon" class="text-xs transition-transform duration-200 transform rotate-90">▶</span>
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
                   <span>📁</span>
                   <span><%= file.name %></span>
                 </span>
@@ -146,7 +146,7 @@
               onclick="navigateTo('<%= encodeURIComponent(file.path) %>')"
               class="<%= file.selected ? 'selected-file' : 'file-link' %> w-full text-left px-3 py-2 rounded-md transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-1 dark:focus:ring-offset-gray-800"
             >
-              <span class="flex items-center gap-2">
+              <span class="flex items-center gap-2 text-sm">
                 <span>📄</span>
                 <span class="break-words"><%= file.name %></span>
               </span>

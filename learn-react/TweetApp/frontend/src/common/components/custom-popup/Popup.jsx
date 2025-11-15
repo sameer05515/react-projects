@@ -1,46 +1,34 @@
-import React from 'react'
+import React from "react";
+import CustomButton from "../custom-button/CustomButton";
 
-const popupStyles = {
-    popup: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    popupInner: {
-        position: 'relative',
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '5px',
-        //textAlign: 'center',
-        minWidth: '70vw',
-        maxHeight: "80vh", // Set a maximum height to trigger scrolling if the content exceeds it
-        overflowY: "auto", // Enable vertical scrolling when the content overflows
-    },
-    closeButton: {
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        background: 'transparent',
-        border: 'none',
-        fontSize: '20px',
-        cursor: 'pointer',
-    },
-};
-
-const Popup = ({ headerText = 'Popup Content', children, onClose = () => { } }) => (
-    <div style={popupStyles.popup}>
-        <div style={popupStyles.popupInner}>
-            <button style={popupStyles.closeButton} onClick={onClose}>&times;</button>
-            <h2>{headerText}</h2>
-            {children ? children : <p>This is a simple popup</p>}
-        </div>
+const Popup = ({
+  headerText = "Popup Content",
+  children,
+  onClose = () => {},
+  overlayClassName = "",
+  contentClassName = "",
+}) => (
+  <div
+    className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm ${overlayClassName}`}
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      className={`relative w-full max-w-4xl rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/10 max-h-[80vh] overflow-y-auto ${contentClassName}`}
+    >
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <h2 className="text-xl font-semibold text-gray-900">{headerText}</h2>
+        <CustomButton
+          className="bg-transparent px-2 py-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+          title="Close"
+          onClick={onClose}
+        >
+          ×
+        </CustomButton>
+      </div>
+      {children ? children : <p className="text-sm text-gray-600">This is a simple popup</p>}
     </div>
+  </div>
 );
 
-export default Popup
+export default Popup;

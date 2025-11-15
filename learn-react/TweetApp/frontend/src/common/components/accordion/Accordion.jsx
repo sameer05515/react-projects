@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "./Accordion.css";
 import EditableLabel from "../editable-label/EditableLabel";
 
-function Accordion({ title, children, isExpanded }) {
+function Accordion({
+  title,
+  children,
+  isExpanded,
+  className = "",
+  contentClassName = "",
+  headerClassName = "",
+}) {
   const [isOpen, setIsOpen] = useState(isExpanded);
 
   useEffect(() => {
@@ -10,25 +16,26 @@ function Accordion({ title, children, isExpanded }) {
   }, [isExpanded]);
 
   const toggleAccordion = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
-    <div className="accordion">
-      <div className="accordion-header" onClick={toggleAccordion}>
-        <EditableLabel
-          text={title}
-          editable={false}
-          labelStyle={{
-            fontWeight: "bold", // Apply bold style for tweet
-            fontSize: "18px", // Set font size for tweet
-          }}
-        />
-        <span className={`accordion-icon ${isOpen ? "open" : "closed"}`}>
+    <div className={`rounded-2xl border border-gray-200 bg-white shadow-sm ${className}`}>
+      <button
+        type="button"
+        onClick={toggleAccordion}
+        className={`flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition hover:bg-gray-50 ${headerClassName}`}
+      >
+        <EditableLabel text={title} editable={false} displayClassName="text-lg font-semibold text-gray-900" />
+        <span
+          className={`text-sm text-gray-500 transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
+        >
           ▼
         </span>
-      </div>
-      {isOpen && <div className="accordion-content">{children}</div>}
+      </button>
+      {isOpen && (
+        <div className={`border-t border-gray-100 px-4 py-3 text-gray-700 ${contentClassName}`}>{children}</div>
+      )}
     </div>
   );
 }

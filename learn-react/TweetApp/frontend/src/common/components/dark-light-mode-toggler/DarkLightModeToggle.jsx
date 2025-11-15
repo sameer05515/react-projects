@@ -1,45 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const DarkLightModeToggle = ({children}) => {
+const DarkLightModeToggle = ({ children, className = "" }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleMode = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
-
-  const styles = {
-    container: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
-      color: isDarkMode ? 'white' : 'black',
-      padding: '20px',
-      textAlign: 'center',
-      minHeight: '100vh',
-    },
-    toggleContainer: {
-      display: 'inline-block',
-      padding: '5px',
-      backgroundColor: isDarkMode ? 'grey' : 'lightgrey',
-      borderRadius: '20px',
-      cursor: 'pointer',
-    },
-    toggleButton: {
-      width: '40px',
-      height: '20px',
-      backgroundColor: isDarkMode ? 'black' : 'white',
-      borderRadius: '50%',
-      transition: 'transform 0.2s',
-      transform: isDarkMode ? 'translateX(20px)' : 'translateX(0px)',
-    },
-  };
+  const toggleMode = () => setIsDarkMode((prevMode) => !prevMode);
 
   return (
-    <div style={styles.container}>
-      {/* <h1>{isDarkMode ? 'Dark Mode' : 'Light Mode'}</h1>
-      <p>Toggle the switch to change mode.</p> */}
-      <div style={styles.toggleContainer} onClick={toggleMode}>
-        <div style={styles.toggleButton}></div>
+    <div
+      className={`min-h-screen w-full transition-colors duration-300 ${
+        isDarkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
+      } ${className}`}
+    >
+      <div className="flex items-center justify-end gap-4 border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+        <span className="text-sm font-medium">{isDarkMode ? "Dark Mode" : "Light Mode"}</span>
+        <button
+          type="button"
+          onClick={toggleMode}
+          className={`relative flex h-6 w-12 items-center rounded-full transition ${
+            isDarkMode ? "bg-gray-600" : "bg-gray-300"
+          }`}
+          aria-label="Toggle theme"
+        >
+          <span
+            className={`absolute left-1 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+              isDarkMode ? "translate-x-6" : "translate-x-0"
+            }`}
+          />
+        </button>
       </div>
-      {children}
+      <div className="px-6 py-6">{children}</div>
     </div>
   );
 };

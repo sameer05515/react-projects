@@ -7,9 +7,21 @@
     <title>Interview Questions Metadata: Admin: Content Details Viewer: v1</title>
     <link rel="apple-touch-icon" href="/icons8-questions-96.png" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css"
+      id="markdown-light"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-dark.min.css"
+      id="markdown-dark"
+      media="none"
     />
     <style>
       /* Custom styles for markdown content */
@@ -19,27 +31,45 @@
         border-radius: 0.5rem;
         overflow-x: auto;
       }
+      .dark .markdown-body pre {
+        background-color: #1f2937;
+      }
       .markdown-body code {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         font-size: 0.875rem;
         color: #1f2937;
+      }
+      .dark .markdown-body code {
+        color: #e5e7eb;
       }
       .markdown-body {
         max-width: none;
       }
     </style>
   </head>
-  <body class="flex h-screen bg-gray-50 font-sans">
+  <body class="flex h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-200">
     <!-- Left Sidebar -->
     <aside
       id="left-section"
-      class="fixed top-0 bottom-0 left-0 w-64 bg-white border-r border-gray-200 shadow-sm overflow-y-auto z-10"
+      class="fixed top-0 bottom-0 left-0 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm overflow-y-auto z-10 transition-colors duration-200"
     >
-      <div class="p-6 sticky top-0 bg-white border-b border-gray-200">
-        <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
-          <span>📚</span>
-          <span>Markdown Files</span>
-        </h2>
+      <div class="p-6 sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            <span>📚</span>
+            <span>Markdown Files</span>
+          </h2>
+        </div>
+        <!-- Theme Toggle Button -->
+        <button
+          id="theme-toggle"
+          class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+          onclick="toggleTheme()"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-icon" class="text-xl">🌙</span>
+          <span id="theme-text">Dark Mode</span>
+        </button>
       </div>
 
       <div class="p-4">
@@ -49,19 +79,19 @@
           <li class="<%= file.fileType === 'directory' ? 'mt-4 first:mt-0' : '' %>">
             <% if (file.fileType === 'directory') { %>
             <div class="flex items-center gap-2 mb-2">
-              <span class="text-lg font-semibold text-gray-700 flex items-center gap-2">
+              <span class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
                 <span>📁</span>
                 <span><%= file.name %></span>
               </span>
             </div>
             <% if (file.children && file.children.length > 0) { %>
-            <div class="ml-4 pl-3 border-l-2 border-gray-200">
+            <div class="ml-4 pl-3 border-l-2 border-gray-200 dark:border-gray-600">
               <% renderFileList(file.children); %>
             </div>
             <% } %> <% } else { %>
             <button
               onclick="navigateTo('<%= encodeURIComponent(file.path) %>')"
-              class="<%= file.selected ? 'selected-file' : 'file-link' %> w-full text-left px-3 py-2 rounded-md transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+              class="<%= file.selected ? 'selected-file' : 'file-link' %> w-full text-left px-3 py-2 rounded-md transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-1 dark:focus:ring-offset-gray-800"
             >
               <span class="flex items-center gap-2">
                 <span>📄</span>
@@ -80,22 +110,30 @@
     <main id="right-section" class="flex-1 ml-64 overflow-y-auto">
       <div class="max-w-5xl mx-auto p-6">
         <!-- Header with Navigation -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6 transition-colors duration-200">
           <div class="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h3 class="text-xl font-semibold text-gray-800 mb-1">
+              <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-1">
                 Selected file:
-                <span class="text-blue-600 font-normal">
+                <span class="text-blue-600 dark:text-blue-400 font-normal">
                   <% if (filename) { %> <%- filename %> <% } else { %>
-                  <span class="text-gray-400 italic">None</span>
+                  <span class="text-gray-400 dark:text-gray-500 italic">None</span>
                   <% } %>
                 </span>
               </h3>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
+              <button
+                onclick="toggleTheme()"
+                class="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+                aria-label="Toggle theme"
+                title="Toggle light/dark theme"
+              >
+                <span id="theme-icon-header" class="text-lg">🌙</span>
+              </button>
               <button
                 onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev', '<%= contentDetailsNavigationAPIUri %>')"
-                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 <%= !filename ? 'disabled' : '' %>
               >
                 <span>←</span>
@@ -103,7 +141,7 @@
               </button>
               <button
                 onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next', '<%= contentDetailsNavigationAPIUri %>')"
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 <%= !filename ? 'disabled' : '' %>
               >
                 <span>Next</span>
@@ -114,24 +152,24 @@
         </div>
 
         <!-- Content Area -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8 transition-colors duration-200">
           <% if (htmlContent) { %>
-          <div class="markdown-body prose prose-lg max-w-none">
+          <div class="markdown-body prose prose-lg dark:prose-invert max-w-none">
             <%- htmlContent %>
           </div>
           <% } else if (filename) { %>
           <div class="text-center py-12">
             <div class="text-6xl mb-4">📭</div>
-            <p class="text-xl text-gray-600 font-medium">No content available!</p>
-            <p class="text-gray-500 mt-2">The file exists but has no content to display.</p>
+            <p class="text-xl text-gray-600 dark:text-gray-300 font-medium">No content available!</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">The file exists but has no content to display.</p>
           </div>
           <% } else { %>
           <div class="text-center py-16">
             <div class="text-6xl mb-4">👈</div>
-            <p class="text-xl text-gray-600 font-medium mb-2">
+            <p class="text-xl text-gray-600 dark:text-gray-300 font-medium mb-2">
               Welcome to Content Details Viewer
             </p>
-            <p class="text-gray-500">
+            <p class="text-gray-500 dark:text-gray-400">
               Select a file from the left menu to render its content here.
             </p>
           </div>
@@ -143,14 +181,14 @@
         <div class="mt-6 flex justify-center gap-4">
           <button
             onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev', '<%= contentDetailsNavigationAPIUri %>')"
-            class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
+            class="px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
           >
             <span>←</span>
             <span>Previous File</span>
           </button>
           <button
             onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next', '<%= contentDetailsNavigationAPIUri %>')"
-            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
+            class="px-6 py-3 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
           >
             <span>Next File</span>
             <span>→</span>
@@ -161,7 +199,49 @@
     </main>
 
     <script>
+      // Theme management
+      function getTheme() {
+        return localStorage.getItem('theme') || 'light';
+      }
+
+      function setTheme(theme) {
+        localStorage.setItem('theme', theme);
+        const html = document.documentElement;
+        const markdownLight = document.getElementById('markdown-light');
+        const markdownDark = document.getElementById('markdown-dark');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const themeIconHeader = document.getElementById('theme-icon-header');
+
+        if (theme === 'dark') {
+          html.classList.add('dark');
+          markdownLight.media = 'none';
+          markdownDark.media = 'all';
+          if (themeIcon) themeIcon.textContent = '☀️';
+          if (themeText) themeText.textContent = 'Light Mode';
+          if (themeIconHeader) themeIconHeader.textContent = '☀️';
+        } else {
+          html.classList.remove('dark');
+          markdownLight.media = 'all';
+          markdownDark.media = 'none';
+          if (themeIcon) themeIcon.textContent = '🌙';
+          if (themeText) themeText.textContent = 'Dark Mode';
+          if (themeIconHeader) themeIconHeader.textContent = '🌙';
+        }
+      }
+
+      function toggleTheme() {
+        const currentTheme = getTheme();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      }
+
+      // Initialize theme on page load
       document.addEventListener("DOMContentLoaded", function () {
+        // Set initial theme
+        setTheme(getTheme());
+
+        // Scroll to selected file
         const selectedElement = document.querySelector(".selected-file");
         if (selectedElement) {
           selectedElement.scrollIntoView({
@@ -189,15 +269,29 @@
         font-weight: 600;
         border-left: 4px solid #2563eb;
       }
+      .dark .selected-file {
+        background-color: #1e3a8a;
+        color: #93c5fd;
+        border-left-color: #60a5fa;
+      }
       .selected-file:hover {
         background-color: #dbeafe;
+      }
+      .dark .selected-file:hover {
+        background-color: #1e40af;
       }
       .file-link {
         color: #374151;
       }
+      .dark .file-link {
+        color: #d1d5db;
+      }
       .file-link:hover {
         color: #2563eb;
         font-weight: 500;
+      }
+      .dark .file-link:hover {
+        color: #60a5fa;
       }
     </style>
   </body>

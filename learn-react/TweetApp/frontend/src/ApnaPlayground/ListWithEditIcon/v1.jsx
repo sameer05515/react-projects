@@ -1,6 +1,5 @@
 import React from "react";
-import { FaEdit } from "react-icons/fa";
-import styles from "./styles.module.css";
+import WithEditIcon from "../../common/components/WithEditIcon/v1";
 
 const items = [
   "Lorem ipsum dolor sit amet.",
@@ -10,31 +9,28 @@ const items = [
   "Nulla quis sem at nibh elementum imperdiet."
 ];
 
-const ListWithEditIconV1/**: React.FC*/ = () => {
+const ListWithEditIconV1 = () => {
   const handleEditClick = (index/**: number*/, content/**: string*/) => {
     console.log(`Editing item ${index}: ${content}`);
   };
 
   return (
-    <div className="container mt-4">
-      <div className="list-group">
+    <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3">
         {items.map((item, index) => (
-          <div key={index} className={`list-group-item border rounded p-3 ${styles.listItem}`}>
+          <WithEditIcon
+            key={index}
+            className="rounded-xl border border-gray-100 px-4 py-3 text-sm text-gray-800 shadow-sm"
+            showEditIcon
+            editIconTitle="Edit item"
+            onEditIconClick={() => handleEditClick(index, item)}
+          >
             {item}
-            <span
-              className={styles.editIcon}
-              onClick={() => handleEditClick(index, item)}
-              role="button"
-            >
-              <FaEdit size={18} />
-            </span>
-          </div>
+          </WithEditIcon>
         ))}
       </div>
     </div>
   );
 };
-
-// export default ListWithEditIcon;
 
 export default ListWithEditIconV1;

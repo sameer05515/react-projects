@@ -1,29 +1,34 @@
-import styles from "./styles.v1.module.css";
 import { FaEdit } from "react-icons/fa";
 
+const ICON_POSITION_MAP = {
+  "top-right": "top-2 right-2",
+  "top-left": "top-2 left-2",
+};
 
-/**
- *  **Purpose** : to show an edit icon on hover of children
- * 
- * However, later we realized , the edit-icon is always showing on top-right corner only.
- * 
- * We are trying to fix this in next [v2](./v2.jsx) version
-*/
-const WithEditIconV1 = ({
+const WithEditIconBase = ({
   className = "",
   children,
   showEditIcon = false,
   editIconTitle = "",
   onEditIconClick = () => {},
+  iconPosition = "top-right",
 }) => (
-  <div className={`${className} ${styles.listItem}`}>
+  <div className={`relative group flex items-start ${className}`}>
     {children}
     {showEditIcon && (
-      <span title={editIconTitle || ""} className={styles.editIcon} onClick={onEditIconClick} role="button">
+      <button
+        type="button"
+        title={editIconTitle || ""}
+        className={`absolute hidden rounded-full p-1.5 text-gray-500 transition hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 group-hover:flex ${ICON_POSITION_MAP[iconPosition] || ICON_POSITION_MAP["top-right"]}`}
+        onClick={onEditIconClick}
+      >
         <FaEdit size={18} />
-      </span>
+      </button>
     )}
   </div>
 );
 
+const WithEditIconV1 = (props) => <WithEditIconBase {...props} iconPosition="top-right" />;
+
 export default WithEditIconV1;
+export { WithEditIconBase };

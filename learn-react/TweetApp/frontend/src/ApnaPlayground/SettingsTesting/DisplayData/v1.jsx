@@ -1,169 +1,144 @@
-import React, { useState } from 'react';
-import generateTreeData from './treeDataGenerator';
-import RadioButtonsComponent from '../../../common/components/radiobutton-component/RadioButtonsComponent';
+import React, { useMemo, useState } from "react";
+import generateTreeData from "./treeDataGenerator";
+import RadioButtonsComponent from "../../../common/components/radiobutton-component/RadioButtonsComponent";
 
 const DISPLAY_STYLE = {
-    TREE: 'tree',
-    MEMORY_MAP: 'memory-map'
-}
-
-const generateLabelValueArray = (obj = DISPLAY_STYLE) => {
-    return Object.keys(obj).map(key => ({
-        label: key,
-        value: obj[key]
-    }));
+  TREE: "tree",
+  MEMORY_MAP: "memory-map",
 };
 
-//=== TREE STYLE DISPLAY: START ============================
-const TreeNode = ({ node, /**isOpen, onToggle */ }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+const generateLabelValueArray = (obj = DISPLAY_STYLE) =>
+  Object.keys(obj).map((key) => ({
+    label: key,
+    value: obj[key],
+  }));
 
-    return (
-        <li key={node.uniqueId} className="list-none">
-            <div className="ml-5">
-                {node.children.length > 0 && (
-                    <button 
-                        onClick={() => {
-                        setIsOpen((prev) => !prev);
-                        }}
-                        className="px-2 py-1 mr-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm font-bold"
-                    >
-                        {isOpen ? '−' : '+'}
-                    </button>
-                )}
-                <span
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    className="cursor-pointer hover:text-blue-600 transition-colors"
-                >
-                    {node.name}
-                </span>
+const TreeNode = ({ node }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-            </div>
-            {isHovered && (
-                <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded mt-1 ml-7 font-mono">
-                    {JSON.stringify({ ...node, children: [], childrenCount: node.children.length || 0 }, null, 2)}
-                </div>
-            )}
-            {isOpen && (
-                <ul className="list-none">
-                    {node.children.map(child => (
-                        <TreeNode
-                            key={child.uniqueId}
-                            node={child}
-                            isOpen={false}
-                            onToggle={() => { } /**onToggle*/}
-                        />
-                    ))}
-                </ul>
-            )}
-        </li>
-    );
-};
-
-const DisplayDataWithUlLi = ({ treeData = [] }) => {
-    const [openNodes, setOpenNodes] = useState(new Set());
-
-    const toggleNode = (id) => {
-        setOpenNodes(prevOpenNodes => {
-            const newOpenNodes = new Set(prevOpenNodes);
-            if (newOpenNodes.has(id)) {
-                newOpenNodes.delete(id);
-            } else {
-                newOpenNodes.add(id);
-            }
-            return newOpenNodes;
-        });
-    };
-
-    return (
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <ul className="list-none">
-                {treeData.filter(node => node.parentId === 0).map(node => (
-                    <TreeNode
-                        key={node.uniqueId}
-                        node={node}
-                        isOpen={openNodes.has(node.uniqueId)}
-                        onToggle={toggleNode}
-                    />
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-//=== TREE STYLE DISPLAY: END ============================
-
-// ------------------------------------------------------------------------
-
-//=== MEMORY_MAP STYLE DISPLAY: START ============================
-
-const MemoryMapNode = ({ node, level }) => {
-    return (
-      <div className="border-l border-gray-400 pl-2.5 mb-1.5" style={{ marginLeft: `${level * 20}px` }}>
-        <span className="text-gray-800 font-medium">{node.name}</span>
+  return (
+    <li className="list-none">
+      <div className="flex items-start gap-2">
         {node.children.length > 0 && (
-          <div className="mt-1">
-            {node.children.map(child => (
-              <MemoryMapNode key={child.uniqueId} node={child} level={level + 1} />
-            ))}
-          </div>
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="rounded-full bg-blue-100 px-1.5 text-xs font-bold text-blue-700 transition hover:bg-blue-200"
+            aria-label={isOpen ? "Collapse node" : "Expand node"}
+          >
+            {isOpen ? "−" : "+"}
+          </button>
         )}
+        <span
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="cursor-pointer text-sm font-medium text-gray-800 transition hover:text-blue-600"
+        >
+          {node.name}
+        </span>
       </div>
-    );
-  };
+
+      {isHovered && (
+        <div className="ml-6 mt-2 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-3 text-[11px] font-mono text-gray-600 shadow-sm">
+          {JSON.stringify(
+            { ...node, children: [], childrenCount: node.children.length || 0 },
+            null,
+            2
+          )}
+        </div>
+      )}
+
+      {isOpen && node.children.length > 0 && (
+        <ul className="ml-5 mt-2 border-l border-gray-200 pl-4">
+          {node.children.map((child) => (
+            <TreeNode key={child.uniqueId} node={child} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
+const DisplayDataWithTree = ({ treeData = [] }) => {
+  const rootNodes = useMemo(
+    () => treeData.filter((node) => node.parentId === 0),
+    [treeData]
+  );
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <ul className="space-y-3">
+        {rootNodes.map((node) => (
+          <TreeNode key={node.uniqueId} node={node} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const MemoryMapNode = ({ node, level }) => (
+  <div className="relative pl-5">
+    {level > 0 && (
+      <span className="absolute left-1 top-0 h-full border-l border-gray-200" />
+    )}
+    <div className="rounded border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-800 shadow-sm">
+      {node.name}
+    </div>
+    {node.children.length > 0 && (
+      <div className="ml-4 mt-2 space-y-2">
+        {node.children.map((child) => (
+          <MemoryMapNode key={child.uniqueId} node={child} level={level + 1} />
+        ))}
+      </div>
+    )}
+  </div>
+);
 
 const MemoryMap = ({ treeData }) => {
-    return (
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-            {treeData
-                .filter(node => node.parentId === 0)
-                .map(rootNode => (
-                    <MemoryMapNode key={rootNode.uniqueId} node={rootNode} level={0} />
-                ))}
-        </div>
-    );
+  const roots = useMemo(
+    () => treeData.filter((node) => node.parentId === 0),
+    [treeData]
+  );
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-slate-50 p-5 shadow-inner">
+      <div className="space-y-4">
+        {roots.map((rootNode) => (
+          <MemoryMapNode key={rootNode.uniqueId} node={rootNode} level={0} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
-//=== MEMORY_MAP STYLE DISPLAY: END ============================
+const DisplayData = ({ treeData = generateTreeData(7, 4) }) => {
+  const [displayStyle, setDisplayStyle] = useState(DISPLAY_STYLE.TREE);
 
-const DisplayData = ({ /**dispalyStyle = DISPLAY_STYLE.TREE,*/ treeData = generateTreeData(7, 4) }) => {
+  const handleItemTypeSelect = (selectedOption) => {
+    if (selectedOption?.value) {
+      setDisplayStyle(selectedOption.value);
+    }
+  };
 
-    const [dispalyStyle, setDispalyStyle] = useState(DISPLAY_STYLE.TREE);
-    const handleItemTypeSelect = (selectedOption) => {
-        if (!selectedOption) return;
+  return (
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        <RadioButtonsComponent
+          initialSelectedOption={displayStyle}
+          options={generateLabelValueArray()}
+          onChange={handleItemTypeSelect}
+          orientation="row"
+        />
+      </div>
 
-        console.log("Selected Option:", selectedOption);
-        setDispalyStyle(() => selectedOption.value);
-    };
-    return (
-        <>
-
-            <div>
-                <div>
-                    <RadioButtonsComponent
-                        initialSelectedOption={dispalyStyle}
-                        options={generateLabelValueArray()}
-                        onChange={handleItemTypeSelect}
-                    />
-                </div>
-                <div>
-
-                </div>
-            </div>
-
-            {
-                dispalyStyle === DISPLAY_STYLE.TREE && <DisplayDataWithUlLi treeData={treeData} />
-            }
-            {
-                dispalyStyle === DISPLAY_STYLE.MEMORY_MAP && <MemoryMap treeData={treeData} />
-            }
-
-        </>
-    )
-}
-
-
+      {displayStyle === DISPLAY_STYLE.TREE && (
+        <DisplayDataWithTree treeData={treeData} />
+      )}
+      {displayStyle === DISPLAY_STYLE.MEMORY_MAP && (
+        <MemoryMap treeData={treeData} />
+      )}
+    </div>
+  );
+};
 
 export default DisplayData;

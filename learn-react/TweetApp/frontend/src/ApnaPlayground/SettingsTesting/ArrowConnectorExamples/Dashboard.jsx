@@ -43,158 +43,59 @@ const ArrowConnector = ({ startId, endId }) => {
   return <div style={arrowStyle}></div>;
 };
 
-const ArrowConnectorExample = () => {
-  return (
+const ArrowConnectorExample = () => (
+  <div className="relative flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-12 shadow">
     <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "50px",
-      }}
+      id="startDiv"
+      className="flex h-24 w-24 items-center justify-center rounded-xl bg-red-500 text-white"
     >
-      <div
-        id="startDiv"
-        style={{ width: "100px", height: "100px", background: "red" }}
-      >
-        Start
-      </div>
-      <ArrowConnector startId="startDiv" endId="endDiv" />
-      <div
-        id="endDiv"
-        style={{ width: "100px", height: "100px", background: "blue" }}
-      >
-        End
-      </div>
+      Start
     </div>
-  );
-};
-
-const StyledBox = () => {
-  const styles = {
-    container: {
-      position: "relative",
-      width: "100px",
-      height: "100px",
-      border: "1px solid black", // Border for visibility
-    },
-    circle: {
-      position: "absolute",
-      width: "6px", // Diameter of the circle
-      height: "6px", // Diameter of the circle
-      borderRadius: "50%",
-      backgroundColor: "black", // Circle color
-    },
-    top: {
-      left: "50%",
-      transform: "translateX(-50%)",
-      top: "0", // Circle at the top border
-    },
-    bottom: {
-      left: "50%",
-      transform: "translateX(-50%)",
-      bottom: "0", // Circle at the bottom border
-    },
-    left: {
-      top: "50%",
-      transform: "translateY(-50%)",
-      left: "0", // Circle at the left border
-    },
-    right: {
-      top: "50%",
-      transform: "translateY(-50%)",
-      right: "0", // Circle at the right border
-    },
-  };
-
-  return (
-    <div style={styles.container}>
-      <div style={{ ...styles.circle, ...styles.top, marginLeft: "-3px" }} />
-      <div style={{ ...styles.circle, ...styles.bottom, marginLeft: "-3px" }} />
-      <div style={{ ...styles.circle, ...styles.left, marginTop: "-3px" }} />
-      <div style={{ ...styles.circle, ...styles.right, marginTop: "-3px" }} />
+    <ArrowConnector startId="startDiv" endId="endDiv" />
+    <div
+      id="endDiv"
+      className="flex h-24 w-24 items-center justify-center rounded-xl bg-blue-500 text-white"
+    >
+      End
     </div>
-  );
-};
-
-const ArrowConnectorExampleWithStyledBox1 = () => {
-  const containerStyle = {
-    display: "flex",
-    justifyContent: "space-around", // Adjust spacing between boxes
-    alignItems: "center",
-    gap: "20px", // Optional gap between boxes
-  };
-
-  return (
-    <div style={containerStyle}>
-      <StyledBox />
-      <StyledBox />
-    </div>
-  );
-};
-
-const ArrowConnectorExampleWithStyledBox2 = () => {
-  const containerStyle = {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px", // Space between the boxes
-    position: "relative", // Make sure the line is positioned correctly
-  };
-
-  const lineStyle = {
-    position: "absolute",
-    top: "50%", // Center vertically
-    left: "calc(50% - 1px)", // Center the line horizontally between the boxes
-    width: "1px", // Line width
-    height: "100px", // Line height (same as the boxes' height)
-    backgroundColor: "black", // Line color
-    transform: "translateY(-50%)", // Center the line vertically
-  };
-
-  return (
-    <div style={containerStyle}>
-      <StyledBox />
-      <div style={lineStyle} /> {/* Line between the boxes */}
-      <StyledBox />
-    </div>
-  );
-};
-
-const StyledBox2 = () => (
-  <div style={{
-    width: "100px",
-    height: "100px",
-    backgroundColor: "lightblue",
-    border: "1px solid blue",
-  }} />
+  </div>
 );
 
+const StyledBox = () => (
+  <div className="relative flex h-24 w-24 items-center justify-center rounded-xl border border-gray-400 bg-gray-50">
+    <div className="absolute left-1/2 top-0 -translate-x-1/2 rounded-full bg-gray-700 p-[3px]" />
+    <div className="absolute left-1/2 bottom-0 -translate-x-1/2 rounded-full bg-gray-700 p-[3px]" />
+    <div className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-700 p-[3px]" />
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-700 p-[3px]" />
+  </div>
+);
 
-const ArrowConnectorExampleWithStyledBox3 = () => {
-  const containerStyle = {
-    display: "flex",
-    alignItems: "center",
-    position: "relative",
-    //width: "220px", // Adjust width based on the total width needed
-  };
+const ArrowConnectorExampleWithStyledBox1 = () => (
+  <div className="flex items-center justify-center gap-5">
+    <StyledBox />
+    <StyledBox />
+  </div>
+);
 
-  const lineStyle = {
-    position: "absolute",
-    top: "0",
-    left: "50px", // Adjust according to the box's width and gap
-    width: "1px",
-    height: "100px",
-    backgroundColor: "black",
-  };
+const ArrowConnectorExampleWithStyledBox2 = () => (
+  <div className="relative flex items-center justify-center gap-5">
+    <StyledBox />
+    <div className="absolute h-24 w-[2px] bg-gray-700" />
+    <StyledBox />
+  </div>
+);
 
-  return (
-    <div style={containerStyle}>
-      <StyledBox2 />
-      <div style={lineStyle} />
-      <StyledBox2 />
-    </div>
-  );
-};
+const StyledBox2 = () => (
+  <div className="h-24 w-24 rounded-xl border border-blue-400 bg-blue-100" />
+);
+
+const ArrowConnectorExampleWithStyledBox3 = () => (
+  <div className="relative flex items-center justify-center gap-5">
+    <StyledBox2 />
+    <div className="absolute h-24 w-[2px] bg-gray-700" />
+    <StyledBox2 />
+  </div>
+);
 
 // =========================================================================================
 
@@ -235,7 +136,7 @@ const ArrowConnectorExamplesDashboard = () => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);
   };
 
-  let DisplayComponent;
+  let DisplayComponent = null;
   switch (selectedComponent) {
     case "component1":
       DisplayComponent = Component1;
@@ -266,12 +167,10 @@ const ArrowConnectorExamplesDashboard = () => {
   }
 
   return (
-    <div style={{ padding: "5px", gap: "5px" }}>
-      <div style={{ padding: "5px", gap: "5px" }}>
-        <Select options={options} onChange={handleChange} />
-      </div>
-      <div style={{ padding: "5px", gap: "5px" }}>
-        {DisplayComponent && <DisplayComponent />}
+    <div className="space-y-4 rounded-2xl border border-gray-200 bg-white p-4 shadow">
+      <Select options={options} onChange={handleChange} classNamePrefix="react-select" />
+      <div className="rounded-2xl border border-dashed border-gray-300 bg-slate-50 p-4 min-h-[200px]">
+        {DisplayComponent ? <DisplayComponent /> : <p className="text-center text-sm text-gray-500">Select an example to preview.</p>}
       </div>
     </div>
   );

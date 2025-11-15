@@ -7,16 +7,6 @@ import {
     selectAllTreeTopics,
 } from "../../../../redux/slices/topicSlice";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
-// Reusable Label component
-const HoverLabel = ({ id, text, show, onMouseEnter, onMouseLeave }) => (
-    <div
-        style={show ? styles.visibleLabel : styles.hiddenLabel}
-        onMouseEnter={() => onMouseEnter(id)}
-        onMouseLeave={onMouseLeave}
-    >
-        {text}
-    </div>
-);
 
 // Reusable Node component
 const Node = ({ id, label, children, relations = [] }) => (
@@ -31,11 +21,6 @@ const DynamicNodeComponent = ({
     ancestorNodes = [],
     onTopicSelection = () => { },
 }) => {
-    const [hoveredRelationId, setHoveredRelationId] = useState(null);
-
-    const handleMouseEnter = (id) => setHoveredRelationId(id);
-    const handleMouseLeave = () => setHoveredRelationId(null);
-
     const renderNodes = (nodes, labelStyle, onNodeClick) =>
         nodes.map((node) => (
             <Node key={node.uniqueId} id={node.uniqueId} label={node.name}>
@@ -49,33 +34,6 @@ const DynamicNodeComponent = ({
                 </div>
             </Node>
         ));
-
-    const renderRelations = () =>
-        selectedNode.relations
-            .filter((relation) => relation.type === "next")
-            .map((relation, index) => (
-                <Node
-                    key={relation.uniqueId}
-                    id={`node-${index}`}
-                    label={`Relation: ${relation.type}`}
-                    relations={[
-                        {
-                            targetId: "selectedNode",
-                            targetAnchor: "bottom",
-                            sourceAnchor: "top",
-                            label: (
-                                <HoverLabel
-                                    id={relation.uniqueId}
-                                    text={`${relation.name}---${relation.uniqueId}`}
-                                    show={hoveredRelationId === relation.uniqueId}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
-                                />
-                            ),
-                        },
-                    ]}
-                />
-            ));
 
     return (
         <ArcherContainer strokeColor="black">
@@ -149,14 +107,6 @@ const styles = {
         padding: "10px 20px",
         border: "2px solid black",
         borderRadius: "4px",
-    },
-    hiddenLabel: {
-        opacity: 0,
-        transition: "opacity 0.2s ease",
-    },
-    visibleLabel: {
-        opacity: 1,
-        transition: "opacity 0.2s ease",
     },
 };
 

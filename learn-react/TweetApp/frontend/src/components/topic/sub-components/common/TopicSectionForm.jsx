@@ -42,7 +42,7 @@ const TopicSectionForm = ({
     if (initialValue?.linkedTopicUniqueId && initialValue?.uniqueId) {
       sectionsRefetch();
     }
-  }, [initialValue?.linkedTopicUniqueId, initialValue?.uniqueId]);
+  }, [initialValue?.linkedTopicUniqueId, initialValue?.uniqueId, sectionsRefetch]);
 
   useEffect(() => {
     setLoading(false);

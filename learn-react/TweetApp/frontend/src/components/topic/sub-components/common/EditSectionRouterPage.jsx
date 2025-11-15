@@ -22,13 +22,13 @@ const EditSectionRouterPage = () => {
     const [selectedTopic, setSelectedTopic] = useState(null);
   
     useEffect(() => {
-      if (topics && topics.length > 0) {
+      if (topics && topics.length > 0 && id) {
         // const topics = prepareTasksQueue(treeStructuredTasks);
         // console.log(`CreateSectionRouterPage: JSON.stringify(topics, null, 2): ${JSON.stringify(topics, null, 2)}`)
         const topic = topics?.find((t) => t.uniqueId === id);
         setSelectedTopic((pre) => ({ ...topic }));
       }
-    }, [topics]);
+    }, [topics, id]);
   
     const handleUpdate = (data) => {
       // alert(JSON.stringify(data, null, 2));

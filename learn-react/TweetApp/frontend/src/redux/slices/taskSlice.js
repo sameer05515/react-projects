@@ -62,18 +62,20 @@ const getNameWithAncestors = (task) => {
   if (!task) {
     return "";
   }
-  let ancestorNames = [];
+  const ancestorNames = [];
   let currentAncestor =
     task.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
     ancestorNames.push(currentAncestor.name);
-    currentAncestor = task.ancestors.find(
-      (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-    );
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      task.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(task.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
 // Helper function to prepare flat data from tree-structured data

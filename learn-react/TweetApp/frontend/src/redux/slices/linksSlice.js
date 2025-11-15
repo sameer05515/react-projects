@@ -66,21 +66,22 @@ export const updateLink = createAsyncThunk(
 
 const getNameWithAncestors = (link) => {
   if (!link) {
-      return "";
+    return "";
   }
-  let ancestorNames = [];
-  let currentAncestor = link.ancestors?.find(
-      (ancestor) => !ancestor.parentId
-  )||null;
+  const ancestorNames = [];
+  let currentAncestor =
+    link.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
-      ancestorNames.push(currentAncestor.name);
-      currentAncestor = link.ancestors.find(
-          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-      );
+    ancestorNames.push(currentAncestor.name);
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      link.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(link.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
 // Helper function to prepare flat data from tree-structured data

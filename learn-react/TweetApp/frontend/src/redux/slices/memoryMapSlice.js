@@ -51,21 +51,22 @@ export const fetchMemoryMapByUniqueId = createAsyncThunk("memoryMaps/fetchMemory
 
 const getNameWithAncestors = (topic) => {
   if (!topic) {
-      return "";
+    return "";
   }
-  let ancestorNames = [];
-  let currentAncestor = topic.ancestors?.find(
-      (ancestor) => !ancestor.parentId
-  )||null;
+  const ancestorNames = [];
+  let currentAncestor =
+    topic.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
-      ancestorNames.push(currentAncestor.name);
-      currentAncestor = topic.ancestors.find(
-          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-      );
+    ancestorNames.push(currentAncestor.name);
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      topic.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(topic.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
 // Helper function to prepare flat data from tree-structured data

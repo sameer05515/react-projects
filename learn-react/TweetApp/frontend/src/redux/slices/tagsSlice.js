@@ -63,18 +63,20 @@ const getNameWithAncestors = (tag) => {
   if (!tag) {
     return "";
   }
-  let ancestorNames = [];
+  const ancestorNames = [];
   let currentAncestor =
     tag.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
     ancestorNames.push(currentAncestor.name);
-    currentAncestor = tag.ancestors.find(
-      (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-    );
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      tag.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(tag.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
 // Helper function to prepare flat data from tree-structured data

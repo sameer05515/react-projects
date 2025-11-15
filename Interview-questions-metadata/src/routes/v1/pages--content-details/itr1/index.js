@@ -12,6 +12,38 @@ const router = express.Router();
 
 // const getContentDetails=()
 
+/**
+ * @swagger
+ * /v1/pages/admin/content-details/itr1:
+ *   get:
+ *     summary: Render content details page with file tree
+ *     description: Renders an HTML page with a file tree navigation and optionally displays a selected Markdown file. Supports next/previous file navigation.
+ *     tags: [Content Details (v1)]
+ *     parameters:
+ *       - in: query
+ *         name: filename
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Name of the Markdown file to display
+ *         example: "Difference-between-syntax-questions.md"
+ *       - in: query
+ *         name: direction
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [next, prev]
+ *         description: Navigation direction to move to next or previous file
+ *         example: "next"
+ *     responses:
+ *       200:
+ *         description: Successfully rendered content details page
+ *         content:
+ *           text/html:
+ *             schema:
+ *               type: string
+ *               description: HTML page with file tree and content
+ */
 router.get("/content-details/itr1", (req, res) => {
   //   console.log("[pages--content-details]: Recieved request");
 

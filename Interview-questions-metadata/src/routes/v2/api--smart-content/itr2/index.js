@@ -32,12 +32,26 @@ const SampleContentMappings = prepareContentMappings();
 const router = express.Router();
 
 /**
- *
- * Internal routes, just to help for development process in v2 apis.
- *
- * Later these apis will only be accesible to admin role user, post we implement RBAC
- *
- * */
+ * @swagger
+ * /v2/api/smart-content/itr2/contentMappings:
+ *   get:
+ *     summary: Get dynamically generated content mappings
+ *     description: Retrieve content mappings that are automatically generated from base path configurations. This endpoint uses the FileTraversalAPI to scan directories and build mappings dynamically.
+ *     tags: [Content Mappings]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved dynamically generated content mappings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ContentMapping'
+ *             example:
+ *               - slug: "my-questions--java--index-md"
+ *                 name: "Java Index"
+ *                 fileLocation: "/path/to/java/index.md"
+ */
 router.get("/smart-content/itr2/contentMappings", (req, res) => res.json([...SampleContentMappings]));
 
 module.exports = router;

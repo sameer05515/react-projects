@@ -177,14 +177,70 @@ const contentMappingsV1 = [
 const router = express.Router();
 
 /**
- *
- * Internal routes, just to help for development process in v2 apis.
- *
- * Later these apis will only be accesible to admin role user, post we implement RBAC
- *
- * */
+ * @swagger
+ * /v2/api/smart-content/itr1/contentMappings:
+ *   get:
+ *     summary: Get all content mappings
+ *     description: Retrieve all available content mappings (slug to file location mappings). This endpoint is for development purposes and will be restricted to admin users after RBAC implementation.
+ *     tags: [Content Mappings]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved content mappings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ContentMapping'
+ *             example:
+ *               - slug: "actionables--my-bugs-and-new-requirements-md"
+ *                 name: "My Bugs and New Requirements"
+ *                 fileLocation: "/path/to/file.md"
+ */
 router.get("/smart-content/itr1/contentMappings", (req, res) => res.json([...contentMappingsV1]));
 
+/**
+ * @swagger
+ * /v2/api/smart-content/itr1/{slug}:
+ *   get:
+ *     summary: Get content by slug
+ *     description: Retrieve file content using a human-readable slug identifier. The content is returned as raw text along with the file type.
+ *     tags: [Smart Content API (v2)]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Human-readable slug identifier for the content
+ *         example: "actionables--my-bugs-and-new-requirements-md"
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved content
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ContentResponse'
+ *             example:
+ *               content: "# My Content\n\nThis is the file content..."
+ *               outputType: "md"
+ *       404:
+ *         description: Content or file not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               error: "Content not found"
+ *       500:
+ *         description: Server error while reading file
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               error: "Error reading file"
+ */
 // Route to fetch content by slug
 router.get("/smart-content/itr1/:slug", async (req, res) => {
   const { slug } = req.params;

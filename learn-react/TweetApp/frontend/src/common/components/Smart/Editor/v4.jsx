@@ -13,6 +13,7 @@ import {
 import SmartPreviewer from "../Previewer/v4";
 import FormMessagesV1 from "../../FormMessages/v1";
 import FormMessageBuilder from "../../FormMessages/Builder";
+import CustomButton from "../../custom-button/CustomButton";
 
 const debug = false;
 
@@ -116,11 +117,13 @@ const SmartEditorV4 = ({
   };
 
   return (
-    <div className="container">
-      {/* Output Type Selection */}
-      <div className="form-floating">
+    <div className="space-y-4">
+      <div>
+        <label htmlFor="OutputTypeCombobox" className="block text-sm font-semibold text-gray-800">
+          Select Output Type
+        </label>
         <select
-          className="form-select"
+          className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="OutputTypeCombobox"
           value={selectedOutputType}
           title={detailedName || ""}
@@ -128,63 +131,67 @@ const SmartEditorV4 = ({
         >
           {getComboOptions()}
         </select>
-        <label htmlFor="OutputTypeCombobox" className="font-bold">
-          Select Output Type:
-        </label>
       </div>
 
-      {/* Textarea Input */}
       {formData.textInputType === SupportedInputComponents.textArea && (
-        <div className="form-floating">
+        <div>
+          <label htmlFor="content" className="block text-sm font-semibold text-gray-800">
+            Content
+          </label>
           <textarea
             id="content"
             name="content"
-            className="form-control"
+            className="mt-1 block h-72 w-full resize-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={formData.content}
             onChange={(e) => updateFormContent(e.target.value)}
-            style={{ height: "300px" }}
           />
-          <label htmlFor="content" className="font-bold">
-            Content:
-          </label>
         </div>
       )}
 
-      {/* CKEditor Input */}
       {formData.textInputType === SupportedInputComponents.ckEditor && (
-        <div className="form-floating">
-          <CKEditor
-            id="ckeditor"
-            name="ckeditorContent"
-            editor={ClassicEditor}
-            data={formData.content}
-            onChange={(event, editor) => updateFormContent(editor.getData())}
-          />
+        <div>
+          <label htmlFor="ckeditor" className="block text-sm font-semibold text-gray-800">
+            Content
+          </label>
+          <div className="mt-1 rounded-lg border border-gray-200 bg-white p-2 shadow-inner">
+            <CKEditor
+              id="ckeditor"
+              name="ckeditorContent"
+              editor={ClassicEditor}
+              data={formData.content}
+              onChange={(event, editor) => updateFormContent(editor.getData())}
+            />
+          </div>
         </div>
       )}
 
-      {/* Buttons */}
-      <div className="d-flex justify-content-end mt-2">
-        <button className="btn btn-outline-secondary me-2" onClick={handleReset} disabled={disableResetButton === true}>
+      <div className="flex justify-end gap-2">
+        <CustomButton
+          className="bg-white text-gray-800"
+          onClick={handleReset}
+          disabled={disableResetButton === true}
+        >
           Reset
-        </button>
-        <button className="btn btn-primary" onClick={handleSave} disabled={disableSaveButton === true}>
+        </CustomButton>
+        <CustomButton
+          className="bg-blue-600 text-white hover:bg-blue-700"
+          onClick={handleSave}
+          disabled={disableSaveButton === true}
+        >
           Save
-        </button>
+        </CustomButton>
       </div>
 
-      {/* <FormError error={error} /> */}
-      {<FormMessagesV1 messages={formMessages} />}
+      <FormMessagesV1 messages={formMessages} />
 
-      {/* Preview Button */}
       {formData.content && (
-        <div>
-          <button
-            className="btn btn-info btn-sm p-1 m-1 text-uppercase"
+        <div className="pt-2">
+          <CustomButton
+            className="bg-sky-100 text-sky-800 text-xs uppercase"
             onClick={() => setShowPreview((prev) => !prev)}
           >
             {showPreview ? "Hide Preview" : "Show Preview"}
-          </button>
+          </CustomButton>
           {showPreview && <SmartPreviewer data={formData} />}
         </div>
       )}

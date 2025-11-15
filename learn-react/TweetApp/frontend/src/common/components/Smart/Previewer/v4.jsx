@@ -22,7 +22,7 @@ const SmartPreviewerV4 = ({ data }) => {
         return <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: content }} />;
 
       case SupportedOutFormats.MARKDOWN:
-        return <MarkdownComponent additionalStyle={{ backgroundColor: "transparent" }} markdownText={content} />;
+        return <MarkdownComponent className="bg-transparent p-0" markdownText={content} />;
 
       case SupportedOutFormats.YAML:
         return (
@@ -38,7 +38,9 @@ const SmartPreviewerV4 = ({ data }) => {
             <Tree
               data={resultData}
               expandAll={true}
-              renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
+              renderNode={(node) => (
+                <MarkdownComponent className="bg-transparent p-1" markdownText={node.name || "**tree node name is missing!**"} />
+              )}
             />
             {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
             {debug && <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview" />}

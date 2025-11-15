@@ -167,6 +167,13 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
   );
 };
 
+const FONT_SIZE_CLASS_MAP = {
+  "10px": "text-[10px]",
+  "12px": "text-[12px]",
+  "20px": "text-[20px]",
+  "25px": "text-[25px]",
+};
+
 const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } }) => {
   const { content, textOutputType } = data;
 
@@ -196,7 +203,7 @@ const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } 
       {textOutputType === availableOutputTypes.TEXT && <pre>{content}</pre>}
       {textOutputType === availableOutputTypes.HTML && <div dangerouslySetInnerHTML={{ __html: content }} />}
       {textOutputType === availableOutputTypes.MARKDOWN && (
-        <MarkdownComponent markdownText={content} additionalStyle={{ fontSize: fontSize || "" }} />
+        <MarkdownComponent markdownText={content} className={FONT_SIZE_CLASS_MAP[fontSize] || ""} />
       )}
       {textOutputType === availableOutputTypes.YAML && (
         <div>

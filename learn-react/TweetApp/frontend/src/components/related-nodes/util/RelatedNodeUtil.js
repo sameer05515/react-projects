@@ -33,10 +33,6 @@ const SharedConfigurationsProvider = ({ children }) => {
     setSharedData((prev) => ({ ...prev, selectedNode }));
   };
 
-  const updateSharedData=(show=true)=>{
-    setSharedData((prev) => ({ ...prev, showPlaygroundSection:show }));
-  }
-
   const refreshNodes = async () => {
     try {
       const nodes = await apiGetAllNodes();

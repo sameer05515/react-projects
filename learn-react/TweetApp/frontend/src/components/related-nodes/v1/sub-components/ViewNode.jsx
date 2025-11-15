@@ -49,7 +49,7 @@ export const ViewNode = () => {
             const node = getNodeForId(id, allNodes);
             setSelectedNode(node);
         }
-    }, [id, allNodes]); // Added setSelectedNode to dependency array
+    }, [id, allNodes, setSelectedNode]);
 
     const { prevBoxes, selBoxes, nextBoxes } = useMemo(
         () =>

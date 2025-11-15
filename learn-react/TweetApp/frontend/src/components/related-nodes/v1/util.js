@@ -1,5 +1,5 @@
 import { RELATION_DIRECTION_TYPES } from "../util/common.util";
-import { getRelationNameForId, getRelationObjectForId } from "../util/relation-data";
+import { getRelationNameForId } from "../util/relation-data";
 
 export const JSONPreview = ({ data, title }) => (
     <div style={{ flex: 1, margin: "10px" }}>

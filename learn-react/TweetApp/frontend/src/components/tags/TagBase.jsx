@@ -20,11 +20,8 @@ import {
   getTagForUniqueId,
   getTagsForComboOptions,
   selectAllFlatTags,
-  // selectAllFlatTags,
-  selectAllTreeTags,
   selectNextTagUniqueId,
   selectPrevTagUniqueId,
-  selectSelectedTagUniqueId,
   selectTagsStateCombined,
   setSelectedTagUniqueId,
   updateTag,
@@ -157,7 +154,7 @@ const ViewTag = () => {
       refetch();
       dispatch(setSelectedTagUniqueId(id));
     }
-  }, [id, dispatch]);
+  }, [id, dispatch, refetch]);
 
   const handleEdit = (item) => {
     navigate(`/tags/${data.uniqueId}/edit`, { state: { data } });

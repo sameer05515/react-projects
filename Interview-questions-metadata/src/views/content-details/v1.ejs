@@ -6,121 +6,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interview Questions Metadata: Admin: Content Details Viewer: v1</title>
     <link rel="apple-touch-icon" href="/icons8-questions-96.png" />
-    <style>
-      /* Add some basic styling for better visualization */
-      body {
-        display: flex;
-        font-family: Arial, sans-serif;
-      }
-      #left-section {
-        flex: 1;
-        width: 250px; /* Fixed width for the left section */
-        padding: 20px;
-        border-right: 1px solid #ccc;
-        overflow-y: auto; /* Enable vertical scrollbar if content overflows */
-        position: fixed; /* Fixed positioning to keep the left section fixed */
-        top: 0; /* Align to the top of the viewport */
-        bottom: 0; /* Align to the bottom of the viewport */
-        word-break: break-all;
-      }
-      #left-section ul {
-        list-style: none; /* Remove bullet points */
-        /*padding: 0;*/
-      }
-      #left-section li {
-        margin-bottom: 10px; /* Add some spacing between list items */
-      }
-      #left-section span {
-        text-decoration: none; /* Remove underline from links */
-        font-size: 16px; /* Set font size for links */
-      }
-      #left-section span:hover {
-        font-weight: bold; /* Make link text bold on hover */
-        color: #e91140;
-      }
-      .selected {
-        font-weight: bold; /* Make selected link text bold */
-        font-size: 22px; /* Increase font size for selected link */
-        color: #e91140;
-      }
-      #right-section {
-        flex: 2;
-        padding: 20px;
-        margin-left: 280px; /* Adjust margin to account for the fixed-width left section */
-      }
-
-      /* CSS for code blocks */
-      pre {
-        background-color: #f4f4f4; /* Background color */
-        padding: 10px; /* Padding around code block */
-        border-radius: 5px; /* Rounded corners */
-        overflow-x: auto; /* Enable horizontal scrollbar if code overflows */
-      }
-
-      code {
-        font-family: Consolas, monospace; /* Specify font family for code */
-        font-size: 14px; /* Specify font size for code */
-        color: #333; /* Text color */
-      }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css"
     />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css"/> -->
+    <style>
+      /* Custom styles for markdown content */
+      .markdown-body pre {
+        background-color: #f3f4f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+      }
+      .markdown-body code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875rem;
+        color: #1f2937;
+      }
+      .markdown-body {
+        max-width: none;
+      }
+    </style>
   </head>
-  <body>
-    <div id="left-section">
-      <h2>Markdown Files</h2>
+  <body class="flex h-screen bg-gray-50 font-sans">
+    <!-- Left Sidebar -->
+    <aside
+      id="left-section"
+      class="fixed top-0 bottom-0 left-0 w-64 bg-white border-r border-gray-200 shadow-sm overflow-y-auto z-10"
+    >
+      <div class="p-6 sticky top-0 bg-white border-b border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <span>📚</span>
+          <span>Markdown Files</span>
+        </h2>
+      </div>
 
-      <% const renderFileList = (fileList) => { %>
-      <ul>
-        <% fileList.forEach(file => { %>
-        <li>
-          <% if (file.fileType === 'directory') { %>
-          <span><%= file.name %></span>
-          <% if (file.children && file.children.length > 0) { %> <% renderFileList(file.children); %> <% } %> <% } else
-          { %>
-          <span <% if (file.selected) { %>
-            class="selected" <% } %> onclick="navigateTo('<%= encodeURIComponent(file.path) %>')"><%= file.name %></span
-          >
+      <div class="p-4">
+        <% const renderFileList = (fileList) => { %>
+        <ul class="space-y-2">
+          <% fileList.forEach(file => { %>
+          <li class="<%= file.fileType === 'directory' ? 'mt-4 first:mt-0' : '' %>">
+            <% if (file.fileType === 'directory') { %>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg font-semibold text-gray-700 flex items-center gap-2">
+                <span>📁</span>
+                <span><%= file.name %></span>
+              </span>
+            </div>
+            <% if (file.children && file.children.length > 0) { %>
+            <div class="ml-4 pl-3 border-l-2 border-gray-200">
+              <% renderFileList(file.children); %>
+            </div>
+            <% } %> <% } else { %>
+            <button
+              onclick="navigateTo('<%= encodeURIComponent(file.path) %>')"
+              class="<%= file.selected ? 'selected-file' : 'file-link' %> w-full text-left px-3 py-2 rounded-md transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+            >
+              <span class="flex items-center gap-2">
+                <span>📄</span>
+                <span class="break-words"><%= file.name %></span>
+              </span>
+            </button>
+            <% } %>
+          </li>
+          <% }); %>
+        </ul>
+        <% } %> <% renderFileList(fileList); %>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <main id="right-section" class="flex-1 ml-64 overflow-y-auto">
+      <div class="max-w-5xl mx-auto p-6">
+        <!-- Header with Navigation -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-1">
+                Selected file:
+                <span class="text-blue-600 font-normal">
+                  <% if (filename) { %> <%- filename %> <% } else { %>
+                  <span class="text-gray-400 italic">None</span>
+                  <% } %>
+                </span>
+              </h3>
+            </div>
+            <div class="flex gap-2">
+              <button
+                onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev', '<%= contentDetailsNavigationAPIUri %>')"
+                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                <%= !filename ? 'disabled' : '' %>
+              >
+                <span>←</span>
+                <span>Previous</span>
+              </button>
+              <button
+                onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next', '<%= contentDetailsNavigationAPIUri %>')"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                <%= !filename ? 'disabled' : '' %>
+              >
+                <span>Next</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <% if (htmlContent) { %>
+          <div class="markdown-body prose prose-lg max-w-none">
+            <%- htmlContent %>
+          </div>
+          <% } else if (filename) { %>
+          <div class="text-center py-12">
+            <div class="text-6xl mb-4">📭</div>
+            <p class="text-xl text-gray-600 font-medium">No content available!</p>
+            <p class="text-gray-500 mt-2">The file exists but has no content to display.</p>
+          </div>
+          <% } else { %>
+          <div class="text-center py-16">
+            <div class="text-6xl mb-4">👈</div>
+            <p class="text-xl text-gray-600 font-medium mb-2">
+              Welcome to Content Details Viewer
+            </p>
+            <p class="text-gray-500">
+              Select a file from the left menu to render its content here.
+            </p>
+          </div>
           <% } %>
-        </li>
-        <% }); %>
-      </ul>
-      <% } %> <% renderFileList(fileList); %>
-    </div>
-    <div id="right-section">
-      <div>
-        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev')">Previous</button>
-        <button onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next')">Next</button>
+        </div>
+
+        <!-- Bottom Navigation (duplicate for convenience) -->
+        <% if (filename) { %>
+        <div class="mt-6 flex justify-center gap-4">
+          <button
+            onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev', '<%= contentDetailsNavigationAPIUri %>')"
+            class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
+          >
+            <span>←</span>
+            <span>Previous File</span>
+          </button>
+          <button
+            onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next', '<%= contentDetailsNavigationAPIUri %>')"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-sm"
+          >
+            <span>Next File</span>
+            <span>→</span>
+          </button>
+        </div>
+        <% } %>
       </div>
-
-      <h3>Selected file: <% if (filename) { %> <%- filename %> <% } else { %> None <% } %></h3>
-
-      <% if (htmlContent) { %> <%- htmlContent %> <% } else if (filename) { %>
-      <p>No content!</p>
-      <% } else { %>
-      <p>Select a file from the left menu to render its content here.</p>
-      <% } %>
-
-      <div>
-        <button
-          onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'prev', '<%= contentDetailsNavigationAPIUri %>')"
-        >
-          Previous
-        </button>
-        <button
-          onclick="navigateTo('<%= encodeURIComponent(filename) %>', 'next', '<%= contentDetailsNavigationAPIUri %>')"
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    </main>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const selectedElement = document.querySelector(".selected");
+        const selectedElement = document.querySelector(".selected-file");
         if (selectedElement) {
           selectedElement.scrollIntoView({
             behavior: "smooth",
@@ -139,5 +181,24 @@
         window.location.href = fileUrl;
       }
     </script>
+    <style>
+      /* Selected file styling */
+      .selected-file {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        font-weight: 600;
+        border-left: 4px solid #2563eb;
+      }
+      .selected-file:hover {
+        background-color: #dbeafe;
+      }
+      .file-link {
+        color: #374151;
+      }
+      .file-link:hover {
+        color: #2563eb;
+        font-weight: 500;
+      }
+    </style>
   </body>
 </html>

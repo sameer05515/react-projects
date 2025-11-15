@@ -24,7 +24,7 @@ const ViewQuestionDetailsRouterPage = () => {
       dispatch(setSelectedTreeNodeUID(qid));
       dispatch(setSelectedQuestionUID(qid));
     }
-  }, [qid]);
+  }, [qid, refetch, dispatch]);
 
   const { prevTreeNode, nextTreeNode } = useInterviewMgmt();
 

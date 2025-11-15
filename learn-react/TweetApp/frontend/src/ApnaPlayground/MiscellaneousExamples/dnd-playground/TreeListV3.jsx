@@ -78,20 +78,6 @@ const TreeListV3 = () => {
   );
   const [draggedNode, setDraggedNode] = useState(null);
 
-  // Find a node by uniqueId
-  const findNodeById = (nodes, id) => {
-    for (const node of nodes) {
-      if (node.uniqueId === id) {
-        return node;
-      }
-      if (node.children) {
-        const found = findNodeById(node.children, id);
-        if (found) return found;
-      }
-    }
-    return null;
-  };
-
   // Remove a node by uniqueId
   const removeNodeById = (nodes, id) => {
     return nodes.filter((node) => {

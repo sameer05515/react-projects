@@ -41,9 +41,13 @@ export const useDataFetching = (
     // 1. Force fetch is requested, OR
     // 2. No data exists and not currently loading, OR
     // 3. Previous fetch failed
-    const shouldFetch = forceFetch || 
-                       (!hasData && !loading && state.status !== 'loading' && state.loading !== 'pending') ||
-                       (error && !loading);
+    const shouldFetch =
+      forceFetch ||
+      (!hasData &&
+        !loading &&
+        state.status !== "loading" &&
+        state.loading !== "pending") ||
+      (error && !loading);
 
     if (shouldFetch) {
       dispatch(fetchAction());
@@ -57,7 +61,7 @@ export const useDataFetching = (
     error,
     state.status,
     state.loading,
-    ...dependencies
+    dependencies,
   ]);
 
   const refetch = () => {

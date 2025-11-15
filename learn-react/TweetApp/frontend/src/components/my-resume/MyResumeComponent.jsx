@@ -11,10 +11,10 @@ const MyResumeComponent = ({ uniqueId }) => {
   const error = useSelector((state) => state.myResume.error);
 
   useEffect(() => {
-    // if (status === 'idle') {
+    if (uniqueId) {
       dispatch(fetchMyResumeData(uniqueId));
-    // }
-  }, [dispatch]);
+    }
+  }, [dispatch, uniqueId]);
 
   if (status === 'loading') {
     return <div>Loading...</div>;

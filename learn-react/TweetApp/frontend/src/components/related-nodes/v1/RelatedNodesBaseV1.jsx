@@ -16,7 +16,7 @@ const RelatedNodesBaseV1 = () => {
 
   useEffect(() => {
     refreshNodes();
-  }, []); // refreshNodes is stable from context
+  }, [refreshNodes]);
 
   const nodeOptions = useMemo(
     () => allNodes?.map((node) => ({ label: node.name, value: node.uniqueId })) || [],

@@ -14,7 +14,7 @@ import "../../common/styles/calendar-with-events.css";
 
 const Calendar = () => {
   const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState([
+  const [events] = useState([
     { date: new Date(2023, 8, 10), title: "Meeting" },
     { date: new Date(2023, 8, 15), title: "Appointment" },
     { date: new Date(2023, 8, 25), title: "Event" },

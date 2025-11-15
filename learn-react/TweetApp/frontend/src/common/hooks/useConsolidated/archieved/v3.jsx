@@ -185,8 +185,11 @@ export const apiRequestWithRetry = async (
         throw error;
       }
       attempts++;
+      const delayMultiplier = attempts;
       // Optionally implement a delay here for exponential backoff
-      await new Promise((resolve) => setTimeout(resolve, 1000 * attempts)); 
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000 * delayMultiplier)
+      ); 
     }
   }
   return result;

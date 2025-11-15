@@ -73,37 +73,6 @@ const TaskTreeViewDashboard = () => {
     navigate(`${selectedItem.uniqueId}`);
   };
 
-  const getTasksJSX = (tasksList) => {
-    return (
-      <>
-        {tasksList && tasksList.length > 0 && (
-          <ul>
-            {tasksList.map((t) => (
-              <li key={t.uniqueId}>
-                <span
-                  ref={
-                    selectedTaskUniqueId === t.uniqueId
-                      ? selectedElementRef
-                      : null
-                  }
-                  className={`text-xs cursor-pointer ${
-                    selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId
-                      ? "font-bold text-green-600"
-                      : ""
-                  }`}
-                  onClick={() => handleLinkSelection(t)}
-                >
-                  {t.name}
-                </span>
-                {getTasksJSX(t.children)}
-              </li>
-            ))}
-          </ul>
-        )}
-      </>
-    );
-  };
-
   if (status === "loading") {
     return <div>Loading...</div>;
   }

@@ -24,7 +24,7 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
   const [selectedTask, setSelectedTask] = useState(null);
 
   // Use combined selector for tasks, status, and error
-  const { tasks: tasksTree, status, error } = useSelector(selectTasksStateCombined);
+  const { status, error } = useSelector(selectTasksStateCombined);
   const tasks = useSelector(selectAllFlatTasks);
 
   if (status === "loading") {

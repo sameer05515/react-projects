@@ -29,14 +29,15 @@ const buildTitleWithAncestors = (node, idField) => {
   if (!node) {
     return "";
   }
-  let ancestorNames = [];
+  const ancestorNames = [];
   let currentAncestor =
     node.ancestors?.find((ancestor) => !ancestor.parentId) || null;
   while (currentAncestor) {
     ancestorNames.push(currentAncestor.name);
-    currentAncestor = node.ancestors.find(
-      (ancestor) => ancestor.parentId === currentAncestor[idField]
-    );
+    const currentId = currentAncestor[idField];
+    currentAncestor =
+      node.ancestors.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
   ancestorNames.push(node.name);
   return ancestorNames.join(" / ");

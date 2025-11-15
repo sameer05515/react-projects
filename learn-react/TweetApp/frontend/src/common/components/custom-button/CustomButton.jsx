@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import IconComponent from "../icon-component/IconComponent";
 
 const CustomButton = ({

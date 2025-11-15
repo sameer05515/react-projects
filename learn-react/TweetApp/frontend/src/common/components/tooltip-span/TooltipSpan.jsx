@@ -13,6 +13,8 @@ const TooltipSpan = ({ text, maxCharLength = 15, isHoverable = true }) => {
         case "MouseLeave":
           setIsHovered(false);
           return;
+        default:
+          return;
       }
     }
   };

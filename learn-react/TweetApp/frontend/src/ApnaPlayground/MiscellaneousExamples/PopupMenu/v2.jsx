@@ -1,33 +1,23 @@
-import React, { useState } from "react";
-import { styles } from "../styles";
+import React from "react";
 
-// PopupMenuV2 Component
 const PopupMenuV2 = ({ position, popupOptions, onOptionSelect }) => {
-    return (
-        <div
-            style={{
-                ...styles.popupMenu,
-                top: position.y,
-                left: position.x,
-            }}
+  return (
+    <div
+      className="absolute z-50 min-w-[180px] rounded-2xl border border-gray-200 bg-white p-2 shadow-2xl ring-1 ring-black/5"
+      style={{ top: position.y, left: position.x }}
+    >
+      {popupOptions.map((option) => (
+        <button
+          key={option.title}
+          type="button"
+          className="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-800 transition hover:bg-gray-100"
+          onClick={() => onOptionSelect(option.title)}
         >
-            {popupOptions.map((option, index) => (
-                <div
-                    key={index}
-                    onClick={() => onOptionSelect(option.title)}
-                    style={styles.popupOption}
-                    onMouseOver={(e) =>
-                        (e.currentTarget.style.backgroundColor = "#f0f0f0")
-                    }
-                    onMouseOut={(e) =>
-                        (e.currentTarget.style.backgroundColor = "transparent")
-                    }
-                >
-                    {option.title}
-                </div>
-            ))}
-        </div>
-    );
+          {option.title}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default PopupMenuV2;

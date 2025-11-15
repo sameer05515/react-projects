@@ -1,61 +1,23 @@
-import React from 'react';
+import React from "react";
 
-const styles={
-    "birdListContainer": {
-      "display": "flex"
-    },
-    "birdListSidebar": {
-      "padding": "20px",
-      "width": "200px",
-      "borderRight": "1px solid #ccc"
-    },
-    "birdListHeader": {
-      "margin": "0"
-    },
-    "birdList": {
-      "listStyleType": "none",
-      "padding": "0"
-    },
-    "birdListItem": {
-      "padding": "5px 0",
-      "cursor": "pointer"
-    },
-    "popupMenu": {
-      "position": "absolute",
-      "backgroundColor": "#fff",
-      "border": "1px solid #ccc",
-      "borderRadius": "5px",
-      "boxShadow": "0px 0px 10px rgba(0, 0, 0, 0.1)",
-      "zIndex": 1000,
-      "padding": "10px"
-    },
-    "popupOption": {
-      "padding": "5px",
-      "cursor": "pointer"
-    }
-  };
-  
-
-const PopupMenu = ({ position, onOptionSelect }) => {
-    return (
-        <div
-            style={{
-                ...styles.popupMenu,
-                top: position.y,
-                left: position.x
-            }}
+const PopupMenuV1 = ({ position, onOptionSelect }) => {
+  return (
+    <div
+      className="absolute z-50 min-w-[160px] rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
+      style={{ top: position.y, left: position.x }}
+    >
+      {["Edit", "Delete", "Rename"].map((option) => (
+        <button
+          key={option}
+          type="button"
+          className="flex w-full items-center rounded-lg px-3 py-2 text-sm text-gray-800 transition hover:bg-gray-100"
+          onClick={() => onOptionSelect(option)}
         >
-            <div onClick={() => onOptionSelect('Edit')} style={styles.popupOption}>
-                Edit
-            </div>
-            <div onClick={() => onOptionSelect('Delete')} style={styles.popupOption}>
-                Delete
-            </div>
-            <div onClick={() => onOptionSelect('Rename')} style={styles.popupOption}>
-                Rename
-            </div>
-        </div>
-    );
+          {option}
+        </button>
+      ))}
+    </div>
+  );
 };
 
-export default PopupMenu;
+export default PopupMenuV1;

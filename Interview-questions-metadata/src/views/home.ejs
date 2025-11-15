@@ -20,17 +20,40 @@
         .content {
             display: none;
         }
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        h5 {
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h2 class="mb-4">📚💡 <strong>Interview Questions Metadata</strong></h2>
-        <p>
-            I built <strong>Interview Questions Metadata</strong>, a full-stack application designed to render Markdown files efficiently.
-            <br/>
-            <a href="/v1/pages/admin/content-details/itr1">/v1/pages/admin/content-details/itr1</a>
+        <p class="mb-4">
+            A full-stack application designed to organize, manage, and serve interview questions and technical documentation stored as Markdown files.
         </p>
+
+        <div class="mb-4">
+            <h5>🔗 <strong>Quick Links:</strong></h5>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <a href="/v1/pages/admin/content-details/itr1" class="btn btn-outline-primary btn-sm">
+                    📄 Content Browser (v1)
+                </a>
+                <a href="/api-docs" class="btn btn-outline-success btn-sm" target="_blank">
+                    📘 Swagger UI
+                </a>
+                <a href="/docs" class="btn btn-outline-info btn-sm" target="_blank">
+                    📗 Redocly Docs
+                </a>
+                <a href="/api-docs/swagger.json" class="btn btn-outline-secondary btn-sm" target="_blank">
+                    📋 OpenAPI JSON
+                </a>
+            </div>
+        </div>
 
         <button class="btn btn-primary btn-sm mb-3" onclick="toggleContent()">Read More</button>
 
@@ -38,8 +61,10 @@
             <h4>✅ <strong>Tech Stack:</strong></h4>
             <ul>
                 <li><strong>Frontend:</strong> EJS (Embedded JavaScript Templates)</li>
-                <li><strong>Backend:</strong> Express.js</li>
-                <li><strong>Testing:</strong> Jest</li>
+                <li><strong>Backend:</strong> Express.js, Node.js</li>
+                <li><strong>API Documentation:</strong> Swagger UI, Redocly (OpenAPI 3.0)</li>
+                <li><strong>Markdown Processing:</strong> Marked</li>
+                <li><strong>Testing:</strong> Jest, Supertest</li>
                 <li><strong>Data Fetching:</strong> Axios</li>
             </ul>
 
@@ -47,7 +72,16 @@
             <ul>
                 <li>Renders Markdown (<code>.md</code>) files placed in a <strong>base folder</strong> or any of its subdirectories.</li>
                 <li>Uses <strong>Express and EJS</strong> for a smooth rendering experience.</li>
-                <li>Working on an <strong>API to expose stored references</strong>, making it a centralized place for my static file references.</li>
+                <li><strong>RESTful API</strong> with slug-based content retrieval (v2).</li>
+                <li><strong>Interactive API Documentation</strong> with Swagger UI and Redocly.</li>
+                <li><strong>File tree navigation</strong> for easy browsing of content.</li>
+                <li>Centralized repository for interview questions across multiple topics (Java, React, AWS, Docker, etc.).</li>
+            </ul>
+
+            <h4>📚 <strong>API Versions:</strong></h4>
+            <ul>
+                <li><strong>v1:</strong> Page-based rendering with file tree navigation</li>
+                <li><strong>v2:</strong> JSON API with slug-based content access</li>
             </ul>
         </div>
     </div>

@@ -35,16 +35,6 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
     return <div>Error: {error}</div>;
   }
 
-  const containerStyle = {
-    display: "flex",
-  };
-
-  const taskListStyle = {
-    flex: "100%",
-    padding: "10px",
-    border: "1px solid #ccc",
-  };
-
   const openAddTaskModal = () => {
     setIsAddTaskModalOpen(true);
     setIsEditTaskModalOpen(false);
@@ -118,15 +108,22 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={taskListStyle}>
-        <CustomButton onClick={openAddTaskModal}>Add Task</CustomButton>
-        <TaskSearch tasks={tasks} />
-        <TaskList
-          tasks={tasks}
-          onEditTask={openEditTaskModal}
-          onViewTask={openViewTaskModal}
-        />
+    <div className="flex flex-col gap-6">
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap gap-3">
+          <CustomButton onClick={openAddTaskModal}>Add Task</CustomButton>
+          <CustomButton onClick={() => dispatch(fetchTasks())}>Refresh Tasks</CustomButton>
+        </div>
+        <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 p-4">
+          <TaskSearch tasks={tasks} />
+        </div>
+        <div className="mt-6">
+          <TaskList
+            tasks={tasks}
+            onEditTask={openEditTaskModal}
+            onViewTask={openViewTaskModal}
+          />
+        </div>
       </div>
 
       {isAddTaskModalOpen && (

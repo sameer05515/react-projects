@@ -58,6 +58,8 @@ const ListTags = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedElementRef = useRef(null);
+  const sidebarButtonClass =
+    "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
 
   // Fetch tags data only when component mounts (with smart caching)
   useDataFetching(
@@ -97,66 +99,43 @@ const ListTags = () => {
   }
 
   return (
-    <>
-      <div className="linksContainer">
-        <div className="left-section">
-          {/* <pre>{links && JSON.stringify(links)}</pre> */}
-          <div className="my-2.5">
-            <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
-              onClick={() => handleButtonClick("create")}
-            >
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="lg:w-72 lg:flex-shrink-0">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <CustomButton className={sidebarButtonClass} onClick={() => handleButtonClick("create")}>
               Create Tag
             </CustomButton>
-            <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
-              onClick={() => dispatch(fetchTags())}
-            >
+            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTags())}>
               Refresh
             </CustomButton>
-            <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
-              onClick={() => navigate(`/tags/search`)}
-            >
+            <CustomButton className={sidebarButtonClass} onClick={() => navigate(`/tags/search`)}>
               Search
             </CustomButton>
           </div>
-          {/* {getTagsJSX(tags)} */}
           <Tree
             data={tags}
             selectedNodeId={selectedTagUniqueId}
             renderNode={(tag) => (
-              <>
-                <span
-                  ref={
-                    selectedTagUniqueId === tag.uniqueId
-                      ? selectedElementRef
-                      : null
-                  }
-                  className={`text-xs cursor-pointer ${
-                    selectedTagUniqueId && selectedTagUniqueId === tag.uniqueId
-                      ? "font-bold text-green-600"
-                      : ""
-                  }`}
-                  onClick={() => handleLinkSelection(tag)}
-                >
-                  {tag.name}
-                  {/* <TooltipSpan maxCharLength={25} text={tag.name} /> */}
-                </span>
-              </>
+              <span
+                ref={selectedTagUniqueId === tag.uniqueId ? selectedElementRef : null}
+                className={`block cursor-pointer py-1 text-xs ${
+                  selectedTagUniqueId && selectedTagUniqueId === tag.uniqueId ? "font-semibold text-green-600" : "text-gray-700"
+                }`}
+                onClick={() => handleLinkSelection(tag)}
+              >
+                {tag.name}
+              </span>
             )}
           />
         </div>
-        {/* -- left-section */}
-
-        <div className="right-section">
-          <div>
-            <Outlet />
-          </div>
-        </div>
-        {/* -- right-section */}
       </div>
-    </>
+      <div className="flex-1">
+        <div className="min-h-[24rem] rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -376,14 +355,12 @@ const AddSubTagComp = () => {
     });
   };
 
-  const tagFormStyle = {};
-
   return (
     <>
       {/* {`Either create and add as subtag of ${id}`} <br />
             {`my selected tag : ${JSON.stringify(tag)}`} <br /> */}
       {/* {`my transformed formData : ${JSON.stringify(formData)}`} */}
-      <div>
+      <div className="mt-6 flex flex-wrap gap-3">
         <CustomButton onClick={handleCreateNewSubtag}>
           Create new Sub-Tag
         </CustomButton>
@@ -391,24 +368,25 @@ const AddSubTagComp = () => {
 
       {/* {`Or select existing subtags from list.`} */}
 
-      <div style={tagFormStyle}>
-        <div>
-          <label htmlFor="tags">Add Existing Tags:</label>
-          <Select
-            isMulti
-            name="tags"
-            options={tagOptions}
-            value={tagOptions.filter(
-              (t) =>
-                formData.children.includes(t.value) &&
-                t.value !== formData.uniqueId
-            )}
-            onChange={handleTaskSelect}
-          />
-        </div>
+      <div className="mt-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <label htmlFor="tags" className="mb-2 block text-sm font-medium text-gray-700">
+          Add Existing Tags
+        </label>
+        <Select
+          classNamePrefix="react-select"
+          isMulti
+          name="tags"
+          options={tagOptions}
+          value={tagOptions.filter(
+            (t) =>
+              formData.children.includes(t.value) &&
+              t.value !== formData.uniqueId
+          )}
+          onChange={handleTaskSelect}
+        />
       </div>
 
-      <div>
+      <div className="mt-6 flex flex-wrap gap-3">
         <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
         <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
       </div>
@@ -480,8 +458,6 @@ const MoveToAnotherTagParent = () => {
     navigate(-1);
   };
 
-  const tagFormStyle = {};
-
   const [selectedOption] = useState("");
 
   return (
@@ -495,21 +471,22 @@ const MoveToAnotherTagParent = () => {
 
       {/* {`Or select existing subtags from list.`} */}
 
-      <div style={tagFormStyle}>
-        <p>{tag?.title}</p>
-        <div>
-          <label htmlFor="tags">Add Existing Tags:</label>
-          <Select
-            name="tags"
-            options={tagOptions}
-            defaultValue={selectedOption}
-            // value={tagOptions.filter((t) => t.value === formData.uniqueId)}
-            onChange={handleTaskSelect}
-          />
-        </div>
+      <div className="mt-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <p className="text-sm font-medium text-gray-900">{tag?.title}</p>
+        <label htmlFor="tags" className="mt-4 mb-2 block text-sm font-medium text-gray-700">
+          Select New Parent
+        </label>
+        <Select
+          classNamePrefix="react-select"
+          name="tags"
+          options={tagOptions}
+          defaultValue={selectedOption}
+          // value={tagOptions.filter((t) => t.value === formData.uniqueId)}
+          onChange={handleTaskSelect}
+        />
       </div>
 
-      <div>
+      <div className="mt-6 flex flex-wrap gap-3">
         <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
         <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
       </div>

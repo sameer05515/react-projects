@@ -42,6 +42,8 @@ const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedElementRef = useRef(null);
+  const sidebarButtonClass =
+    "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
 
   // Fetch tasks data only when component mounts (with smart caching)
   useDataFetching(
@@ -111,60 +113,46 @@ const TaskTreeViewDashboard = () => {
   }
 
   return (
-    <>
-      <div className="linksContainer">
-        <div className="left-section">
-          {/* <pre>{links && JSON.stringify(links)}</pre> */}
-          <CustomButton onClick={() => handleButtonClick("create")}>
-            Create Task
-          </CustomButton>
-          <CustomButton onClick={() => dispatch(fetchTasks())}>
-            Refresh
-          </CustomButton>
-
-          {/* {getTasksJSX(tasks)} */}
-
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="lg:w-72 lg:flex-shrink-0">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <CustomButton className={sidebarButtonClass} onClick={() => handleButtonClick("create")}>
+              Create Task
+            </CustomButton>
+            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTasks())}>
+              Refresh
+            </CustomButton>
+          </div>
           <Tree
             data={tasks}
             selectedNodeId={selectedTaskUniqueId}
             renderNode={(t) => (
-              <>
-                <span
-                  ref={
-                    selectedTaskUniqueId === t.uniqueId
-                      ? selectedElementRef
-                      : null
-                  }
-                  className={`text-xs cursor-pointer ${
-                    selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId
-                      ? "font-bold text-red-600 text-sm"
-                      : ""
-                  }`}
-                  onClick={() => handleLinkSelection(t)}
-                >
-                  {/* {t.name} */}
-                  <SmartPreviewer
-                    data={{
-                      content: prepareTaskTitle(t, "TaskBase"),
-                      textOutputType: SupportedTextFormats.MARKDOWN,
-                    }}
-                    markdownStyles={{ fontSize: "12px" }}
-                  />
-                </span>
-              </>
+              <span
+                ref={selectedTaskUniqueId === t.uniqueId ? selectedElementRef : null}
+                className={`block cursor-pointer py-1 text-xs ${
+                  selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId ? "font-semibold text-red-600 text-sm" : "text-gray-700"
+                }`}
+                onClick={() => handleLinkSelection(t)}
+              >
+                <SmartPreviewer
+                  data={{
+                    content: prepareTaskTitle(t, "TaskBase"),
+                    textOutputType: SupportedTextFormats.MARKDOWN,
+                  }}
+                  markdownStyles={{ fontSize: "12px" }}
+                />
+              </span>
             )}
           />
         </div>
-        {/* -- left-section */}
-
-        <div className="right-section">
-          <div>
-            <Outlet />
-          </div>
-        </div>
-        {/* -- right-section */}
       </div>
-    </>
+      <div className="flex-1">
+        <div className="min-h-[24rem] rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };
 

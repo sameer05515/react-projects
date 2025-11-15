@@ -78,43 +78,37 @@ const AddSubTaskRouterPage = () => {
       });
     };
   
-    const taskFormStyle = {};
-  
     return (
-      <>
-        {/* {`Either create and add as subtask of ${id}`} <br />
-              {`my selected task : ${JSON.stringify(task)}`} <br />
-              {`my transformed formData : ${JSON.stringify(formData)}`} */}
+      <div className="space-y-6">
         <div>
           <CustomButton onClick={handleCreateNewSubtask}>
             Create new Subtask
           </CustomButton>
         </div>
-  
-        {/* {`Or select existing subtasks from list.`} */}
-  
-        <div style={taskFormStyle}>
-          <div>
-            <label htmlFor="tags">Add Existing Tasks:</label>
-            <Select
-              isMulti
-              name="tasks"
-              options={taskOptions}
-              value={taskOptions.filter(
-                (t) =>
-                  formData.children.includes(t.value) &&
-                  t.value !== formData.uniqueId
-              )}
-              onChange={handleTaskSelect}
-            />
-          </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <label className="mb-2 block text-sm font-medium text-gray-700" htmlFor="tasks">
+            Add Existing Tasks
+          </label>
+          <Select
+            classNamePrefix="react-select"
+            isMulti
+            name="tasks"
+            options={taskOptions}
+            value={taskOptions.filter(
+              (t) =>
+                formData.children.includes(t.value) &&
+                t.value !== formData.uniqueId
+            )}
+            onChange={handleTaskSelect}
+          />
         </div>
-  
-        <div>
+
+        <div className="flex flex-wrap gap-3">
           <CustomButton onClick={handleSaveTask}>Save</CustomButton>
           <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
         </div>
-      </>
+      </div>
     );
   };
 

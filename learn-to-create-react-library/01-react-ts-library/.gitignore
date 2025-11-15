@@ -27,3 +27,13 @@ dist-ssr
 dist/
 *.tsbuildinfo
 
+# Storybook
+storybook-static/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Vitest
+.vitest/
+

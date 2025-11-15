@@ -187,6 +187,59 @@ This will generate:
 npm run dev
 ```
 
+## Storybook
+
+This project includes Storybook for component development and documentation.
+
+### Start Storybook
+
+```bash
+npm run storybook
+```
+
+This will start Storybook on `http://localhost:6006` where you can:
+- View all component variants and states
+- Interact with components in isolation
+- See component documentation
+- Test different props and configurations
+
+### Build Storybook
+
+```bash
+npm run build-storybook
+```
+
+This generates a static Storybook build in the `storybook-static` directory.
+
+## Testing
+
+This project uses Vitest for unit testing.
+
+### Run Tests
+
+```bash
+# Run tests in watch mode
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Test Files
+
+- `lib/components/Button/Button.test.tsx` - Button component tests
+- `lib/components/Input/Input.test.tsx` - Input component tests
+
+Tests cover:
+- Component rendering
+- Prop handling
+- User interactions
+- Accessibility attributes
+- Error states
+
 ## Module Formats
 
 This library supports three module formats:

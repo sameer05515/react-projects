@@ -107,20 +107,39 @@
       </div>
 
       <div class="p-4">
-        <% const renderFileList = (fileList) => { %>
+        <% 
+        let directoryIndex = 0;
+        const renderFileList = (fileList, parentPath = '') => { 
+        %>
         <ul class="space-y-2">
-          <% fileList.forEach(file => { %>
+          <% fileList.forEach((file, index) => { %>
           <li class="<%= file.fileType === 'directory' ? 'mt-4 first:mt-0' : '' %>">
             <% if (file.fileType === 'directory') { %>
+            <% 
+              directoryIndex++;
+              const dirId = 'dir-' + (parentPath ? parentPath + '-' : '') + directoryIndex + '-' + index;
+              const hasChildren = file.children && file.children.length > 0;
+            %>
             <div class="flex items-center gap-2 mb-2">
-              <span class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                <span>📁</span>
-                <span><%= file.name %></span>
-              </span>
+              <button
+                onclick="toggleDirectory('<%= dirId %>')"
+                class="flex items-center gap-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-1 dark:focus:ring-offset-gray-800"
+                aria-expanded="true"
+                aria-controls="<%= dirId %>-content"
+              >
+                <span id="<%= dirId %>-icon" class="text-sm transition-transform duration-200 transform rotate-90">▶</span>
+                <span class="text-lg font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                  <span>📁</span>
+                  <span><%= file.name %></span>
+                </span>
+              </button>
             </div>
-            <% if (file.children && file.children.length > 0) { %>
-            <div class="ml-4 pl-3 border-l-2 border-gray-200 dark:border-gray-600">
-              <% renderFileList(file.children); %>
+            <% if (hasChildren) { %>
+            <div 
+              id="<%= dirId %>-content" 
+              class="ml-4 pl-3 border-l-2 border-gray-200 dark:border-gray-600 directory-content"
+            >
+              <% renderFileList(file.children, dirId); %>
             </div>
             <% } %> <% } else { %>
             <button
@@ -337,6 +356,31 @@
 
         window.location.href = fileUrl;
       }
+
+      // Toggle directory collapse/expand
+      function toggleDirectory(dirId) {
+        const content = document.getElementById(dirId + '-content');
+        const icon = document.getElementById(dirId + '-icon');
+        const button = icon?.closest('button');
+        
+        if (!content || !icon) return;
+        
+        const isExpanded = content.style.display !== 'none';
+        
+        if (isExpanded) {
+          // Collapse
+          content.style.display = 'none';
+          icon.classList.remove('rotate-90');
+          icon.classList.add('rotate-0');
+          if (button) button.setAttribute('aria-expanded', 'false');
+        } else {
+          // Expand
+          content.style.display = 'block';
+          icon.classList.remove('rotate-0');
+          icon.classList.add('rotate-90');
+          if (button) button.setAttribute('aria-expanded', 'true');
+        }
+      }
     </script>
     <style>
       /* Selected file styling */
@@ -369,6 +413,29 @@
       }
       .dark .file-link:hover {
         color: #60a5fa;
+      }
+      /* Directory toggle icon styling */
+      #left-section button[aria-expanded] {
+        cursor: pointer;
+      }
+      #left-section button[aria-expanded] span:first-child {
+        display: inline-block;
+        width: 12px;
+        text-align: center;
+        color: #6b7280;
+      }
+      .dark #left-section button[aria-expanded] span:first-child {
+        color: #9ca3af;
+      }
+      #left-section button[aria-expanded]:hover span:first-child {
+        color: #2563eb;
+      }
+      .dark #left-section button[aria-expanded]:hover span:first-child {
+        color: #60a5fa;
+      }
+      /* Smooth transition for directory content */
+      .directory-content {
+        transition: opacity 0.2s ease-in-out;
       }
     </style>
     <!-- Prism.js JavaScript for syntax highlighting -->

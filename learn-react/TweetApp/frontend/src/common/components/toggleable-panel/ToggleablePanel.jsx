@@ -5,7 +5,8 @@ const ToggleablePanel = ({
   title = "",
   children,
   showContent: initialValueToShowMetadata = false,
-  panelContainerStyle = {},
+  className = "",
+  contentClassName = "",
 }) => {
   const [showMetadata, setShowMetadata] = useState(initialValueToShowMetadata);
   useEffect(() => {
@@ -14,16 +15,18 @@ const ToggleablePanel = ({
 
   const toggleMetadataVisibility = () => setShowMetadata((prev) => !prev);
   return (
-    <div style={panelContainerStyle} className="mb-4">
-      <ToggleableIcon
-        isContentVisible={showMetadata}
-        onToggle={toggleMetadataVisibility}
-        additionalStyleForIcon={{ fontWeight: "bold" }}
-      />
-      <span className="font-bold">{title}</span>
+    <div className={`mb-4 rounded border border-gray-200 bg-white p-3 shadow-sm ${className}`}>
+      <div className="mb-2 flex items-center gap-2">
+        <ToggleableIcon
+          isContentVisible={showMetadata}
+          onToggle={toggleMetadataVisibility}
+          iconClassName="font-bold"
+        />
+        <span className="font-bold text-gray-900">{title}</span>
+      </div>
 
       {showMetadata && children && (
-        <div className="max-w-[90vw] overflow-auto p-2.5 gap-2.5 border border-gray-300 rounded-md bg-gray-50 my-5 mx-1.5">
+        <div className={`my-4 max-w-[90vw] gap-2.5 overflow-auto rounded-md border border-gray-100 bg-gray-50 p-4 ${contentClassName}`}>
           {children}
         </div>
       )}

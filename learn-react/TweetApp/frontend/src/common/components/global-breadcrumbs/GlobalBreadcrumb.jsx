@@ -28,63 +28,29 @@ const Breadcrumbs = ({
     }, [providedAncestors, providedItemType]);
 
     return (
-        <div>
-            <div style={breadcrumbStyle.breadcrumbsContainer}>
-                <HoverableSpan
-                    style={breadcrumbStyle.breadcrumbItem}
-                    isHoverable={false}
-                >
+        <div className="mb-5 px-2">
+            <div className="flex flex-wrap items-center gap-1 text-sm text-gray-700">
+                <HoverableSpan className="cursor-default bg-transparent px-0 py-0 text-gray-500" isHoverable={false}>
                     <i>Home / </i>
                 </HoverableSpan>
-                <HoverableSpan
-                    style={{ ...breadcrumbStyle.breadcrumbItem, cursor: "pointer" }}
-                    onClick={() => onBaseSpanClick()}
-                >
+                <HoverableSpan className="bg-transparent px-0 py-0 text-blue-600 hover:text-blue-800" onClick={() => onBaseSpanClick()}>
                     <i>{baseSpanText} / </i>
                 </HoverableSpan>
                 {ancestors.map((ancestor, index) => (
                     <HoverableSpan
-                        style={{ ...breadcrumbStyle.breadcrumbItem, cursor: "pointer" }}
+                        className="bg-transparent px-0 py-0 text-blue-600 hover:text-blue-800"
                         key={index}
                         onClick={() => onAncestorClick(ancestor)}
                     >
                         <i>{ancestor.name} / </i>
                     </HoverableSpan>
                 ))}
-                <HoverableSpan
-                    style={breadcrumbStyle.breadcrumbItem}
-                    isSelected
-                    isHoverable={false}
-                >
+                <HoverableSpan className="bg-transparent px-0 py-0 text-gray-900" isSelected isHoverable={false}>
                     <>{providedItem?.name}</>
                 </HoverableSpan>
             </div>
         </div>
     );
-};
-
-const breadcrumbStyle = {
-    breadcrumbsContainer: {
-        marginBottom: "20px",
-        padding: "0 .5rem",
-    },
-    breadcrumbList: {
-        listStyleType: "none",
-        padding: "0",
-        margin: "0",
-    },
-    breadcrumbItem: {
-        display: "inline-block",
-        marginRight: "5px",
-        fontSize: "12px"
-    },
-    breadcrumbLink: {
-        color: "#007bff",
-        textDecoration: "none",
-    },
-    breadcrumbLinkHover: {
-        textDecoration: "underline",
-    },
 };
 
 export default Breadcrumbs;

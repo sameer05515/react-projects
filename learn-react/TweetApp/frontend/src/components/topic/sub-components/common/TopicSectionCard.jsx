@@ -82,7 +82,7 @@ const TopicSectionCard = ({
         {/* Tag List */}
         {filteredTags.length > 0 && (
           <ToggleablePanel
-            panelContainerStyle={{ backgroundColor: "lemonchiffon", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }}
+            className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
             title="Tags:"
             showContent={true}
           >

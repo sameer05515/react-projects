@@ -1,41 +1,6 @@
 import React, { useState } from "react";
 // import './TooltipSpan.css'
 
-const styles = {
-  tooltipContainer: {
-    position: "relative",
-    display: "inline-block",
-  },
-  tooltipText: {
-    // visibility: 'hidden',
-    width: "120px",
-    backgroundColor: "#555",
-    color: "#fff",
-    textAlign: "center",
-    borderRadius: "6px",
-    padding: "5px 0",
-    position: "absolute",
-    zIndex: 1,
-    bottom: "100%",
-    left: "50%",
-    marginLeft: "-60px",
-    // opacity: 0,
-    transition: "opacity 0.3s",
-  },
-  tooltipContainerHover: {
-    visibility: "visible",
-    opacity: 1,
-  },
-  text: {
-    display: "inline-block",
-    maxWidth: "150px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    verticalAlign: "bottom",
-  },
-};
-
 const TooltipSpan = ({ text, maxCharLength = 15, isHoverable = true }) => {
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseActivities = (activityType) => {
@@ -53,17 +18,19 @@ const TooltipSpan = ({ text, maxCharLength = 15, isHoverable = true }) => {
   };
   return (
     <span
-      style={styles.tooltipContainer}
+      className="relative inline-block"
       onMouseEnter={() => handleMouseActivities("MouseEnter")}
       onMouseLeave={() => handleMouseActivities("MouseLeave")}
     >
-      <span style={styles.text}>
+      <span className="inline-block max-w-[150px] truncate align-bottom text-gray-800">
         {text.length > maxCharLength
           ? `${text.substring(0, maxCharLength)}...`
           : text}
       </span>
       {isHovered && text.length > maxCharLength && (
-        <span style={styles.tooltipText}>{text}</span>
+        <span className="absolute left-1/2 top-0 mb-2 w-40 -translate-x-1/2 -translate-y-full rounded-md bg-gray-900 px-2 py-1 text-center text-xs text-white shadow-lg">
+          {text}
+        </span>
       )}
     </span>
   );

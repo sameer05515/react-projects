@@ -12,8 +12,8 @@ const ToggleableIcon = React.memo(
         isContentVisible = false,
         onToggle,
         toggleSymbols,
-        additionalStyleForIcon = {},
-        additionalStyleForContainer = {},
+        className = "",
+        iconClassName = "",
     }) => {
         const handleToggle = () => onToggle && onToggle();
         const icon = isContentVisible
@@ -22,28 +22,16 @@ const ToggleableIcon = React.memo(
         const title = isContentVisible ? `Hide ${label}` : `Show ${label}`;
 
         return (
-            <span
+            <button
+                type="button"
                 title={title}
-                style={{ ...styles.iconContainer, ...additionalStyleForContainer }}
                 onClick={handleToggle}
+                className={`mr-2 inline-flex items-center justify-center rounded border border-transparent text-xs font-semibold text-gray-700 transition hover:text-gray-900 focus:outline-none ${className}`}
             >
-                <span style={{ ...styles.icon, ...additionalStyleForIcon }}>
-                    {icon}
-                </span>
-            </span>
+                <span className={`px-1 ${iconClassName}`}>{icon}</span>
+            </button>
         );
     }
 );
-
-const styles = {
-    iconContainer: {
-        marginRight: "10px",
-        fontSize: "12px",
-        cursor: "pointer",
-    },
-    icon: {
-        margin: "3px",
-    },
-};
 
 export default ToggleableIcon;

@@ -137,8 +137,13 @@ export const NodeItemForm = ({
                                     {`uniqueId: ${uniqueId}, name: ${name}, direction-type: ${type}`}
                                 </div>
                                 <div className="w-[5%] border border-gray-600 rounded flex justify-center items-center">
-                                    <FloatingButton floatingChildrenStyle={{ width: "50px", height: "80px" }} showButtonText={false} buttonText={"Actions"} iconName={"FaSettings"}>
-                                    </FloatingButton>
+                                    <FloatingButton
+                                        panelClassName="h-20 w-12"
+                                        buttonClassName="bg-gray-200 border border-gray-400 text-[10px] px-1 py-0.5"
+                                        showButtonText={false}
+                                        buttonText={"Actions"}
+                                        iconName={"FaSettings"}
+                                    />
                                 </div>
                             </div>
                         ))}

@@ -20,7 +20,7 @@ const RatingComponent = ({
   };
 
   return (
-    <span>
+    <div className="inline-flex items-center gap-1 text-sm text-gray-800">
       {[...Array(ratingScale)].map((_, index) => {
         const starValue = index + 1;
         return (
@@ -30,17 +30,17 @@ const RatingComponent = ({
             className={`p-0 ${editable ? "cursor-pointer" : ""}`}
           >
             {starValue <= rating ? (
-              <StarIcon style={{ color: "gold" }} />
+              <StarIcon className="text-yellow-400" fontSize="small" />
             ) : (
-              <StarBorderIcon style={{ color: "gold" }} />
+              <StarBorderIcon className="text-yellow-400" fontSize="small" />
             )}
           </span>
         );
-      })}{" "}
-      <span className="pl-0.5 font-bold">       
+      })}
+      <span className="font-semibold text-gray-900">
         {rating}/{ratingScale}
       </span>
-    </span>
+    </div>
   );
 };
 

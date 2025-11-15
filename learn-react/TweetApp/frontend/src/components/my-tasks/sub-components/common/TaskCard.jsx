@@ -117,7 +117,7 @@ const TaskButtons = ({
       </CustomButton>
 
       <FloatingButton
-        buttonStyle={{ backgroundColor: "#ccc", border: "1px solid #999", padding: "2px 5px", fontSize: "12px", borderRadius: "4px" }}
+        buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
         buttonText={"Show Pinned Tasks"}
       >
         <div className="p-2.5">

@@ -5,7 +5,8 @@ const HoverableSpan = ({
   isSelected = false,
   isHoverable = true,
   style = {},
-  onClick = () => { },
+  className = "",
+  onClick = () => {},
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -32,9 +33,13 @@ const HoverableSpan = ({
     return isSelected ? "bg-teal-200" : "bg-gray-200";
   };
 
+  const baseClasses = `inline-block rounded px-2 py-1 text-xs transition-colors duration-200 ${isHoverable ? "cursor-pointer" : ""}`;
+
   return (
     <span
-      className={`inline-block ${getBackgroundColor()} ${isSelected ? "text-blue-600" : "text-black"} ${isHoverable ? "cursor-pointer" : ""} transition-colors duration-300`}
+      className={`${baseClasses} ${getBackgroundColor()} ${
+        isSelected ? "text-blue-700" : "text-gray-900"
+      } ${className}`}
       style={style}
       onMouseEnter={() => handleMouseActivities("MouseEnter")}
       onMouseLeave={() => handleMouseActivities("MouseLeave")}

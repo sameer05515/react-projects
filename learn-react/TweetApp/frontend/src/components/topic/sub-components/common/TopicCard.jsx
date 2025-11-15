@@ -188,7 +188,10 @@ const TopicCard = ({
           )}
         />
 
-        <FloatingButton buttonStyle={{ backgroundColor: "#ccc", border: "1px solid #999", padding: "2px 5px", fontSize: "12px", borderRadius: "4px", marginRight: "10px" }} buttonText={"Show Pinned Topics"}>
+        <FloatingButton
+          buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
+          buttonText={"Show Pinned Topics"}
+        >
           <ListSection
             title="List of all pinned Topics:-"
             errorMessage=""
@@ -201,7 +204,10 @@ const TopicCard = ({
           />
         </FloatingButton>
 
-        <FloatingButton buttonStyle={{ backgroundColor: "#ccc", border: "1px solid #999", padding: "2px 5px", fontSize: "12px", borderRadius: "4px", marginRight: "10px" }} buttonText={"?"}>
+        <FloatingButton
+          buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
+          buttonText={"?"}
+        >
           <div className="p-2.5">
             If this <b>{`${topic.name}`}</b> is a topic, It should answer below questions
           </div>
@@ -210,7 +216,11 @@ const TopicCard = ({
         <br />
       </div>
 
-      <ToggleablePanel panelContainerStyle={{ backgroundColor: "lightgoldenrodyellow", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
+      <ToggleablePanel
+        className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
+        showContent={topic?.sections?.length > 0}
+        title={`Sections [${topic?.sections?.length || 0}]:-`}
+      >
         <ListSection
           title=""
           errorMessage="No Sections Added Yet!!"
@@ -223,7 +233,11 @@ const TopicCard = ({
         />
       </ToggleablePanel>
 
-      <ToggleablePanel showContent={topic?.children?.length > 0} title={`Child Topics [${topic?.children?.length || 0}]:-`} panelContainerStyle={{ backgroundColor: "lightgoldenrodyellow", border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }}>
+      <ToggleablePanel
+        className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
+        showContent={topic?.children?.length > 0}
+        title={`Child Topics [${topic?.children?.length || 0}]:-`}
+      >
         <Tree
           data={topic.children}
           errorMessageOnNoData="No Child Topic Added Yet!!"
@@ -238,15 +252,7 @@ const TopicCard = ({
       <ToggleablePanel
         showContent={showDescr}
         title={`${topic.smartContent ? "Smart" : "Raw"} Description:-`}
-        panelContainerStyle={{
-          border: "1px solid #999",
-          padding: "2px 5px",
-          borderRadius: "4px",
-          marginBottom: "10px",
-          width: "67vw",
-          overflow: "auto",
-        }}
-        className="border border-gray-600 p-1 rounded mb-2.5 overflow-auto"
+        className="mb-2.5 w-[67vw] overflow-auto rounded border border-gray-600 p-1"
       >
         {topic.description && !topic.smartContent && (
           // ReactHtmlParser(topic.description || "")
@@ -256,7 +262,11 @@ const TopicCard = ({
       </ToggleablePanel>
 
       {topicSections && topicSections.length > 0 ? (
-        <ToggleablePanel panelContainerStyle={{ border: "1px solid #999", padding: "2px 5px", borderRadius: "4px", marginBottom: "10px" }} showContent={topic?.sections?.length > 0} title={`Sections [${topic?.sections?.length || 0}]:-`}>
+        <ToggleablePanel
+          className="mb-2.5 rounded border border-gray-300 px-1.5 py-1"
+          showContent={topic?.sections?.length > 0}
+          title={`Sections [${topic?.sections?.length || 0}]:-`}
+        >
           <ListSection
             title=""
             errorMessage=""

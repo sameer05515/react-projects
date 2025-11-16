@@ -1,5 +1,4 @@
 // import { isNonEmptyArray } from '../../util/utils';
-import classes from "./Card.module.css";
 
 const isNonEmptyArray = (input /**: unknown*/) => {
   return input !== null && Array.isArray(input) && input.length > 0;
@@ -8,15 +7,15 @@ const isNonEmptyArray = (input /**: unknown*/) => {
 const ListSection = /**<T,>*/ (
   { title = "", items, renderItem, errorMessage } /**: ListSectionProps<T>*/
 ) => (
-  <div className="border border-gray-300 p-2.5 mb-2.5 rounded">
+  <div className="mb-2.5 rounded border border-gray-300 p-2.5">
     {title && title.trim().length > 0 && (
-      <div className={classes["card-header"]}>
-        <span className="font-bold">{title}</span>
+      <div className="rounded-t bg-green-600 pl-5 font-bold text-white">
+        <span className="inline-block py-2">{title}</span>
       </div>
     )}
 
-    <div className={classes["card-body"]}>
-      <div className={classes["card-field"]}>
+    <div className="p-1.5 text-black">
+      <div className="mb-1.5">
         {items && isNonEmptyArray(items) ? (
           items.map(renderItem)
         ) : (

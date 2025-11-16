@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import styles from "./LoaderWithTitle.module.css";
 
 export const LoaderStates = {
   spinner: "spinner",
@@ -34,7 +33,7 @@ const getValidState = (state) =>
 const getClassAndTitleFromGivenState = (state, title) => {
   const validState = getValidState(state);
   return {
-    stateClass: styles[validState] || "", // Fallback to empty string if style is missing
+    stateClass: validState,
     displayTitle: title || defaultMessages[validState],
   };
 };
@@ -49,10 +48,38 @@ const LoaderWithTitle = ({
     [state, title]
   );
 
+  const spinnerColor =
+    stateClass === LoaderStates.error
+      ? "text-red-500"
+      : stateClass === LoaderStates.warning
+      ? "text-yellow-500"
+      : stateClass === LoaderStates.success
+      ? "text-green-500"
+      : "text-blue-500";
+
   return (
-    <div className={styles.loaderContainer}>
-      <div className={stateClass}></div>
-      <div className={styles.title}>{displayTitle}</div>
+    <div className="flex flex-col items-center justify-center bg-gray-100 p-4">
+      <svg
+        className={`h-10 w-10 animate-spin ${spinnerColor}`}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+      <div className="mt-4 text-base text-gray-800">{displayTitle}</div>
     </div>
   );
 };

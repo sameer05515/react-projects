@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
-const RatingComponent = ({
+interface RatingComponentProps {
+  rating?: number;
+  ratingScale?: number;
+  editable?: boolean;
+  onEdit?: (value: number) => void;
+}
+
+const RatingComponent: React.FC<RatingComponentProps> = ({
   rating: userRating,
   ratingScale = 10,
   editable = false,
-  onEdit = () => { },
+  onEdit = () => {},
 }) => {
-  const [rating, setRating] = useState(userRating || 0);
+  const [rating, setRating] = useState<number>(userRating || 0);
 
-  const handleRating = (value) => {
+  const handleRating = (value: number) => {
     if (editable) {
       setRating(value);
       onEdit(value);

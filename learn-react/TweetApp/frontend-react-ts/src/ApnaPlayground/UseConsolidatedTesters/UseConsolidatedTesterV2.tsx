@@ -6,10 +6,11 @@ import {
 } from "../../redux/slices/backdropSlice";
 import CustomBackdrop from "../../common/components/CustomBackdrop/v2";
 import useConsolidated from "../../common/hooks/useConsolidated/archieved/v2";
+import type { RootState, AppDispatch } from "../../redux/store";
 
 const UseConsolidatedTesterV2 = () => {
-  const isBackdropActive = useSelector((state) => state.backdrop.active);
-  const dispatch = useDispatch();
+  const isBackdropActive = useSelector((state: RootState) => state.backdrop.active);
+  const dispatch: AppDispatch = useDispatch();
   const {
     fetchTaskDetailsForGivenId,
     getRandomNumber,
@@ -66,7 +67,7 @@ const UseConsolidatedTesterV2 = () => {
       <div>
         <h1>Backdrop Example</h1>
         <button onClick={handleShowBackdrop}>Show Backdrop</button>
-        <CustomBackdrop shouldActive={isBackdropActive} />
+        <CustomBackdrop />
       </div>
     </div>
   );

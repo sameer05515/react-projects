@@ -52,26 +52,26 @@ const inputOutputMapping = {
   },
 };
 
-export const getKeyName = (textOutputType, textInputType) =>
+export const getKeyName = (textOutputType: string, textInputType: string) =>
   Object.keys(inputOutputMapping).find(
     (key) =>
-      inputOutputMapping[key].textOutputType === textOutputType &&
-      inputOutputMapping[key].textInputType === textInputType
+      (inputOutputMapping as any)[key].textOutputType === textOutputType &&
+      (inputOutputMapping as any)[key].textInputType === textInputType
   ) || "";
 
-const getDetailedNameForKey = (key = "") => {
+const getDetailedNameForKey = (key: string = "") => {
   if (!key || typeof key !== "string") return "";
 
-  return inputOutputMapping[key]?.detailedName || "";
+  return (inputOutputMapping as any)[key]?.detailedName || "";
 };
 
-export const getDetailedName = (textOutputType, textInputType) => {
+export const getDetailedName = (textOutputType: string, textInputType: string) => {
   const key = getKeyName(textOutputType, textInputType);
   const detailedName = getDetailedNameForKey(key);
   return detailedName;
 };
 
-export const getInpOupDetailsForKey = (key = "") => {
+export const getInpOupDetailsForKey = (key: string = "") => {
   //   console.log("[getInpOupDetailsForKey]: key: '", key, "'");
   if (!key || typeof key !== "string") {
     return {
@@ -80,7 +80,7 @@ export const getInpOupDetailsForKey = (key = "") => {
     };
   }
 
-  const obj = inputOutputMapping[key.trim()] || {};
+  const obj = (inputOutputMapping as any)[key.trim()] || {};
   //   console.log("obj", JSON.stringify(obj))
   return {
     textOutputType: obj.textOutputType || "",
@@ -100,28 +100,29 @@ export const getComboOptions = () => (
 
 //=========================================
 
-export const getSmartPreviewerProcessedData = (data) => {
-  const content = isValidString(data?.content) ? data.content : "";
-  const textOutputType = Object.values(SupportedOutFormats).includes(data?.textOutputType)
-    ? data.textOutputType
+export const getSmartPreviewerProcessedData = (data: { content?: string; textOutputType?: string }) => {
+  const content = isValidString(data?.content || "") ? (data!.content as string) : "";
+  const textOutputType = (Object.values(SupportedOutFormats) as string[]).includes(data?.textOutputType || "")
+    ? (data!.textOutputType as string)
     : SupportedOutFormats.TEXT;
 
-  let yamlProcessedData = null;
-  let resultData = [];
-  let errorMessage = "";
+  let yamlProcessedData: any = null;
+  let resultData: any[] = [];
+  let errorMessage: string = "";
 
   if (content && [SupportedOutFormats.YAML, SupportedOutFormats.YAML_to_SKELETON].includes(textOutputType)) {
     try {
       yamlProcessedData = yaml.load(content);
-      if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) resultData = yamlProcessedData;
-    } catch (e) {
-      errorMessage = e.mark
-        ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-        : `Error parsing YAML: ${e.message}`;
+      if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) resultData = yamlProcessedData as any[];
+    } catch (e: unknown) {
+      const err = e as any;
+      errorMessage = err?.mark
+        ? `Error parsing YAML at line ${err.mark.line + 1}: ${String(err.message)}`
+        : `Error parsing YAML: ${String(err?.message || e)}`;
     }
   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
     const { data: skeletonData, isValid, message } = buildTree(content);
-    if (isValid) resultData = addUniqueIdsToTree(skeletonData);
+    if (isValid) resultData = addUniqueIdsToTree(skeletonData as any[]);
     else errorMessage = message || "Missing error message";
   }
 
@@ -131,15 +132,16 @@ export const getSmartPreviewerProcessedData = (data) => {
 
 //--------------------
 
-export const validateSmartContent = (content, outputType) => {
+export const validateSmartContent = (content: string, outputType: string) => {
   try {
     if (outputType === SupportedOutFormats.YAML) yaml.load(content);
     if (outputType === SupportedOutFormats.TIS_to_SKELETON) {
       const { isValid, message } = buildTree(content);
       if (!isValid) return message;
     }
-  } catch (e) {
-    return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+  } catch (e: unknown) {
+    const err = e as any;
+    return err?.mark ? `Error parsing YAML at line ${err.mark.line + 1}: ${String(err.message)}` : `Error parsing YAML: ${String(err?.message || e)}`;
   }
   return "";
 };

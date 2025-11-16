@@ -1,7 +1,17 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
-const RadioButtonsComponent = ({
+type OptionItem = { value: string; label: string };
+
+interface RadioButtonsComponentProps {
+  initialSelectedOption?: string;
+  options: OptionItem[];
+  onChange?: (selected: OptionItem) => void;
+  orientation?: "row" | "column";
+  className?: string;
+  optionClassName?: string;
+}
+
+const RadioButtonsComponent: React.FC<RadioButtonsComponentProps> = ({
   initialSelectedOption = "",
   options = [],
   onChange = () => {},
@@ -9,9 +19,9 @@ const RadioButtonsComponent = ({
   className = "",
   optionClassName = "",
 }) => {
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
+  const [selectedOption, setSelectedOption] = useState<string>(initialSelectedOption);
 
-  const handleOptionChange = (e, option) => {
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>, option: OptionItem) => {
     setSelectedOption(e.target.value);
     onChange(option);
   };
@@ -21,7 +31,7 @@ const RadioButtonsComponent = ({
 
   return (
     <div className={`${containerClasses} ${className}`}>
-      {options.map((option) => (
+      {options.map((option: OptionItem) => (
         <label
           key={option.value}
           className={`inline-flex items-center gap-2 text-sm text-gray-800 ${optionClassName}`}
@@ -38,28 +48,6 @@ const RadioButtonsComponent = ({
       ))}
     </div>
   );
-};
-
-RadioButtonsComponent.propTypes = {
-  initialSelectedOption: PropTypes.string,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onChange: PropTypes.func,
-  orientation: PropTypes.oneOf(["row", "column"]),
-  className: PropTypes.string,
-  optionClassName: PropTypes.string,
-};
-
-RadioButtonsComponent.defaultProps = {
-  initialSelectedOption: "",
-  onChange: () => {},
-  orientation: "row",
-  className: "",
-  optionClassName: "",
 };
 
 export default RadioButtonsComponent;

@@ -5,7 +5,7 @@ import TaskCard from "./TaskCard";
 
 const ViewTask = ({ task, onClose, }) => {
   
-  const modalStyle = {};
+
 
   // const modalContentStyle = {
   //   background: "white",
@@ -14,7 +14,7 @@ const ViewTask = ({ task, onClose, }) => {
   //   zIndex: "1001", // Ensure modal content appears on top of the mask
   // };
 
-  const modalContentStyle = {};
+
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50">

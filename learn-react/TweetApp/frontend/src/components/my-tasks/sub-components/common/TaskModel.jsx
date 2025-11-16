@@ -19,7 +19,7 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
     tags: task ? task.tags : [], // Set the initial tags based on the topic
   });
 
-  const modalStyle = {};
+
 
   const handleTagSelect = (selectedTags) => {
     // Extract the tag values and store them in the 'tags' property of the topic data
@@ -33,7 +33,7 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
   //   zIndex: "1001", // Ensure modal content appears on top of the mask
   // };
 
-  const modalContentStyle = {};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

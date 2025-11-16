@@ -1,27 +1,63 @@
 import React, { useState } from "react";
 import { ArcherContainer, ArcherElement } from "react-archer";
 
+type AnchorPosition = "top" | "bottom" | "left" | "right";
+
+interface Relation {
+    targetId: string;
+    targetAnchor: AnchorPosition;
+    sourceAnchor: AnchorPosition;
+    label?: React.ReactNode;
+}
+
+interface HoverLabelProps {
+    id: string;
+    text: string;
+    show: boolean;
+    onMouseEnter: (id: string) => void;
+    onMouseLeave: () => void;
+}
+
 // Reusable Label component
-const HoverLabel = ({ id,text, show, onMouseEnter, onMouseLeave }) => (
-    <div 
-    style={show ? styles.visibleLabel : styles.hiddenLabel}
-    onMouseEnter={()=>onMouseEnter(id)}
-    onMouseLeave={onMouseLeave}>
+const HoverLabel: React.FC<HoverLabelProps> = ({ id, text, show, onMouseEnter, onMouseLeave }) => (
+    <div
+        style={show ? styles.visibleLabel : styles.hiddenLabel}
+        onMouseEnter={() => onMouseEnter(id)}
+        onMouseLeave={onMouseLeave}
+    >
         {text}
     </div>
 );
 
+interface NodeProps {
+    id: string;
+    label?: string;
+    children?: React.ReactNode;
+    relations?: Relation[];
+}
+
 // Reusable Node component
-const Node = ({ id, label, children, relations = [] }) => (
+const Node: React.FC<NodeProps> = ({ id, label, children, relations = [] }) => (
     <ArcherElement id={id} relations={relations}>
         <div style={styles.node}>{children || label}</div>
     </ArcherElement>
 );
 
-const DynamicNodeComponent = ({ selectedNode }) => {
-    const [hoveredRelationId, setHoveredRelationId] = useState(null);
+interface RelationData {
+    uniqueId: string;
+    name: string;
+    type: "previous" | "next";
+}
 
-    const handleMouseEnter = (id) => setHoveredRelationId(id);
+interface SelectedNodeData {
+    name: string;
+    relations: RelationData[];
+}
+
+const DynamicNodeComponent: React.FC<{ selectedNode: SelectedNodeData }> = ({ selectedNode }) => {
+    const [hoveredRelationId, setHoveredRelationId] = useState<string | null>(null);
+
+    const handleMouseEnter = (id: string) => setHoveredRelationId(id);
     const handleMouseLeave = () => setHoveredRelationId(null);
 
     const renderRelations = () => {
@@ -69,7 +105,13 @@ const DynamicNodeComponent = ({ selectedNode }) => {
 };
 
 // Extracted styles for reuse
-const styles = {
+const styles: {
+    container: React.CSSProperties;
+    relationsRow: React.CSSProperties;
+    node: React.CSSProperties;
+    hiddenLabel: React.CSSProperties;
+    visibleLabel: React.CSSProperties;
+} = {
     container: {
         display: "flex",
         flexDirection: "column",
@@ -188,11 +230,21 @@ const data = {
 // Example usage
 const TwoNodeComponentV5_2 = () => {
 
+    // Adapt example data to the stricter SelectedNodeData type
+    const adaptedSelectedNode: SelectedNodeData = {
+        name: data.selectedNode.name,
+        relations: data.selectedNode.relations.map((r) => ({
+            uniqueId: r.uniqueId,
+            name: r.name,
+            // Coerce to the union type; fallback to 'next' if unexpected
+            type: r.type === "previous" ? "previous" : "next",
+        })),
+    };
 
     return (
         <>
             {/* <h1>Lund ka pakora</h1> */}
-            <DynamicNodeComponent selectedNode={data.selectedNode} />
+            <DynamicNodeComponent selectedNode={adaptedSelectedNode} />
         </>
     );
 };

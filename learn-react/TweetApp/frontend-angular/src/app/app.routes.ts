@@ -8,6 +8,7 @@ import { TasksListComponent } from './features/tasks/tasks-list.component';
 import { TagsListComponent } from './features/tags/tags-list.component';
 import { LinksListComponent } from './features/links/links-list.component';
 import { MemoryMapsListComponent } from './features/memory-maps/memory-maps-list.component';
+import { AppShellComponent } from './layout/app-shell.component';
 
 @Component({
   selector: 'app-home',
@@ -40,10 +41,16 @@ export class HomeComponent {
 }
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'topics', component: TopicsListComponent },
-  { path: 'tasks', component: TasksListComponent },
-  { path: 'tags', component: TagsListComponent },
-  { path: 'links', component: LinksListComponent },
-  { path: 'memory-maps', component: MemoryMapsListComponent },
+  {
+    path: '',
+    component: AppShellComponent,
+    children: [
+      { path: '', component: HomeComponent },
+      { path: 'topics', component: TopicsListComponent },
+      { path: 'tasks', component: TasksListComponent },
+      { path: 'tags', component: TagsListComponent },
+      { path: 'links', component: LinksListComponent },
+      { path: 'memory-maps', component: MemoryMapsListComponent },
+    ]
+  }
 ];

@@ -1,1 +1,42 @@
+/* Design tokens */
+$color-bg: #f8fafc;
+$color-border: #e2e8f0;
+$color-text: #0f172a;
+$color-primary: #0f172a;
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$radius-1: 6px;
+
+html, body {
+	margin: 0;
+	height: 100%;
+}
+
+* { box-sizing: border-box; }
+
+/* Utility examples */
+.card {
+	background: #ffffff;
+	border: 1px solid $color-border;
+	border-radius: $radius-1;
+	padding: $space-4;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: $space-2;
+	padding: 8px 12px;
+	border-radius: $radius-1;
+	border: 1px solid $color-border;
+	background: #ffffff;
+	color: $color-text;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn:hover { background: #f1f5f9; }
+
 /* You can add global styles to this file, and also import other style files */

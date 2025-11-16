@@ -1,0 +1,43 @@
+/* Container for centering the flip box */
+.flip-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Flip box styles */
+  .flip-box {
+    width: 150px;
+    height: 150px;
+    perspective: 1000px; /* Perspective gives a 3D effect */
+  }
+  
+  .flip-content {
+    width: 100%;
+    height: 100%;
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 10px;
+    transform-style: preserve-3d;
+    animation: flip 3s infinite;
+    backface-visibility: hidden; /* Hides the back when flipped */
+  }
+  
+  /* Keyframe for flip animation */
+  @keyframes flip {
+    0% {
+      transform: rotateY(0deg);
+    }
+    50% {
+      transform: rotateY(180deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+  

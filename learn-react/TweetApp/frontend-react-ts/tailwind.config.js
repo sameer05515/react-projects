@@ -1,12 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{ts,tsx}"
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
       colors: {
+        // Custom colors for HorizontalMenu and other components
         'menu-dark': '#2C3E50',
         'menu-darker': '#34495E',
         'menu-yellow': '#FFC107',
@@ -18,5 +18,4 @@ export default {
   },
   plugins: [],
 }
-
 

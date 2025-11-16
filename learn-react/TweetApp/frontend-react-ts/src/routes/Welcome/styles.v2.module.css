@@ -1,0 +1,120 @@
+.header {
+  gap: 3rem;
+  margin: 3rem auto 5rem auto;
+  width: 90%;
+  max-width: 75rem;
+  color: #ddd6cb;
+  font-size: 1.5rem;
+}
+
+.header h1 {
+  font-family: "Montserrat", sans-serif;
+}
+
+.highlight {
+  background: linear-gradient(90deg, #f9572a, #ff8a05);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* font-size: 28px; */
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+/**======================================*/
+
+.circle-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 50px auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-container .item {
+  position: absolute;
+  width: 250px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0px;
+  font-weight: 400;
+  color: blue;
+  transform-origin: 150px 150px; /* Set origin for rotation */
+  animation: rotate-clockwise 10s linear infinite; /* Animation applied */
+  transition: font-size 0.2s ease-in-out, font-weight 0.2s ease-in-out;
+}
+
+.item:nth-child(1) {
+  transform: rotate(270deg) translate(120px) rotate(-270deg);
+  animation-delay: 0s;
+}
+.item:nth-child(2) {
+  transform: rotate(330deg) translate(120px) rotate(-330deg);
+  animation-delay: 1.6s; /* Delayed start to sync */
+}
+.item:nth-child(3) {
+  transform: rotate(390deg) translate(120px) rotate(-390deg);
+  animation-delay: 3.2s;
+}
+.item:nth-child(4) {
+  transform: rotate(450deg) translate(120px) rotate(-450deg);
+  animation-delay: 4.8s;
+}
+.item:nth-child(5) {
+  transform: rotate(510deg) translate(120px) rotate(-510deg);
+  animation-delay: 6.4s;
+}
+.item:nth-child(6) {
+  transform: rotate(570deg) translate(120px) rotate(-570deg);
+  animation-delay: 8s;
+}
+
+/* Keyframes for clockwise rotation */
+@keyframes rotate-clockwise {
+  0% {
+    transform: rotate(270deg) translate(120px) rotate(-270deg);
+    font-size: 28px;
+    font-weight: 700;
+    color: forestgreen;
+  }
+  16.67% {
+    transform: rotate(330deg) translate(120px) rotate(-330deg);
+    font-size: 0px;
+    font-weight: 400;
+    color: blue;
+  }
+  33.33% {
+    transform: rotate(390deg) translate(120px) rotate(-390deg);
+    font-size: 0px;
+    font-weight: 400;
+  }
+  50% {
+    transform: rotate(450deg) translate(120px) rotate(-450deg);
+    font-size: 0px;
+    font-weight: 400;
+    color: blue;
+  }
+  66.67% {
+    transform: rotate(510deg) translate(120px) rotate(-510deg);
+    font-size: 0px;
+    font-weight: 400;
+    color: blue;
+  }
+  83.33% {
+    transform: rotate(570deg) translate(120px) rotate(-570deg);
+    font-size: 0px;
+    font-weight: 400;
+    color: blue;
+  }
+  100% {
+    transform: rotate(630deg) translate(120px) rotate(-630deg);
+    font-size: 28px;
+    font-weight: 700;
+    color: forestgreen;
+  }
+}

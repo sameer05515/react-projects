@@ -1,0 +1,1 @@
+export const convertToYesNo = (value) => (!value ? "No" : "Yes");

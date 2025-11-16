@@ -1,0 +1,17 @@
+[
+
+    {
+        "id":"topic_1",
+        "date":"06-July-2023",
+        "title":"",
+        "description":"my description",
+        "relatedTags":["tags_1"]
+    },
+    {
+        "id":"topic_2",
+        "date":"07-July-2023",
+        "title":"",
+        "description":"my description2",
+        "relatedTags":["tags_1"]
+    }
+]

@@ -1,0 +1,70 @@
+/* Main carousel container */
+.carousel {
+    overflow: hidden;
+    position: relative;
+    width: 80%;
+    margin: 2rem auto;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Carousel track */
+  .carouselTrack {
+    display: flex;
+    gap: 1rem;
+    animation: scroll 15s linear infinite;
+  }
+  
+  /* Carousel slide */
+  .slide {
+    flex: 0 0 auto;
+    width: 200px; /* Adjust width based on button size */
+  }
+  
+  /* Style for buttons */
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  /* Hover effect for buttons */
+  .button:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+  }
+  
+  /* Disabled button style */
+  .button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+    vertical-align: middle;
+  }
+  
+  /* Animation for scrolling carousel */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  /* Smooth scrolling effect */
+  .carouselTrack:hover {
+    animation-play-state: paused;
+  }
+  

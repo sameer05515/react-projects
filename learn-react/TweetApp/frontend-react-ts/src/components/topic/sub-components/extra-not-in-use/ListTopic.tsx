@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
-import CreateTopic from "./CreateTopic"; // Import the CreateTopic component
+import CreateTopic from "../common/CreateTopic"; // Import the CreateTopic component
 import TopicCard from "../common/TopicCard";
 
 function ListTopic() {

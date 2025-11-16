@@ -49,6 +49,7 @@ function ListTopic() {
       )}
       {showForm && (
         <CreateTopic
+          parentId={null}
           topic={editTopic}
           onSave={handleCreateOrUpdateTopic}
           onCancelEdit={handleCancelEdit}

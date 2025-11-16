@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 
-const TaskSearch = ({ tasks, postSearch=()=>{} }) => {
-  const [inputValue, setInputValue] = useState('');
-  const [matchingTasks, setMatchingTasks] = useState([]);
+type TaskSearchProps = {
+  tasks: any[];
+  postSearch?: (tasks: any[]) => void;
+};
 
-  const handleInputChange = (e) => {
+const TaskSearch: React.FC<TaskSearchProps> = ({ tasks, postSearch = () => {} }) => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const [matchingTasks, setMatchingTasks] = useState<any[]>([]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
 

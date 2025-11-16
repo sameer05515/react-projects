@@ -31,9 +31,7 @@ export const CreateRelation = () => {
   const navigate = useNavigate();
   return (
     <RelationForm
-      nodeInfo={nodeInfo}
       initialFormData={initialFormData}
-      allNodes={allNodes}
       onSubmit={() => navigate(-1)}
       onClose={() => navigate(-1)}
     />
@@ -41,5 +39,5 @@ export const CreateRelation = () => {
 };
 
 export const EditRelation = () => {
-  return <RelationForm />;
+  return <RelationForm initialFormData={{}} />;
 };

@@ -6,7 +6,14 @@ const defaultStyles = {
 };
 
 // Initial shared data
-const initialSharedData = {
+const initialSharedData: {
+  selectedNode: any;
+  allNodes: any[];
+  showPlaygroundSection: boolean;
+  showPreviousRelations: boolean;
+  showNextRelations: boolean;
+  styles: typeof defaultStyles;
+} = {
   selectedNode: null,
   allNodes: [],
   showPlaygroundSection: false,

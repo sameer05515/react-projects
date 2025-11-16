@@ -61,7 +61,7 @@ const TopicBase = () => {
             >
               {option.label}
             </span>
-          )) as React.ReactNode[]}
+          )) as any}
         />
       </div>
 
@@ -74,12 +74,7 @@ const TopicBase = () => {
           />
         )}
         {selectedView === "card" && (
-          <TopicCardViewDashboard
-            cardClassName="bg-blue-100 border border-blue-200 p-4 rounded-lg shadow hover:shadow-md transition flex flex-col items-start"
-            containerClassName="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-            titleClassName="font-bold text-blue-800 text-lg mb-2"
-            descClassName="text-blue-700 text-sm mb-3"
-          />
+          <TopicCardViewDashboard />
         )}
       </div>
     </div>

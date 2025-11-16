@@ -17,9 +17,13 @@ import {
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
 
 export const RelationForm = ({
-    initialFormData,
+    initialFormData = {} as any,
     onSubmit = () => {},
     onClose = () => {},
+}: {
+    initialFormData?: any;
+    onSubmit?: (data?: any) => void;
+    onClose?: () => void;
 }) => {
     const {
         SharedService: { refreshNodes, updateRelationInConnectedNodes },
@@ -36,10 +40,10 @@ export const RelationForm = ({
         itemMetadata: initialFormData?.itemMetadata || {},
     });
     
-    const [finalString, setFinalString] = useState(null);
-    const [formErrors, setFormErrors] = useState([]);
+    const [finalString, setFinalString] = useState<React.ReactNode | null>(null);
+    const [formErrors, setFormErrors] = useState<string[]>([]);
 
-    const getNodeNameForId = useCallback((id) => {
+    const getNodeNameForId = useCallback((id: string) => {
         if (!id) return "";
         return allNodes.find((node) => node.uniqueId === id)?.name || "";
     }, [allNodes]);
@@ -65,12 +69,12 @@ export const RelationForm = ({
         value: node.uniqueId,
     }));
 
-    const handleInputChange = (name, value) => {
+    const handleInputChange = (name: string, value: string | boolean) => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     const validateForm = () => {
-        const errors = [];
+        const errors: string[] = [];
         if (!formData.withId.trim()) errors.push("Please select target node");
         if (!formData.name.trim()) errors.push("Please select relation type");
         if (!formData.type.trim()) errors.push("Please select Direction Type");
@@ -78,7 +82,7 @@ export const RelationForm = ({
         return errors.length === 0;
     };
 
-    const mergeRelation = (detailData) => {
+    const mergeRelation = (detailData: any) => {
         //const updatedRelations = updateOrAdd(nodeInfo.relations, detailData);
         // nodeInfo.relations = updatedRelations;
 
@@ -90,8 +94,7 @@ export const RelationForm = ({
         });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         if (!validateForm()) return;
 
         const detailData = {
@@ -139,7 +142,7 @@ export const RelationForm = ({
                     name="name"
                     options={relationOptions}
                     value={relationOptions.find((opt) => opt.value === formData.name)}
-                    onChange={(option) => handleInputChange("name", option.value)}
+                    onChange={(option) => handleInputChange("name", (option as any)?.value || "")}
                     styles={customStyles}
                     menuPortalTarget={document.body}
                 />
@@ -163,7 +166,7 @@ export const RelationForm = ({
                     name="withId"
                     options={nodeOptions}
                     value={nodeOptions.find((opt) => opt.value === formData.withId)}
-                    onChange={(option) => handleInputChange("withId", option.value)}
+                    onChange={(option) => handleInputChange("withId", (option as any)?.value || "")}
                     styles={customStyles}
                     menuPortalTarget={document.body}
                 />
@@ -179,7 +182,7 @@ export const RelationForm = ({
                     value={generateOptions(RELATION_DIRECTION_TYPES).find(
                         (opt) => opt.value === formData.type
                     )}
-                    onChange={(option) => handleInputChange("type", option.value)}
+                    onChange={(option) => handleInputChange("type", (option as any)?.value || "")}
                     styles={customStyles}
                     menuPortalTarget={document.body}
                 />

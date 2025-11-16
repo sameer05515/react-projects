@@ -14,32 +14,32 @@ import "react-quill/dist/quill.snow.css";
 import tagList from "./tagList";
 
 const SaveDataComponent = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [title, setTitle] = useState("");
-  const [htmlText, setHtmlText] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [tagFilterText, setTagFilterText] = useState("");
-  const [privateData, setPrivateData] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [htmlText, setHtmlText] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tagFilterText, setTagFilterText] = useState<string>("");
+  const [privateData, setPrivateData] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ selectedDate?: string; title?: string; htmlText?: string }>({});
   const dispatch = useDispatch();
 
-  const handleDateChange = (event) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleHtmlTextChange = (value) => {
+  const handleHtmlTextChange = (value: string) => {
     setHtmlText(value);
   };
 
-  const handleTagFilterChange = (event) => {
+  const handleTagFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagFilterText(event.target.value);
   };
 
-  const handleTagCheckboxChange = (event) => {
+  const handleTagCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTag = event.target.name;
     setSelectedTags((prevSelectedTags) =>
       event.target.checked
@@ -49,7 +49,7 @@ const SaveDataComponent = () => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: { selectedDate?: string; title?: string; htmlText?: string } = {};
 
     if (!selectedDate.trim()) {
       newErrors.selectedDate = "Date is required";
@@ -146,7 +146,6 @@ const SaveDataComponent = () => {
         <ReactQuill
           value={htmlText}
           onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
         />
         {errors.htmlText && (
           <Typography variant="caption" color="error">

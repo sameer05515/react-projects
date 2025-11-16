@@ -27,8 +27,23 @@ export const strokeStyle = {
   strokeWidth: 1,
 };
 
+type ArcherBoxItem = {
+  id: string;
+  label: string;
+  style: any;
+  type: string;
+  relations: any[];
+};
+
 // Component to render ArcherBox
-export const ArcherBox = ({ id, relations = [], label, style = {}, children }) => (
+type ArcherBoxProps = {
+  id: string;
+  relations?: any[];
+  label?: string;
+  style?: any;
+  children?: React.ReactNode;
+};
+export const ArcherBox = ({ id, relations = [], label, style = {}, children }: ArcherBoxProps) => (
   <ArcherElement id={id} relations={relations}>
     <div style={{ ...boxStyle, ...style }}>{children}</div>
   </ArcherElement>
@@ -80,12 +95,12 @@ const Playground = () => {
   //   }, []);
   // }, [allNodes, selectedNode]);
 
-  const getArcherBoxesForLanguage = () => {
+  const getArcherBoxesForLanguage = (): { prevBoxes: ArcherBoxItem[]; selBoxes: ArcherBoxItem[]; nextBoxes: ArcherBoxItem[] } => {
     if (!selectedNode || !allNodes) return { prevBoxes: [], selBoxes: [], nextBoxes: [] };
-    let archerBoxes = [];
+    let archerBoxes: ArcherBoxItem[] = [];
 
-    archerBoxes = [selectedNode].reduce((acc, lang) => {
-      const ac = {
+    archerBoxes = [selectedNode].reduce((acc: ArcherBoxItem[], lang: any) => {
+      const ac: ArcherBoxItem = {
         id: lang.uniqueId,
         label: lang.name,
         style: boxStyle,
@@ -93,14 +108,15 @@ const Playground = () => {
         relations: [],
       };
       acc.push(ac);
-      lang.relations
-        .filter((l) => l.type === RELATION_DIRECTION_TYPES.previous)
-        .forEach((l) => {
-          const c = {
+      (lang.relations || [])
+        .filter((l: any) => l.type === RELATION_DIRECTION_TYPES.previous)
+        .forEach((l: any) => {
+          const c: ArcherBoxItem = {
             id: l.withId,
             label: getNodeNameForId(l.withId) || l.withId,
             style: boxStyle,
             type: NodeType.previousNode,
+            relations: [],
           };
           acc.push(c);
           ac.relations.push({
@@ -112,14 +128,15 @@ const Playground = () => {
           });
         });
 
-      lang.relations
-        .filter((l) => l.type === RELATION_DIRECTION_TYPES.next)
-        .forEach((l) => {
-          const c = {
+      (lang.relations || [])
+        .filter((l: any) => l.type === RELATION_DIRECTION_TYPES.next)
+        .forEach((l: any) => {
+          const c: ArcherBoxItem = {
             id: l.withId,
             label: getNodeNameForId(l.withId) || l.withId,
             style: boxStyle,
             type: NodeType.nextNode,
+            relations: [],
           };
           acc.push(c);
           ac.relations.push({
@@ -212,7 +229,7 @@ const Playground = () => {
           </div>
         </ArcherContainer>
 
-        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionStyle={{ fontSize: "12px" }} />}
+        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionClassName="text-[12px]" />}
       </div>
     </>
   );

@@ -1,10 +1,16 @@
 import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 
-function ViewTask({ id, itemEditHandler = () => {} }) {
-  const dataList = useSelector((state) => state.data);
+type ViewTaskProps = {
+  id: string;
+  itemEditHandler?: (item: any) => void;
+};
+
+function ViewTask({ id, itemEditHandler = () => {} }: ViewTaskProps) {
+  const dataList = useSelector((state: RootState) => state.data as any[]);
   const selectedItem = dataList.find((item) => item._id === id);
   const editData = () => {
     itemEditHandler(selectedItem);

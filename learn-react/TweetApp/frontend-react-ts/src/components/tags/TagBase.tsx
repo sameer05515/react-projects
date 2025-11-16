@@ -221,7 +221,7 @@ const ViewTag = () => {
 
   return data ? (
     <TagCard
-      onAddSubTag={() => addChildTag(id)}
+      onAddSubTag={() => addChildTag(id || "")}
       showDescription={true}
       tag={data}
       onEdit={handleEdit}
@@ -340,7 +340,7 @@ const AddSubTagComp = () => {
         updateTag({
           ...{ children: formData.children },
           uniqueId: tag.uniqueId,
-        })
+        } as any)
       );
       // console.log("updated!!!");
     } else {
@@ -352,8 +352,8 @@ const AddSubTagComp = () => {
   const handleCreateNewSubtag = () => {
     navigate({
       pathname: `/tags/create`,
-      search: createSearchParams({
-        parent: id,
+      search: new URLSearchParams({
+        parent: id || "",
       }).toString(),
     });
   };
@@ -379,7 +379,7 @@ const AddSubTagComp = () => {
           classNamePrefix="react-select"
           isMulti
           name="tags"
-          options={tagOptions}
+          options={tagOptions as any}
           value={tagOptions.filter(
             (t) =>
               formData.children.includes(t.value) &&
@@ -399,7 +399,7 @@ const AddSubTagComp = () => {
 
 const MoveToAnotherTagParent = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   // const treeStructuredTasks = useSelector((state) => state.tags.data);
   const { id } = useParams();
 
@@ -452,7 +452,7 @@ const MoveToAnotherTagParent = () => {
         updateTag({
           ...{ parentId: formData.parentId },
           uniqueId: tag.uniqueId,
-        })
+        } as any)
       );
       // console.log("updated!!!");
     } else {
@@ -482,7 +482,7 @@ const MoveToAnotherTagParent = () => {
         <Select
           classNamePrefix="react-select"
           name="tags"
-          options={tagOptions}
+          options={tagOptions as any}
           defaultValue={selectedOption}
           // value={tagOptions.filter((t) => t.value === formData.uniqueId)}
           onChange={handleTaskSelect}

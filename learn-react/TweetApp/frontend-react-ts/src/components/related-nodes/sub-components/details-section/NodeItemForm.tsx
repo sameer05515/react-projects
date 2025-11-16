@@ -11,37 +11,40 @@ import {
 import { RelationForm } from './RelationForm';
 
 export const NodeItemForm = ({
-    initialFormData = {},
+    initialFormData = {} as any,
     onSave = () => {},
     onCancelEdit = () => {},
+}: {
+    initialFormData?: any;
+    onSave?: () => void;
+    onCancelEdit?: () => void;
 }) => {
     const {
         SharedService: { refreshNodes, createNode, updateNodeByUniqueId },
         sharedData: { selectedNode, allNodes },
     } = useSharedConfigurations();
 
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState<string[]>([]);
     const [showRelationForm, setShowRelationForm] = useState(false);
     const selectedRelation = null; // Reserved for future edit relation functionality
     const [formData, setFormData] = useState({
-        uniqueId: initialFormData.uniqueId || "",
-        name: initialFormData.name || "",
-        relations: initialFormData.relations || [],
-        itemType: initialFormData.itemType || "",
+        uniqueId: (initialFormData as any)?.uniqueId || "",
+        name: (initialFormData as any)?.name || "",
+        relations: (initialFormData as any)?.relations || [],
+        itemType: (initialFormData as any)?.itemType || "",
     });
 
     const nodeItemTypesOptions = generateOptions(NODE_ITEM_TYPES);
 
     const validateForm = () => {
-        const errors = [];
+        const errors: string[] = [];
         if (!formData.name.trim()) errors.push("Name is required");
         if (!formData.itemType.trim()) errors.push("Node Item Type is required");
         setFormErrors(errors);
         return errors.length === 0;
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         if (!validateForm()) return;
 
         const updatedNodeItemObj = {
@@ -64,11 +67,11 @@ export const NodeItemForm = ({
         });
     };
 
-    const handleInputChange = ({ target: { name, value } }) => {
+    const handleInputChange = ({ target: { name, value } }: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const mergeRelation = (detailData) => {
+    const mergeRelation = (detailData: any) => {
         setFormData((prevData) => ({
             ...prevData,
             relations: updateOrAdd(prevData.relations, detailData),
@@ -110,7 +113,7 @@ export const NodeItemForm = ({
                     name="itemType"
                     options={nodeItemTypesOptions}
                     value={nodeItemTypesOptions.find(opt => opt.value === formData.itemType)}
-                    onChange={(selectedOption) => setFormData({ ...formData, itemType: selectedOption.value })}
+                    onChange={(selectedOption) => setFormData({ ...formData, itemType: (selectedOption as any)?.value || "" })}
                     styles={customStyles}
                     menuPortalTarget={document.body}
                 />
@@ -122,10 +125,8 @@ export const NodeItemForm = ({
                         <label className="font-bold block mb-2" htmlFor="description">Relations:</label>
                         {showRelationForm && (
                             <RelationForm
-                                nodeInfo={{ name: formData.name, uniqueId: formData.uniqueId }}
                                 initialFormData={selectedRelation}
-                                allNodes={allNodes}
-                                onSubmit={mergeRelation}
+                                onSubmit={() => {}}
                                 onClose={() => setShowRelationForm(false)}
                             />
                         )}
@@ -143,7 +144,9 @@ export const NodeItemForm = ({
                                         showButtonText={false}
                                         buttonText={"Actions"}
                                         iconName={"FaSettings"}
-                                    />
+                                    >
+                                        <div />
+                                    </FloatingButton>
                                 </div>
                             </div>
                         ))}

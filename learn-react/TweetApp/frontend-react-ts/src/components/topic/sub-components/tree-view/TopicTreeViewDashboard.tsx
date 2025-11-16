@@ -125,10 +125,10 @@ const TopicTreeViewDashboard: React.FC<TopicTreeViewProps> = () => {
                   </span>
                 </>
               )}
+              onDragStart={undefined as any}
+              onDrop={undefined as any}
+              errorMessageOnNoData={"" as any}
             />
-            {/* Provide required handlers to satisfy Tree props */}
-            {/* @ts-ignore */}
-            <Tree data={[]} renderNode={() => null} onDragStart={undefined as any} onDrop={undefined as any} errorMessageOnNoData={"" as any} />
           )}
         </div>
         {/* -- left-section */}

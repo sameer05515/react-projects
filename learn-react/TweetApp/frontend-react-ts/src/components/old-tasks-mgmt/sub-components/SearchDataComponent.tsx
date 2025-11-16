@@ -5,7 +5,7 @@ import { enGB } from "date-fns/locale";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 const SearchComponent = () => {
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [tags, setTags] = useState("");
   // Add state for other search fields here
 

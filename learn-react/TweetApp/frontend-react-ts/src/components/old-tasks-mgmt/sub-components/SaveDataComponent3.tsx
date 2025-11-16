@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { saveData } from "../../redux/dataSlice1";
+import { saveData } from "../../../redux/slices/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const SaveDataComponent = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [title, setTitle] = useState("");
-  const [htmlText, setHtmlText] = useState("");
-  const [errors, setErrors] = useState({});
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [htmlText, setHtmlText] = useState<string>("");
+  const [errors, setErrors] = useState<{ selectedDate?: string; title?: string; htmlText?: string }>({});
 
   const dispatch = useDispatch();
 
-  const handleDateChange = (event) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleHtmlTextChange = (value) => {
+  const handleHtmlTextChange = (value: string) => {
     setHtmlText(value);
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: { selectedDate?: string; title?: string; htmlText?: string } = {};
 
     if (!selectedDate.trim()) {
       newErrors.selectedDate = "Date is required";
@@ -83,7 +83,6 @@ const SaveDataComponent = () => {
         <ReactQuill
           value={htmlText}
           onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
         />
         {errors.htmlText && (
           <Typography variant="caption" color="error">

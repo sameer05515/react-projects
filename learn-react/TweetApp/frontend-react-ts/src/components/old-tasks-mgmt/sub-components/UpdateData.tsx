@@ -8,20 +8,25 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 import { updateData } from "../../redux/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const UpdateDataComponent = ({ match, history }) => {
+type RouteLike = { params: { id: string } };
+type UpdateDataProps = { match: RouteLike; history: { push: (path: string) => void } };
+type ErrorState = { selectedDate?: string; title?: string; htmlText?: string };
+
+const UpdateDataComponent = ({ match, history }: UpdateDataProps) => {
   const { id } = match.params;
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [title, setTitle] = useState("");
-  const [htmlText, setHtmlText] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [tagFilterText, setTagFilterText] = useState("");
-  const [errors, setErrors] = useState({});
+  const data = useSelector((state: RootState) => state.data as any[]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [htmlText, setHtmlText] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tagFilterText, setTagFilterText] = useState<string>("");
+  const [errors, setErrors] = useState<ErrorState>({});
 
   const tagList = ["Tag 1", "Tag 2", "Tag 3"]; // Replace this with your list of tags
 
@@ -35,23 +40,23 @@ const UpdateDataComponent = ({ match, history }) => {
     }
   }, [data, id]);
 
-  const handleDateChange = (event) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleHtmlTextChange = (value) => {
+  const handleHtmlTextChange = (value: string) => {
     setHtmlText(value);
   };
 
-  const handleTagFilterChange = (event) => {
+  const handleTagFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagFilterText(event.target.value);
   };
 
-  const handleTagCheckboxChange = (event) => {
+  const handleTagCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTag = event.target.name;
     setSelectedTags((prevSelectedTags) =>
       event.target.checked
@@ -61,7 +66,7 @@ const UpdateDataComponent = ({ match, history }) => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: ErrorState = {};
 
     if (!selectedDate.trim()) {
       newErrors.selectedDate = "Date is required";
@@ -157,7 +162,6 @@ const UpdateDataComponent = ({ match, history }) => {
         <ReactQuill
           value={htmlText}
           onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
         />
         {errors.htmlText && (
           <Typography variant="caption" color="error">

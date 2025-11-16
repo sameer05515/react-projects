@@ -58,8 +58,7 @@ const TagForm: React.FC<TagFormProps> = ({
     setSmartEditorError(error);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (validateForm()) {
       onSubmit && onSubmit(formData);
     }
@@ -104,7 +103,7 @@ const TagForm: React.FC<TagFormProps> = ({
         </div>
       )}
       <div className="mt-4 flex gap-2">
-        <CustomButton onClick={(e) => handleSubmit(e as any)}>
+        <CustomButton onClick={handleSubmit}>
           {formData.uniqueId ? "Update " : "Save "}Changes
         </CustomButton>
         <CustomButton onClick={handleCancel}>Cancel</CustomButton>

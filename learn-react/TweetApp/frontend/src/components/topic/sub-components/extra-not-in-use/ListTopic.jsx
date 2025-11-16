@@ -31,26 +31,21 @@ function ListTopic() {
     // and update the state accordingly.
   };
 
-  const listStyleGen = (columns = 3) => {
-    return {
-      display: "grid",
-      gridTemplateColumns: `repeat(${columns}, 1fr)`,
-      gap: "20px",
-    };
-  };
-
-  const itemStyle = {
-    border: "1px solid #ccc",
-    padding: "10px",
-    // Add other styling as needed
-  };
+  const listStyleGen = (columns = 3) => `grid grid-cols-${columns} gap-5`;
 
   return (
     <div>
       {loading === "pending" && <p>Loading topics...</p>}
       {error && <p>Error: {error}</p>}
       {/* CreateTopic component for creating and editing topics */}
-      {!showForm && <button onClick={() => setShowForm(true)}>Add</button>}
+      {!showForm && (
+        <button
+          onClick={() => setShowForm(true)}
+          className="rounded bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700"
+        >
+          Add
+        </button>
+      )}
       {showForm && (
         <CreateTopic
           topic={editTopic}
@@ -60,11 +55,11 @@ function ListTopic() {
       )}
 
       {loading === "fulfilled" && (
-        <div style={listStyleGen(5)}>
+        <div className="grid grid-cols-5 gap-5">
           {topics.map((topic) => (
             <div
               key={topic.topicId}
-              style={itemStyle}
+              className="rounded border border-gray-300 p-2.5"
               onDoubleClick={() => handleEditTopic(topic)}
             >
               <TopicCard topic={topic} />

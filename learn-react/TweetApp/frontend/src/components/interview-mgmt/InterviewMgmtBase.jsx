@@ -16,10 +16,9 @@ const NodeRenderer = ({ node, onSelectNode, selectedNodeId }) => {
   return (
     <span
       onClick={handleClick}
-      style={{
-        fontSize: "12px",
-        ...(selectedNodeId === node.id ? interviewMgmtStyles.selected : {}),
-      }}
+      className={`text-[12px] ${
+        selectedNodeId === node.id ? "font-bold text-green-700" : "font-normal"
+      }`}
     >
       {node.name}
     </span>
@@ -125,7 +124,6 @@ const InterviewMgmtBase = () => {
   );
 };
 
-const interviewMgmtStyles = {};
 
 const WithContext = () => (
   <InterviewMgmtProvider>

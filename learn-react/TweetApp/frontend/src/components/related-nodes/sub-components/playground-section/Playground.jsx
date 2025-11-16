@@ -20,36 +20,7 @@ export const NodeType = {
   nextNode: "nextNode",
 };
 
-export const styles = {
-  container: {
-    padding: "20px",
-    border: "1px solid red",
-    borderRadius: "8px",
-    margin: "0",
-  },
-  columnDiv: {
-    marginBottom: "20px",
-    border: "1px solid green",
-  },
-  select: {
-    width: "100%",
-    padding: "8px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  },
-  rowDiv: {
-    display: "flex",
-    justifyContent: "space-around",
-    border: "1px solid yellow",
-    padding: "10px",
-  },
-  infoBox: {
-    flex: 1,
-    marginRight: "10px",
-    border: "1px solid red",
-    padding: "10px",
-  },
-};
+// styles object removed in favor of Tailwind utility classes
 
 export const strokeStyle = {
   strokeColor: "blue",
@@ -203,52 +174,38 @@ const Playground = () => {
     },
   ];
 
-  const containerStyle = {
-    flex: 4,
-    // ...styles.greenBorder,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
+  const containerStyle = {};
 
-  const nodeContainerStyle = {
-    // ...styles.greenBorder,
-    margin: "5px 0",
-    padding: "50px",
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  };
+  const nodeContainerClass = "m-1.5 flex flex-1 flex-row items-center p-12";
 
   return (
     <>
-      <div style={containerStyle} onClick={() => setPopupVisible(false)}>
+      <div className="flex flex-1 items-center justify-center" style={containerStyle} onClick={() => setPopupVisible(false)}>
         <ArcherContainer strokeColor="black">
-          <div style={styles.rowDiv}>
-            <div style={nodeContainerStyle}>
+          <div className="flex justify-around gap-4 p-2">
+            <div className={nodeContainerClass}>
               {/* Previous Nodes container */}
               {prevBoxes?.map((node) => (
                 <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={node.style}>
-                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
+                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} />
                 </ArcherBox>
               ))}
             </div>
 
-            <div style={nodeContainerStyle}>
+            <div className={nodeContainerClass}>
               {/* Current Node container <br /> */}
               {selBoxes.map((node) => (
                 <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={node.style}>
-                  <Node isSelected={true} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
+                  <Node isSelected={true} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} />
                 </ArcherBox>
               ))}
             </div>
 
-            <div style={nodeContainerStyle}>
+            <div className={nodeContainerClass}>
               {/* Next Nodes container <br /> */}
               {nextBoxes?.map((node) => (
                 <ArcherBox key={node.id} id={node.id} relations={node.relations} label={node.label} style={{ ...node.style, padding: "20px" }}>
-                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} style={styles.greenBorder} />
+                  <Node isSelected={false} node={getNodeForId(node.id)} onItemSelection={setSelectedNode} onItemRightClick={handleRightClick} />
                 </ArcherBox>
               ))}
             </div>
@@ -260,13 +217,9 @@ const Playground = () => {
     </>
   );
 };
-const Node = React.memo(({ isSelected = false, node, onItemRightClick, onItemSelection, style = {} }) => (
+const Node = React.memo(({ isSelected = false, node, onItemRightClick, onItemSelection }) => (
   <div
-    style={{
-      ...style,
-      fontSize: "12px",
-      fontWeight: isSelected ? "bold" : "normal",
-    }}
+    className={`text-xs ${isSelected ? "font-bold" : "font-normal"}`}
     onDoubleClick={() => !isSelected && onItemSelection(node)}
     onContextMenu={(e) => isSelected && onItemRightClick(e)}
   >

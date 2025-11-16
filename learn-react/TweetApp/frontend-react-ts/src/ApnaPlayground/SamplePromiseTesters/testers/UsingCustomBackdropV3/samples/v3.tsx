@@ -11,7 +11,7 @@ import { delayForMS } from "../../../../sample-promises";
 const SampleV3 = () => {
   const dispatch = useDispatch();
   const handleUpdateTitleWithDelay = useCallback(async () => {
-    dispatch(showBackdropV3());
+    dispatch(showBackdropV3({}));
     try {
       for (let i = 1; i <= 3; i++) {
         const message = `Iteration Number: ${i} completed successfully!!`;

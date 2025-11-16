@@ -129,14 +129,14 @@ const options = [
 ];
 
 // Main component
-const ArrowConnectorExamplesDashboard = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
+const ArrowConnectorExamplesDashboard: React.FC = () => {
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (selectedOption: { value: string; label: string } | null) => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);
   };
 
-  let DisplayComponent = null;
+  let DisplayComponent: React.FC | null = null;
   switch (selectedComponent) {
     case "component1":
       DisplayComponent = Component1;

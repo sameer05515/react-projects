@@ -12,7 +12,7 @@ const SampleV2 = () => {
 
   const handleUpdateTitle = useCallback(async () => {
     try {
-      dispatch(showBackdropV3());
+      dispatch(showBackdropV3({}));
       dispatch(updateBackdropV3({ title: "Starting calculations" }));
 
       let iteration = 0;

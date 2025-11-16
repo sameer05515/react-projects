@@ -4,15 +4,22 @@ import { apiRequest } from "../../common/service/apiClient/v1";
 
 const debugJSONDataViewer = false;
 const revisionAPIBaseUrl="http://localhost:8085/api/revisions";
+interface Revision {
+  id?: string;
+  text: string;
+  createdDate: string;
+  revisionAfter: number;
+}
+
 const RevisionHelperV1 = () => {
-  const [revision, setRevision] = useState({
+  const [revision, setRevision] = useState<Revision>({
     revisionAfter: 0,
     text: "",
     createdDate: "",
   });
 
-  const [revisions, setRevisions] = useState([]);
-  const [revisionsForGivenDate, setRevisionsForGivenDate] = useState([]);
+  const [revisions, setRevisions] = useState<Revision[]>([]);
+  const [revisionsForGivenDate, setRevisionsForGivenDate] = useState<Revision[]>([]);
 
   const fetchRevisionsForGivenDate = (targetDate = "") => {
     if (!targetDate) return;
@@ -21,7 +28,7 @@ const RevisionHelperV1 = () => {
     })
       .then((resp) => {
         console.log(resp);
-        setRevisionsForGivenDate([...resp.data]);
+        setRevisionsForGivenDate([...(resp.data as Revision[])]);
       })
       .catch((err) => console.log("Error occurred", err));
   };
@@ -30,7 +37,7 @@ const RevisionHelperV1 = () => {
     apiRequest({ url: revisionAPIBaseUrl })
       .then((resp) => {
         console.log(resp);
-        setRevisions([...resp.data]);
+        setRevisions([...(resp.data as Revision[])]);
       })
       .catch((err) => console.log("Error occurred", err));
   };
@@ -108,7 +115,7 @@ const RevisionHelperV1 = () => {
             <textarea
               className="form-control"
               id="text"
-              rows="3"
+              rows={3}
               value={revision.text}
               onChange={(e) => setRevision((prev) => ({ ...prev, text: e.target.value }))}
             ></textarea>

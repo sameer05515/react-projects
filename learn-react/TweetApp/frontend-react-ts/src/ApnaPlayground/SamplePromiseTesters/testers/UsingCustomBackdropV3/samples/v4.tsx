@@ -12,7 +12,7 @@ const SampleV4 = () => {
   const dispatch = useDispatch();
   const loadInitialDataForModule = useCallback(
     async (moduleName) => {
-      dispatch(showBackdropV3());
+      dispatch(showBackdropV3({}));
       try {
         /**
          * TO-DO:

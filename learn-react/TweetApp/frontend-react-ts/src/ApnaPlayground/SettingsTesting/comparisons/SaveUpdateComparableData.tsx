@@ -5,9 +5,10 @@ import { saveData, updateData } from "../../../redux/slices/comparableDataSlice"
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import type { AppDispatch } from "../../../redux/store";
 
 const SaveUpdateComparableData = ({ dataToEdit, onSaveComplete }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: dataToEdit?.title || "",
     initialSummary: dataToEdit?.initialSummary || "",
@@ -44,10 +45,10 @@ const SaveUpdateComparableData = ({ dataToEdit, onSaveComplete }) => {
   const handleSaveOrUpdate = () => {
     if (dataToEdit) {
       // If _id is present, it's an existing item, so update it
-      dispatch(updateData({ ...formData, uniqueId: dataToEdit.uniqueId }));
+      dispatch(updateData({ ...formData, uniqueId: dataToEdit.uniqueId }) as any);
     } else {
       // If _id is not present, it's a new item, so save it
-      dispatch(saveData(formData));
+      dispatch(saveData(formData) as any);
     }
     // Reset the form data after saving or updating
     setFormData({
@@ -99,7 +100,7 @@ const SaveUpdateComparableData = ({ dataToEdit, onSaveComplete }) => {
 
       <label>Initial Summary:</label>
       <CKEditor
-        editor={ClassicEditor}
+        editor={ClassicEditor as any}
         data={formData.initialSummary}
         onChange={(event, editor) =>
           handleEditorChange(event, editor, "initialSummary")
@@ -108,7 +109,7 @@ const SaveUpdateComparableData = ({ dataToEdit, onSaveComplete }) => {
 
       <label>Final Summary:</label>
       <CKEditor
-        editor={ClassicEditor}
+        editor={ClassicEditor as any}
         data={formData.finalSummary}
         onChange={(event, editor) =>
           handleEditorChange(event, editor, "finalSummary")
@@ -129,7 +130,7 @@ const SaveUpdateComparableData = ({ dataToEdit, onSaveComplete }) => {
             /> <br/>
             <label>Value:</label>
             <CKEditor
-              editor={ClassicEditor}
+              editor={ClassicEditor as any}
               data={parameter.value}
               onChange={(event, editor) =>
                 handleEditorChange(event, editor, "value")

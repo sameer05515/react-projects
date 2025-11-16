@@ -2,15 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchData } from '../../../redux/slices/comparableDataSlice'; // Adjust the path
+import type { RootState, AppDispatch } from '../../../redux/store';
 
 const ComparableDataList = ({ onDoubleClick }) => {
-  const dispatch = useDispatch();
-  const { data, status, error } = useSelector((state) => state.comparableData);
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const dispatch: AppDispatch = useDispatch();
+  const { data, status, error } = useSelector((state: RootState) => state.comparableData);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch data when the component mounts
-    dispatch(fetchData());
+    dispatch(fetchData() as any);
   }, [dispatch]);
 
   if (status === 'loading') {

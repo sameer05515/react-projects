@@ -8,7 +8,7 @@ const SampleV1 = () => {
 
   const handleClick = useCallback(async () => {
     try {
-      dispatch(showBackdropV3());
+      dispatch(showBackdropV3({}));
       await delayForMS(1000);
     } catch (error) {
       console.error("Error in SampleV1 handleClick:", error);

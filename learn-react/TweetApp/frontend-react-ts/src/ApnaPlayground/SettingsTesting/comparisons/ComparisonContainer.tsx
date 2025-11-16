@@ -5,10 +5,11 @@ import { fetchData } from "../../../redux/slices/comparableDataSlice"; // Adjust
 import ComparableDataList from "./ComparableDataList"; // Adjust the path
 import SaveUpdateComparableData from "./SaveUpdateComparableData"; // Adjust the path
 import CustomButton from "../../../common/components/custom-button/CustomButton";
+import type { AppDispatch } from "../../../redux/store";
 
 const ComparisonContainer = ({ additionalProp }) => {
-  const dispatch = useDispatch();
-  const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch: AppDispatch = useDispatch();
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [showForm, setShowForm] = useState(false);
 
   const handleDoubleClick = (item) => {
@@ -21,7 +22,7 @@ const ComparisonContainer = ({ additionalProp }) => {
     // Reset the selected item after saving or updating
     setSelectedItem(null);
     // Fetch data when the component mounts
-    dispatch(fetchData());
+    dispatch(fetchData() as any);
   };
 
   return (

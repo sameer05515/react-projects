@@ -3,16 +3,17 @@ import expectationsData from '../../../common/constants/expectationsData';
 import ComparisonTable from './ComparisonTable';
 
 const ComparisonTableContainer = () => {
-  const [selectedExpectationsSet1, setSelectedExpectationsSet1] = useState(null);
-  const [selectedExpectationsSet2, setSelectedExpectationsSet2] = useState(null);
+  interface ExpectationItem { header: string; values: string[] }
+  const [selectedExpectationsSet1, setSelectedExpectationsSet1] = useState<ExpectationItem[] | null>(null);
+  const [selectedExpectationsSet2, setSelectedExpectationsSet2] = useState<ExpectationItem[] | null>(null);
 
-  const handleSet1Change = (event) => {
+  const handleSet1Change = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTitle = event.target.value;
     const selectedSet = expectationsData.find((set) => set.title === selectedTitle);
     setSelectedExpectationsSet1(selectedSet?.expectations || []);
   };
 
-  const handleSet2Change = (event) => {
+  const handleSet2Change = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTitle = event.target.value;
     const selectedSet = expectationsData.find((set) => set.title === selectedTitle);
     setSelectedExpectationsSet2(selectedSet?.expectations || []);

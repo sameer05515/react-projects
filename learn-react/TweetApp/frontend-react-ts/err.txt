@@ -1,84 +1,153 @@
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:15:29
-TS2345: Argument of type '{ name: string; countries: string[]; idioms: string[]; } | undefined' is not assignable to parameter of type 'SetStateAction<{ name: string; countries: string[]; idioms: string[]; }>'.
-  Type 'undefined' is not assignable to type 'SetStateAction<{ name: string; countries: string[]; idioms: string[]; }>'.
-    13 |     const handleLanguageChange = (event) => {
-    14 |         const selectedLang = languages.find(lang => lang.name === event.target.value);
-  > 15 |         setSelectedLanguage(selectedLang);
-       |                             ^^^^^^^^^^^^
-    16 |     };
-    17 |
-    18 |     return (
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:30:22
-TS2322: Type '{ display: string; alignItems: string; justifyContent: string; border: string; padding: string; position: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
-  Types of property 'position' are incompatible.
-    Type 'string' is not assignable to type 'Position | undefined'.
-    28 |             </div>
-    29 |             <ArcherContainer strokeColor="black">
-  > 30 |                 <div style={styles.rowDiv}>
-       |                      ^^^^^
-    31 |                     <div style={styles.countriesContainer}>
-    32 |                         {selectedLanguage.countries.map((country, index) => (
-    33 |                             <ArcherElement key={index} id={`country-${index}`} style={styles.node}>
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:31:26
-TS2322: Type '{ display: string; flexDirection: string; alignItems: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
-  Types of property 'flexDirection' are incompatible.
-    Type 'string' is not assignable to type 'FlexDirection | undefined'.
-    29 |             <ArcherContainer strokeColor="black">
-    30 |                 <div style={styles.rowDiv}>
-  > 31 |                     <div style={styles.countriesContainer}>
-       |                          ^^^^^
-    32 |                         {selectedLanguage.countries.map((country, index) => (
-    33 |                             <ArcherElement key={index} id={`country-${index}`} style={styles.node}>
-    34 |                                 {country}
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:34:33
-TS2322: Type 'string' is not assignable to type 'ReactElement<any, any>'.
-    32 |                         {selectedLanguage.countries.map((country, index) => (
-    33 |                             <ArcherElement key={index} id={`country-${index}`} style={styles.node}>
-  > 34 |                                 {country}
-       |                                 ^^^^^^^^^
-    35 |                             </ArcherElement>
-    36 |                         ))}
-    37 |                     </div>
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:40:25
-TS2322: Type '{ targetId: string; targetAnchor: string; sourceAnchor: string; }[]' is not assignable to type 'RelationType[]'.
-  Type '{ targetId: string; targetAnchor: string; sourceAnchor: string; }' is not assignable to type 'RelationType'.
-    Types of property 'targetAnchor' are incompatible.
-      Type 'string' is not assignable to type 'AnchorPositionType'.
-    38 |                     <ArcherElement
-    39 |                         id="language"
-  > 40 |                         relations={[
-       |                         ^^^^^^^^^
-    41 |                             ...selectedLanguage.countries.map((_, index) => ({
-    42 |                                 targetId: `country-${index}`,
-    43 |                                 targetAnchor: 'right',
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:53:30
-TS2322: Type '{ padding: string; border: string; borderRadius: string; backgroundColor: string; textAlign: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
-  Types of property 'textAlign' are incompatible.
-    Type 'string' is not assignable to type 'TextAlign | undefined'.
-    51 |                         ]}
-    52 |                     >
-  > 53 |                         <div style={styles.languageNode}>
-       |                              ^^^^^
-    54 |                             <strong>{selectedLanguage.name}</strong>
-    55 |                         </div>
-    56 |                     </ArcherElement>
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:57:26
-TS2322: Type '{ display: string; flexDirection: string; alignItems: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
-  Types of property 'flexDirection' are incompatible.
-    Type 'string' is not assignable to type 'FlexDirection | undefined'.
-    55 |                         </div>
-    56 |                     </ArcherElement>
-  > 57 |                     <div style={styles.idiomsContainer}>
-       |                          ^^^^^
-    58 |                         {selectedLanguage.idioms.map((idiom, index) => (
-    59 |                             <ArcherElement key={index} id={`idiom-${index}`} style={styles.node}>
-    60 |                                 {idiom}
-ERROR in src/ApnaPlayground/MiscellaneousExamples/display-prev-selected-and-next-nodes/LanguageSelectorV3.tsx:60:33
-TS2322: Type 'string' is not assignable to type 'ReactElement<any, any>'.
-    58 |                         {selectedLanguage.idioms.map((idiom, index) => (
-    59 |                             <ArcherElement key={index} id={`idiom-${index}`} style={styles.node}>
-  > 60 |                                 {idiom}
-       |                                 ^^^^^^^
-    61 |                             </ArcherElement>
-    62 |                         ))}
-    63 |                     </div>
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:141:10
+TS2678: Type '"component1"' is not comparable to type 'null'.
+    139 |   let DisplayComponent = null;
+    140 |   switch (selectedComponent) {
+  > 141 |     case "component1":
+        |          ^^^^^^^^^^^^
+    142 |       DisplayComponent = Component1;
+    143 |       break;
+    144 |     case "component2":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:142:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    140 |   switch (selectedComponent) {
+    141 |     case "component1":
+  > 142 |       DisplayComponent = Component1;
+        |       ^^^^^^^^^^^^^^^^
+    143 |       break;
+    144 |     case "component2":
+    145 |       DisplayComponent = Component2;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:144:10
+TS2678: Type '"component2"' is not comparable to type 'null'.
+    142 |       DisplayComponent = Component1;
+    143 |       break;
+  > 144 |     case "component2":
+        |          ^^^^^^^^^^^^
+    145 |       DisplayComponent = Component2;
+    146 |       break;
+    147 |     case "component3":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:145:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    143 |       break;
+    144 |     case "component2":
+  > 145 |       DisplayComponent = Component2;
+        |       ^^^^^^^^^^^^^^^^
+    146 |       break;
+    147 |     case "component3":
+    148 |       DisplayComponent = Component3;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:147:10
+TS2678: Type '"component3"' is not comparable to type 'null'.
+    145 |       DisplayComponent = Component2;
+    146 |       break;
+  > 147 |     case "component3":
+        |          ^^^^^^^^^^^^
+    148 |       DisplayComponent = Component3;
+    149 |       break;
+    150 |     case "ArrowConnectorExample":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:148:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    146 |       break;
+    147 |     case "component3":
+  > 148 |       DisplayComponent = Component3;
+        |       ^^^^^^^^^^^^^^^^
+    149 |       break;
+    150 |     case "ArrowConnectorExample":
+    151 |       DisplayComponent = ArrowConnectorExample;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:150:10
+TS2678: Type '"ArrowConnectorExample"' is not comparable to type 'null'.
+    148 |       DisplayComponent = Component3;
+    149 |       break;
+  > 150 |     case "ArrowConnectorExample":
+        |          ^^^^^^^^^^^^^^^^^^^^^^^
+    151 |       DisplayComponent = ArrowConnectorExample;
+    152 |       break;
+    153 |     case "ArrowConnectorExampleWithStyledBox1":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:151:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    149 |       break;
+    150 |     case "ArrowConnectorExample":
+  > 151 |       DisplayComponent = ArrowConnectorExample;
+        |       ^^^^^^^^^^^^^^^^
+    152 |       break;
+    153 |     case "ArrowConnectorExampleWithStyledBox1":
+    154 |       DisplayComponent = ArrowConnectorExampleWithStyledBox1;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:153:10
+TS2678: Type '"ArrowConnectorExampleWithStyledBox1"' is not comparable to type 'null'.
+    151 |       DisplayComponent = ArrowConnectorExample;
+    152 |       break;
+  > 153 |     case "ArrowConnectorExampleWithStyledBox1":
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    154 |       DisplayComponent = ArrowConnectorExampleWithStyledBox1;
+    155 |       break;
+    156 |     case "ArrowConnectorExampleWithStyledBox2":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:154:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    152 |       break;
+    153 |     case "ArrowConnectorExampleWithStyledBox1":
+  > 154 |       DisplayComponent = ArrowConnectorExampleWithStyledBox1;
+        |       ^^^^^^^^^^^^^^^^
+    155 |       break;
+    156 |     case "ArrowConnectorExampleWithStyledBox2":
+    157 |       DisplayComponent = ArrowConnectorExampleWithStyledBox2;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:156:10
+TS2678: Type '"ArrowConnectorExampleWithStyledBox2"' is not comparable to type 'null'.
+    154 |       DisplayComponent = ArrowConnectorExampleWithStyledBox1;
+    155 |       break;
+  > 156 |     case "ArrowConnectorExampleWithStyledBox2":
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    157 |       DisplayComponent = ArrowConnectorExampleWithStyledBox2;
+    158 |       break;
+    159 |     case "ArrowConnectorExampleWithStyledBox3":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:157:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    155 |       break;
+    156 |     case "ArrowConnectorExampleWithStyledBox2":
+  > 157 |       DisplayComponent = ArrowConnectorExampleWithStyledBox2;
+        |       ^^^^^^^^^^^^^^^^
+    158 |       break;
+    159 |     case "ArrowConnectorExampleWithStyledBox3":
+    160 |       DisplayComponent = ArrowConnectorExampleWithStyledBox3;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:159:10
+TS2678: Type '"ArrowConnectorExampleWithStyledBox3"' is not comparable to type 'null'.
+    157 |       DisplayComponent = ArrowConnectorExampleWithStyledBox2;
+    158 |       break;
+  > 159 |     case "ArrowConnectorExampleWithStyledBox3":
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    160 |       DisplayComponent = ArrowConnectorExampleWithStyledBox3;
+    161 |       break;
+    162 |     case "ReactArcherApp1":
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:160:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    158 |       break;
+    159 |     case "ArrowConnectorExampleWithStyledBox3":
+  > 160 |       DisplayComponent = ArrowConnectorExampleWithStyledBox3;
+        |       ^^^^^^^^^^^^^^^^
+    161 |       break;
+    162 |     case "ReactArcherApp1":
+    163 |       DisplayComponent = ReactArcherApp1;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:162:10
+TS2678: Type '"ReactArcherApp1"' is not comparable to type 'null'.
+    160 |       DisplayComponent = ArrowConnectorExampleWithStyledBox3;
+    161 |       break;
+  > 162 |     case "ReactArcherApp1":
+        |          ^^^^^^^^^^^^^^^^^
+    163 |       DisplayComponent = ReactArcherApp1;
+    164 |       break;
+    165 |     default:
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:163:7
+TS2322: Type '() => JSX.Element' is not assignable to type 'null'.
+    161 |       break;
+    162 |     case "ReactArcherApp1":
+  > 163 |       DisplayComponent = ReactArcherApp1;
+        |       ^^^^^^^^^^^^^^^^
+    164 |       break;
+    165 |     default:
+    166 |       DisplayComponent = null;
+ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:173:30
+TS2604: JSX element type 'DisplayComponent' does not have any construct or call signatures.
+    171 |       <Select options={options} onChange={handleChange} classNamePrefix="react-select" />
+    172 |       <div className="rounded-2xl border border-dashed border-gray-300 bg-slate-50 p-4 min-h-[200px]">
+  > 173 |         {DisplayComponent ? <DisplayComponent /> : <p className="text-center text-sm text-gray-500">Select an example to preview.</p>}
+        |                              ^^^^^^^^^^^^^^^^
+    174 |       </div>
+    175 |     </div>
+    176 |   );

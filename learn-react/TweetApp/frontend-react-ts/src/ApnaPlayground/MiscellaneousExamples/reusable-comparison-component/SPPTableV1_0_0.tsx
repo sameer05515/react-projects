@@ -61,14 +61,14 @@ const ComparisonComponent = ({ data }) => {
 };
 
 // CSS styles
-const thStyle = {
+const thStyle: React.CSSProperties = {
   border: '1px solid #ddd',
   padding: '8px',
   backgroundColor: '#f2f2f2',
-  textAlign: 'left',
+  textAlign: 'left' as React.CSSProperties['textAlign'],
 };
 
-const tdStyle = {
+const tdStyle: React.CSSProperties = {
   border: '1px solid #ddd',
   padding: '8px',
 };

@@ -11,15 +11,16 @@ import {
 
 
 const ReactIconsDemonstrateDashboard = () => {
-  const [selectedIcon, setSelectedIcon] = useState(null);
-  const selectedRef = useRef(null);
+  interface IconItem { uniqueId: string; name: string }
+  const [selectedIcon, setSelectedIcon] = useState<IconItem | null>(null);
+  const selectedRef = useRef<HTMLSpanElement | null>(null);
 
   const selectedIndex = useMemo(() => {
     return getSelectedIndex(selectedIcon);
   }, [selectedIcon]);
 
   const IconComponent = useMemo(() => {
-    return getIconComponent(selectedIcon);
+    return getIconComponent(selectedIcon as any);
   }, [selectedIcon]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const ReactIconsDemonstrateDashboard = () => {
         <div className="w-80 flex-shrink-0 rounded-lg border border-gray-200 bg-gray-50 p-3">
           <Tree
             data={iconFamily}
-            renderNode={(node) => (
+            renderNode={(node: any) => (
               <TreeNode
                 node={node}
                 setSelectedIcon={setSelectedIcon}

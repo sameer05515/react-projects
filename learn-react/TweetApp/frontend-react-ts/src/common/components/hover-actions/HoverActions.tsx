@@ -1,4 +1,4 @@
-import { useMemo, useState, /**FC, ReactNode*/ } from "react";
+import React, { useMemo, useState } from "react";
 
 // interface HoverActionsProps {
 //   actions?: ReactNode[]; // Optional array of strings for actions
@@ -7,7 +7,12 @@ import { useMemo, useState, /**FC, ReactNode*/ } from "react";
 
 const defaultActions = ["Action 1", "Action 2", "Action 3"];
 
-const HoverActions = /**: FC<HoverActionsProps> */ ({ actions = [], title }) => {
+interface HoverActionsProps {
+  actions?: React.ReactNode[];
+  title?: string;
+}
+
+const HoverActions: React.FC<HoverActionsProps> = ({ actions = [], title }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const calculatedActions = useMemo(() => {

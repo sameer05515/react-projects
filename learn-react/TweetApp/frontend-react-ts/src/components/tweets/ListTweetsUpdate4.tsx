@@ -4,16 +4,25 @@ import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/constants/globalConstants";
 import Accordion from "../../common/components/accordion/Accordion";
 
-function formatTimestamp(timestamp) {
+function formatTimestamp(timestamp: string) {
   return new Date(timestamp).toLocaleString();
 }
+
+type Tweet = { _id: string; content: string; createdAt: string; [k: string]: any };
+
+type ListTweetsProps = {
+  tweets: Tweet[];
+  onUpdate?: (updatedTweet: any) => void;
+  refreshFunction?: () => void;
+  handleTweetCreated?: (tweet: any) => void;
+};
 
 function ListTweetsUpdate({
   tweets,
   onUpdate = () => {},
   refreshFunction = () => {},
   handleTweetCreated = () => {},
-}) {
+}: ListTweetsProps) {
   const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
 
   const [sortAscending, setSortAscending] = useState(false); // Toggle to sort ascending or descending

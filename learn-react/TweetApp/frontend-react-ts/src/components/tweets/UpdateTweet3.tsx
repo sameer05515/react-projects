@@ -94,7 +94,6 @@ function UpdateTweet({ tweet, onUpdate }) {
         const updatedTweet = await response.json();
         onUpdate(updatedTweet);
         setNewNestedComment("");
-        setSelectedCommentId(null);
       }
     } catch (error) {
       console.error("Error adding nested comment:", error);

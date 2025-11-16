@@ -10,7 +10,7 @@ export const fetchPinnedItems = createAsyncThunk("pinnedItems/fetchPinnedItems",
 // Define an async thunk to create a new topic
 export const upsertPinnedItem = createAsyncThunk(
   "pinnedItems/upsertPinnedItem",
-  async (topicData) => {
+  async (topicData: any) => {
     const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/pinned-items`, {
       method: "POST",
       headers: {
@@ -23,6 +23,16 @@ export const upsertPinnedItem = createAsyncThunk(
 );
 
 
+type PinnedItem = {
+  uniqueId?: string;
+  [key: string]: any;
+};
+
+type PinnedItemsState = {
+  data: PinnedItem[];
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+};
 
 const pinnedItemSlice = createSlice({
   name: "pinnedItems",
@@ -30,7 +40,8 @@ const pinnedItemSlice = createSlice({
     data: [],
     loading: "idle",
     error: null,
-  },
+  } as PinnedItemsState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPinnedItems.pending, (state) => {
@@ -38,20 +49,20 @@ const pinnedItemSlice = createSlice({
       })
       .addCase(fetchPinnedItems.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;
+        state.data = action.payload as PinnedItem[];
       })
       .addCase(fetchPinnedItems.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       }).addCase(upsertPinnedItem.fulfilled, (state, action) => {
-        const updatedTopic = action.payload;
+        const updatedTopic = action.payload as PinnedItem;
         const index = state.data.findIndex(
-          (topic) => topic.uniqueId === updatedTopic.uniqueId
+          (topic: PinnedItem) => topic.uniqueId === updatedTopic.uniqueId
         );
         if (index !== -1) {
-          state.data[index] = updatedTopic;
+          state.data[index] = updatedTopic as PinnedItem;
         } else if (updatedTopic.uniqueId) {
-          state.data.push(action.payload);
+          state.data.push(updatedTopic as PinnedItem);
         }
       });
   }

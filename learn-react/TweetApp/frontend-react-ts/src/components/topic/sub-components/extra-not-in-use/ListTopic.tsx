@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
 import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
 import CreateTopic from "./CreateTopic"; // Import the CreateTopic component
-import TopicCard from "./TopicCard";
+import TopicCard from "../common/TopicCard";
 
 function ListTopic() {
   const topics = useSelector(selectAllFlatTopics);
-  const loading = useSelector((state) => state.topics.loading);
-  const error = useSelector((state) => state.topics.error);
+  const loading = useSelector((state: RootState) => state.topics.loading);
+  const error = useSelector((state: RootState) => state.topics.error as string | null);
   const [showForm, setShowForm] = useState(false);
 
   // State to manage editing
@@ -58,7 +59,7 @@ function ListTopic() {
         <div className="grid grid-cols-5 gap-5">
           {topics.map((topic) => (
             <div
-              key={topic.topicId}
+              key={topic.uniqueId}
               className="rounded border border-gray-300 p-2.5"
               onDoubleClick={() => handleEditTopic(topic)}
             >

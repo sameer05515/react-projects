@@ -16,10 +16,22 @@ const initialSharedData = {
 };
 
 // Create a context for shared configurations and data
-const SharedConfigurationsContext = createContext();
+type SharedContextShape = {
+  sharedData: typeof initialSharedData;
+  SharedService: {
+    setSelectedNode: (n: any) => void;
+    refreshNodes: () => Promise<void>;
+    createNode: (d: any) => Promise<void>;
+    getNodeByUniqueId: (id: string) => Promise<void>;
+    updateNodeByUniqueId: (id: string, d: any) => Promise<void>;
+    updateRelationInConnectedNodes: (d: any) => Promise<void>;
+  };
+};
+
+const SharedConfigurationsContext = createContext<SharedContextShape>({} as any);
 
 // Create a provider component
-const SharedConfigurationsProvider = ({ children }) => {
+const SharedConfigurationsProvider = ({ children }: { children: React.ReactNode }) => {
   const [sharedData, setSharedData] = useState(initialSharedData);
   const {
     createNode: apiCreateNode,

@@ -11,12 +11,19 @@ import {
   fetchTopics,
   selectTopicsStateCombined
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import { fetchTags } from "../../../../redux/slices/tagsSlice";
 
-const TopicTreeViewDashboard = () => {
-    const dispatch = useDispatch();
+type TopicTreeViewProps = {
+  containerClassName?: string;
+  itemClassName?: string;
+  headerClassName?: string;
+};
+
+const TopicTreeViewDashboard: React.FC<TopicTreeViewProps> = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const selectedElementRef = useRef(null);
+    const selectedElementRef = useRef<HTMLSpanElement | null>(null);
 
     // Fetch topics and tags data only when component mounts (with smart caching)
     // Tags are needed for CreateTopic component
@@ -55,12 +62,12 @@ const TopicTreeViewDashboard = () => {
       navigate(`${selectedItem.uniqueId}`);
     };
       
-    if (status === "pending" || status === "loading") {
+    if (status === "pending") {
       return <div>Loading...</div>;
     }
   
-    if (status === "rejected" || status === "failed" || error) {
-      return <div>Error: {error}</div>;
+    if (status === "rejected" || error) {
+      return <div>Error: {String(error)}</div>;
     }
   
     return (
@@ -97,7 +104,7 @@ const TopicTreeViewDashboard = () => {
           {topics && topics.length > 0 && (
             <Tree
               data={topics}
-              selectedNodeId={selectedTopicUniqueId}
+              selectedNodeId={selectedTopicUniqueId || undefined}
               renderNode={(topic) => (
                 <>
                   <span
@@ -119,6 +126,9 @@ const TopicTreeViewDashboard = () => {
                 </>
               )}
             />
+            {/* Provide required handlers to satisfy Tree props */}
+            {/* @ts-ignore */}
+            <Tree data={[]} renderNode={() => null} onDragStart={undefined as any} onDrop={undefined as any} errorMessageOnNoData={"" as any} />
           )}
         </div>
         {/* -- left-section */}

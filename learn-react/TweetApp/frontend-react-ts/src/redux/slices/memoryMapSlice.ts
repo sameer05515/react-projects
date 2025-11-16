@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Define an async thunk to fetch all memory maps
@@ -8,7 +9,7 @@ export const fetchMemoryMaps = createAsyncThunk("memoryMaps/fetchMemoryMaps", as
 });
 
 // Define an async thunk to create a new memory map
-export const createMemoryMap = createAsyncThunk("memoryMaps/createMemoryMap", async (memoryMapData) => {
+export const createMemoryMap = createAsyncThunk("memoryMaps/createMemoryMap", async (memoryMapData: any) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps`, {
     method: "POST",
     headers: {
@@ -20,7 +21,7 @@ export const createMemoryMap = createAsyncThunk("memoryMaps/createMemoryMap", as
 });
 
 // Define an async thunk to update a memory map by uniqueId
-export const updateMemoryMap = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData) => {
+export const updateMemoryMap = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData: { uniqueId: string } & Record<string, any>) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}`, {
     method: "PUT",
     headers: {
@@ -32,7 +33,7 @@ export const updateMemoryMap = createAsyncThunk("memoryMaps/updateMemoryMap", as
 });
 
 // Define an async thunk to update a memory map by uniqueId, for given skeleton
-export const updateMemoryMapForGivenSkeleton = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData) => {
+export const updateMemoryMapForGivenSkeleton = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData: { uniqueId: string } & Record<string, any>) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}/append-skeleton`, {
     method: "PUT",
     headers: {
@@ -44,16 +45,33 @@ export const updateMemoryMapForGivenSkeleton = createAsyncThunk("memoryMaps/upda
 });
 
 // Define an async thunk to fetch a memory map by uniqueId
-export const fetchMemoryMapByUniqueId = createAsyncThunk("memoryMaps/fetchMemoryMapByUniqueId", async (uniqueId) => {
+export const fetchMemoryMapByUniqueId = createAsyncThunk("memoryMaps/fetchMemoryMapByUniqueId", async (uniqueId: string) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${uniqueId}`);
   return response.json();
 });
 
-const getNameWithAncestors = (topic) => {
+type MemoryMapNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: MemoryMapNode[];
+  _id?: string;
+};
+
+type FlatMemoryMap = {
+  uniqueId: string;
+  name: string;
+  title: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: MemoryMapNode[];
+  _id?: string;
+};
+
+const getNameWithAncestors = (topic: MemoryMapNode | null | undefined) => {
   if (!topic) {
     return "";
   }
-  const ancestorNames = [];
+  const ancestorNames: string[] = [];
   let currentAncestor =
     topic.ancestors?.find((ancestor) => !ancestor.parentId) || null;
 
@@ -71,11 +89,11 @@ const getNameWithAncestors = (topic) => {
 
 // Helper function to prepare flat data from tree-structured data
 // Export for use in selectors
-export const prepareMemoryMapsQueue = (list, prevQueue = []) => {
-  let queue = [...prevQueue];
+export const prepareMemoryMapsQueue = (list: MemoryMapNode[] = [], prevQueue: FlatMemoryMap[] = []) => {
+  let queue: FlatMemoryMap[] = [...prevQueue];
 
   if (list && list.length > 0) {
-    list.forEach((m) => {
+    list.forEach((m: MemoryMapNode) => {
       queue = [
         ...queue,
         {
@@ -95,6 +113,15 @@ export const prepareMemoryMapsQueue = (list, prevQueue = []) => {
   return queue;
 };
 
+type MemoryMapsState = {
+  selectedMemoryMapUniqueId: string | null;
+  data: MemoryMapNode[];
+  searchedData: any[];
+  searchString: string;
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+};
+
 const memoryMapSlice = createSlice({
   name: "memoryMaps",
   initialState: {
@@ -104,7 +131,7 @@ const memoryMapSlice = createSlice({
     searchString:'',
     loading: "idle",
     error: null,
-  },
+  } as MemoryMapsState,
   reducers: {
     setSelectedMemoryMapUniqueId: (state, action) => {
       state.selectedMemoryMapUniqueId = action.payload;
@@ -120,24 +147,24 @@ const memoryMapSlice = createSlice({
       })
       .addCase(fetchMemoryMaps.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;
+        state.data = action.payload as MemoryMapNode[];
         // flatData now computed via memoized selector
       })
       .addCase(fetchMemoryMaps.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       })
       .addCase(fetchMemoryMapByUniqueId.fulfilled, (state, action) => {
-        state.selectedMemoryMapUniqueId = action.payload.uniqueId;
+        state.selectedMemoryMapUniqueId = (action.payload as MemoryMapNode).uniqueId;
       })
       .addCase(createMemoryMap.fulfilled, (state, action) => {
-        state.data.push(action.payload);
+        state.data.push(action.payload as MemoryMapNode);
         // flatData now computed via memoized selector
       })
       .addCase(updateMemoryMap.fulfilled, (state, action) => {
-        const updatedMemoryMap = action.payload;
+        const updatedMemoryMap = action.payload as MemoryMapNode;
         const index = state.data.findIndex(
-          (memoryMap) => memoryMap.uniqueId === updatedMemoryMap.uniqueId
+          (memoryMap: MemoryMapNode) => memoryMap.uniqueId === updatedMemoryMap.uniqueId
         );
         if (index !== -1) {
           state.data[index] = updatedMemoryMap;
@@ -151,17 +178,17 @@ export default memoryMapSlice.reducer;
 export const { setSelectedMemoryMapUniqueId } = memoryMapSlice.actions;
 
 /* ============== Selectors ======================*/
-const selectMemoryMapsState = (state) => state.memoryMaps;
+const selectMemoryMapsState = (state: RootState) => state.memoryMaps;
 
 export const selectAllTreeMemoryMaps = createSelector(
   selectMemoryMapsState,
-  (memoryMapsState) => memoryMapsState.data
+  (memoryMapsState) => memoryMapsState.data as MemoryMapNode[]
 );
 
 // Memoized selector to derive flat data from tree structure
 export const selectAllFlatMemoryMaps = createSelector(
   [selectAllTreeMemoryMaps],
-  (treeMemoryMaps) => prepareMemoryMapsQueue(treeMemoryMaps)
+  (treeMemoryMaps: MemoryMapNode[]) => prepareMemoryMapsQueue(treeMemoryMaps)
 );
 
 export const selectSelectedMemoryMapUniqueId = createSelector(
@@ -171,7 +198,7 @@ export const selectSelectedMemoryMapUniqueId = createSelector(
 
 export const selectNextMemoryMapUniqueId = createSelector(
   [selectAllFlatMemoryMaps, selectSelectedMemoryMapUniqueId],
-  (flatMemoryMapList, selectedMemoryMapUId) => {
+  (flatMemoryMapList: FlatMemoryMap[], selectedMemoryMapUId: string | null) => {
     const dataLength = flatMemoryMapList?.length || 0;
     const selectedIndex = flatMemoryMapList.findIndex((memoryMap) => memoryMap.uniqueId === selectedMemoryMapUId);
     if (selectedIndex < 0) {
@@ -184,7 +211,7 @@ export const selectNextMemoryMapUniqueId = createSelector(
 
 export const selectPrevMemoryMapUniqueId = createSelector(
   [selectAllFlatMemoryMaps, selectSelectedMemoryMapUniqueId],
-  (flatMemoryMapList, selectedMemoryMapUId) => {
+  (flatMemoryMapList: FlatMemoryMap[], selectedMemoryMapUId: string | null) => {
     const dataLength = flatMemoryMapList?.length || 0;
     const selectedIndex = flatMemoryMapList.findIndex((memoryMap) => memoryMap.uniqueId === selectedMemoryMapUId);
     if (selectedIndex < 0) {

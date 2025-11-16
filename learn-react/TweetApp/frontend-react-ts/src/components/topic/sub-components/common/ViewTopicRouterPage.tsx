@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../../redux/store";
 import {
   createSearchParams,
   useNavigate,
@@ -19,7 +20,7 @@ import TopicCard from "./TopicCard";
 
 const ViewTopic = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get("sectionId");
@@ -30,9 +31,9 @@ const ViewTopic = () => {
     url: sectionFetchUrl,
   });
 
-  const pinnedItems = useSelector((state) => state.pinnedItems.data);
+  const pinnedItems = useSelector((state: RootState) => state.pinnedItems.data as any[]);
 
-  const [pinnedTopics, setPinnedTopics] = useState([]);
+  const [pinnedTopics, setPinnedTopics] = useState<any[]>([]);
   const [isPinned, setIsPinned] = useState(false);
 
   const topics = useSelector(selectAllFlatTopics);
@@ -78,26 +79,26 @@ const ViewTopic = () => {
     sectionsRefetch();
   }, [id, sectionId, sectionsRefetch]);
 
-  const handleEdit = (item) => {
-    navigate(`/topic-mgmt/${data.uniqueId}/edit`);
+  const handleEdit = (_item: any) => {
+    navigate(`/topic-mgmt/${id}/edit`);
   };
-  const handleTopicTraversal = (increment) => {
+  const handleTopicTraversal = (increment: number) => {
     if (increment === 1 && nextTopicUniqueId) {
       navigate(`/topic-mgmt/${nextTopicUniqueId}`);
     } else if (increment === -1 && prevTopicUniqueId) {
       navigate(`/topic-mgmt/${prevTopicUniqueId}`);
     }
   };
-  const handleAddSubTask = (item) => {
+  const handleAddSubTask = (_item: any) => {
     navigate(`/topic-mgmt/${id}/add-sub-topic`);
   };
-  const handleChildTaskClick = (item) => {
+  const handleChildTaskClick = (item: any) => {
     navigate(`/topic-mgmt/${item?.uniqueId}`);
   };
-  const handleMoveAnotherParent = (item) => {
+  const handleMoveAnotherParent = (_item: any) => {
     navigate(`/topic-mgmt/${id}/move-parent`);
   };
-  const handlePinTopic = (item, isPinned) => {
+  const handlePinTopic = (item: any, isPinned: boolean) => {
     dispatch(
       upsertPinnedItem({
         linkedUniqueId: item.uniqueId,
@@ -106,7 +107,7 @@ const ViewTopic = () => {
       })
     );
   };
-  const handleAncestorClick = (ancestor) => {
+  const handleAncestorClick = (ancestor: any) => {
     if (!ancestor) {
       return;
     }
@@ -144,14 +145,14 @@ const ViewTopic = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {String(error)}</div>;
   }
   return (
     <>
       {data && (
         <TopicCard
           topic={data}
-          topicSections={sectionsData}
+          topicSections={sectionsData || []}
           pinnedTopics={pinnedTopics}
           isPinned={isPinned}
           showDescription={true}

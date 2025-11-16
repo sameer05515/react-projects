@@ -217,7 +217,7 @@ const Playground = () => {
     </>
   );
 };
-const Node = React.memo(({ isSelected = false, node, onItemRightClick, onItemSelection }) => (
+const Node = React.memo(({ isSelected = false, node, onItemRightClick, onItemSelection }: { isSelected?: boolean; node: any; onItemRightClick: (e: React.MouseEvent) => void; onItemSelection: (n: any) => void }) => (
   <div
     className={`text-xs ${isSelected ? "font-bold" : "font-normal"}`}
     onDoubleClick={() => !isSelected && onItemSelection(node)}

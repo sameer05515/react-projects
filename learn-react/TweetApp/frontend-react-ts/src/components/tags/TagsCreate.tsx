@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createTag, updateTag } from '../../redux/slices/tagsSlice';
 import CustomButton from '../../common/components/custom-button/CustomButton';
+import type { AppDispatch } from '../../redux/store';
 
-function TagsCreate({ tag, onCancelEdit }) {
-  const dispatch = useDispatch();
+type TagData = { name: string; description: string };
+type TagsCreateProps = { tag?: TagData | null; onCancelEdit?: () => void };
 
-  const [tagData, setTagData] = useState({
+function TagsCreate({ tag, onCancelEdit }: TagsCreateProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [tagData, setTagData] = useState<TagData>({
     name: '',
     description: '',
   });
@@ -25,15 +29,15 @@ function TagsCreate({ tag, onCancelEdit }) {
     }
   }, [tag, isEditing]);
 
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<{ name?: string }>({});
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTagData({ ...tagData, [name]: value });
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: { name?: string } = {};
 
     if (!tagData.name.trim()) {
       errors.name = 'Name is required';
@@ -44,17 +48,17 @@ function TagsCreate({ tag, onCancelEdit }) {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSaveTag = (e) => {
+  const handleSaveTag = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (validateForm()) {
       if (isEditing) {
         // If editing an existing tag, dispatch the updateTag action
         // console.log(JSON.stringify(` in component : tagData : ${JSON.stringify(tagData)}`))
-        dispatch(updateTag(tagData));
+        dispatch(updateTag({ ...tagData, uniqueId: (tag as any)?.uniqueId } as any));
       } else {
         // If creating a new tag, dispatch the createTag action
-        dispatch(createTag(tagData));
+        dispatch(createTag(tagData as any));
       }
 
       // Clear the form and close the edit mode

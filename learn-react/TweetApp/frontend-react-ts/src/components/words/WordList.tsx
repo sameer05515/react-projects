@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWords } from "../../redux/slices/wordsSlice";
 import { SmartPreviewer } from "../../common/components/Smart/Editor/v3";
+import type { RootState, AppDispatch } from "../../redux/store";
 
-const WordList = () => {
-  const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.words);
+const WordList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, loading, error } = useSelector((state: RootState) => state.words as any);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -13,7 +14,7 @@ const WordList = () => {
     dispatch(fetchWords({ page: 1, pageSize: 10 }));
   }, [dispatch]);
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (newPage: number) => {
     // Fetch words when the page changes
     dispatch(fetchWords({ page: newPage, pageSize: 10 }));
     setCurrentPage(newPage);

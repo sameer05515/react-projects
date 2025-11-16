@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../common/components/Smart/Editor/v3";
 
-const TagForm = ({
+type TagFormProps = {
+  formData: any;
+  onSubmit?: (data: any) => void;
+  onCancel?: () => void;
+};
+
+const TagForm: React.FC<TagFormProps> = ({
   formData: initialValue,
   onSubmit = () => { },
   onCancel: handleCancel = () => { },
 }) => {
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -39,23 +45,23 @@ const TagForm = ({
       textInputType: "",
     },
   });
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSmartEditorChange = (smartContent) => {
+  const handleSmartEditorChange = (smartContent: any) => {
     setFormData({ ...formData, smartContent: smartContent });
   };
 
-  const handleSmartEditorError = (error) => {
+  const handleSmartEditorError = (error: string) => {
     setSmartEditorError(error);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
+      onSubmit && onSubmit(formData);
     }
   };
   return (
@@ -98,7 +104,7 @@ const TagForm = ({
         </div>
       )}
       <div className="mt-4 flex gap-2">
-        <CustomButton onClick={(e) => handleSubmit(e)}>
+        <CustomButton onClick={(e) => handleSubmit(e as any)}>
           {formData.uniqueId ? "Update " : "Save "}Changes
         </CustomButton>
         <CustomButton onClick={handleCancel}>Cancel</CustomButton>

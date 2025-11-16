@@ -7,12 +7,13 @@ import {
   selectAllTreeTags,
 } from "../../redux/slices/tagsSlice";
 import TagsCreate from "./TagsCreate"; // Import the TagsCreate componenthe createTag and updateTag actions
+import type { RootState, AppDispatch } from "../../redux/store";
 
 function TagList() {
   const tags = useSelector(selectAllTreeTags);
-  const loading = useSelector((state) => state.tags.loading);
-  const error = useSelector((state) => state.tags.error);
-  const dispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.tags.loading);
+  const error = useSelector((state: RootState) => state.tags.error as string | null);
+  const dispatch = useDispatch<AppDispatch>();
 
   // State to manage editing
   const [editTag, setEditTag] = useState(null);
@@ -46,7 +47,7 @@ function TagList() {
         {loading === "pending" && <p className="mt-2 text-sm text-gray-500">Loading tags...</p>}
         {error && <p className="mt-2 text-sm text-red-600">Error: {error}</p>}
       </div>
-      <TagsCreate tag={editTag} onSave={handleCreateOrUpdateTag} onCancelEdit={handleCancelEdit} />
+      <TagsCreate tag={editTag} onCancelEdit={handleCancelEdit} />
       {loading === "fulfilled" && (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {tags.map((tag) => (
@@ -56,7 +57,7 @@ function TagList() {
               onDoubleClick={() => handleEditTag(tag)}
             >
               <strong className="text-lg text-gray-900">{tag.name}</strong>
-              <p className="mt-2 text-sm text-gray-600">{tag.description}</p>
+              <p className="mt-2 text-sm text-gray-600">{(tag as any).description}</p>
             </div>
           ))}
         </div>

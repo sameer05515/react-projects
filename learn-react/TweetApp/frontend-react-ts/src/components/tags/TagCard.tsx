@@ -9,7 +9,20 @@ import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataVie
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvider";
 
-const TagCard = ({
+type TagCardProps = {
+  tag: any;
+  showDescription?: boolean;
+  onEdit?: (tag: any) => void;
+  onTagTraversal?: (increment: number) => void;
+  onAddSubTag?: (tag: any) => void;
+  onChildTagClick?: (tag: any) => void;
+  onMoveAnotherParent?: (tag: any) => void;
+  onAncestorClick?: (ancestor: any) => void;
+  onLinkedItemClick?: (linked: any, type: string) => void;
+  onBaseSpanClick?: () => void;
+};
+
+const TagCard: React.FC<TagCardProps> = ({
   tag,
   showDescription = false,
   onEdit = () => {},
@@ -101,16 +114,16 @@ const TagCard = ({
             data={sectionsList}
             renderNode={(t) => (
               <>
-                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
+                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type) && <HoverableSpan onClick={() => onLinkedItemClick!({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
 
                 {// TagLinkedItemType.topic === type ||
                 // TagLinkedItemType.task === type ||
-                TagLinkedItemType.question === type && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
+                TagLinkedItemType.question === type && <HoverableSpan onClick={() => onLinkedItemClick!({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
 
                 {TagLinkedItemType.topicSection === type && (
                   <HoverableSpan
                     onClick={() =>
-                      onLinkedItemClick(
+                      onLinkedItemClick!(
                         {
                           linkedTopicUniqueId: t.linkedTopicUniqueId,
                           uniqueId: t.uniqueId,
@@ -124,9 +137,12 @@ const TagCard = ({
                 )}
               </>
             )}
+            onDragStart={undefined as any}
+            onDrop={undefined as any}
+            errorMessageOnNoData={"" as any}
           />
         )}
-        <JSONDataViewer metadata={{ sectionsList, type }} title="sectionsList" />
+        <JSONDataViewer metadata={{ sectionsList, type } as any} title="sectionsList" />
       </>
     );
   };
@@ -146,7 +162,7 @@ const TagCard = ({
       </div>
 
       <div className="mb-4">
-        <Breadcrumbs providedItem={tag} providedItemType={BreadcrumbItemType.TAG} ancestors={tag.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
+        <Breadcrumbs providedItem={tag as any} providedItemType={BreadcrumbItemType.TAG as any} ancestors={tag.ancestors as any} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
         <h3 className="text-xl font-semibold mb-2">{tag.name}</h3>
         <div className="text-xs rounded">
           <span className="mr-2.5">

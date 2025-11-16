@@ -16,7 +16,41 @@ import { formatDateToDDMMMYYYYWithTime, prepareQuestions } from "../../../../com
 import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 import TopicSectionCard from "./TopicSectionCard";
 
-const TopicCard = ({
+type TopicNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TopicNode[];
+  sections?: Array<{ uniqueId: string; name: string }>;
+  description?: string;
+  smartContent?: any;
+  occurenceDate?: string;
+  tags?: string[];
+  _id?: string;
+};
+
+type TopicCardProps = {
+  topic: TopicNode;
+  showDescription?: boolean;
+  selectedSectionId?: string | null;
+  topicSections?: any[];
+  pinnedTopics?: any[];
+  isPinned?: boolean;
+  onEdit?: (topic: TopicNode) => void;
+  onTopicTraversal?: (increment: number) => void;
+  onAddSubTopic?: (topic: TopicNode) => void;
+  onChildTopicClick?: (topic: TopicNode) => void;
+  onMoveAnotherParent?: (topic: TopicNode) => void;
+  onAncestorClick?: (ancestor: any) => void;
+  onPinTopic?: (topic: TopicNode, isPinned: boolean) => void;
+  onAddSection?: (topic: TopicNode) => void;
+  onEditSection?: (sectionUniqueId: string) => void;
+  onTopicSectionClick?: (sectionUniqueId: string) => void;
+  onLinkedTagSelection?: (tagUid: string) => void;
+  onBaseSpanClick?: () => void;
+};
+
+const TopicCard: React.FC<TopicCardProps> = ({
   topic,
   showDescription = false,
   selectedSectionId = null,
@@ -47,7 +81,7 @@ const TopicCard = ({
 
   const filteredTags = useSelector(getTagsForGivenIds(topic?.tags || []));
 
-  const selectedElementRef = useRef(null);
+  const selectedElementRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (selectedElementRef.current) {
@@ -107,11 +141,11 @@ const TopicCard = ({
             title: "Next",
             onClick: () => traverseTopic(1),
           },
-        ]}
+        ] as any}
       />
 
       <div>
-        <Breadcrumbs providedItem={topic} providedItemType={BreadcrumbItemType.TOPIC} ancestors={topic.ancestors} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
+        <Breadcrumbs providedItem={topic as any} providedItemType={BreadcrumbItemType.TOPIC as any} ancestors={topic.ancestors as any} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
         <h3>{topic.name}</h3>
         <div className="text-xs rounded mb-2.5">
           <ListSection
@@ -191,6 +225,7 @@ const TopicCard = ({
         <FloatingButton
           buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
           buttonText={"Show Pinned Topics"}
+          iconName={undefined as any}
         >
           <ListSection
             title="List of all pinned Topics:-"
@@ -198,7 +233,7 @@ const TopicCard = ({
             items={pinnedTopics}
             renderItem={(t) => (
               <div className="ml-4 pb-1" key={t.uniqueId}>
-                <HoverableSpan onClick={() => onChildTopicClick({ uniqueId: t.linkedUniqueId })}>{t.title}</HoverableSpan>
+                <HoverableSpan onClick={() => onChildTopicClick({ uniqueId: t.linkedUniqueId } as any)}>{t.title}</HoverableSpan>
               </div>
             )}
           />
@@ -207,6 +242,7 @@ const TopicCard = ({
         <FloatingButton
           buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
           buttonText={"?"}
+          iconName={undefined as any}
         >
           <div className="p-2.5">
             If this <b>{`${topic.name}`}</b> is a topic, It should answer below questions
@@ -246,6 +282,8 @@ const TopicCard = ({
               <HoverableSpan onClick={() => onChildTopicClick(t)}>{t.name}</HoverableSpan>
             </>
           )}
+          onDragStart={undefined as any}
+          onDrop={undefined as any}
         />
       </ToggleablePanel>
 
@@ -278,8 +316,8 @@ const TopicCard = ({
                 // tags={tags}
                 selectedElementRef={selectedElementRef}
                 selectedSectionId={selectedSectionId}
-                onEditSection={onEditSection}
-                onLinkedTagSelection={handleLinkedTagSelection}
+                onEditSection={onEditSection as any}
+                onLinkedTagSelection={handleLinkedTagSelection as any}
               />
             )}
           />

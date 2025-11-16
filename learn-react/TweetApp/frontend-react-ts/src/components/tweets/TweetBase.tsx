@@ -4,7 +4,7 @@ import GlobalConstants from "../../common/constants/globalConstants";
 
 const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
 const TweetBase = () => {
-  const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState<any[]>([]);
 
   const refreshTweets = useCallback(() => {
     fetch(`${BASE_URL}/tweets/v1`)
@@ -17,7 +17,7 @@ const TweetBase = () => {
     refreshTweets();
   }, [refreshTweets]);
 
-  const handleTweetCreated = (newTweet) => {
+  const handleTweetCreated = (newTweet: any) => {
     setTweets([...tweets, newTweet]);
   };
 

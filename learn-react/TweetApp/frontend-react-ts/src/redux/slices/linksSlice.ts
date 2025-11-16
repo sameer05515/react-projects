@@ -1,5 +1,6 @@
 // linksSlice.js
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Create an async thunk to fetch links
@@ -12,7 +13,7 @@ export const fetchLinks = createAsyncThunk("links/fetchLinks", async () => {
   return data;
 });
 
-export const fetchLinksByUniqueId = createAsyncThunk("links/fetchLinksByUniqueId", async (uniqueId) => {
+export const fetchLinksByUniqueId = createAsyncThunk("links/fetchLinksByUniqueId", async (uniqueId: string) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/links/${uniqueId}`); // Replace with your API endpoint
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
@@ -21,7 +22,7 @@ export const fetchLinksByUniqueId = createAsyncThunk("links/fetchLinksByUniqueId
   return data;
 });
 
-export const createLink = createAsyncThunk("links/createLink", async (tagData) => {
+export const createLink = createAsyncThunk("links/createLink", async (tagData: any) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/links`, {
     method: "POST",
     headers: {
@@ -41,7 +42,7 @@ export const createLink = createAsyncThunk("links/createLink", async (tagData) =
 
 export const updateLink = createAsyncThunk(
   "links/updateLink",
-  async (updatedLink) => {
+  async (updatedLink: { uniqueId: string } & Record<string, any>) => {
     // console.log(`slice: ${JSON.stringify(updatedLink)}`);
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/links/${updatedLink.uniqueId}`,
@@ -64,11 +65,28 @@ export const updateLink = createAsyncThunk(
   }
 );
 
-const getNameWithAncestors = (link) => {
+type LinkNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: LinkNode[];
+  _id?: string;
+};
+
+type FlatLink = {
+  uniqueId: string;
+  name: string;
+  title: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: LinkNode[];
+  _id?: string;
+};
+
+const getNameWithAncestors = (link: LinkNode | null | undefined) => {
   if (!link) {
     return "";
   }
-  const ancestorNames = [];
+  const ancestorNames: string[] = [];
   let currentAncestor =
     link.ancestors?.find((ancestor) => !ancestor.parentId) || null;
 
@@ -86,11 +104,11 @@ const getNameWithAncestors = (link) => {
 
 // Helper function to prepare flat data from tree-structured data
 // Export for use in selectors
-export const prepareLinksQueue = (list, prevQueue = []) => {
-  let queue = [...prevQueue];
+export const prepareLinksQueue = (list: LinkNode[] = [], prevQueue: FlatLink[] = []) => {
+  let queue: FlatLink[] = [...prevQueue];
   
   if (list && list.length > 0) {
-      list.forEach((t) => {
+      list.forEach((t: LinkNode) => {
           queue = [
               ...queue,
               {
@@ -109,6 +127,16 @@ export const prepareLinksQueue = (list, prevQueue = []) => {
   return queue;
 };
 
+type LinksState = {
+  selectedLinkUniqueId: string | null;
+  data: LinkNode[];
+  linkDetails: any;
+  searchedData: any[];
+  searchString: string;
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+};
+
 const linksSlice = createSlice({
   name: "links",
   initialState: {
@@ -119,7 +147,7 @@ const linksSlice = createSlice({
     searchString:'',
     loading: "idle",
     error: null,
-  },
+  } as LinksState,
   reducers: {
     setSelectedLinkUniqueId: (state, action) => {
       state.selectedLinkUniqueId = action.payload;
@@ -135,20 +163,20 @@ const linksSlice = createSlice({
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;
+        state.data = action.payload as LinkNode[];
         // flatData now computed via memoized selector
       })
       .addCase(fetchLinks.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message; 
+        state.error = action.error.message ?? null; 
       })
       .addCase(createLink.fulfilled, (state, action) => {
         if(!action.payload?.parentId)
-          state.data.push(action.payload);
+          state.data.push(action.payload as LinkNode);
       })
       .addCase(updateLink.fulfilled, (state, action) => {
-        const updatedLink = action.payload;
-        const index = state.data.findIndex((link) => link.uniqueId === updatedLink.uniqueId);
+        const updatedLink = action.payload as LinkNode;
+        const index = state.data.findIndex((link: LinkNode) => link.uniqueId === updatedLink.uniqueId);
         if (index !== -1) {
           state.data[index] = updatedLink;
         }
@@ -162,7 +190,7 @@ const linksSlice = createSlice({
       })
       .addCase(fetchLinksByUniqueId.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       });
   },
 });
@@ -174,17 +202,17 @@ export const { setSelectedLinkUniqueId,setSearchString } = linksSlice.actions;
 
 
 /* ============== Selectors ======================*/
-const selectLinksState = (state) => state.links;
+const selectLinksState = (state: RootState) => state.links;
 
 export const selectAllTreeLinks = createSelector(
   selectLinksState,
-  (linksState) => linksState.data
+  (linksState) => linksState.data as LinkNode[]
 );
 
 // Memoized selector to derive flat data from tree structure
 export const selectAllFlatLinks = createSelector(
   [selectAllTreeLinks],
-  (treeLinks) => prepareLinksQueue(treeLinks)
+  (treeLinks: LinkNode[]) => prepareLinksQueue(treeLinks)
 );
 
 export const selectSelectedLinkUniqueId = createSelector(
@@ -194,7 +222,7 @@ export const selectSelectedLinkUniqueId = createSelector(
 
 export const selectNextLinkUniqueId = createSelector(
   [selectAllFlatLinks, selectSelectedLinkUniqueId],
-  (flatLinkList, selectedLinkUId) => {
+  (flatLinkList: FlatLink[], selectedLinkUId: string | null) => {
     const dataLength = flatLinkList?.length || 0;
     const selectedIndex = flatLinkList.findIndex((link) => link.uniqueId === selectedLinkUId);
     if (selectedIndex < 0 ) {
@@ -207,7 +235,7 @@ export const selectNextLinkUniqueId = createSelector(
 
 export const selectPrevLinkUniqueId = createSelector(
   [selectAllFlatLinks, selectSelectedLinkUniqueId],
-  (flatLinkList, selectedLinkUId) => {
+  (flatLinkList: FlatLink[], selectedLinkUId: string | null) => {
     const dataLength = flatLinkList?.length || 0;
     const selectedIndex = flatLinkList.findIndex((link) => link.uniqueId === selectedLinkUId);
     if (selectedIndex < 0 ) {
@@ -226,7 +254,7 @@ export const selectLinksStateCombined = createSelector(
     selectSelectedLinkUniqueId,
     selectLinksState,
   ],
-  (links, selectedId, linksState) => ({
+  (links: LinkNode[], selectedId: string | null, linksState: LinksState) => ({
     links,
     loading: linksState.loading,
     error: linksState.error,

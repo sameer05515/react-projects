@@ -4,6 +4,24 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CustomButton from "../custom-button/CustomButton";
 import { SmartPreviewer } from "../Smart/Editor/v3";
 
+type EditableLabelProps = {
+  text?: string;
+  postUpdateClick?: (updatedText: string) => void;
+  placeholder?: string;
+  editMode?: boolean;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+  flushSavedText?: boolean;
+  saveOnBlur?: boolean;
+  editable?: boolean;
+  className?: string;
+  containerClassName?: string;
+  displayClassName?: string;
+  editorClassName?: string;
+  labelStyle?: React.CSSProperties;
+  textAreaStyle?: React.CSSProperties;
+};
+
 function EditableLabel({
   text = "",
   postUpdateClick = () => {},
@@ -14,12 +32,13 @@ function EditableLabel({
   flushSavedText = false,
   saveOnBlur = true,
   editable = true,
+  className = "",
   containerClassName = "",
   displayClassName = "",
   editorClassName = "",
   labelStyle = {},
   textAreaStyle = {},
-}) {
+}: EditableLabelProps) {
   const [editing, setEditing] = useState(editMode);
   const [editedText, setEditedText] = useState(text);
 
@@ -27,7 +46,7 @@ function EditableLabel({
     if (editable) setEditing(true);
   };
 
-  const handleEditorChange = (event, editor) => {
+  const handleEditorChange = (event: unknown, editor: any) => {
     const data = editor.getData();
     setEditedText(data);
     if (saveOnBlur) {
@@ -48,7 +67,7 @@ function EditableLabel({
   };
 
   return (
-    <div className={`space-y-3 ${containerClassName}`}>
+    <div className={`space-y-3 ${containerClassName} ${className}`}>
       {editing ? (
         <>
           <div

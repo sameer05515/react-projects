@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TopicCardViewDashboard from "./sub-components/card-view/TopicCardViewDashboard";
 import HoverActions from "../../common/components/hover-actions/HoverActions";
+import ReactDOM from "react-dom";
 import TopicTreeViewDashboard from "./sub-components/tree-view/TopicTreeViewDashboard";
 
 const VIEW_OPTIONS = [
@@ -41,7 +42,7 @@ const TopicBase = () => {
       </div>
 
       <div className="mb-6">
-        <HoverActions
+          <HoverActions
           title={
             selectedView
               ? `Selected Topic View: ${selectedView.charAt(0).toUpperCase() + selectedView.slice(1)}`
@@ -60,7 +61,7 @@ const TopicBase = () => {
             >
               {option.label}
             </span>
-          ))}
+          )) as React.ReactNode[]}
         />
       </div>
 

@@ -57,12 +57,12 @@ export const getNodeNameForId = (id, allNodes) => {
     return allNodes?.find((node) => node.uniqueId === id)?.name || "";
 };
 
-export const getArcherBoxesForLanguage = (selectedLanguage, allNodes) => {
+export const getArcherBoxesForLanguage = (selectedLanguage: any, allNodes: any[]) => {
     if (!selectedLanguage || !allNodes) return { prevBoxes: [], selBoxes: [], nextBoxes: [] };
-    let archerBoxes = [];
+    let archerBoxes: any[] = [];
 
-    archerBoxes = [selectedLanguage].reduce((acc, lang) => {
-        const ac = {
+    archerBoxes = [selectedLanguage].reduce((acc: any[], lang: any) => {
+        const ac: any = {
             id: lang.uniqueId,
             label: lang.name,
             style: boxStyle,
@@ -70,10 +70,10 @@ export const getArcherBoxesForLanguage = (selectedLanguage, allNodes) => {
             relations: [],
         };
         acc.push(ac);
-        lang.relations
-            .filter(l => l.type === RELATION_DIRECTION_TYPES.previous)
-            .forEach(l => {
-                const c = {
+        (lang.relations || [])
+            .filter((l: any) => l.type === RELATION_DIRECTION_TYPES.previous)
+            .forEach((l: any) => {
+                const c: any = {
                     id: l.withId,
                     label: getNodeNameForId(l.withId, allNodes) || l.withId,
                     style: boxStyle,
@@ -89,10 +89,10 @@ export const getArcherBoxesForLanguage = (selectedLanguage, allNodes) => {
                 });
             })
 
-        lang.relations
-            .filter(l => l.type === RELATION_DIRECTION_TYPES.next)
-            .forEach(l => {
-                const c = {
+        (lang.relations || [])
+            .filter((l: any) => l.type === RELATION_DIRECTION_TYPES.next)
+            .forEach((l: any) => {
+                const c: any = {
                     id: l.withId,
                     label: getNodeNameForId(l.withId, allNodes) || l.withId,
                     style: boxStyle,

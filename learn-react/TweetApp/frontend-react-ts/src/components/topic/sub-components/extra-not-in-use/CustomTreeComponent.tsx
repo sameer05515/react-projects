@@ -104,11 +104,11 @@ const CustomTreeComponent = () => {
     },
   ];
 
-  const flattenTree = (nodes, list = []) => {
-    nodes.forEach((node) => {
-      list.push(node);
+  const flattenTree = (nodes: any[], list: any[] = []) => {
+    nodes.forEach((node: any) => {
+      list.push(node as any);
       if (node.children) {
-        flattenTree(node.children, list);
+        flattenTree(node.children as any[], list);
       }
     });
     return list;
@@ -131,11 +131,11 @@ const CustomTreeComponent = () => {
     });
   };
 
-  const isNodeExpanded = (nodeId) => {
+  const isNodeExpanded = (nodeId: string) => {
     return expandedNodes.has(nodeId);
   };
 
-  const renderNode = (node) => (
+  const renderNode = (node: any) => (
     <span className={`${isNodeExpanded(node.uniqueId) ? "text-blue-600" : "text-black"}`}>
       {node.name}
     </span>
@@ -175,7 +175,7 @@ const CustomTreeComponent = () => {
   );
 };
 
-const TreeNodeWithExpand = ({ node, isExpanded, renderNode }) => {
+const TreeNodeWithExpand = ({ node, isExpanded, renderNode }: { node: any; isExpanded: boolean; renderNode: (node: any) => React.ReactNode }) => {
   const [expanded, setExpanded] = useState(isExpanded);
 
   React.useEffect(() => {
@@ -214,7 +214,7 @@ const TreeNodeWithExpand = ({ node, isExpanded, renderNode }) => {
   );
 };
 
-const DefaultNodeComponent = ({ node }) => (
+const DefaultNodeComponent = ({ node }: { node: any }) => (
   <>
     {/* <div>
               {node.name} (ID: {node.uniqueId})

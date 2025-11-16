@@ -1,12 +1,14 @@
 // redux/dataSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+type SimpleDataItem = Record<string, unknown>;
 
 const dataSlice = createSlice({
   name: "data",
-  initialState: [],
+  initialState: [] as SimpleDataItem[],
   reducers: {
-    addData: (state, action) => {
-      state.push(action.payload);
+    addData: (state, action: PayloadAction<SimpleDataItem>) => {
+      state.push(action.payload as SimpleDataItem);
     },
   },
 });

@@ -35,7 +35,7 @@ export const createCategory = createAsyncThunk(
 // Define an async thunk to update a topic by uniqueId
 export const updateCategory = createAsyncThunk(
   "categories/updateCategory",
-  async (categoryData) => {
+  async (categoryData: { uniqueId: string } & Record<string, any>) => {
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/categories/${categoryData.uniqueId}`,
       {
@@ -132,7 +132,7 @@ export const createAnswer = createAsyncThunk(
 // Define an async thunk to update a Answer by uniqueId
 export const updateAnswer = createAsyncThunk(
   "categories/updateAnswer",
-  async (answerData) => {
+  async (answerData: { uniqueId: string } & Record<string, any>) => {
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/answers/${answerData.uniqueId}`,
       {
@@ -146,6 +146,24 @@ export const updateAnswer = createAsyncThunk(
     return response.json();
   }
 );
+
+type ApiSubState = {
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+};
+
+type InterviewMgmtState = {
+  data: any[];
+  refetchCategoryTree: boolean;
+  fetchCategoryTreeResponse: ApiSubState;
+  createCategoryResponse: ApiSubState;
+  updateCategoryResponse: ApiSubState;
+  selectedTreeNodeUID: string | null;
+  selectedCategoryUID: string | null;
+  selectedQuestionUID: string | null;
+  searchedData: any[];
+  searchString: string;
+};
 
 const interviewMgmtSlice = createSlice({
   name: "interviewMgmt",
@@ -169,7 +187,7 @@ const interviewMgmtSlice = createSlice({
     selectedQuestionUID: null,    
     searchedData:[],
     searchString:'',
-  },
+  } as InterviewMgmtState,
   reducers: {
     setSelectedTreeNodeUID: (state, action) => {
       state.selectedTreeNodeUID = action.payload;
@@ -198,7 +216,7 @@ const interviewMgmtSlice = createSlice({
       })
       .addCase(fetchAllQuestions.rejected, (state, action) => {
         state.fetchCategoryTreeResponse.loading = "rejected";
-        state.fetchCategoryTreeResponse.error = action.error.message;
+        state.fetchCategoryTreeResponse.error = action.error.message ?? null;
       })
 
       .addCase(createCategory.pending, (state) => {
@@ -212,7 +230,7 @@ const interviewMgmtSlice = createSlice({
       })
       .addCase(createCategory.rejected, (state, action) => {
         state.fetchCategoryTreeResponse.loading = "rejected";
-        state.createCategoryResponse.error = action.error.message;
+        state.createCategoryResponse.error = action.error.message ?? null;
       })
 
       .addCase(updateCategory.pending, (state) => {
@@ -226,7 +244,7 @@ const interviewMgmtSlice = createSlice({
       })
       .addCase(updateCategory.rejected, (state, action) => {
         state.fetchCategoryTreeResponse.loading = "rejected";
-        state.updateCategoryResponse.error = action.error.message;
+        state.updateCategoryResponse.error = action.error.message ?? null;
       })
       .addCase(searchTopic.fulfilled, (state, action) => {
         //state.loading = "fulfilled";

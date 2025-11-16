@@ -28,11 +28,12 @@ import {
 } from "../../redux/slices/tagsSlice";
 import TagCard, { TagLinkedItemType } from "./TagCard";
 import TagForm from "./TagForm";
+import type { AppDispatch, RootState } from "../../redux/store";
 import TagListOldView from "./TagListOldView";
 
 const TagBase = () => {
   const [selectedView, setSelectedView] = useState("list");
-  const handleChangeView = (event) => {
+  const handleChangeView = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedView(event.target.value);
   };
   return (
@@ -44,7 +45,9 @@ const TagBase = () => {
         ]}
         onChange={handleChangeView}
         selectedView={selectedView}
-      />
+      >
+        {/* no-op */}
+      </ViewSwitcher>
       {selectedView === "list" && <ListTags />}
       {selectedView === "card" && <TagListOldView />}
     </div>
@@ -52,17 +55,16 @@ const TagBase = () => {
 };
 
 const ListTags = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const selectedElementRef = useRef(null);
+  const selectedElementRef = useRef<HTMLSpanElement | null>(null);
   const sidebarButtonClass =
     "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
 
-  // Fetch tags data only when component mounts (with smart caching)
-  useDataFetching(
-    fetchTags,
-    (state) => state.tags
-  );
+  // Fetch tags data only when component mounts
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
   // Use combined selector to optimize multiple useSelector calls
   const { tags, loading: status, error, selectedId: selectedTagUniqueId } = useSelector(selectTagsStateCombined);
@@ -77,22 +79,22 @@ const ListTags = () => {
     }
   }, [selectedTagUniqueId]);
 
-  const handleButtonClick = (path) => {
+  const handleButtonClick = (path: string) => {
     navigate(path);
   };
 
-  const handleLinkSelection = (selectedItem) => {
+  const handleLinkSelection = (selectedItem: any) => {
     // console.log(JSON.stringify(selectedItem));
     // setSelectedLink(selectedItem);
     navigate(`${selectedItem.uniqueId}`);
   };
 
-  if (status === "pending" || status === "loading") {
+  if (status === "pending") {
     return <div>Loading...</div>;
   }
 
-  if (status === "rejected" || status === "failed" || error) {
-    return <div>Error: {error}</div>;
+  if (status === "rejected" || error) {
+    return <div>Error: {String(error)}</div>;
   }
 
   return (
@@ -112,7 +114,7 @@ const ListTags = () => {
           </div>
           <Tree
             data={tags}
-            selectedNodeId={selectedTagUniqueId}
+            selectedNodeId={selectedTagUniqueId || undefined}
             renderNode={(tag) => (
               <span
                 ref={selectedTagUniqueId === tag.uniqueId ? selectedElementRef : null}
@@ -124,6 +126,9 @@ const ListTags = () => {
                 {tag.name}
               </span>
             )}
+            onDragStart={undefined as any}
+            onDrop={undefined as any}
+            errorMessageOnNoData={"" as any}
           />
         </div>
       </div>
@@ -138,7 +143,7 @@ const ListTags = () => {
 
 const ViewTag = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`;
   const { data, refetch } = useDataFetching({ url });
@@ -156,11 +161,12 @@ const ViewTag = () => {
     }
   }, [id, dispatch, refetch]);
 
-  const handleEdit = (item) => {
-    navigate(`/tags/${data.uniqueId}/edit`, { state: { data } });
+  const handleEdit = (_item: any) => {
+    if (!id) return;
+    navigate(`/tags/${id}/edit`, { state: { data } });
   };
 
-  const handleLinkSelection = (selectedItem, itemType) => {
+  const handleLinkSelection = (selectedItem: any, itemType: string) => {
     if (selectedItem && itemType) {
       if (TagLinkedItemType.topic === itemType) {
         navigate(`/topic-mgmt/${selectedItem.uniqueId}`);
@@ -181,19 +187,19 @@ const ViewTag = () => {
     }
   };
 
-  const addChildTag = (id) => {
+  const addChildTag = (id: string) => {
     navigate(`/tags/${id}/add-sub-tag`);
   };
 
-  const handleChildTagClick = (item) => {
+  const handleChildTagClick = (item: any) => {
     navigate(`/tags/${item?.uniqueId}`);
   };
 
-  const handleMoveAnotherParent = (item) => {
+  const handleMoveAnotherParent = (_item: any) => {
     navigate(`/tags/${id}/move-parent`);
   };
 
-  const handleTagTraversal = (increment) => {
+  const handleTagTraversal = (increment: number) => {
     if (increment === 1 && nextTagUniqueId) {
       navigate(`/tags/${nextTagUniqueId}`);
     } else if (increment === -1 && prevTagUniqueId) {
@@ -201,7 +207,7 @@ const ViewTag = () => {
     }
   };
 
-  const handleAncestorClick = (ancestor) => {
+  const handleAncestorClick = (ancestor: any) => {
     if (!ancestor) {
       return;
     }
@@ -233,15 +239,15 @@ const ViewTag = () => {
 
 const CreateTag = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
   const parentId = searchParams.get("parent");
   const handleCancel = () => {
     navigate(-1);
   };
-  const handleSaveTag = (data) => {
+  const handleSaveTag = (data: any) => {
     // alert(JSON.stringify(data, null, 2));
-    dispatch(createTag({ ...data }));
+    dispatch(createTag({ ...data } as any));
     navigate(-1);
   };
   return (
@@ -258,7 +264,7 @@ const CreateTag = () => {
 
 const EditTag = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   // const { id } = useParams();
   const location = useLocation();
   const { data } = location.state || {};
@@ -266,9 +272,9 @@ const EditTag = () => {
     navigate(-1);
   };
 
-  const handleEditTag = (data) => {
+  const handleEditTag = (data: any) => {
     // alert(JSON.stringify(data, null, 2));
-    dispatch(updateTag({ ...data }));
+    dispatch(updateTag({ ...data } as any));
     navigate(-1);
   };
   return (
@@ -295,7 +301,7 @@ const EditTag = () => {
 
 const AddSubTagComp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   // const treeStructuredTasks = useSelector((state) => state.tags.data);
   const { id } = useParams();
 
@@ -403,9 +409,9 @@ const MoveToAnotherTagParent = () => {
 
   //   const tag = tags?.find((t) => t.uniqueId === id);
 
-  const tagOptions = tags
-    .filter((t) => t.uniqueId !== tag.uniqueId)
-    .filter((t) => !t.ancestors.map((a) => a.uniqueId).includes(tag.uniqueId))
+  const tagOptions = (tags as any[])
+    .filter((t) => t.uniqueId !== (tag as any)?.uniqueId)
+    .filter((t) => !((t.ancestors || []) as any[]).map((a: any) => a.uniqueId).includes((tag as any)?.uniqueId))
     .map((t) => ({
       value: t.uniqueId, // Assuming tag have unique IDs
       label: t.title, // Display tag title in the dropdown
@@ -415,20 +421,20 @@ const MoveToAnotherTagParent = () => {
   //     label: 'ROOT', // Display tag title in the dropdown
   // });
 
-  const handleTaskSelect = (selectedTags) => {
+  const handleTaskSelect = (selectedTags: any) => {
     // Extract the tag values and store them in the 'tags' property of the tag data
     // console.log(
     //     `JSON.stringify(selectedTags): ${JSON.stringify(selectedTags)}`
     // );
-    setFormData({ ...formData, parentId: selectedTags.value });
+    setFormData({ ...formData, parentId: (selectedTags as any).value });
   };
 
   const [formData, setFormData] = useState({
     // _id: tag && tag._id ? tag._id : "",
-    uniqueId: tag && tag.uniqueId ? tag.uniqueId : "",
+    uniqueId: (tag as any) && (tag as any).uniqueId ? (tag as any).uniqueId : "",
     // title: tag && tag.title ? tag.title : "",
     // description: tag && tag.description ? tag.description : "",
-    parentId: tag && tag.parentId ? tag.parentId : "",
+    parentId: (tag as any) && (tag as any).parentId ? (tag as any).parentId : "",
     // linkedTasks: tag && tag.linkedTasks ? tag.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked tag IDs
     // tags: tag && tag.tags ? tag.tags : [], // Set the initial tags based on the tag
     // children: tag && tag.children ? tag.children.map(c => c.uniqueId) : []

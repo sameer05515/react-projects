@@ -7,7 +7,7 @@ import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConst
 const API_ENDPOINT = BACKEND_APPLICATION_BASE_URL;
 
 // Async thunk for fetching data by uniqueId
-export const fetchMyResumeData = createAsyncThunk('myResume/fetchMyResumeData', async (uniqueId) => {
+export const fetchMyResumeData = createAsyncThunk('myResume/fetchMyResumeData', async (uniqueId: string) => {
   try {
     // console.log(`${API_ENDPOINT}/my-resume/${uniqueId}`);
     const response = await axios.get(`${API_ENDPOINT}/my-resume/${uniqueId}`);
@@ -18,13 +18,19 @@ export const fetchMyResumeData = createAsyncThunk('myResume/fetchMyResumeData', 
 });
 
 // Slice
+type MyResumeState = {
+  data: any;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+};
+
 const myResumeSlice = createSlice({
   name: 'myResume',
   initialState: {
     data: null,
     status: 'idle',
     error: null,
-  },
+  } as MyResumeState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -37,7 +43,7 @@ const myResumeSlice = createSlice({
       })
       .addCase(fetchMyResumeData.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       });
   },
 });

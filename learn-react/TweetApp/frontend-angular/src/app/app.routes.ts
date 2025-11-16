@@ -9,6 +9,7 @@ import { TagsListComponent } from './features/tags/tags-list.component';
 import { LinksListComponent } from './features/links/links-list.component';
 import { MemoryMapsListComponent } from './features/memory-maps/memory-maps-list.component';
 import { AppShellComponent } from './layout/app-shell.component';
+import { unsavedChangesGuard } from './core/guards/unsaved-changes.guard';
 
 @Component({
   selector: 'app-home',
@@ -46,11 +47,16 @@ export const routes: Routes = [
     component: AppShellComponent,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'topics', component: TopicsListComponent },
-      { path: 'tasks', component: TasksListComponent },
-      { path: 'tags', component: TagsListComponent },
-      { path: 'links', component: LinksListComponent },
-      { path: 'memory-maps', component: MemoryMapsListComponent },
+      { path: 'topics', loadComponent: () => import('./features/topics/topics-list.component').then(m => m.TopicsListComponent) },
+      { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page').then(m => m.TopicDetailPage) },
+      { path: 'topics/:id/edit', canDeactivate: [unsavedChangesGuard], loadComponent: () => import('./features/topics/topic-edit.page').then(m => m.TopicEditPage) },
+
+      { path: 'tasks', loadComponent: () => import('./features/tasks/tasks-list.component').then(m => m.TasksListComponent) },
+      { path: 'tasks/:id', loadComponent: () => import('./features/tasks/task-detail.page').then(m => m.TaskDetailPage) },
+
+      { path: 'tags', loadComponent: () => import('./features/tags/tags-list.component').then(m => m.TagsListComponent) },
+      { path: 'links', loadComponent: () => import('./features/links/links-list.component').then(m => m.LinksListComponent) },
+      { path: 'memory-maps', loadComponent: () => import('./features/memory-maps/memory-maps-list.component').then(m => m.MemoryMapsListComponent) },
     ]
   }
 ];

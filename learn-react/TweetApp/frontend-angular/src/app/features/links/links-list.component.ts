@@ -2,45 +2,37 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LinksService, LinkItem } from './links.service';
+import { UiCardComponent } from '../../shared/ui/ui-card.component';
+import { UiButtonComponent } from '../../shared/ui/ui-button.component';
+import { UiTableComponent } from '../../shared/ui/ui-table.component';
+import { UiAlertComponent } from '../../shared/ui/ui-alert.component';
 
 @Component({
 	selector: 'app-links-list',
 	standalone: true,
-	imports: [CommonModule, FormsModule],
+	imports: [CommonModule, FormsModule, UiCardComponent, UiButtonComponent, UiTableComponent, UiAlertComponent],
 	template: `
-		<div style="padding:16px;">
-			<h2>Links</h2>
-			<div *ngIf="error" style="color:#b91c1c; margin:8px 0;">{{ error }}</div>
+		<ui-card>
+			<h2 style="margin:0 0 8px;">Links</h2>
+			<ui-alert *ngIf="error" type="error">{{ error }}</ui-alert>
 			<div *ngIf="loading">Loading...</div>
-
 			<form (ngSubmit)="create()" style="margin:12px 0; display:flex; gap:8px; align-items:center;">
 				<input [(ngModel)]="newName" name="name" placeholder="New link name" />
 				<input [(ngModel)]="newUrl" name="url" placeholder="https://example.com" />
-				<button type="submit">Create</button>
+				<ui-button (click)="create()">Create</ui-button>
 			</form>
-
-			<table *ngIf="links?.length" border="1" cellpadding="6" cellspacing="0">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Name</th>
-						<th>URL</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let l of links">
-						<td>{{ l.uniqueId }}</td>
-						<td>{{ l.name }}</td>
-						<td>
-							<a *ngIf="l.linkUrl" [href]="l.linkUrl" target="_blank" rel="noopener">{{ l.linkUrl }}</a>
-							<span *ngIf="!l.linkUrl">-</span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
+			<ui-table *ngIf="links?.length" [headers]="['Id','Name','URL']">
+				<tr *ngFor="let l of links">
+					<td>{{ l.uniqueId }}</td>
+					<td>{{ l.name }}</td>
+					<td>
+						<a *ngIf="l.linkUrl" [href]="l.linkUrl" target="_blank" rel="noopener">{{ l.linkUrl }}</a>
+						<span *ngIf="!l.linkUrl">-</span>
+					</td>
+				</tr>
+			</ui-table>
 			<div *ngIf="!loading && (!links || links.length === 0)" style="margin-top:8px;">No links found.</div>
-		</div>
+		</ui-card>
 	`
 })
 export class LinksListComponent {

@@ -2,41 +2,33 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TagsService, Tag } from './tags.service';
+import { UiCardComponent } from '../../shared/ui/ui-card.component';
+import { UiButtonComponent } from '../../shared/ui/ui-button.component';
+import { UiTableComponent } from '../../shared/ui/ui-table.component';
+import { UiAlertComponent } from '../../shared/ui/ui-alert.component';
 
 @Component({
 	selector: 'app-tags-list',
 	standalone: true,
-	imports: [CommonModule, FormsModule],
+	imports: [CommonModule, FormsModule, UiCardComponent, UiButtonComponent, UiTableComponent, UiAlertComponent],
 	template: `
-		<div style="padding:16px;">
-			<h2>Tags</h2>
-			<div *ngIf="error" style="color:#b91c1c; margin:8px 0;">{{ error }}</div>
+		<ui-card>
+			<h2 style="margin:0 0 8px;">Tags</h2>
+			<ui-alert *ngIf="error" type="error">{{ error }}</ui-alert>
 			<div *ngIf="loading">Loading...</div>
-
 			<form (ngSubmit)="create()" style="margin:12px 0; display:flex; gap:8px; align-items:center;">
 				<input [(ngModel)]="newName" name="name" placeholder="New tag name" />
-				<button type="submit">Create</button>
+				<ui-button (click)="create()">Create</ui-button>
 			</form>
-
-			<table *ngIf="tags?.length" border="1" cellpadding="6" cellspacing="0">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Name</th>
-						<th>Parent</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let t of tags">
-						<td>{{ t.uniqueId }}</td>
-						<td>{{ t.name }}</td>
-						<td>{{ t.parentId || '-' }}</td>
-					</tr>
-				</tbody>
-			</table>
-
+			<ui-table *ngIf="tags?.length" [headers]="['Id','Name','Parent']">
+				<tr *ngFor="let t of tags">
+					<td>{{ t.uniqueId }}</td>
+					<td>{{ t.name }}</td>
+					<td>{{ t.parentId || '-' }}</td>
+				</tr>
+			</ui-table>
 			<div *ngIf="!loading && (!tags || tags.length === 0)" style="margin-top:8px;">No tags found.</div>
-		</div>
+		</ui-card>
 	`
 })
 export class TagsListComponent {

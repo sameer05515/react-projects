@@ -2,58 +2,60 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TopicsService, Topic } from './topics.service';
+import { UiCardComponent } from '../../shared/ui/ui-card.component';
+import { UiButtonComponent } from '../../shared/ui/ui-button.component';
+import { UiTableComponent } from '../../shared/ui/ui-table.component';
+import { UiAlertComponent } from '../../shared/ui/ui-alert.component';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'app-topics-list',
 	standalone: true,
-	imports: [CommonModule, FormsModule],
+	imports: [CommonModule, FormsModule, UiCardComponent, UiButtonComponent, UiTableComponent, UiAlertComponent, RouterLink],
 	template: `
-		<div style="padding:16px;">
-			<h2>Topics</h2>
-			<div *ngIf="error" style="color:#b91c1c; margin:8px 0;">{{ error }}</div>
+		<ui-card>
+			<h2 style="margin:0 0 8px;">Topics</h2>
+			<ui-alert *ngIf="error" type="error">{{ error }}</ui-alert>
 			<div *ngIf="loading">Loading...</div>
-
 			<form (ngSubmit)="create()" style="margin:12px 0; display:flex; gap:8px; align-items:center;">
+				<input [(ngModel)]="search" name="search" placeholder="Search..." (keyup.enter)="applySearch()" />
+				<ui-button (click)="applySearch()">Search</ui-button>
 				<input [(ngModel)]="newName" name="name" placeholder="New topic name" />
-				<button type="submit">Create</button>
+				<ui-button (click)="create()">Create</ui-button>
 			</form>
-
-			<table *ngIf="topics?.length" border="1" cellpadding="6" cellspacing="0">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Name</th>
-						<th>Parent</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let t of topics">
-						<td>{{ t.uniqueId }}</td>
-						<td>{{ t.name }}</td>
-						<td>{{ t.parentId || '-' }}</td>
-					</tr>
-				</tbody>
-			</table>
-
+			<ui-table *ngIf="topics?.length" [headers]="['Id','Name','Parent']">
+				<tr *ngFor="let t of topics" role="row">
+					<td><a [routerLink]="['/topics', t.uniqueId]">{{ t.uniqueId }}</a></td>
+					<td><a [routerLink]="['/topics', t.uniqueId]">{{ t.name }}</a></td>
+					<td>{{ t.parentId || '-' }}</td>
+				</tr>
+			</ui-table>
 			<div *ngIf="!loading && (!topics || topics.length === 0)" style="margin-top:8px;">No topics found.</div>
-		</div>
+		</ui-card>
 	`
 })
 export class TopicsListComponent {
 	private service = inject(TopicsService);
+	private route = inject(ActivatedRoute);
+	private router = inject(Router);
 	topics: Topic[] = [];
 	loading = false;
 	error: string | null = null;
 	newName = '';
+	search = '';
 
 	ngOnInit() {
+		const q = this.route.snapshot.queryParamMap.get('q') || '';
+		this.search = q;
 		this.load();
 	}
 
 	load() {
 		this.loading = true;
 		this.error = null;
-		this.service.list().subscribe({
+		const query = this.search?.trim();
+		const obs = query ? this.service.search?.(query) ?? this.service.list() : this.service.list();
+		obs.subscribe({
 			next: (data) => {
 				this.topics = data || [];
 				this.loading = false;
@@ -63,6 +65,11 @@ export class TopicsListComponent {
 				this.loading = false;
 			}
 		});
+	}
+
+	applySearch() {
+		this.router.navigate([], { queryParams: { q: this.search || null }, queryParamsHandling: 'merge' });
+		this.load();
 	}
 
 	create() {

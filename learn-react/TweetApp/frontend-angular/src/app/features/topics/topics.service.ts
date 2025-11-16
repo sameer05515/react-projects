@@ -16,6 +16,10 @@ export class TopicsService {
     return this.api.get<Topic[]>('/topics');
   }
 
+  search(query: string): Observable<Topic[]> {
+    return this.api.post<Topic[]>('/topics/search', { query });
+  }
+
   getById(uniqueId: string): Observable<Topic> {
     return this.api.get<Topic>(`/topics/${uniqueId}`);
   }

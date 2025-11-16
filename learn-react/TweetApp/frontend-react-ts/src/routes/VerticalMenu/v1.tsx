@@ -1,8 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
-  const isPathStartsWith = (path) => {
+type VerticalMenuProps = {
+  isAuthenticated: boolean;
+  handleLogout: () => void;
+};
+
+const VerticalMenu: React.FC<VerticalMenuProps> = ({ isAuthenticated, handleLogout }) => {
+  const isPathStartsWith = (path: string) => {
     return window.location.pathname === path || window.location.pathname.startsWith(path);
   };
 

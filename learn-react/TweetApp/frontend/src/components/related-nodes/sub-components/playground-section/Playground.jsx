@@ -37,7 +37,7 @@ export const ArcherBox = ({ id, relations = [], label, style = {}, children }) =
 const Playground = () => {
   const {
     SharedService: { setSelectedNode },
-    sharedData: { styles, selectedNode, allNodes },
+    sharedData: { selectedNode, allNodes },
   } = useSharedConfigurations();
 
   const navigate = useNavigate();

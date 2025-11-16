@@ -1,5 +1,6 @@
 import React, { useCallback, lazy, Suspense, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../redux/store";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import GlobalBreadcrumbV2 from "../common/components/global-breadcrumbs/GlobalBreadcrumbV2";
 import ToggleableIcon from "../common/components/toggleable-icon/ToggleableIcon";
@@ -295,7 +296,7 @@ const NotFound = () => {
 };
 
 const Layout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const [isDarkMode, setIsDarkMode] = useState(false);
 

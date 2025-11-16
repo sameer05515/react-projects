@@ -4,6 +4,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Create an async thunk to fetch tags
@@ -16,7 +17,7 @@ export const fetchTags = createAsyncThunk("tags/fetchTags", async () => {
   return data;
 });
 
-export const createTag = createAsyncThunk("tags/createTag", async (tagData) => {
+export const createTag = createAsyncThunk("tags/createTag", async (tagData: any) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tags`, {
     method: "POST",
     headers: {
@@ -36,7 +37,7 @@ export const createTag = createAsyncThunk("tags/createTag", async (tagData) => {
 
 export const updateTag = createAsyncThunk(
   "tags/updateTag",
-  async (updatedTag) => {
+  async (updatedTag: { uniqueId: string } & Record<string, any>) => {
     // console.log(`slice: ${JSON.stringify(updateTag)}`);
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/tags/${updatedTag.uniqueId}`,
@@ -59,11 +60,28 @@ export const updateTag = createAsyncThunk(
   }
 );
 
-const getNameWithAncestors = (tag) => {
+type TagNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TagNode[];
+  _id?: string;
+};
+
+type FlatTag = {
+  uniqueId: string;
+  name: string;
+  title: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TagNode[];
+  _id?: string;
+};
+
+const getNameWithAncestors = (tag: TagNode | null | undefined) => {
   if (!tag) {
     return "";
   }
-  const ancestorNames = [];
+  const ancestorNames: string[] = [];
   let currentAncestor =
     tag.ancestors?.find((ancestor) => !ancestor.parentId) || null;
 
@@ -81,11 +99,11 @@ const getNameWithAncestors = (tag) => {
 
 // Helper function to prepare flat data from tree-structured data
 // Export for use in selectors
-export const prepareTagsQueue = (list, prevQueue = []) => {
-  let queue = [...prevQueue];
+export const prepareTagsQueue = (list: TagNode[] = [], prevQueue: FlatTag[] = []) => {
+  let queue: FlatTag[] = [...prevQueue];
 
   if (list && list.length > 0) {
-    list.forEach((t) => {
+    list.forEach((t: TagNode) => {
       queue = [
         ...queue,
         {
@@ -104,6 +122,15 @@ export const prepareTagsQueue = (list, prevQueue = []) => {
   return queue;
 };
 
+type TagsState = {
+  data: TagNode[];
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+  searchedData: any[];
+  searchString: string;
+  selectedTagUniqueId: string | null;
+};
+
 const tagsSlice = createSlice({
   name: "tags",
   initialState: {
@@ -113,7 +140,7 @@ const tagsSlice = createSlice({
     searchedData: [],
     searchString: "",
     selectedTagUniqueId: null,
-  },
+  } as TagsState,
   reducers: {
     setSelectedTagUniqueId: (state, action) => {
       state.selectedTagUniqueId = action.payload;
@@ -134,7 +161,7 @@ const tagsSlice = createSlice({
       })
       .addCase(fetchTags.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       });
   },
 });
@@ -144,17 +171,17 @@ export default tagsSlice.reducer;
 export const { setSelectedTagUniqueId, setSearchString } = tagsSlice.actions;
 
 /* ============== Selectors ======================*/
-const selectTagsState = (state) => state.tags;
+const selectTagsState = (state: RootState) => state.tags;
 
 export const selectAllTreeTags = createSelector(
   selectTagsState,
-  (tagsState) => tagsState.data
+  (tagsState) => tagsState.data as TagNode[]
 );
 
 // Memoized selector to derive flat data from tree structure
 export const selectAllFlatTags = createSelector(
   [selectAllTreeTags],
-  (treeTags) => prepareTagsQueue(treeTags)
+  (treeTags: TagNode[]) => prepareTagsQueue(treeTags)
 );
 
 export const selectSelectedTagUniqueId = createSelector(
@@ -164,7 +191,7 @@ export const selectSelectedTagUniqueId = createSelector(
 
 export const selectNextTagUniqueId = createSelector(
   [selectAllFlatTags, selectSelectedTagUniqueId],
-  (flatTagList, selectedTagUId) => {
+  (flatTagList: FlatTag[], selectedTagUId: string | null) => {
     const dataLength = flatTagList?.length || 0;
     const selectedIndex = flatTagList.findIndex(
       (tag) => tag.uniqueId === selectedTagUId
@@ -179,7 +206,7 @@ export const selectNextTagUniqueId = createSelector(
 
 export const selectPrevTagUniqueId = createSelector(
   [selectAllFlatTags, selectSelectedTagUniqueId],
-  (flatTagList, selectedTagUId) => {
+  (flatTagList: FlatTag[], selectedTagUId: string | null) => {
     const dataLength = flatTagList?.length || 0;
     const selectedIndex = flatTagList.findIndex(
       (tag) => tag.uniqueId === selectedTagUId
@@ -197,8 +224,8 @@ export const selectPrevTagUniqueId = createSelector(
  *
  */
 
-export const getTagsForGivenIds = (ids = []) =>
-  createSelector([selectAllFlatTags], (flatTagList) => {
+export const getTagsForGivenIds = (ids: string[] = []) =>
+  createSelector([selectAllFlatTags], (flatTagList: FlatTag[]) => {
     console.trace("IDs aaya... ", ids);
     if (!ids || !Array.isArray(ids)) {
       return [];
@@ -208,7 +235,7 @@ export const getTagsForGivenIds = (ids = []) =>
 
 export const getTagsForComboOptions = createSelector(
   [selectAllFlatTags],
-  (flatTagList) => {
+  (flatTagList: FlatTag[]) => {
     console.trace("Tag options ka request aaya");
     return (
       flatTagList.map((tag) => ({
@@ -220,7 +247,7 @@ export const getTagsForComboOptions = createSelector(
 );
 
 export const getTagForUniqueId = (uniqueId = "") =>
-  createSelector([selectAllFlatTags], (flatTagList) => {
+  createSelector([selectAllFlatTags], (flatTagList: FlatTag[]) => {
     console.trace("Tag options ka request aaya");
     return flatTagList.find((t) => t.uniqueId === uniqueId) || null;
   });

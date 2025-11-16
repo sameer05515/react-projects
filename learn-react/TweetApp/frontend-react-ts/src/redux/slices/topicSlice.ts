@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Define an async thunk to fetch all topics
@@ -10,7 +11,7 @@ export const fetchTopics = createAsyncThunk("topics/fetchTopics", async () => {
 // Define an async thunk to create a new topic
 export const createTopic = createAsyncThunk(
   "topics/createTopic",
-  async (topicData) => {
+  async (topicData: any) => {
     const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics`, {
       method: "POST",
       headers: {
@@ -24,7 +25,7 @@ export const createTopic = createAsyncThunk(
 
 export const searchTopic = createAsyncThunk(
   "topics/searchTopic",
-  async (topicData) => {
+  async (topicData: any) => {
     const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics/search`, {
       method: "POST",
       headers: {
@@ -39,7 +40,7 @@ export const searchTopic = createAsyncThunk(
 // Define an async thunk to create a new topic
 export const createTopicSection = createAsyncThunk(
   "topics/createTopic/Section",
-  async (sectionData) => {
+  async (sectionData: { linkedTopicUniqueId: string; uniqueId?: string } & Record<string, any>) => {
     console.log(
       `[topicSlice]: [createTopicSection]: sectionData: ${JSON.stringify(
         sectionData
@@ -62,7 +63,7 @@ export const createTopicSection = createAsyncThunk(
 // Define an async thunk to update a topic by uniqueId
 export const updateTopicSectionsById = createAsyncThunk(
   "topics/updateTopicSectionsById",
-  async (sectionData) => {
+  async (sectionData: { linkedTopicUniqueId: string; uniqueId: string } & Record<string, any>) => {
     console.log(
       `[topicSlice]: [updateTopicSectionsById]: sectionData: ${JSON.stringify(
         sectionData
@@ -85,7 +86,7 @@ export const updateTopicSectionsById = createAsyncThunk(
 // Define an async thunk to update a topic by uniqueId
 export const updateTopic = createAsyncThunk(
   "topics/updateTopic",
-  async (topicData) => {
+  async (topicData: { uniqueId: string } & Record<string, any>) => {
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/${topicData.uniqueId}`,
       {
@@ -100,11 +101,11 @@ export const updateTopic = createAsyncThunk(
   }
 );
 
-const getNameWithAncestors = (topic) => {
+const getNameWithAncestors = (topic: TopicNode | null | undefined) => {
   if (!topic) {
     return "";
   }
-  const ancestorNames = [];
+  const ancestorNames: string[] = [];
   let currentAncestor =
     topic.ancestors?.find((ancestor) => !ancestor.parentId) || null;
 
@@ -122,8 +123,25 @@ const getNameWithAncestors = (topic) => {
 
 // Helper function to prepare flat data from tree-structured data
 // Export for use in selectors
-export const prepareTopicsQueue = (list, prevQueue = []) => {
-  let queue = [...prevQueue];
+export type TopicNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TopicNode[];
+  _id?: string;
+};
+
+export type FlatTopic = {
+  uniqueId: string;
+  name: string;
+  title: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TopicNode[];
+  _id?: string;
+};
+
+export const prepareTopicsQueue = (list: TopicNode[] = [], prevQueue: FlatTopic[] = []): FlatTopic[] => {
+  let queue: FlatTopic[] = [...prevQueue];
   
   if (list && list.length > 0) {
       list.forEach((t) => {
@@ -145,6 +163,15 @@ export const prepareTopicsQueue = (list, prevQueue = []) => {
   return queue;
 };
 
+type TopicsState = {
+  selectedTopicUniqueId: string | null;
+  data: TopicNode[];
+  searchedData: any[];
+  searchString: string;
+  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  error: string | null;
+};
+
 const topicSlice = createSlice({
   name: "topics",
   initialState: {
@@ -154,7 +181,7 @@ const topicSlice = createSlice({
     searchString:'',
     loading: "idle",
     error: null,
-  },
+  } as TopicsState,
   reducers: {
     setSelectedTopicUniqueId: (state, action) => {
       state.selectedTopicUniqueId = action.payload;
@@ -175,7 +202,7 @@ const topicSlice = createSlice({
       })
       .addCase(fetchTopics.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       })
       .addCase(searchTopic.fulfilled, (state, action) => {
         //state.loading = "fulfilled";
@@ -221,17 +248,17 @@ export const { setSelectedTopicUniqueId,setSearchString } = topicSlice.actions;
 
 
 /* ============== Selectors ======================*/
-const selectTopicsState = (state) => state.topics;
+const selectTopicsState = (state: RootState) => state.topics;
 
 export const selectAllTreeTopics = createSelector(
   selectTopicsState,
-  (topicsState) => topicsState.data
+  (topicsState) => topicsState.data as TopicNode[]
 );
 
 // Memoized selector to derive flat data from tree structure
 export const selectAllFlatTopics = createSelector(
   [selectAllTreeTopics],
-  (treeTopics) => prepareTopicsQueue(treeTopics)
+  (treeTopics: TopicNode[]) => prepareTopicsQueue(treeTopics)
 );
 
 export const selectSelectedTopicUniqueId = createSelector(
@@ -241,7 +268,7 @@ export const selectSelectedTopicUniqueId = createSelector(
 
 export const selectNextTopicUniqueId = createSelector(
   [selectAllFlatTopics, selectSelectedTopicUniqueId],
-  (flatTopicList, selectedTopicUId) => {
+  (flatTopicList: FlatTopic[], selectedTopicUId: string | null) => {
     const dataLength = flatTopicList?.length || 0;
     const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
     if (selectedIndex < 0 ) {
@@ -254,7 +281,7 @@ export const selectNextTopicUniqueId = createSelector(
 
 export const selectPrevTopicUniqueId = createSelector(
   [selectAllFlatTopics, selectSelectedTopicUniqueId],
-  (flatTopicList, selectedTopicUId) => {
+  (flatTopicList: FlatTopic[], selectedTopicUId: string | null) => {
     const dataLength = flatTopicList?.length || 0;
     const selectedIndex = flatTopicList.findIndex((topic) => topic.uniqueId === selectedTopicUId);
     if (selectedIndex < 0 ) {

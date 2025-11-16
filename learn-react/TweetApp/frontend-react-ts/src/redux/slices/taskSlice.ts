@@ -4,6 +4,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 
 // Create an async thunk to fetch tasks from the API
@@ -17,7 +18,7 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
 });
 
 // Create an async thunk to save a task to the API
-export const saveTask = createAsyncThunk("tasks/saveTask", async (taskData) => {
+export const saveTask = createAsyncThunk("tasks/saveTask", async (taskData: any) => {
   const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tasks`, {
     method: "POST",
     headers: {
@@ -37,7 +38,7 @@ export const saveTask = createAsyncThunk("tasks/saveTask", async (taskData) => {
 // Create an async thunk to update a task in the API
 export const updateTask = createAsyncThunk(
   "tasks/updateTask",
-  async ({ taskId, taskData }) => {
+  async ({ taskId, taskData }: { taskId: string; taskData: any }) => {
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/tasks/${taskId}`,
       {
@@ -58,11 +59,28 @@ export const updateTask = createAsyncThunk(
   }
 );
 
-const getNameWithAncestors = (task) => {
+type TaskNode = {
+  uniqueId: string;
+  name: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TaskNode[];
+  _id?: string;
+};
+
+type FlatTask = {
+  uniqueId: string;
+  name: string;
+  title: string;
+  ancestors?: Array<{ name: string; parentId?: string; uniqueId?: string }>;
+  children?: TaskNode[];
+  _id?: string;
+};
+
+const getNameWithAncestors = (task: TaskNode | undefined | null) => {
   if (!task) {
     return "";
   }
-  const ancestorNames = [];
+  const ancestorNames: string[] = [];
   let currentAncestor =
     task.ancestors?.find((ancestor) => !ancestor.parentId) || null;
 
@@ -80,10 +98,10 @@ const getNameWithAncestors = (task) => {
 
 // Helper function to prepare flat data from tree-structured data
 // Export for use in selectors
-export const prepareTasksQueue = (list, prevQueue = []) => {
-  let queue = [...prevQueue];
+export const prepareTasksQueue = (list: TaskNode[] = [], prevQueue: FlatTask[] = []) => {
+  let queue: FlatTask[] = [...prevQueue];
   if (list && list.length > 0) {
-    list.forEach((t) => {
+    list.forEach((t: TaskNode) => {
       queue = [
         ...queue,
         {
@@ -103,7 +121,14 @@ export const prepareTasksQueue = (list, prevQueue = []) => {
 };
 
 // Define an initial state for tasks
-const initialState = {
+type TasksState = {
+  selectedTaskUniqueId: string | null;
+  data: TaskNode[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+};
+
+const initialState: TasksState = {
   selectedTaskUniqueId: null,
   data: [], // Only store tree structure - flatData computed via selector
   status: "idle",
@@ -131,7 +156,7 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message;
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });
@@ -142,17 +167,17 @@ export default taskSlice.reducer;
 export const { setSelectedTaskUniqueId } = taskSlice.actions;
 
 /* ============== Selectors ======================*/
-const selectTasksStateBase = (state) => state.tasks;
+const selectTasksStateBase = (state: RootState) => state.tasks;
 
 export const selectAllTreeTasks = createSelector(
   selectTasksStateBase,
-  (tasksState) => tasksState.data
+  (tasksState) => tasksState.data as TaskNode[]
 );
 
 // Memoized selector to derive flat data from tree structure
 export const selectAllFlatTasks = createSelector(
   [selectAllTreeTasks],
-  (treeTasks) => prepareTasksQueue(treeTasks)
+  (treeTasks: TaskNode[]) => prepareTasksQueue(treeTasks)
 );
 
 export const selectSelectedTaskUniqueId = createSelector(
@@ -162,7 +187,7 @@ export const selectSelectedTaskUniqueId = createSelector(
 
 export const selectNextTaskUniqueId = createSelector(
   [selectAllFlatTasks, selectSelectedTaskUniqueId],
-  (flatTaskList, selectedTaskUId) => {
+  (flatTaskList: FlatTask[], selectedTaskUId: string | null) => {
     const dataLength = flatTaskList?.length || 0;
     const selectedIndex = flatTaskList.findIndex(
       (task) => task.uniqueId === selectedTaskUId
@@ -177,7 +202,7 @@ export const selectNextTaskUniqueId = createSelector(
 
 export const selectPrevTaskUniqueId = createSelector(
   [selectAllFlatTasks, selectSelectedTaskUniqueId],
-  (flatTaskList, selectedTaskUId) => {
+  (flatTaskList: FlatTask[], selectedTaskUId: string | null) => {
     const dataLength = flatTaskList?.length || 0;
     const selectedIndex = flatTaskList.findIndex(
       (task) => task.uniqueId === selectedTaskUId

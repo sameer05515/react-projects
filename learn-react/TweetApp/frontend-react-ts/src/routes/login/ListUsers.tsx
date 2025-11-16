@@ -3,7 +3,12 @@ import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import CustomButton from "../../common/components/custom-button/CustomButton";
 
-function MarkAsAdminButton({ userId }) {
+type User = {
+  _id: string;
+  username: string;
+};
+
+function MarkAsAdminButton({ userId }: { userId: string }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const handleMarkAsAdmin = () => {
@@ -34,14 +39,14 @@ function MarkAsAdminButton({ userId }) {
 }
 
 function ListUsers() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     // Fetch the list of users from your backend API
     axios
       .get(`${BACKEND_APPLICATION_BASE_URL}/api/users`)
       .then((response) => {
-        const userList = response.data;
+        const userList = response.data as User[];
         setUsers(userList);
       })
       .catch((error) => {
@@ -74,7 +79,7 @@ function ListUsers() {
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="p-6 text-center text-gray-500">
+                <td colSpan={3} className="p-6 text-center text-gray-500">
                   No users found
                 </td>
               </tr>

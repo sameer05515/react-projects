@@ -3,14 +3,18 @@ import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function LoginUser() {
+type LoginUserProps = {
+  onLogin?: () => void;
+};
+
+function LoginUser({ onLogin }: LoginUserProps) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -33,6 +37,7 @@ function LoginUser() {
       // Redirect to a protected route or perform other actions
       //   history.push('/dashboard'); // Change '/dashboard' to your desired protected route
       // navigate("/tweet-base");
+      onLogin && onLogin();
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);

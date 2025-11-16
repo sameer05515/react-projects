@@ -7,9 +7,24 @@ import {
 import useMemoryManagementApis from "../../common/hooks/useMemoryManagementApis/v1";
 import { selectIsBackdropActive } from "../../redux/slices/backdropSlice";
 
-const Notifications = ({ id = memoryMapId }) => {
+type MemoryMapItem = {
+  name?: string;
+  skeleton?: string;
+};
+
+type ApiResponse = {
+  data: MemoryMapItem | null;
+  isError: boolean;
+  message: string;
+};
+
+type NotificationsProps = {
+  id?: string;
+};
+
+const Notifications: React.FC<NotificationsProps> = ({ id = memoryMapId }) => {
   const isDarkMode = false;
-  const [apiResponse, setApiResponse] = useState({
+  const [apiResponse, setApiResponse] = useState<ApiResponse>({
     data: null,
     isError: false,
     message: "",
@@ -25,7 +40,7 @@ const Notifications = ({ id = memoryMapId }) => {
       const { data, isError, message } = await getMemoryMap(id);
 
       setApiResponse({
-        data,
+        data: data as MemoryMapItem,
         isError,
         message: message || "No message available",
       });

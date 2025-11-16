@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import CustomButton from '../common/CustomButton';
+import CustomButton from '../../common/components/custom-button/CustomButton';
 
-const Login = () => {
+const Login: React.FC = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -16,7 +16,7 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Here, you can add the code to perform login/authentication.
     // You can send the formData to your server for validation.

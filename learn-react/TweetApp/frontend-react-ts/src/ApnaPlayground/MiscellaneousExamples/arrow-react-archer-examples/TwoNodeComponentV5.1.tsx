@@ -47,7 +47,7 @@ const RenderNodes = ({ selectedNode }) => {
     );
 };
 
-const styles = {
+const styles: { container: React.CSSProperties; row: React.CSSProperties; node: React.CSSProperties } = {
     container: {
         display: 'flex',
         flexDirection: 'column',

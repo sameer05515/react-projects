@@ -2,23 +2,24 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../redux/dataSlice1";
+import { fetchData } from "../../../redux/slices/dataSlice1";
+import type { RootState } from "../../../redux/store";
 
 const DataList = ({ itemSelectionHandler = () => {} }) => {
   const dispatch = useDispatch();
-  const dataList = useSelector((state) => state.data);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const dataList = useSelector((state: RootState) => state.data as any[]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchData() as any);
   }, [dispatch]);
 
   const showData = (date) => {
     setSelectedDate((prevDate) => (prevDate === date ? null : date));
   };
 
-  const groupedData = {};
-  dataList.forEach((item) => {
+  const groupedData: Record<string, any[]> = {};
+  dataList.forEach((item: any) => {
     const date = format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB });
     if (!groupedData[date]) {
       groupedData[date] = [];
@@ -28,7 +29,7 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
 
   return (
     <div className="space-y-3">
-      {Object.entries(groupedData).map(([date, items]) => {
+      {Object.entries(groupedData).map(([date, items]: [string, any[]]) => {
         const isOpen = selectedDate === date;
         return (
           <div key={date} className="rounded border border-gray-300">

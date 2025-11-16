@@ -47,7 +47,7 @@ const SaveDataComponent = () => {
   const handleSave = async () => {
     if (validateForm()) {
       const newData = { date: selectedDate, title, htmlText };
-      dispatch(saveData(newData));
+      dispatch(saveData(newData) as any);
 
       // Optionally, you can display a success message or clear the form after saving.
     }

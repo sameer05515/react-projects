@@ -62,7 +62,7 @@ function OldTasksBase() {
 
           {pageMode && pageMode === PageModes.SHOW_ITEM && (
             <div>
-              <ViewTask id={selectedId} itemEditHandler={editData} />
+              <ViewTask id={selectedId || ""} itemEditHandler={editData} />
             </div>
           )}
 

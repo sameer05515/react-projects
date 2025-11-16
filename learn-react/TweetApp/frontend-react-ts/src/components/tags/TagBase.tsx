@@ -33,7 +33,7 @@ import TagListOldView from "./TagListOldView";
 
 const TagBase = () => {
   const [selectedView, setSelectedView] = useState("list");
-  const handleChangeView = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeView = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedView(event.target.value);
   };
   return (

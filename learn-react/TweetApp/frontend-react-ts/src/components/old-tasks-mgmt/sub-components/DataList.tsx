@@ -11,7 +11,7 @@ const DataList = ({ itemSelectionHandler = (_id: string) => {} }: { itemSelectio
   const [selectedItemId, setSelectedItemId] = useState<string>("");
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchData() as any);
   }, [dispatch]);
 
   const showData = (id: string) => {

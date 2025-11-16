@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 // Function to recursively add uniqueId and parentId to each node
-const addUniqueAndParentIds = (nodes, parentId = null) => {
-  return nodes.map((node, index) => {
+type RawNode = { name: string; children?: RawNode[]; uniqueId?: string; parentId?: string | null };
+
+const addUniqueAndParentIds = (nodes: RawNode[], parentId: string | null = null): RawNode[] => {
+  return nodes.map((node: RawNode, index: number) => {
     const uniqueId = parentId ? `${parentId}-${index}` : `${index}`;
     node.uniqueId = uniqueId;
     node.parentId = parentId;
@@ -52,7 +54,7 @@ const initialTreeData = [
   },
 ];
 
-const TreeNode = ({ node, onDragStart, onDrop, renderChildren }) => (
+const TreeNode = ({ node, onDragStart, onDrop, renderChildren }: { node: RawNode; onDragStart: (e: React.DragEvent, node: RawNode) => void; onDrop: (e: React.DragEvent, node: RawNode) => void; renderChildren: (nodes: RawNode[]) => React.ReactNode }) => (
   <div
     draggable
     onDragStart={(e) => onDragStart(e, node)}
@@ -73,14 +75,14 @@ const TreeNode = ({ node, onDragStart, onDrop, renderChildren }) => (
 );
 
 const TreeListV3 = () => {
-  const [treeData, setTreeData] = useState(() =>
+  const [treeData, setTreeData] = useState<RawNode[]>(() =>
     addUniqueAndParentIds(initialTreeData)
   );
-  const [draggedNode, setDraggedNode] = useState(null);
+  const [draggedNode, setDraggedNode] = useState<RawNode | null>(null);
 
   // Remove a node by uniqueId
-  const removeNodeById = (nodes, id) => {
-    return nodes.filter((node) => {
+  const removeNodeById = (nodes: RawNode[], id: string): RawNode[] => {
+    return nodes.filter((node: RawNode) => {
       if (node.uniqueId === id) return false;
       if (node.children) {
         node.children = removeNodeById(node.children, id);
@@ -90,8 +92,8 @@ const TreeListV3 = () => {
   };
 
   // Add node to target's children
-  const addNodeToParent = (nodes, parentId, newNode) => {
-    return nodes.map((node) => {
+  const addNodeToParent = (nodes: RawNode[], parentId: string, newNode: RawNode): RawNode[] => {
+    return nodes.map((node: RawNode) => {
       if (node.uniqueId === parentId) {
         node.children = [...(node.children || []), newNode];
       } else if (node.children) {
@@ -101,12 +103,12 @@ const TreeListV3 = () => {
     });
   };
 
-  const handleDragStart = (e, node) => {
+  const handleDragStart = (e: React.DragEvent, node: RawNode) => {
     e.stopPropagation();
     setDraggedNode(node);
   };
 
-  const handleDrop = (e, targetNode) => {
+  const handleDrop = (e: React.DragEvent, targetNode: RawNode) => {
     e.stopPropagation();
     if (!draggedNode || draggedNode.uniqueId === targetNode.uniqueId) {
       return;
@@ -129,8 +131,8 @@ const TreeListV3 = () => {
     setTreeData(() => addUniqueAndParentIds(updatedTreeWithDraggedNode));
   };
 
-  const renderTree = (nodes) => {
-    return nodes.map((node) => (
+  const renderTree = (nodes: RawNode[]) => {
+    return nodes.map((node: RawNode) => (
       <TreeNode
         key={node.uniqueId}
         node={node}

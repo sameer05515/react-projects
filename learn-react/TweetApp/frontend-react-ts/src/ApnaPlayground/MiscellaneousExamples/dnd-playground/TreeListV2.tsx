@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
 // Helper function to generate unique IDs and parent IDs
-const generateUniqueIds = (node, parentId = null) => {
+type RawNode = { name: string; children: RawNode[] };
+type NodeWithIds = RawNode & { uniqueId: string; parentId: string | null };
+
+const generateUniqueIds = (node: RawNode, parentId: string | null = null): NodeWithIds => {
   const uniqueId = Math.random().toString(36).substr(2, 9);
   return {
     ...node,
@@ -14,7 +17,7 @@ const generateUniqueIds = (node, parentId = null) => {
 };
 
 // Sample treeData with uniqueId and parentId
-const initialTreeData = [
+const initialTreeData: NodeWithIds[] = [
   {
     name: "Root Node",
     children: [
@@ -51,9 +54,9 @@ const initialTreeData = [
       },
     ],
   },
-].map(generateUniqueIds);
+].map(generateUniqueIds as any);
 
-const TreeNode = ({ node, handleDragStart, handleDrop }) => {
+const TreeNode = ({ node, handleDragStart, handleDrop }: { node: NodeWithIds; handleDragStart: (e: React.DragEvent, node: NodeWithIds) => void; handleDrop: (e: React.DragEvent, node: NodeWithIds) => void }) => {
   return (
     <div
       draggable
@@ -84,14 +87,14 @@ const TreeNode = ({ node, handleDragStart, handleDrop }) => {
 };
 
 const TreeListV2 = () => {
-  const [treeData, setTreeData] = useState(initialTreeData);
-  const [draggedNode, setDraggedNode] = useState(null);
+  const [treeData, setTreeData] = useState<NodeWithIds[]>(initialTreeData);
+  const [draggedNode, setDraggedNode] = useState<NodeWithIds | null>(null);
 
-  const handleDragStart = (e, node) => {
+  const handleDragStart = (e: React.DragEvent, node: NodeWithIds) => {
     setDraggedNode(node);
   };
 
-  const handleDrop = (e, targetNode) => {
+  const handleDrop = (e: React.DragEvent, targetNode: NodeWithIds) => {
     e.preventDefault();
 
     if (draggedNode && draggedNode.uniqueId !== targetNode.uniqueId) {
@@ -107,7 +110,7 @@ const TreeListV2 = () => {
   };
 
   // Helper function to check if a node is a descendant of another
-  const isDescendant = (node, targetNode) => {
+  const isDescendant = (node: NodeWithIds, targetNode: NodeWithIds): boolean => {
     if (!node.children || node.children.length === 0) return false;
     return node.children.some(
       (child) =>
@@ -117,24 +120,24 @@ const TreeListV2 = () => {
   };
 
   // Remove the dragged node from its current parent
-  const removeNode = (nodes, nodeId) => {
+  const removeNode = (nodes: NodeWithIds[], nodeId: string): NodeWithIds[] => {
     return nodes
-      .map((node) => {
+      .map((node: NodeWithIds) => {
         if (node.uniqueId === nodeId) {
           return null; // Remove the node
         }
 
         return {
           ...node,
-          children: removeNode(node.children, nodeId),
+          children: removeNode(node.children || [], nodeId),
         };
       })
-      .filter(Boolean); // Remove null entries
+      .filter(Boolean) as NodeWithIds[]; // Remove null entries
   };
 
   // Add the dragged node to the new parent
-  const addNodeToParent = (nodes, targetNode, draggedNode) => {
-    return nodes.map((node) => {
+  const addNodeToParent = (nodes: NodeWithIds[], targetNode: NodeWithIds, draggedNode: NodeWithIds): NodeWithIds[] => {
+    return nodes.map((node: NodeWithIds) => {
       if (node.uniqueId === targetNode.uniqueId) {
         return {
           ...node,
@@ -144,7 +147,7 @@ const TreeListV2 = () => {
 
       return {
         ...node,
-        children: addNodeToParent(node.children, targetNode, draggedNode),
+        children: addNodeToParent(node.children || [], targetNode, draggedNode),
       };
     });
   };

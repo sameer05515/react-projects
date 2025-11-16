@@ -44,7 +44,9 @@ const initialTreeData = [
   },
 ];
 
-const NodeItem = ({ node, index, moveNode, path }) => {
+type DragNodeItem = { path: number[]; index: number };
+
+const NodeItem = ({ node, index, moveNode, path }: { node: any; index: number; moveNode: (fromPath: number[], toPath: number[]) => void; path: number[] }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: ItemType,
     item: { path, index },
@@ -55,7 +57,7 @@ const NodeItem = ({ node, index, moveNode, path }) => {
 
   const [, dropRef] = useDrop({
     accept: ItemType,
-    hover: (draggedItem) => {
+    hover: (draggedItem: DragNodeItem) => {
       if (draggedItem.path !== path) {
         moveNode(draggedItem.path, path);
         draggedItem.path = path; // Update path to new position
@@ -65,7 +67,11 @@ const NodeItem = ({ node, index, moveNode, path }) => {
 
   return (
     <div
-      ref={(node) => dragRef(dropRef(node))}
+      ref={(node) => {
+        const el = node as HTMLDivElement | null;
+        if (!el) return;
+        dragRef(dropRef(el));
+      }}
       style={{
         padding: "8px",
         margin: "4px",
@@ -80,7 +86,7 @@ const NodeItem = ({ node, index, moveNode, path }) => {
   );
 };
 
-const TreeNode = ({ treeData, path, moveNode }) => {
+const TreeNode = ({ treeData, path, moveNode }: { treeData: any[]; path: number[]; moveNode: (fromPath: number[], toPath: number[]) => void }) => {
   return (
     <>
       {treeData.map((node, index) => {
@@ -93,7 +99,7 @@ const TreeNode = ({ treeData, path, moveNode }) => {
               path={nodePath}
               moveNode={moveNode}
             />
-            {node.children.length > 0 && (
+            {node.children && node.children.length > 0 && (
               <TreeNode
                 treeData={node.children}
                 path={nodePath}
@@ -108,9 +114,9 @@ const TreeNode = ({ treeData, path, moveNode }) => {
 };
 
 const TreeList = () => {
-  const [treeData, setTreeData] = useState(initialTreeData);
+  const [treeData, setTreeData] = useState<any[]>(initialTreeData);
 
-  const moveNode = (fromPath, toPath) => {
+  const moveNode = (fromPath: number[], toPath: number[]) => {
     // Traverse and move node in tree data
     const updatedTree = [...treeData];
     const fromParent = getParentNode(updatedTree, fromPath.slice(0, -1));
@@ -122,7 +128,7 @@ const TreeList = () => {
     setTreeData(updatedTree);
   };
 
-  const getParentNode = (tree, path) => {
+  const getParentNode = (tree: any[], path: number[]) => {
     return path.reduce((parent, index) => parent[index].children, tree);
   };
 

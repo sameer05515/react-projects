@@ -10,14 +10,16 @@ const months = [
 ];
 
 // Helper function to shuffle the months
-const shuffleArray = (array) => {
+const shuffleArray = (array: string[]) => {
     return array
         .map((value) => ({ value, sort: Math.random() }))
         .sort((a, b) => a.sort - b.sort)
         .map(({ value }) => value);
 };
 
-const MonthItem = ({ month, index, moveMonth }) => {
+type DragMonthItem = { index: number };
+
+const MonthItem = ({ month, index, moveMonth }: { month: string; index: number; moveMonth: (from: number, to: number) => void }) => {
     const [{ isDragging }, dragRef] = useDrag({
         type: ItemType,
         item: { index },
@@ -28,7 +30,7 @@ const MonthItem = ({ month, index, moveMonth }) => {
 
     const [, dropRef] = useDrop({
         accept: ItemType,
-        hover: (draggedItem) => {
+        hover: (draggedItem: DragMonthItem) => {
             if (draggedItem.index !== index) {
                 moveMonth(draggedItem.index, index);
                 draggedItem.index = index;
@@ -38,7 +40,11 @@ const MonthItem = ({ month, index, moveMonth }) => {
 
     return (
         <div
-            ref={(node) => dragRef(dropRef(node))}
+            ref={(node) => {
+                const el = node as HTMLDivElement | null;
+                if (!el) return;
+                dragRef(dropRef(el));
+            }}
             style={{
                 padding: "8px",
                 margin: "4px",
@@ -53,9 +59,9 @@ const MonthItem = ({ month, index, moveMonth }) => {
 };
 
 const MonthList = () => {
-    const [monthOrder, setMonthOrder] = useState(shuffleArray(months));
+    const [monthOrder, setMonthOrder] = useState<string[]>(shuffleArray(months));
 
-    const moveMonth = (dragIndex, hoverIndex) => {
+    const moveMonth = (dragIndex: number, hoverIndex: number) => {
         const updatedMonths = [...monthOrder];
         const [draggedMonth] = updatedMonths.splice(dragIndex, 1);
         updatedMonths.splice(hoverIndex, 0, draggedMonth);

@@ -1,5 +1,5 @@
-import { availableOutputTypes } from "../../../common/components/Smart/Editor/v3.jsx";
-import { Status, ThinkTankItem, ThinkTankItemType } from "./Item.dto.js";
+import { availableOutputTypes } from "../../../common/components/Smart/Editor/v3";
+import { Status, ThinkTankItem, ThinkTankItemType } from "./Item.dto";
 
 const internalTodoDataArr = [
   ThinkTankItem.fromObject({

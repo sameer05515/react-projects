@@ -1,4 +1,4 @@
-import DataSource, { Status } from "./SourceDetails.dto.js";
+import DataSource, { Status } from "./SourceDetails.dto";
 
 const defaultOwnerName = "Premendra Kumar";
 

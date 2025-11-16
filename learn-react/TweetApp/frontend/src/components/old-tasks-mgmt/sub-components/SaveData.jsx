@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { saveData as addData } from "../../../redux/slices/dataSlice1"; 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./SaveDataComponent.css"; // Import custom CSS for styling
 import tagList from "./tagList";
 
 const SaveDataComponent = () => {
@@ -88,9 +87,9 @@ const SaveDataComponent = () => {
   );
 
   return (
-    <div>
-      <h2>Save Data</h2>
-      <div>
+    <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900">Save Data</h2>
+      <div className="grid gap-4 md:grid-cols-2">
         <TextField
           label="Date"
           type="date"
@@ -102,8 +101,6 @@ const SaveDataComponent = () => {
             shrink: true,
           }}
         />
-      </div>
-      <div>
         <TextField
           label="Title"
           value={title}
@@ -112,26 +109,14 @@ const SaveDataComponent = () => {
           helperText={errors.title}
         />
       </div>
-      <div>
-        <Typography variant="subtitle1">HTML Text:</Typography>
-        <ReactQuill
-          value={htmlText}
-          onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
-        />
-        {errors.htmlText && (
-          <Typography variant="caption" color="error">
-            {errors.htmlText}
-          </Typography>
-        )}
-      </div>
-      <div>
+      <div className="rounded border border-gray-200 p-3">
         <TextField
           label="Filter Tags"
           value={tagFilterText}
           onChange={handleTagFilterChange}
+          className="mb-2"
         />
-        <div className="tag-dropdown">
+        <div className="max-h-40 overflow-y-auto rounded border border-gray-300 p-1">
           <FormGroup>
             {filteredTagList.map((tag) => (
               <FormControlLabel
@@ -148,15 +133,28 @@ const SaveDataComponent = () => {
             ))}
           </FormGroup>
         </div>
-        <div className="selected-tags-container">
+        <div className="mt-4 flex flex-wrap gap-2">
           {selectedTags.map((tag) => (
-            <div key={tag} className="selected-tag">
+            <span key={tag} className="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700">
               {tag}
-            </div>
+            </span>
           ))}
         </div>
       </div>
-      <div>
+      <div className="rounded border border-gray-200 p-3">
+        <Typography variant="subtitle1">HTML Text:</Typography>
+        <ReactQuill
+          value={htmlText}
+          onChange={handleHtmlTextChange}
+          error={Boolean(errors.htmlText)}
+        />
+        {errors.htmlText && (
+          <Typography variant="caption" color="error">
+            {errors.htmlText}
+          </Typography>
+        )}
+      </div>
+      <div className="rounded border border-gray-200 p-3">
         {/* New input for the 'private' field */}
         <FormControlLabel
           control={
@@ -169,7 +167,7 @@ const SaveDataComponent = () => {
           label="Private"
         />
       </div>
-      <Button variant="contained" onClick={handleSave}>
+      <Button variant="contained" onClick={handleSave} className="bg-blue-600 text-white hover:bg-blue-700">
         Save
       </Button>
     </div>

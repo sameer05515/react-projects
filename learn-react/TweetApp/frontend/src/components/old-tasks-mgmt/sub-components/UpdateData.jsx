@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateData } from "../../redux/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./UpdateDataComponent.css"; // Import custom CSS for styling
 
 const UpdateDataComponent = ({ match, history }) => {
   const { id } = match.params;
@@ -99,9 +98,9 @@ const UpdateDataComponent = ({ match, history }) => {
   );
 
   return (
-    <div>
-      <h2>Edit Data</h2>
-      <div>
+    <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900">Edit Data</h2>
+      <div className="grid gap-4 md:grid-cols-2">
         <TextField
           label="Date"
           type="date"
@@ -113,8 +112,6 @@ const UpdateDataComponent = ({ match, history }) => {
             shrink: true,
           }}
         />
-      </div>
-      <div>
         <TextField
           label="Title"
           value={title}
@@ -123,26 +120,14 @@ const UpdateDataComponent = ({ match, history }) => {
           helperText={errors.title}
         />
       </div>
-      <div>
-        <Typography variant="subtitle1">HTML Text:</Typography>
-        <ReactQuill
-          value={htmlText}
-          onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
-        />
-        {errors.htmlText && (
-          <Typography variant="caption" color="error">
-            {errors.htmlText}
-          </Typography>
-        )}
-      </div>
-      <div>
+      <div className="rounded border border-gray-200 p-3">
         <TextField
           label="Filter Tags"
           value={tagFilterText}
           onChange={handleTagFilterChange}
+          className="mb-2"
         />
-        <div className="tag-dropdown">
+        <div className="max-h-40 overflow-y-auto rounded border border-gray-300 p-1">
           <FormGroup>
             {filteredTagList.map((tag) => (
               <FormControlLabel
@@ -159,15 +144,28 @@ const UpdateDataComponent = ({ match, history }) => {
             ))}
           </FormGroup>
         </div>
-        <div className="selected-tags-container">
+        <div className="mt-4 flex flex-wrap gap-2">
           {selectedTags.map((tag) => (
-            <div key={tag} className="selected-tag">
+            <span key={tag} className="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700">
               {tag}
-            </div>
+            </span>
           ))}
         </div>
       </div>
-      <Button variant="contained" onClick={handleUpdate}>
+      <div className="rounded border border-gray-200 p-3">
+        <Typography variant="subtitle1">HTML Text:</Typography>
+        <ReactQuill
+          value={htmlText}
+          onChange={handleHtmlTextChange}
+          error={Boolean(errors.htmlText)}
+        />
+        {errors.htmlText && (
+          <Typography variant="caption" color="error">
+            {errors.htmlText}
+          </Typography>
+        )}
+      </div>
+      <Button variant="contained" onClick={handleUpdate} className="bg-blue-600 text-white hover:bg-blue-700">
         Update
       </Button>
     </div>

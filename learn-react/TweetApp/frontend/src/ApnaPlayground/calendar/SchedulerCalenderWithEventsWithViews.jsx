@@ -10,7 +10,6 @@ import {
   subMonths
 } from "date-fns";
 import React, { useState } from "react";
-import "../../common/styles/calendar-with-events.css";
 
 const Calendar = () => {
   const [date, setDate] = useState(new Date());
@@ -50,45 +49,76 @@ const Calendar = () => {
     }
 
     return (
-      <div className="calendar">
-        <div className="calendar-header">
-          <button onClick={() => setDate(subMonths(date, 1))}>&lt;</button>
-          <h2>
-            {format(date, view === "month" ? "MMMM yyyy" : "MMMM d, yyyy")}
-          </h2>
-          <button onClick={() => setDate(addMonths(date, 1))}>&gt;</button>
-          <div className="view-buttons">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              className="rounded border border-gray-300 bg-white px-2 py-1 text-sm hover:bg-gray-50"
+              onClick={() => setDate(subMonths(date, 1))}
+              title="Previous"
+            >
+              &lt;
+            </button>
+            <h2 className="text-base font-semibold text-gray-900">
+              {format(date, view === "month" ? "MMMM yyyy" : "MMMM d, yyyy")}
+            </h2>
+            <button
+              className="rounded border border-gray-300 bg-white px-2 py-1 text-sm hover:bg-gray-50"
+              onClick={() => setDate(addMonths(date, 1))}
+              title="Next"
+            >
+              &gt;
+            </button>
+          </div>
+          <div className="flex gap-2">
             <button
               onClick={() => setView("month")}
-              className={view === "month" ? "active" : ""}
+              className={`rounded px-2 py-1 text-sm ${
+                view === "month"
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-50"
+              }`}
             >
               Month
             </button>
             <button
               onClick={() => setView("week")}
-              className={view === "week" ? "active" : ""}
+              className={`rounded px-2 py-1 text-sm ${
+                view === "week"
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-50"
+              }`}
             >
               Week
             </button>
             <button
               onClick={() => setView("day")}
-              className={view === "day" ? "active" : ""}
+              className={`rounded px-2 py-1 text-sm ${
+                view === "day"
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-50"
+              }`}
             >
               Day
             </button>
           </div>
         </div>
-        <div className="calendar-body">
+        <div className="grid grid-cols-7 gap-2">
           {calendarDays.map((day, index) => (
-            <div
+            <button
               key={index}
-              className={`calendar-day${isSameDay(day.date, new Date()) ? " today" : ""
-                }`}
+              type="button"
               onClick={() => handleDayClick(day.date)}
+              className={`min-h-[90px] rounded border p-2 text-left text-sm transition-colors ${
+                isSameDay(day.date, new Date())
+                  ? "border-blue-400 bg-blue-50"
+                  : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+              }`}
+              title={format(day.date, "PPPP")}
             >
-              {day.dayOfMonth}
+              <div className="mb-1 font-medium">{day.dayOfMonth}</div>
               {renderEventsForDay(day.date)}
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -103,9 +133,12 @@ const Calendar = () => {
   const renderEventsForDay = (day) => {
     const dayEvents = events.filter((event) => isSameDay(event.date, day));
     return (
-      <div className="events">
+      <div className="mt-1 space-y-1">
         {dayEvents.map((event, index) => (
-          <div key={index} className="event">
+          <div
+            key={index}
+            className="truncate rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700"
+          >
             {event.title}
           </div>
         ))}
@@ -113,7 +146,7 @@ const Calendar = () => {
     );
   };
 
-  return <div className="calendar-container">{renderCalendar()}</div>;
+  return <div className="mx-auto max-w-5xl">{renderCalendar()}</div>;
 };
 
 export default Calendar;

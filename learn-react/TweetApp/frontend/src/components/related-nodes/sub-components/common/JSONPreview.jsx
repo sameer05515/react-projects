@@ -1,15 +1,10 @@
 import React from 'react'
 
-const styles = {
-    jsonPreview: {
-        border: "1px solid #ddd",
-        padding: "6px",
-    },
-}
-
-const JSONPreview = ({ data, style }) => (
-    <div style={{ ...styles.jsonPreview, ...style }}>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+const JSONPreview = ({ data, className = "" }) => (
+    <div className={`rounded border border-gray-300 p-1.5 ${className}`}>
+        <pre className="whitespace-pre-wrap text-xs text-gray-800">
+            {JSON.stringify(data, null, 2)}
+        </pre>
     </div>
 );
 

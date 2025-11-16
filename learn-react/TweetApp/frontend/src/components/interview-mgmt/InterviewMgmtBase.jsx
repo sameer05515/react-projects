@@ -55,8 +55,8 @@ const InterviewMgmtBase = () => {
   };
 
   return (
-    <div style={interviewMgmtStyles.container}>
-      <div style={interviewMgmtStyles.leftSection}>
+    <div className="flex h-[100vh] w-full flex-row font-sans">
+      <div className="h-full flex-1 overflow-auto border-r border-gray-300 p-5">
         <ButtonGroup
           options={[
             {
@@ -110,7 +110,7 @@ const InterviewMgmtBase = () => {
           )}
         />
       </div>
-      <div style={interviewMgmtStyles.rightSection}>
+      <div className="h-full flex-[4] overflow-auto p-5">
         <Outlet />
         <br />
         {/* <JSONDataViewer
@@ -125,33 +125,7 @@ const InterviewMgmtBase = () => {
   );
 };
 
-const interviewMgmtStyles = {
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    height: "100vh",
-    width: "100%",
-    fontFamily: "Arial, sans-serif",
-  },
-  leftSection: {
-    flex: 1,
-    padding: "20px",
-    borderRight: "1px solid #ccc",
-    overflow: "auto",
-    height: "100%",
-  },
-  rightSection: {
-    flex: 4,
-    padding: "20px",
-    overflow: "auto",
-    height: "100%",
-  },
-  selected: {
-    fontWeight: "bold",
-    fontSize: "15px",
-    color: "green",
-  },
-};
+const interviewMgmtStyles = {};
 
 const WithContext = () => (
   <InterviewMgmtProvider>

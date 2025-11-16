@@ -21,14 +21,16 @@ const DetailsCard = ({
   purpose = "",
   notes = "",
 }) => (
-  <div className="card shadow-sm bg-black text-light" >
-    <div className={`card-header bg-${status === Status.NOT_IN_USE ? "warning" : "success"} text-white`}>{status}</div>
-    <div className="card-body" style={{ whiteSpace: "pre-wrap" }}>
-      <h4 className="card-title">
+  <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className={`${status === Status.NOT_IN_USE ? "bg-amber-500" : "bg-emerald-600"} rounded-t-xl px-4 py-2 text-white`}>
+      {status}
+    </div>
+    <div className="whitespace-pre-wrap p-4">
+      <h4 className="mb-1 text-lg font-semibold text-gray-900">
         {srNo}: {sourceName}
       </h4>
-      <h6 className="card-subtitle mb-2">Source Type: {sourceType}</h6>
-      <ul className="list-unstyled mb-0">
+      <h6 className="mb-2 text-sm text-gray-700">Source Type: {sourceType}</h6>
+      <ul className="mb-0 list-none space-y-1 text-sm text-gray-800">
         <li>
           <strong>Location:</strong> {location}
         </li>
@@ -46,15 +48,11 @@ const DetailsCard = ({
         </li>
       </ul>
 
-      <div class="text-success">
-        <hr />
-      </div>
-      <h5>Purpose: </h5>
+      <hr className="my-3 border-gray-200" />
+      <h5 className="mb-1 font-semibold text-gray-900">Purpose: </h5>
       <SmartPreviewer data={{ content: purpose, textOutputType: availableOutputTypes.HTML }} />
-      <div class="text-success">
-        <hr />
-      </div>
-      <h5>Notes: </h5>
+      <hr className="my-3 border-gray-200" />
+      <h5 className="mb-1 font-semibold text-gray-900">Notes: </h5>
       <SmartPreviewer data={{ content: notes, textOutputType: availableOutputTypes.HTML }} />
     </div>
   </div>

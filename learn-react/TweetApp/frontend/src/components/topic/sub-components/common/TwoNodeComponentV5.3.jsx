@@ -11,7 +11,7 @@ import JSONDataViewer from "../../../../common/components/json-data-viewer/JSOND
 // Reusable Node component
 const Node = ({ id, label, children, relations = [] }) => (
     <ArcherElement id={id} relations={relations}>
-        <div style={styles.node}>{children || label}</div>
+        <div className="rounded border-2 border-black px-5 py-2">{children || label}</div>
     </ArcherElement>
 );
 
@@ -26,7 +26,7 @@ const DynamicNodeComponent = ({
             <Node key={node.uniqueId} id={node.uniqueId} label={node.name}>
                 <div>
                     <span
-                        style={labelStyle(node.children.length)}
+                        className={`cursor-pointer ${labelStyle(node.children.length)}`}
                         onClick={() => onNodeClick && onNodeClick(node)}
                     >
                         {node.name}
@@ -37,11 +37,11 @@ const DynamicNodeComponent = ({
 
     return (
         <ArcherContainer strokeColor="black">
-            <div style={styles.container}>
+            <div className="mt-12 flex flex-col items-center overflow-auto">
                 {ancestorNodes?.length > 0 &&
                     renderNodes(
                         ancestorNodes,
-                        () => ({ fontWeight: "bold", color: "blue", cursor: "pointer" }),
+                        () => "font-bold text-blue-600",
                         (node) => onTopicSelection(
                             node.uniqueId || ""
                         )
@@ -51,11 +51,7 @@ const DynamicNodeComponent = ({
                     <Node id={selectedNode.uniqueId} label={selectedNode.name}>
                         <div>
                             <span
-                                style={{
-                                    fontSize: "x-large",
-                                    color: "green",
-                                    cursor: "pointer",
-                                }}
+                                className="cursor-pointer text-2xl text-green-600"
                                 onClick={() =>
                                     onTopicSelection(
                                         selectedNode.ancestors?.[selectedNode.ancestors.length - 1]?.uniqueId ?? ""
@@ -69,14 +65,13 @@ const DynamicNodeComponent = ({
                 )}
 
                 {leafNodes?.length > 0 && (
-                    <div style={styles.relationsRow}>
+                    <div className="mt-12 flex max-w-[90vw] justify-start overflow-x-auto">
                         {renderNodes(
                             leafNodes,
-                            (hasChildren) => ({
-                                fontWeight: hasChildren ? "bold" : "",
-                                color: "red",
-                                cursor: hasChildren ? "pointer" : "",
-                            }),
+                            (hasChildren) =>
+                                hasChildren
+                                    ? "font-bold text-red-600 cursor-pointer"
+                                    : "text-red-600",
                             (node) =>
                                 node.children.length > 0 && onTopicSelection(node.uniqueId)
                         )}
@@ -87,28 +82,7 @@ const DynamicNodeComponent = ({
     );
 };
 
-// Extracted styles for reuse
-const styles = {
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "50px",
-        overflow: "auto",
-    },
-    relationsRow: {
-        display: "flex",
-        justifyContent: "flex-start",
-        marginTop: "50px",
-        maxWidth: "90vw",
-        overflowX: "auto",
-    },
-    node: {
-        padding: "10px 20px",
-        border: "2px solid black",
-        borderRadius: "4px",
-    },
-};
+// styles object removed in favor of Tailwind classes
 
 // Example usage
 const TwoNodeComponentV5_3 = () => {

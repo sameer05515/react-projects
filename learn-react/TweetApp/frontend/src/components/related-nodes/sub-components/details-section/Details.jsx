@@ -8,15 +8,7 @@ const Details = () => {
   } = useSharedConfigurations();
 
   return (
-    <div
-      style={{
-        flex: 1,
-        ...styles.greenBorder,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="flex flex-1 items-center justify-center rounded border border-gray-200 bg-white p-3 shadow-sm">
       <Outlet />
     </div>
   );

@@ -21,7 +21,7 @@ import TwoNodeComponentV5_2 from "./arrow-react-archer-examples/TwoNodeComponent
 import TwoNodeComponentV5_3 from "./arrow-react-archer-examples/TwoNodeComponentV5.3";
 import BirdListV1 from "./BirdList/BirdListV1";
 import BirdListV2 from "./BirdList/BirdListV2";
-import BirdListV3 from "./BirdList/BirdListV3";
+// import BirdListV3 from "./BirdList/BirdListV3";
 import BirdListV4 from "./BirdList/BirdListV4";
 import LanguageSelectorV1 from "./display-prev-selected-and-next-nodes/LanguageSelectorV1";
 import LanguageSelectorV2 from "./display-prev-selected-and-next-nodes/LanguageSelectorV2";
@@ -195,7 +195,7 @@ const componentMapWithPurposes = {
         `,
   },
   BirdListV3: {
-    element: BirdListV3,
+    element: NotAvailable as any,
     purpose: `
         refactored version of BirdListV2 component, renamed to BirdListV3,
         

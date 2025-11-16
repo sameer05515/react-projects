@@ -14,7 +14,7 @@ const LanguageSelectorV2_1_2_1 = () => {
         const selectedLang = languages.find(
             (lang) => lang.name === event.target.value
         );
-        setSelectedLanguage(selectedLang);
+        setSelectedLanguage(selectedLang || languages[0]);
     };
 
     return (

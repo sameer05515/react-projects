@@ -10,9 +10,9 @@ const LanguageSelectorV3 = () => {
 
     const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
-    const handleLanguageChange = (event) => {
+    const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedLang = languages.find(lang => lang.name === event.target.value);
-        setSelectedLanguage(selectedLang);
+        setSelectedLanguage(selectedLang || languages[0]);
     };
 
     return (
@@ -30,8 +30,10 @@ const LanguageSelectorV3 = () => {
                 <div style={styles.rowDiv}>
                     <div style={styles.countriesContainer}>
                         {selectedLanguage.countries.map((country, index) => (
-                            <ArcherElement key={index} id={`country-${index}`} style={styles.node}>
-                                {country}
+                            <ArcherElement key={index} id={`country-${index}`}>
+                                <div style={styles.node}>
+                                    <span>{country}</span>
+                                </div>
                             </ArcherElement>
                         ))}
                     </div>
@@ -48,7 +50,7 @@ const LanguageSelectorV3 = () => {
                                 targetAnchor: 'left',
                                 sourceAnchor: 'right',
                             }))
-                        ]}
+                        ] as any}
                     >
                         <div style={styles.languageNode}>
                             <strong>{selectedLanguage.name}</strong>
@@ -56,8 +58,10 @@ const LanguageSelectorV3 = () => {
                     </ArcherElement>
                     <div style={styles.idiomsContainer}>
                         {selectedLanguage.idioms.map((idiom, index) => (
-                            <ArcherElement key={index} id={`idiom-${index}`} style={styles.node}>
-                                {idiom}
+                            <ArcherElement key={index} id={`idiom-${index}`}>
+                                <div style={styles.node}>
+                                    <span>{idiom}</span>
+                                </div>
                             </ArcherElement>
                         ))}
                     </div>
@@ -67,7 +71,7 @@ const LanguageSelectorV3 = () => {
     );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
     container: {
         padding: '20px',
         border: '1px solid #ccc',

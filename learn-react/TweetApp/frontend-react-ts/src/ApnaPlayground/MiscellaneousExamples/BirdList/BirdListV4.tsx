@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import PopupMenu from "../PopupMenu/v2";
 
-const BirdItem = ({ bird, onItemRightClick = () => {} }) => (
+interface BirdItemProps {
+  bird: string;
+  onItemRightClick?: (event: React.MouseEvent<HTMLLIElement>, bird: string) => void;
+}
+const BirdItem: React.FC<BirdItemProps> = ({ bird, onItemRightClick = () => {} }) => (
   <li
     onContextMenu={(e) => onItemRightClick(e, bird)}
     className="cursor-pointer rounded-lg px-3 py-2 text-sm text-gray-800 transition hover:bg-gray-100"
@@ -11,24 +15,24 @@ const BirdItem = ({ bird, onItemRightClick = () => {} }) => (
 );
 
 const BirdListV4 = () => {
-  const [birds] = useState(["Sparrow", "Eagle", "Parrot", "Penguin"]);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
-  const [selectedBird, setSelectedBird] = useState(null);
+  const [birds] = useState<string[]>(["Sparrow", "Eagle", "Parrot", "Penguin"]);
+  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+  const [popupPosition, setPopupPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [selectedBird, setSelectedBird] = useState<string | null>(null);
 
-  const handleRightClick = (event, bird) => {
+  const handleRightClick = (event: React.MouseEvent<HTMLLIElement>, bird: string) => {
     event.preventDefault();
     setSelectedBird(bird);
     setPopupPosition({ x: event.pageX, y: event.pageY });
     setPopupVisible(true);
   };
 
-  const handlePopupOption = (option) => {
+  const handlePopupOption = (option: string) => {
     console.log(`${option} selected for ${selectedBird}`);
     setPopupVisible(false);
   };
 
-  const popupOptions = [
+  const popupOptions: { title: string }[] = [
     { title: "Edit" },
     { title: "Delete" },
     { title: "Rename" },

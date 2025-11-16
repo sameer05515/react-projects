@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 // Helper function to generate unique IDs and parent IDs
 type RawNode = { name: string; children: RawNode[] };
-type NodeWithIds = RawNode & { uniqueId: string; parentId: string | null };
+type NodeWithIds = { name: string; children: NodeWithIds[]; uniqueId: string; parentId: string | null };
 
 const generateUniqueIds = (node: RawNode, parentId: string | null = null): NodeWithIds => {
   const uniqueId = Math.random().toString(36).substr(2, 9);
@@ -10,9 +10,7 @@ const generateUniqueIds = (node: RawNode, parentId: string | null = null): NodeW
     ...node,
     uniqueId,
     parentId,
-    children: node.children.map((child) =>
-      generateUniqueIds(child, uniqueId)
-    ),
+    children: node.children.map((child) => generateUniqueIds(child, uniqueId)),
   };
 };
 
@@ -54,7 +52,7 @@ const initialTreeData: NodeWithIds[] = [
       },
     ],
   },
-].map(generateUniqueIds as any);
+].map((n) => generateUniqueIds(n));
 
 const TreeNode = ({ node, handleDragStart, handleDrop }: { node: NodeWithIds; handleDragStart: (e: React.DragEvent, node: NodeWithIds) => void; handleDrop: (e: React.DragEvent, node: NodeWithIds) => void }) => {
   return (

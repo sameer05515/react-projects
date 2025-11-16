@@ -25,7 +25,8 @@ export const customStyles = {
   },
 };
 
-const SelectInput = ({ options, onChange, placeholder, value }) => (
+interface OptionItem { value: string; label: string }
+const SelectInput = ({ options, onChange, placeholder, value }: { options: OptionItem[]; onChange: (opt: OptionItem | null) => void; placeholder?: string; value: OptionItem | null }) => (
   <Select
     options={options}
     onChange={onChange}
@@ -36,11 +37,11 @@ const SelectInput = ({ options, onChange, placeholder, value }) => (
 );
 
 const MiscellaneousExamples = () => {
-  const [selectedComponent, setSelectedComponent] = useState(
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(
     "SmartEditorV4Dashboard_V1_0_0"
   );
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (selectedOption: OptionItem | null) => {
     setSelectedComponent(selectedOption ? selectedOption.value : null);
   };
 
@@ -101,7 +102,7 @@ const MiscellaneousExamples = () => {
           placeholder="Select a component"
           value={componentOptions.find(
             (opt) => opt.value === selectedComponent
-          )}
+          ) || null}
         />
       </div>
 

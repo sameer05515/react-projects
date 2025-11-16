@@ -52,7 +52,31 @@ export const NodeType = {
     nextNode: "nextNode",
 };
 
-export const languages = [
+type AnchorPosition = "left" | "right" | "top" | "bottom";
+
+export interface RelationType {
+    targetId: string;
+    targetAnchor: AnchorPosition;
+    sourceAnchor: AnchorPosition;
+    style: typeof strokeStyle;
+    label: string;
+}
+
+export interface ArcherNode {
+    id: string;
+    label: string;
+    style: typeof boxStyle;
+    type: string;
+    relations: RelationType[];
+}
+
+interface LanguageItem {
+    name: string;
+    countries: string[];
+    idioms: string[];
+}
+
+export const languages: LanguageItem[] = [
     {
         name: "Hindi",
         countries: ["India", "Fiji", "Mauritius"],
@@ -70,10 +94,10 @@ export const languages = [
     },
 ];
 
-export const getAllArcherBoxes=(langu=languages)=>{
-    let archerBoxes = [];
-    archerBoxes = langu.reduce((acc, lang) => {
-        const ac = {
+export const getAllArcherBoxes = (langu: LanguageItem[] = languages) => {
+    let archerBoxes: ArcherNode[] = [];
+    archerBoxes = langu.reduce<ArcherNode[]>((acc, lang) => {
+        const ac: ArcherNode = {
             id: lang.name.toLowerCase(),
             label: lang.name,
             style: boxStyle,
@@ -81,12 +105,13 @@ export const getAllArcherBoxes=(langu=languages)=>{
             relations: [],
         };
         acc.push(ac);
-        lang.countries.forEach((country) => {
-            const c = {
+        lang.countries.forEach((country: string) => {
+            const c: ArcherNode = {
                 id: country.toLowerCase(),
                 label: country,
                 style: boxStyle,
                 type: NodeType.previousNode,
+                relations: [],
             };
             acc.push(c);
             ac.relations.push({
@@ -97,12 +122,13 @@ export const getAllArcherBoxes=(langu=languages)=>{
                 label: "bhasha wali country",
             });
         });
-        lang.idioms.forEach((idiom) => {
-            const i = {
+        lang.idioms.forEach((idiom: string) => {
+            const i: ArcherNode = {
                 id: idiom.toLowerCase(),
                 label: idiom,
                 style: boxStyle,
                 type: NodeType.nextNode,
+                relations: [],
             };
             acc.push(i);
             ac.relations.push({
@@ -116,28 +142,28 @@ export const getAllArcherBoxes=(langu=languages)=>{
         return acc;
     }, archerBoxes);
 
-    const languageBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.selectedNode
+    const languageBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.selectedNode
     );
-    const countryBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.previousNode
+    const countryBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.previousNode
     );
-    const idiomBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.nextNode
+    const idiomBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.nextNode
     );
 
     return {languageBoxes, countryBoxes, idiomBoxes};
 
 }
 
-export const getArcherBoxesForLanguage=(language='')=>{
-    if(!language) return [];
+export const getArcherBoxesForLanguage = (language: string = '') => {
+    if(!language) return { languageBoxes: [] as ArcherNode[], countryBoxes: [] as ArcherNode[], idiomBoxes: [] as ArcherNode[] };
 
-    let archerBoxes = [];
-    const langu=languages.find(l=>l.name===language);
-    if(!langu) return [];
-    archerBoxes = [langu].reduce((acc, lang) => {
-        const ac = {
+    let archerBoxes: ArcherNode[] = [];
+    const langu = languages.find(l=>l.name===language);
+    if(!langu) return { languageBoxes: [] as ArcherNode[], countryBoxes: [] as ArcherNode[], idiomBoxes: [] as ArcherNode[] };
+    archerBoxes = [langu].reduce<ArcherNode[]>((acc, lang) => {
+        const ac: ArcherNode = {
             id: lang.name.toLowerCase(),
             label: lang.name,
             style: boxStyle,
@@ -145,12 +171,13 @@ export const getArcherBoxesForLanguage=(language='')=>{
             relations: [],
         };
         acc.push(ac);
-        lang.countries.forEach((country) => {
-            const c = {
+        lang.countries.forEach((country: string) => {
+            const c: ArcherNode = {
                 id: country.toLowerCase(),
                 label: country,
                 style: boxStyle,
                 type: NodeType.previousNode,
+                relations: [],
             };
             acc.push(c);
             ac.relations.push({
@@ -161,12 +188,13 @@ export const getArcherBoxesForLanguage=(language='')=>{
                 label: "bhasha wali country",
             });
         });
-        lang.idioms.forEach((idiom) => {
-            const i = {
+        lang.idioms.forEach((idiom: string) => {
+            const i: ArcherNode = {
                 id: idiom.toLowerCase(),
                 label: idiom,
                 style: boxStyle,
                 type: NodeType.nextNode,
+                relations: [],
             };
             acc.push(i);
             ac.relations.push({
@@ -180,14 +208,14 @@ export const getArcherBoxesForLanguage=(language='')=>{
         return acc;
     }, archerBoxes);
 
-    const languageBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.selectedNode
+    const languageBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.selectedNode
     );
-    const countryBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.previousNode
+    const countryBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.previousNode
     );
-    const idiomBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.nextNode
+    const idiomBoxes: ArcherNode[] = archerBoxes.filter(
+        (box: ArcherNode) => box.type === NodeType.nextNode
     );
 
     return {languageBoxes, countryBoxes, idiomBoxes};

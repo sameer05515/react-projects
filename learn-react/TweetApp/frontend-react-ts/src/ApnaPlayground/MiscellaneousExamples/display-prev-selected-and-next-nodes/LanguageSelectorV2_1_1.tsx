@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArcherContainer, ArcherElement } from "react-archer";
+import type { ArcherNode, RelationType } from "./common/utils";
 
 const boxStyle = { margin: "5px", padding: "10px", border: "1px solid black", borderRadius: "4px", backgroundColor: "#f9f9f9" };
 const strokeStyle = {
@@ -77,9 +78,9 @@ const LanguageSelectorV2_1_1 = () => {
         nextNode: "nextNode",
     };
 
-    let archerBoxes = [];
-    archerBoxes = languages.reduce((acc, lang) => {
-        const ac = {
+    let archerBoxes: ArcherNode[] = [];
+    archerBoxes = languages.reduce<ArcherNode[]>((acc, lang) => {
+        const ac: ArcherNode = {
             id: lang.name.toLowerCase(),
             label: lang.name,
             style: boxStyle,
@@ -88,11 +89,12 @@ const LanguageSelectorV2_1_1 = () => {
         };
         acc.push(ac);
         lang.countries.forEach((country) => {
-            const c = {
+            const c: ArcherNode = {
                 id: country.toLowerCase(),
                 label: country,
                 style: boxStyle,
                 type: NodeType.previousNode,
+                relations: [],
             };
             acc.push(c);
             ac.relations.push({
@@ -104,11 +106,12 @@ const LanguageSelectorV2_1_1 = () => {
             });
         });
         lang.idioms.forEach((idiom) => {
-            const i = {
+            const i: ArcherNode = {
                 id: idiom.toLowerCase(),
                 label: idiom,
                 style: boxStyle,
                 type: NodeType.nextNode,
+                relations: [],
             };
             acc.push(i);
             ac.relations.push({
@@ -123,13 +126,13 @@ const LanguageSelectorV2_1_1 = () => {
     }, archerBoxes);
 
     const languageBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.selectedNode
+        (box: ArcherNode) => box.type === NodeType.selectedNode
     );
     const countryBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.previousNode
+        (box: ArcherNode) => box.type === NodeType.previousNode
     );
     const idiomBoxes = archerBoxes.filter(
-        (box) => box.type === NodeType.nextNode
+        (box: ArcherNode) => box.type === NodeType.nextNode
     );
 
     const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -138,7 +141,7 @@ const LanguageSelectorV2_1_1 = () => {
         const selectedLang = languages.find(
             (lang) => lang.name === event.target.value
         );
-        setSelectedLanguage(selectedLang);
+        setSelectedLanguage(selectedLang || languages[0]);
     };
 
     return (

@@ -117,13 +117,13 @@ const TreeListV3 = () => {
     // Remove dragged node from its current parent
     const updatedTreeWithoutDraggedNode = removeNodeById(
       treeData,
-      draggedNode.uniqueId
+      draggedNode.uniqueId as string
     );
 
     // Add dragged node to the target node's children
     const updatedTreeWithDraggedNode = addNodeToParent(
       updatedTreeWithoutDraggedNode,
-      targetNode.uniqueId,
+      targetNode.uniqueId as string,
       draggedNode
     );
 

@@ -2,18 +2,37 @@ import React, { useState } from 'react';
 import { ArcherContainer, ArcherElement } from 'react-archer';
 
 // Reusable Label component
-const HoverLabel = ({ text, show }) => (
+interface HoverLabelProps {
+    text: string;
+    show: boolean;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+}
+const HoverLabel: React.FC<HoverLabelProps> = ({ text, show, onMouseEnter, onMouseLeave }) => (
     <div
         style={show ? styles.visibleLabel : styles.hiddenLabel}
-        onMouseEnter={styles.handleMouseEnter}
-        onMouseLeave={styles.handleMouseLeave}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
     >
         {text}
     </div>
 );
 
 // Reusable Node component
-const Node = ({ id, label, children, relations = [] }) => (
+type AnchorPosition = 'top' | 'bottom' | 'left' | 'right';
+interface Relation {
+    targetId: string;
+    targetAnchor: AnchorPosition;
+    sourceAnchor: AnchorPosition;
+    label?: React.ReactNode;
+}
+interface NodeProps {
+    id: string;
+    label?: string;
+    children?: React.ReactNode;
+    relations?: Relation[];
+}
+const Node: React.FC<NodeProps> = ({ id, label, children, relations = [] }) => (
     <ArcherElement id={id} relations={relations}>
         <div style={styles.node}>
             {children || label}
@@ -49,7 +68,7 @@ const TwoNodeComponentV5 = () => {
                     Node 1 (Hover me)
                 </Node>
 
-                <Node id="node2">
+                <Node id="node2" label="Node 2">
                     Node 2
                 </Node>
             </div>
@@ -58,7 +77,12 @@ const TwoNodeComponentV5 = () => {
 };
 
 // Extracted styles for reuse
-const styles = {
+const styles: {
+    container: React.CSSProperties;
+    node: React.CSSProperties;
+    hiddenLabel: React.CSSProperties;
+    visibleLabel: React.CSSProperties;
+} = {
     container: {
         display: 'flex',
         flexDirection: 'column',

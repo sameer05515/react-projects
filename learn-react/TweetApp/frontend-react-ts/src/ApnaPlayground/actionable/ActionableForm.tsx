@@ -5,7 +5,7 @@ type RecurrenceType = "OneTime" | "Daily";
 type YesNo = "yes" | "no";
 
 interface ActionableData {
-  id?: string;
+  id: string;
   activityName: string;
   activityDescription: string;
   recurrence: RecurrenceType;
@@ -15,6 +15,7 @@ interface ActionableData {
 }
 
 const blankData: ActionableData = {
+  id: "",
     activityName: "",
     activityDescription: "",
     recurrence: "OneTime",

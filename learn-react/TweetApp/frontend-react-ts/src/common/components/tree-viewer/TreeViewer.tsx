@@ -98,7 +98,7 @@ function TreeNode<T extends GenericNode>({
           />
         )}
       </div>
-      {expanded && hasChildren && (
+      {expanded && hasChildren && Array.isArray(node.children) && (
         <div>
           {node.children.map((child: any) => (
             <TreeNode

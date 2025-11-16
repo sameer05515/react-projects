@@ -201,7 +201,7 @@ function ActivityForm() {
         <div>
           <h2>Edit Activity</h2>
           <form onSubmit={() => handleUpdate(editData as SavedActivity)}>
-            <EditActivityForm data={editData} onCancel={handleCancelEdit} />
+            <EditActivityForm data={editData} onSave={handleUpdate} onCancel={handleCancelEdit} />
           </form>
         </div>
       )}

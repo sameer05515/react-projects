@@ -9,7 +9,7 @@ const BootstrapClassUseV1 = () => {
         Hello, from BootstrapClassUseV1!
       </h1>
       <div className="flex items-center justify-between">
-        <NavLink className="flex items-center gap-2 text-sm font-medium text-blue-600 transition hover:text-blue-800">
+        <NavLink to="#" className="flex items-center gap-2 text-sm font-medium text-blue-600 transition hover:text-blue-800">
           <PrevIcon className="text-lg" />
           <span>Prev</span>
         </NavLink>

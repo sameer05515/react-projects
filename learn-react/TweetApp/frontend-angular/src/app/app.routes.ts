@@ -47,7 +47,9 @@ export const routes: Routes = [
     component: AppShellComponent,
     children: [
       { path: '', component: HomeComponent },
+      { path: 'login', loadComponent: () => import('./routes/login/login.page').then(m => m.LoginPage) },
       { path: 'topics', loadComponent: () => import('./features/topics/topics-list.component').then(m => m.TopicsListComponent) },
+      { path: 'topics/tree', loadComponent: () => import('./features/topics/topics-tree.page').then(m => m.TopicsTreePage) },
       { path: 'topics/:id', loadComponent: () => import('./features/topics/topic-detail.page').then(m => m.TopicDetailPage) },
       { path: 'topics/:id/edit', canDeactivate: [unsavedChangesGuard], loadComponent: () => import('./features/topics/topic-edit.page').then(m => m.TopicEditPage) },
 

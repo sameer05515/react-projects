@@ -9,7 +9,7 @@ import SPPAppRoutes from "./routes/v1";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
   const history = useNavigate();
 
@@ -36,7 +36,6 @@ function App() {
   }, [history]);
 
   if (loading) {
-    // Render loading state using tailwind classes
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <span className="text-lg text-gray-700">Loading...</span>
@@ -64,10 +63,6 @@ function App() {
 
       {isAuthenticated && (
         <>
-          {/* <VerticalMenu
-            isAuthenticated={isAuthenticated}
-            handleLogout={handleLogout}
-          /> */}
           <HorizontalMenu
             isAuthenticated={isAuthenticated}
             handleLogout={handleLogout}
@@ -84,3 +79,5 @@ function App() {
 }
 
 export default App;
+
+

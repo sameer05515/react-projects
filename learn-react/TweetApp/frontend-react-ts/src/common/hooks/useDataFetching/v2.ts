@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { RootState, AppDispatch } from '../../../redux/store';
 
 /**
  * Custom hook for smart data fetching with caching
@@ -12,29 +13,35 @@ import { useDispatch, useSelector } from 'react-redux';
  * 
  * @returns {Object} - { data, loading, error, refetch }
  */
-export const useDataFetching = (
-  fetchAction,
-  stateSelector,
-  forceFetch = false,
-  dependencies = []
+export const useDataFetching = <SliceState extends Record<string, any>>(
+  fetchAction: (...args: any[]) => any,
+  stateSelector: (state: RootState) => SliceState,
+  forceFetch: boolean = false,
+  dependencies: any[] = []
 ) => {
-  const dispatch = useDispatch();
-  const state = useSelector(stateSelector);
+  const dispatch = useDispatch<AppDispatch>();
+  const state = useSelector<RootState, SliceState>(stateSelector);
 
   // Determine loading status based on slice structure
-  const loading = state.status === 'loading' || 
-                  state.status === 'pending' || 
-                  state.loading === 'pending' ||
-                  state.loading === 'loading' ||
-                  (state.fetchCategoryTreeResponse && state.fetchCategoryTreeResponse.loading === 'pending');
+  const loading =
+    (state as any)?.status === 'loading' ||
+    (state as any)?.status === 'pending' ||
+    (state as any)?.loading === 'pending' ||
+    (state as any)?.loading === 'loading' ||
+    ((state as any)?.fetchCategoryTreeResponse &&
+      (state as any)?.fetchCategoryTreeResponse.loading === 'pending');
   
-  const error = state.error;
-  const data = state.data;
-  const hasData = data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0);
-  const isSuccess = state.status === 'succeeded' || 
-                    state.status === 'fulfilled' || 
-                    state.loading === 'fulfilled' ||
-                    (state.fetchCategoryTreeResponse && state.fetchCategoryTreeResponse.loading === 'fulfilled');
+  const error = (state as any)?.error ?? null;
+  const data = (state as any)?.data;
+  const hasData =
+    !!data &&
+    (Array.isArray(data) ? data.length > 0 : typeof data === 'object' ? Object.keys(data as any).length > 0 : false);
+  const isSuccess =
+    (state as any)?.status === 'succeeded' ||
+    (state as any)?.status === 'fulfilled' ||
+    (state as any)?.loading === 'fulfilled' ||
+    ((state as any)?.fetchCategoryTreeResponse &&
+      (state as any)?.fetchCategoryTreeResponse.loading === 'fulfilled');
 
   useEffect(() => {
     // Fetch if:
@@ -45,12 +52,12 @@ export const useDataFetching = (
       forceFetch ||
       (!hasData &&
         !loading &&
-        state.status !== "loading" &&
-        state.loading !== "pending") ||
+        (state as any)?.status !== "loading" &&
+        (state as any)?.loading !== "pending") ||
       (error && !loading);
 
     if (shouldFetch) {
-      dispatch(fetchAction());
+      dispatch(fetchAction() as any);
     }
   }, [
     dispatch,
@@ -59,13 +66,13 @@ export const useDataFetching = (
     loading,
     forceFetch,
     error,
-    state.status,
-    state.loading,
+    (state as any)?.status,
+    (state as any)?.loading,
     dependencies,
   ]);
 
   const refetch = () => {
-    dispatch(fetchAction());
+    dispatch(fetchAction() as any);
   };
 
   return {

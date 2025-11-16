@@ -12,7 +12,7 @@ const CalendarWithEvents = () => {
   const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 
-  const calendarDays = [];
+  const calendarDays: JSX.Element[] = [];
   for (let i = 0; i < firstDayOfMonth; i++) {
     calendarDays.push(<div key={`empty-${i}`} className="h-16 rounded-lg border border-transparent" />);
   }

@@ -1,7 +1,20 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-const blankData= {
+type RecurrenceType = "OneTime" | "Daily";
+type YesNo = "yes" | "no";
+
+interface ActionableData {
+  id?: string;
+  activityName: string;
+  activityDescription: string;
+  recurrence: RecurrenceType;
+  shouldContinue: YesNo;
+  startDate: string;
+  endDate: string;
+}
+
+const blankData: ActionableData = {
     activityName: "",
     activityDescription: "",
     recurrence: "OneTime",
@@ -10,24 +23,29 @@ const blankData= {
     endDate: "",
   };
 
-const ActionableForm = ({
-    initialData=blankData,
-      postSaveAction=()=>{}
-}) => {
-  const [formData, setFormData] = useState({...initialData});
+interface ActionableFormProps {
+  initialData?: ActionableData;
+  postSaveAction?: (data: ActionableData) => void;
+}
 
-  const handleChange = (e) => {
+const ActionableForm: React.FC<ActionableFormProps> = ({
+    initialData = blankData,
+    postSaveAction = () => {}
+}) => {
+  const [formData, setFormData] = useState<ActionableData>({...initialData});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value as any,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // You can handle form submission here, e.g., save to a database
-    const newActionable = { ...formData, id: uuidv4() };
+    const newActionable: ActionableData = { ...formData, id: uuidv4() };
     console.log("Form data:", newActionable);
     postSaveAction(newActionable);
     setFormData({...blankData});
@@ -50,7 +68,7 @@ const ActionableForm = ({
         <div className="md:col-span-2">
           <label className="mb-1 block text-sm font-medium text-gray-700">Activity Description</label>
           <textarea
-            rows="3"
+            rows={3}
             name="activityDescription"
             value={formData.activityDescription}
             onChange={handleChange}

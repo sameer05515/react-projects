@@ -52,11 +52,11 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
     onSave(formData);
   };
 
-  const handleLinkedTasksChange = (e) => {
+  const handleLinkedTasksChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, options } = e.target;
-    const selectedLinkedTasks = Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
+    const selectedLinkedTasks = Array.from(options as unknown as HTMLOptionsCollection)
+      .filter((option: any) => option.selected)
+      .map((option: any) => option.value as string);
 
     setFormData({
       ...formData,

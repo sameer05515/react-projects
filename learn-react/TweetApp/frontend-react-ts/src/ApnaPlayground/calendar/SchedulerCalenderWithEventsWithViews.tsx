@@ -20,6 +20,8 @@ const Calendar = () => {
   ]);
   const [view, setView] = useState("month"); // Default view is month
 
+  type DayItem = { date: Date; dayOfMonth: number };
+
   const renderCalendar = () => {
     let startDate, endDate;
 
@@ -38,8 +40,8 @@ const Calendar = () => {
         break;
     }
 
-    const calendarDays = [];
-    let currentDate = startDate;
+    const calendarDays: DayItem[] = [];
+    let currentDate: Date = startDate as Date;
     while (currentDate <= endDate) {
       calendarDays.push({
         date: currentDate,
@@ -104,7 +106,7 @@ const Calendar = () => {
           </div>
         </div>
         <div className="grid grid-cols-7 gap-2">
-          {calendarDays.map((day, index) => (
+          {calendarDays.map((day: DayItem, index: number) => (
             <button
               key={index}
               type="button"
@@ -125,12 +127,12 @@ const Calendar = () => {
     );
   };
 
-  const handleDayClick = (clickedDate) => {
+  const handleDayClick = (clickedDate: Date) => {
     // Handle clicking on a specific day, e.g., show a modal with events for that day
     console.log("Clicked on date:", clickedDate);
   };
 
-  const renderEventsForDay = (day) => {
+  const renderEventsForDay = (day: Date) => {
     const dayEvents = events.filter((event) => isSameDay(event.date, day));
     return (
       <div className="mt-1 space-y-1">

@@ -3,14 +3,20 @@ import { useState } from "react";
 import EditActivityForm from "./EditActivityForm";
 import APPLICATION_BASE_URL from "../../common/service/config";
 
-function ActivityForm() {
-  const [activityName, setActivityName] = useState("");
-  const [selectedGroups, setSelectedGroups] = useState([]);
-  const [shouldContinue, setShouldContinue] = useState(true);
-  const [savedData, setSavedData] = useState([]);
-  const [editData, setEditData] = useState(null); // Store data for editing
+interface SavedActivity {
+  activityName: string;
+  selectedGroups: string[];
+  shouldContinue: boolean;
+}
 
-  const handleGroupSelection = (group) => {
+function ActivityForm() {
+  const [activityName, setActivityName] = useState<string>("");
+  const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
+  const [shouldContinue, setShouldContinue] = useState<boolean>(true);
+  const [savedData, setSavedData] = useState<SavedActivity[]>([]);
+  const [editData, setEditData] = useState<SavedActivity | null>(null); // Store data for editing
+
+  const handleGroupSelection = (group: string) => {
     if (selectedGroups.includes(group)) {
       setSelectedGroups(
         selectedGroups.filter((selected) => selected !== group)
@@ -20,10 +26,10 @@ function ActivityForm() {
     }
   };
 
-  const handleSave = (e) => {
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     // Save the data to the savedData state
-    const newData = {
+    const newData: SavedActivity = {
       activityName,
       selectedGroups,
       shouldContinue,
@@ -36,7 +42,7 @@ function ActivityForm() {
     setShouldContinue(false);
   };
 
-  const handleEdit = (data) => {
+  const handleEdit = (data: SavedActivity) => {
     // Set the data for editing
     setEditData(data);
   };
@@ -46,7 +52,7 @@ function ActivityForm() {
     setEditData(null);
   };
 
-  const handleUpdate = (updatedData) => {
+  const handleUpdate = (updatedData: SavedActivity) => {
     // Update the saved data
     const updatedSavedData = savedData.map((data) =>
       data === editData ? updatedData : data
@@ -194,7 +200,7 @@ function ActivityForm() {
       {editData && (
         <div>
           <h2>Edit Activity</h2>
-          <form onSubmit={() => handleUpdate(editData)}>
+          <form onSubmit={() => handleUpdate(editData as SavedActivity)}>
             <EditActivityForm data={editData} onCancel={handleCancelEdit} />
           </form>
         </div>

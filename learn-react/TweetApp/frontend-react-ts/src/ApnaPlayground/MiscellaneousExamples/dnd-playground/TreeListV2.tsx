@@ -72,7 +72,7 @@ const TreeNode = ({ node, handleDragStart, handleDrop }: { node: NodeWithIds; ha
       {node.name}
       {node.children && node.children.length > 0 && (
         <div style={{ paddingLeft: "10px" }}>
-          {node.children.map((child) => (
+          {node.children.map((child: NodeWithIds) => (
             <TreeNode
               key={child.uniqueId}
               node={child}

@@ -83,7 +83,7 @@ const SmartEditorV4: React.FC<SmartEditorV4Props> = ({
     if (initialValue)
       handleFormUpdate(
         initialValue?.content || "",
-        getKeyName(initialValue.textOutputType, initialValue.textInputType)
+        getKeyName(initialValue?.textOutputType || "", initialValue?.textInputType || "")
       );
   }, [handleFormUpdate, initialValue]);
 
@@ -210,7 +210,7 @@ const SmartEditorV4: React.FC<SmartEditorV4Props> = ({
         </div>
       )}
 
-      {debug && <JSONDataViewer metadata={{ formData, formMessages }} title="selectedOutputType" />}
+      {debug && <JSONDataViewer metadata={{ formData, formMessages } as any} title="selectedOutputType" />}
     </div>
   );
 };

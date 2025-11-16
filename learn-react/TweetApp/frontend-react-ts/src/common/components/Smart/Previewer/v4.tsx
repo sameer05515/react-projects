@@ -47,7 +47,7 @@ const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
               )}
             />
             {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
-            {debug && <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview" />}
+            {debug && <JSONDataViewer metadata={resultData as any} title="Skeleton Raw Data Preview" />}
           </>
         ) : null;
 
@@ -63,7 +63,7 @@ const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
       {debug && (
         <>
           <CopyButton buttonText="Copy Skeleton As Yaml" textToCopy="" onCopy={() => {}} />
-          <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />
+          <JSONDataViewer metadata={{ data, resultData, errorMessage } as any} title="X-Ray" />
         </>
       )}
     </>

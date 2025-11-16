@@ -72,7 +72,7 @@ interface SmartEditorProps {
 const SmartEditor: React.FC<SmartEditorProps> = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType, initialValue?.textInputType));
+  const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType || "", initialValue?.textInputType || ""));
   const [showPreview, setShowPreview] = useState(previewInitialValue);
 
   const [formData, setFormData] = useState<SmartEditorValue>({
@@ -103,7 +103,7 @@ const SmartEditor: React.FC<SmartEditorProps> = ({ initialValue, preview: previe
 
     if (textOutputType === availableOutputTypes.SKELETON && content) {
       const { isValid, message } = buildTree(content);
-      if (!isValid) error = message;
+      if (!isValid) error = message || "";
     }
 
     if (!content.trim()) error = "Content is empty";
@@ -176,7 +176,7 @@ const SmartEditor: React.FC<SmartEditorProps> = ({ initialValue, preview: previe
       )}
 
       {showPreview && <SmartPreviewer data={formData} />}
-      {debug && <JSONDataViewer metadata={{ formData, initialValue }} title="X-Ray: formData" />}
+      {debug && <JSONDataViewer metadata={{ formData, initialValue } as any} title="X-Ray: formData" />}
     </div>
   );
 };

@@ -17,13 +17,13 @@ const Breadcrumbs = ({
     onAncestorClick = () => { },
     onBaseSpanClick=()=>{}
 }) => {
-    const [ancestors, setAncestors] = useState([]);
+    const [ancestors, setAncestors] = useState<any[]>([]);
     const [baseSpanText, setbaseSpanText]= useState('UNKNOWN-BASE');
 
     useEffect(() => {
         setAncestors(() => [...providedAncestors]);
-        if(providedItemType && providedItemType.name){
-            setbaseSpanText(()=> providedItemType.name);
+        if(providedItemType && (providedItemType as any).name){
+            setbaseSpanText(()=> (providedItemType as any).name);
         }
     }, [providedAncestors, providedItemType]);
 
@@ -36,7 +36,7 @@ const Breadcrumbs = ({
                 <HoverableSpan className="bg-transparent px-0 py-0 text-blue-600 hover:text-blue-800" onClick={() => onBaseSpanClick()}>
                     <i>{baseSpanText} / </i>
                 </HoverableSpan>
-                {ancestors.map((ancestor, index) => (
+                {ancestors.map((ancestor: any, index) => (
                     <HoverableSpan
                         className="bg-transparent px-0 py-0 text-blue-600 hover:text-blue-800"
                         key={index}

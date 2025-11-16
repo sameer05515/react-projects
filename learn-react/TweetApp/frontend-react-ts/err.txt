@@ -1,35 +1,3 @@
-ERROR in src/ApnaPlayground/actionable/ActionableContainer.tsx:48:23
-TS2322: Type '(newActivity: Activity) => Promise<void>' is not assignable to type '(data: ActionableData) => void'.
-  Types of parameters 'newActivity' and 'data' are incompatible.
-    Type 'ActionableData' is not assignable to type 'Activity'.
-      Types of property 'id' are incompatible.
-        Type 'string | undefined' is not assignable to type 'string'.
-          Type 'undefined' is not assignable to type 'string'.
-    46 |   return (
-    47 |     <div>
-  > 48 |       <ActionableForm postSaveAction={addActivity}/>
-       |                       ^^^^^^^^^^^^^^
-    49 |       <ActionableList activities={activities} />
-    50 |       <CronExpressionGenerator/>
-    51 |       
-ERROR in src/ApnaPlayground/activity/ActivityForm.tsx:204:14
-TS2741: Property 'onSave' is missing in type '{ data: SavedActivity; onCancel: () => void; }' but required in type '{ data: any; onSave: any; onCancel: any; }'.
-    202 |           <h2>Edit Activity</h2>
-    203 |           <form onSubmit={() => handleUpdate(editData as SavedActivity)}>
-  > 204 |             <EditActivityForm data={editData} onCancel={handleCancelEdit} />
-        |              ^^^^^^^^^^^^^^^^
-    205 |           </form>
-    206 |         </div>
-    207 |       )}
-ERROR in src/ApnaPlayground/BootstrapClassUse/v1.tsx:12:10
-TS2741: Property 'to' is missing in type '{ children: Element[]; className: string; }' but required in type 'NavLinkProps'.
-    10 |       </h1>
-    11 |       <div className="flex items-center justify-between">
-  > 12 |         <NavLink className="flex items-center gap-2 text-sm font-medium text-blue-600 transition hover:text-blue-800">
-       |          ^^^^^^^
-    13 |           <PrevIcon className="text-lg" />
-    14 |           <span>Prev</span>
-    15 |         </NavLink>
 ERROR in src/ApnaPlayground/chatgpt-renderer/AppChatGPTDashboardV1_0_0.tsx:54:21
 TS2322: Type '{ id: number; children: string; onClick: () => void; }' is not assignable to type 'never'.
     52 |             <ButtonGroup
@@ -1188,176 +1156,86 @@ TS2322: Type 'string' is not assignable to type 'ReactElement<any, any>'.
     61 |                             </ArcherElement>
     62 |                         ))}
     63 |                     </div>
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/MonthList.tsx:32:17
-TS18046: 'draggedItem' is of type 'unknown'.
-    30 |         accept: ItemType,
-    31 |         hover: (draggedItem) => {
-  > 32 |             if (draggedItem.index !== index) {
-       |                 ^^^^^^^^^^^
-    33 |                 moveMonth(draggedItem.index, index);
-    34 |                 draggedItem.index = index;
-    35 |             }
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/MonthList.tsx:33:27
-TS18046: 'draggedItem' is of type 'unknown'.
-    31 |         hover: (draggedItem) => {
-    32 |             if (draggedItem.index !== index) {
-  > 33 |                 moveMonth(draggedItem.index, index);
-       |                           ^^^^^^^^^^^
-    34 |                 draggedItem.index = index;
-    35 |             }
-    36 |         },
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/MonthList.tsx:34:17
-TS18046: 'draggedItem' is of type 'unknown'.
-    32 |             if (draggedItem.index !== index) {
-    33 |                 moveMonth(draggedItem.index, index);
-  > 34 |                 draggedItem.index = index;
-       |                 ^^^^^^^^^^^
-    35 |             }
-    36 |         },
-    37 |     });
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/MonthList.tsx:41:13
-TS2322: Type '(node: HTMLDivElement | null) => ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type 'Ref<HTMLDivElement> | undefined'.
-  Type '(node: HTMLDivElement | null) => ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type '(instance: HTMLDivElement | null) => void | (() => VoidOrUndefinedOnly)'.
-    Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-    39 |     return (
-    40 |         <div
-  > 41 |             ref={(node) => dragRef(dropRef(node))}
-       |             ^^^
-    42 |             style={{
-    43 |                 padding: "8px",
-    44 |                 margin: "4px",
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeList.tsx:59:11
-TS18046: 'draggedItem' is of type 'unknown'.
-    57 |     accept: ItemType,
-    58 |     hover: (draggedItem) => {
-  > 59 |       if (draggedItem.path !== path) {
-       |           ^^^^^^^^^^^
-    60 |         moveNode(draggedItem.path, path);
-    61 |         draggedItem.path = path; // Update path to new position
-    62 |       }
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeList.tsx:60:18
-TS18046: 'draggedItem' is of type 'unknown'.
-    58 |     hover: (draggedItem) => {
-    59 |       if (draggedItem.path !== path) {
-  > 60 |         moveNode(draggedItem.path, path);
-       |                  ^^^^^^^^^^^
-    61 |         draggedItem.path = path; // Update path to new position
-    62 |       }
-    63 |     },
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeList.tsx:61:9
-TS18046: 'draggedItem' is of type 'unknown'.
-    59 |       if (draggedItem.path !== path) {
-    60 |         moveNode(draggedItem.path, path);
-  > 61 |         draggedItem.path = path; // Update path to new position
-       |         ^^^^^^^^^^^
-    62 |       }
-    63 |     },
-    64 |   });
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeList.tsx:68:7
-TS2322: Type '(node: HTMLDivElement | null) => ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type 'Ref<HTMLDivElement> | undefined'.
-  Type '(node: HTMLDivElement | null) => ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type '(instance: HTMLDivElement | null) => void | (() => VoidOrUndefinedOnly)'.
-    Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-    66 |   return (
-    67 |     <div
-  > 68 |       ref={(node) => dragRef(dropRef(node))}
-       |       ^^^
-    69 |       style={{
-    70 |         padding: "8px",
-    71 |         margin: "4px",
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:11:32
-TS2345: Argument of type 'string' is not assignable to parameter of type 'null | undefined'.
-     9 |     parentId,
-    10 |     children: node.children.map((child) =>
-  > 11 |       generateUniqueIds(child, uniqueId)
-       |                                ^^^^^^^^
-    12 |     ),
-    13 |   };
-    14 | };
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:54:7
-TS2345: Argument of type '(node: any, parentId?: null) => any' is not assignable to parameter of type '(value: { name: string; children: { name: string; children: { name: string; children: { name: string; children: never[]; }[]; }[]; }[]; }, index: number, array: { name: string; children: { name: string; children: { name: string; children: { ...; }[]; }[]; }[]; }[]) => any'.
-  Types of parameters 'parentId' and 'index' are incompatible.
-    Type 'number' is not assignable to type 'null | undefined'.
-    52 |     ],
-    53 |   },
-  > 54 | ].map(generateUniqueIds);
-       |       ^^^^^^^^^^^^^^^^^
-    55 |
-    56 | const TreeNode = ({ node, handleDragStart, handleDrop }) => {
-    57 |   return (
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:97:36
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-     95 |     e.preventDefault();
-     96 |
-  >  97 |     if (draggedNode && draggedNode.uniqueId !== targetNode.uniqueId) {
-        |                                    ^^^^^^^^
-     98 |       // Avoid dropping on the dragged node or its children
-     99 |       if (!isDescendant(draggedNode, targetNode)) {
-    100 |         setTreeData((prevTreeData) => {
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:101:70
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-     99 |       if (!isDescendant(draggedNode, targetNode)) {
-    100 |         setTreeData((prevTreeData) => {
-  > 101 |           let updatedTreeData = removeNode(prevTreeData, draggedNode.uniqueId);
-        |                                                                      ^^^^^^^^
-    102 |           updatedTreeData = addNodeToParent(updatedTreeData, targetNode, draggedNode);
-    103 |           return updatedTreeData;
-    104 |         });
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV3.tsx:10:60
-TS2345: Argument of type 'string' is not assignable to parameter of type 'null | undefined'.
-     8 |     node.parentId = parentId;
-     9 |     if (node.children && node.children.length > 0) {
-  > 10 |       node.children = addUniqueAndParentIds(node.children, uniqueId);
-       |                                                            ^^^^^^^^
-    11 |     }
-    12 |     return node;
-    13 |   });
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV3.tsx:111:37
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-    109 |   const handleDrop = (e, targetNode) => {
-    110 |     e.stopPropagation();
-  > 111 |     if (!draggedNode || draggedNode.uniqueId === targetNode.uniqueId) {
-        |                                     ^^^^^^^^
-    112 |       return;
-    113 |     }
-    114 |
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV3.tsx:118:19
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-    116 |     const updatedTreeWithoutDraggedNode = removeNodeById(
-    117 |       treeData,
-  > 118 |       draggedNode.uniqueId
-        |                   ^^^^^^^^
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:77:26
+TS2339: Property 'uniqueId' does not exist on type 'RawNode'.
+    75 |           {node.children.map((child) => (
+    76 |             <TreeNode
+  > 77 |               key={child.uniqueId}
+       |                          ^^^^^^^^
+    78 |               node={child}
+    79 |               handleDragStart={handleDragStart}
+    80 |               handleDrop={handleDrop}
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:78:15
+TS2322: Type 'RawNode' is not assignable to type 'NodeWithIds'.
+  Type 'RawNode' is missing the following properties from type '{ uniqueId: string; parentId: string | null; }': uniqueId, parentId
+    76 |             <TreeNode
+    77 |               key={child.uniqueId}
+  > 78 |               node={child}
+       |               ^^^^
+    79 |               handleDragStart={handleDragStart}
+    80 |               handleDrop={handleDrop}
+    81 |             />
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:117:15
+TS2339: Property 'uniqueId' does not exist on type 'RawNode'.
+    115 |     return node.children.some(
+    116 |       (child) =>
+  > 117 |         child.uniqueId === targetNode.uniqueId ||
+        |               ^^^^^^^^
+    118 |         isDescendant(child, targetNode)
     119 |     );
-    120 |
-    121 |     // Add dragged node to the target node's children
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV4.tsx:10:60
-TS2345: Argument of type 'string' is not assignable to parameter of type 'null | undefined'.
-     8 |     node.parentId = parentId;
-     9 |     if (node.children && node.children.length > 0) {
-  > 10 |       node.children = addUniqueAndParentIds(node.children, uniqueId);
-       |                                                            ^^^^^^^^
-    11 |     }
-    12 |     return node;
-    13 |   });
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV4.tsx:152:21
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-    150 |   
-    151 |     // 1. Validation: A node cannot be dropped onto itself
-  > 152 |     if (draggedNode.uniqueId === targetNode.uniqueId) {
-        |                     ^^^^^^^^
-    153 |       console.log("Cannot drop a node onto itself.");
-    154 |       return;
-    155 |     }
-ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV4.tsx:166:19
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-    164 |     const updatedTreeWithoutDraggedNode = removeNodeById(
-    165 |       treeData,
-  > 166 |       draggedNode.uniqueId
-        |                   ^^^^^^^^
-    167 |     );
-    168 |   
-    169 |     // Add dragged node to the target node's children
+    120 |   };
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:118:22
+TS2345: Argument of type 'RawNode' is not assignable to parameter of type 'NodeWithIds'.
+  Type 'RawNode' is missing the following properties from type '{ uniqueId: string; parentId: string | null; }': uniqueId, parentId
+    116 |       (child) =>
+    117 |         child.uniqueId === targetNode.uniqueId ||
+  > 118 |         isDescendant(child, targetNode)
+        |                      ^^^^^
+    119 |     );
+    120 |   };
+    121 |
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:132:32
+TS2345: Argument of type 'RawNode[]' is not assignable to parameter of type 'NodeWithIds[]'.
+  Type 'RawNode' is not assignable to type 'NodeWithIds'.
+    Type 'RawNode' is missing the following properties from type '{ uniqueId: string; parentId: string | null; }': uniqueId, parentId
+    130 |         return {
+    131 |           ...node,
+  > 132 |           children: removeNode(node.children || [], nodeId),
+        |                                ^^^^^^^^^^^^^^^^^^^
+    133 |         };
+    134 |       })
+    135 |       .filter(Boolean) as NodeWithIds[]; // Remove null entries
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV2.tsx:150:35
+TS2345: Argument of type 'RawNode[]' is not assignable to parameter of type 'NodeWithIds[]'.
+  Type 'RawNode' is not assignable to type 'NodeWithIds'.
+    Type 'RawNode' is missing the following properties from type '{ uniqueId: string; parentId: string | null; }': uniqueId, parentId
+    148 |       return {
+    149 |         ...node,
+  > 150 |         children: addNodeToParent(node.children || [], targetNode, draggedNode),
+        |                                   ^^^^^^^^^^^^^^^^^^^
+    151 |       };
+    152 |     });
+    153 |   };
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV3.tsx:120:7
+TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+    118 |     const updatedTreeWithoutDraggedNode = removeNodeById(
+    119 |       treeData,
+  > 120 |       draggedNode.uniqueId
+        |       ^^^^^^^^^^^^^^^^^^^^
+    121 |     );
+    122 |
+    123 |     // Add dragged node to the target node's children
+ERROR in src/ApnaPlayground/MiscellaneousExamples/dnd-playground/TreeListV3.tsx:126:7
+TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+    124 |     const updatedTreeWithDraggedNode = addNodeToParent(
+    125 |       updatedTreeWithoutDraggedNode,
+  > 126 |       targetNode.uniqueId,
+        |       ^^^^^^^^^^^^^^^^^^^
+    127 |       draggedNode
+    128 |     );
+    129 |
 ERROR in src/ApnaPlayground/MiscellaneousExamples/reusable-comparison-component/SPPTableV1_0_0.tsx:45:15
 TS2322: Type '{ border: string; padding: string; backgroundColor: string; textAlign: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
   Types of property 'textAlign' are incompatible.
@@ -1644,22 +1522,6 @@ TS2554: Expected 1 arguments, but got 0.
     16 |       try {
     17 |         /**
     18 |          * TO-DO:
-ERROR in src/ApnaPlayground/SamplePromiseTesters/testersConfig.tsx:7:40
-TS2339: Property 'invalidName' does not exist on type '{}'.
-     5 |
-     6 | // Default fallback component
-  >  7 | const DefaultTesterComponent = memo(({ invalidName }) => (
-       |                                        ^^^^^^^^^^^
-     8 |   <div>
-     9 |     <h2>Component Not Found</h2>
-    10 |     <p>
-ERROR in src/ApnaPlayground/SamplePromiseTesters/testersConfig.tsx:53:23
-TS2554: Expected 2 arguments, but got 1.
-    51 |   name = "",
-    52 |   strategy = FallbackStrategies.RETURN_DEFAULT_COMPONENT
-  > 53 | ) => Testers[name] || actAccordingToStrategy(strategy);
-       |                       ^^^^^^^^^^^^^^^^^^^^^^
-    54 |
 ERROR in src/ApnaPlayground/SettingsTesting/ArrowConnectorExamples/Dashboard.tsx:141:10
 TS2678: Type '"component1"' is not comparable to type 'null'.
     139 |   let DisplayComponent = null;
@@ -1995,26 +1857,6 @@ TS2339: Property 'uniqueId' does not exist on type 'never'.
     73 |         ))}
     74 |       </ul>
     75 |     </div>
-ERROR in src/ApnaPlayground/SettingsTesting/DisplayData/v1.tsx:128:11
-TS2322: Type '{ label: string; value: any; }[]' is not assignable to type 'never[]'.
-  Type '{ label: string; value: any; }' is not assignable to type 'never'.
-    126 |         <RadioButtonsComponent
-    127 |           initialSelectedOption={displayStyle}
-  > 128 |           options={generateLabelValueArray()}
-        |           ^^^^^^^
-    129 |           onChange={handleItemTypeSelect}
-    130 |           orientation="row"
-    131 |         />
-ERROR in src/ApnaPlayground/SettingsTesting/DisplayData/v1.tsx:129:11
-TS2322: Type '(selectedOption: any) => void' is not assignable to type '() => void'.
-  Target signature provides too few arguments. Expected 1 or more, but got 0.
-    127 |           initialSelectedOption={displayStyle}
-    128 |           options={generateLabelValueArray()}
-  > 129 |           onChange={handleItemTypeSelect}
-        |           ^^^^^^^^
-    130 |           orientation="row"
-    131 |         />
-    132 |       </div>
 ERROR in src/ApnaPlayground/smart-editor/main/SmartEditorV4Dashboard_V1_0_0.tsx:46:29
 TS2322: Type '{ data: { content: string; textOutputType: string; }; }' is not assignable to type 'IntrinsicAttributes & SmartEditorV4Props'.
   Property 'data' does not exist on type 'IntrinsicAttributes & SmartEditorV4Props'.
@@ -2077,35 +1919,6 @@ TS2322: Type '(data: any) => Promise<unknown>' is not assignable to type '(data:
     73 |       </ToggleablePanel>
     74 |       {/* <JSONDataViewer metadata={{ selectedDataIndex, selectedData }} title="X-Ray" /> */}
     75 |     </div>
-ERROR in src/ApnaPlayground/StrategyTesting/helpers/config.tsx:13:34
-TS2339: Property 'invalidName' does not exist on type '{}'.
-    11 |
-    12 | // Default fallback component
-  > 13 | const DefaultComponent = memo(({ invalidName }) => (
-       |                                  ^^^^^^^^^^^
-    14 |   <div>
-    15 |     <strong>Component Not Found: </strong>
-    16 |     <span style={error}>
-ERROR in src/ApnaPlayground/StrategyTesting/helpers/config.tsx:27:38
-TS2322: Type '{ invalidName: any; }' is not assignable to type 'IntrinsicAttributes & object'.
-  Property 'invalidName' does not exist on type 'IntrinsicAttributes & object'.
-    25 |   switch (strategy) {
-    26 |     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
-  > 27 |       return () => <DefaultComponent invalidName={invalidName} />;
-       |                                      ^^^^^^^^^^^
-    28 |     case FallbackStrategies.RETURN_NULL:
-    29 |       return null;
-    30 |     case FallbackStrategies.RETURN_UNDEFINED:
-ERROR in src/ApnaPlayground/StrategyTesting/helpers/config.tsx:36:38
-TS2322: Type '{ invalidName: any; }' is not assignable to type 'IntrinsicAttributes & object'.
-  Property 'invalidName' does not exist on type 'IntrinsicAttributes & object'.
-    34 |         `Unknown strategy: ${strategy}. Falling back to RETURN_DEFAULT_COMPONENT.`
-    35 |       );
-  > 36 |       return () => <DefaultComponent invalidName={invalidName} />;
-       |                                      ^^^^^^^^^^^
-    37 |   }
-    38 | };
-    39 |
 ERROR in src/ApnaPlayground/StrategyTesting/helpers/utils.tsx:23:36
 TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
     21 |     if (Component === null) {
@@ -2244,43 +2057,6 @@ TS2345: Argument of type '({ randomNumber: number }: { randomNumber: any; }) => 
     54 |         console.log("Recieved result at : " + new Date());
     55 |         console.log(`Random number: ${number}`);
     56 |         return doubleTheNumber(number);
-ERROR in src/ApnaPlayground/UseConsolidatedTesters/UseConsolidatedTesterV2.tsx:11:51
-TS18046: 'state' is of type 'unknown'.
-     9 |
-    10 | const UseConsolidatedTesterV2 = () => {
-  > 11 |   const isBackdropActive = useSelector((state) => state.backdrop.active);
-       |                                                   ^^^^^
-    12 |   const dispatch = useDispatch();
-    13 |   const {
-    14 |     fetchTaskDetailsForGivenId,
-ERROR in src/ApnaPlayground/UseConsolidatedTesters/UseConsolidatedTesterV2.tsx:41:15
-TS2339: Property 'randomNumber' does not exist on type 'unknown'.
-    39 |     try {
-    40 |       console.log("Starting fetch:", new Date());
-  > 41 |       const { randomNumber: number } = await getRandomNumber();
-       |               ^^^^^^^^^^^^
-    42 |       console.log("Received result at:", new Date());
-    43 |       console.log(`Random number: ${number}`);
-    44 |       const doubledNumber = await doubleTheNumber(number);
-ERROR in src/ApnaPlayground/UseConsolidatedTesters/UseConsolidatedTesterV2.tsx:69:25
-TS2322: Type '{ shouldActive: any; }' is not assignable to type 'IntrinsicAttributes'.
-  Property 'shouldActive' does not exist on type 'IntrinsicAttributes'.
-    67 |         <h1>Backdrop Example</h1>
-    68 |         <button onClick={handleShowBackdrop}>Show Backdrop</button>
-  > 69 |         <CustomBackdrop shouldActive={isBackdropActive} />
-       |                         ^^^^^^^^^^^^
-    70 |       </div>
-    71 |     </div>
-    72 |   );
-ERROR in src/ApnaPlayground/UseConsolidatedTesters/UseConsolidatedTesterV3.tsx:16:15
-TS2339: Property 'randomNumber' does not exist on type 'unknown'.
-    14 |     try {
-    15 |       console.log("Starting fetch:", new Date());
-  > 16 |       const { randomNumber: number } = await getRandomNumber();
-       |               ^^^^^^^^^^^^
-    17 |       console.log("Received result at:", new Date());
-    18 |       console.log(`Random number: ${number}`);
-    19 |       const doubledNumber = await doubleTheNumber(number);
 ERROR in src/common/components/collapsible-menu/CollapsibleMenu.tsx:13:49
 TS2339: Property 'contains' does not exist on type 'never'.
     11 |
@@ -2290,24 +2066,6 @@ TS2339: Property 'contains' does not exist on type 'never'.
     14 |             setIsCollapsed(true);
     15 |         }
     16 |     };
-ERROR in src/common/components/cron-expression-generator/CronExpressionGenerator.tsx:14:8
-TS2739: Type '{ onChange: (cronValue: any) => void; value: string; }' is missing the following properties from type 'CronProp': showResultText, showResultCron
-    12 |     <div>
-    13 |       <h1>Cron Expression Generator</h1>
-  > 14 |       <CronGenerator onChange={handleCronChange} value={cronExpression} />
-       |        ^^^^^^^^^^^^^
-    15 |       <div>
-    16 |         <h2>Generated Cron Expression:</h2>
-    17 |         <p>{cronExpression}</p>
-ERROR in src/common/components/custom-button/CustomButton.tsx:31:16
-TS2774: This condition will always return true since this function is always defined. Did you mean to call it instead?
-    29 |       style={style}
-    30 |       title={title || ""}
-  > 31 |       onClick={onClick ? onClick : undefined}
-       |                ^^^^^^^
-    32 |       disabled={disabled}
-    33 |     >
-    34 |       {iconName && (
 ERROR in src/common/components/editable-label/EditableLabel_graph.tsx:46:21
 TS2554: Expected 0 arguments, but got 1.
     44 |     const contentState = editorState.getCurrentContent();
@@ -2326,24 +2084,6 @@ TS2741: Property 'textInputType' is missing in type '{ content: string; textOutp
      98 |           />
      99 |         </div>
     100 |       )}
-ERROR in src/common/components/editable-label/EditableLabel2.tsx:3:29
-TS2307: Cannot find module 'react-html-parser' or its corresponding type declarations.
-    1 | import React, { useState } from "react";
-    2 | import ReactQuill from "react-quill";
-  > 3 | import ReactHtmlParser from "react-html-parser";
-      |                             ^^^^^^^^^^^^^^^^^^^
-    4 | import CustomButton from "../custom-button/CustomButton";
-    5 |
-    6 | function EditableLabel({
-ERROR in src/common/components/editable-label/EditableLabel2.tsx:34:21
-TS2554: Expected 0 arguments, but got 1.
-    32 |   const handleSubmitClick = () => {
-    33 |     setEditing(false);
-  > 34 |     postUpdateClick(editedText);
-       |                     ^^^^^^^^^^
-    35 |     if (flushSavedText) {
-    36 |       setEditedText("");
-    37 |     }
 ERROR in src/common/components/floating-button/FloatingButton.tsx:22:11
 TS2322: Type 'string | false' is not assignable to type 'string | undefined'.
   Type 'boolean' is not assignable to type 'string'.
@@ -2408,15 +2148,6 @@ TS2339: Property 'name' does not exist on type 'never'.
     50 |                 </HoverableSpan>
     51 |             </div>
     52 |         </div>
-ERROR in src/common/components/html-text-renderer/HtmlTextRenderer.tsx:7:29
-TS2350: Only a void function can be called with the 'new' keyword.
-     5 | const HtmlTextRendrer = ({ htmlString="" }) => {
-     6 |   const sanitizedHtml = DOMPurify.sanitize(htmlString);
-  >  7 |   const htmlToReactParser = new Parser();
-       |                             ^^^^^^^^^^^^
-     8 |
-     9 |   return <>{htmlToReactParser.parse(sanitizedHtml)}</>;
-    10 | };
 ERROR in src/common/components/markdown-component/MarkdownComponentV2.tsx:44:34
 TS2339: Property 'inline' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
     42 |                 rehypePlugins={[rehypeHighlight]}  // Use rehype-highlight for block code syntax highlighting
@@ -2426,169 +2157,15 @@ TS2339: Property 'inline' does not exist on type 'ClassAttributes<HTMLElement> &
     45 |                         if (inline) {
     46 |                             // Return inline code without syntax highlighting
     47 |                             return <code className={className} {...props}>{children}</code>;
-ERROR in src/common/components/private-router/PrivateRoute.tsx:3:33
-TS2307: Cannot find module '../authService' or its corresponding type declarations.
-    1 | import React from "react";
-    2 | import { Route, Navigate } from "react-router-dom";
-  > 3 | import { isAuthenticated } from "../authService";  // Import your authentication service
-      |                                 ^^^^^^^^^^^^^^^^
-    4 |
-    5 |
-    6 | function PrivateRoute({ element, ...rest }) {
-ERROR in src/common/components/radiobutton-component/RadioButtonsComponent.tsx:16:14
-TS2554: Expected 0 arguments, but got 1.
-    14 |   const handleOptionChange = (e, option) => {
-    15 |     setSelectedOption(e.target.value);
-  > 16 |     onChange(option);
-       |              ^^^^^^
-    17 |   };
-    18 |
-    19 |   const containerClasses =
-ERROR in src/common/components/radiobutton-component/RadioButtonsComponent.tsx:26:23
-TS2339: Property 'value' does not exist on type 'never'.
-    24 |       {options.map((option) => (
-    25 |         <label
-  > 26 |           key={option.value}
-       |                       ^^^^^
-    27 |           className={`inline-flex items-center gap-2 text-sm text-gray-800 ${optionClassName}`}
-    28 |         >
-    29 |           <input
-ERROR in src/common/components/radiobutton-component/RadioButtonsComponent.tsx:31:27
-TS2339: Property 'value' does not exist on type 'never'.
-    29 |           <input
-    30 |             type="radio"
-  > 31 |             value={option.value}
-       |                           ^^^^^
-    32 |             checked={selectedOption === option.value}
-    33 |             onChange={(e) => handleOptionChange(e, option)}
-    34 |             className="h-4 w-4 cursor-pointer text-blue-600 focus:ring-blue-500"
-ERROR in src/common/components/radiobutton-component/RadioButtonsComponent.tsx:32:48
-TS2339: Property 'value' does not exist on type 'never'.
-    30 |             type="radio"
-    31 |             value={option.value}
-  > 32 |             checked={selectedOption === option.value}
-       |                                                ^^^^^
-    33 |             onChange={(e) => handleOptionChange(e, option)}
-    34 |             className="h-4 w-4 cursor-pointer text-blue-600 focus:ring-blue-500"
-    35 |           />
-ERROR in src/common/components/radiobutton-component/RadioButtonsComponent.tsx:36:25
-TS2339: Property 'label' does not exist on type 'never'.
-    34 |             className="h-4 w-4 cursor-pointer text-blue-600 focus:ring-blue-500"
-    35 |           />
-  > 36 |           <span>{option.label}</span>
-       |                         ^^^^^
-    37 |         </label>
-    38 |       ))}
-    39 |     </div>
-ERROR in src/common/components/rating-component/RatingComponent.tsx:16:14
-TS2554: Expected 0 arguments, but got 1.
-    14 |     if (editable) {
-    15 |       setRating(value);
-  > 16 |       onEdit(value);
-       |              ^^^^^
-    17 |     } else {
-    18 |       console.log(`rating edit is : ${editable ? "" : "not"} enabled`);
-    19 |     }
-ERROR in src/common/components/Smart/common/utils.v4.tsx:116:68
-TS2322: Type 'null' is not assignable to type 'never[]'.
-    114 |     try {
-    115 |       yamlProcessedData = yaml.load(content);
-  > 116 |       if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) resultData = yamlProcessedData;
-        |                                                                    ^^^^^^^^^^
-    117 |     } catch (e) {
-    118 |       errorMessage = e.mark
-    119 |         ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-ERROR in src/common/components/Smart/common/utils.v4.tsx:118:22
-TS18046: 'e' is of type 'unknown'.
-    116 |       if (textOutputType === SupportedOutFormats.YAML_to_SKELETON) resultData = yamlProcessedData;
-    117 |     } catch (e) {
-  > 118 |       errorMessage = e.mark
-        |                      ^
-    119 |         ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-    120 |         : `Error parsing YAML: ${e.message}`;
-    121 |     }
-ERROR in src/common/components/Smart/common/utils.v4.tsx:119:41
-TS18046: 'e' is of type 'unknown'.
-    117 |     } catch (e) {
-    118 |       errorMessage = e.mark
-  > 119 |         ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-        |                                         ^
-    120 |         : `Error parsing YAML: ${e.message}`;
-    121 |     }
-    122 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-ERROR in src/common/components/Smart/common/utils.v4.tsx:119:61
-TS18046: 'e' is of type 'unknown'.
-    117 |     } catch (e) {
-    118 |       errorMessage = e.mark
-  > 119 |         ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-        |                                                             ^
-    120 |         : `Error parsing YAML: ${e.message}`;
-    121 |     }
-    122 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-ERROR in src/common/components/Smart/common/utils.v4.tsx:120:34
-TS18046: 'e' is of type 'unknown'.
-    118 |       errorMessage = e.mark
-    119 |         ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
-  > 120 |         : `Error parsing YAML: ${e.message}`;
-        |                                  ^
-    121 |     }
-    122 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-    123 |     const { data: skeletonData, isValid, message } = buildTree(content);
-ERROR in src/common/components/Smart/common/utils.v4.tsx:124:18
-TS2322: Type 'any[]' is not assignable to type 'never[]'.
-  Type 'any' is not assignable to type 'never'.
-    122 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-    123 |     const { data: skeletonData, isValid, message } = buildTree(content);
-  > 124 |     if (isValid) resultData = addUniqueIdsToTree(skeletonData);
-        |                  ^^^^^^^^^^
-    125 |     else errorMessage = message || "Missing error message";
-    126 |   }
-    127 |
-ERROR in src/common/components/Smart/common/utils.v4.tsx:124:31
+ERROR in src/common/components/Smart/common/utils.v4.tsx:125:31
 TS2554: Expected 2-3 arguments, but got 1.
-    122 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
-    123 |     const { data: skeletonData, isValid, message } = buildTree(content);
-  > 124 |     if (isValid) resultData = addUniqueIdsToTree(skeletonData);
+    123 |   } else if (textOutputType === SupportedOutFormats.TIS_to_SKELETON && content) {
+    124 |     const { data: skeletonData, isValid, message } = buildTree(content);
+  > 125 |     if (isValid) resultData = addUniqueIdsToTree(skeletonData as any[]);
         |                               ^^^^^^^^^^^^^^^^^^
-    125 |     else errorMessage = message || "Missing error message";
-    126 |   }
-    127 |
-ERROR in src/common/components/Smart/common/utils.v4.tsx:142:12
-TS18046: 'e' is of type 'unknown'.
-    140 |     }
-    141 |   } catch (e) {
-  > 142 |     return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        |            ^
-    143 |   }
-    144 |   return "";
-    145 | };
-ERROR in src/common/components/Smart/common/utils.v4.tsx:142:51
-TS18046: 'e' is of type 'unknown'.
-    140 |     }
-    141 |   } catch (e) {
-  > 142 |     return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        |                                                   ^
-    143 |   }
-    144 |   return "";
-    145 | };
-ERROR in src/common/components/Smart/common/utils.v4.tsx:142:71
-TS18046: 'e' is of type 'unknown'.
-    140 |     }
-    141 |   } catch (e) {
-  > 142 |     return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        |                                                                       ^
-    143 |   }
-    144 |   return "";
-    145 | };
-ERROR in src/common/components/Smart/common/utils.v4.tsx:142:108
-TS18046: 'e' is of type 'unknown'.
-    140 |     }
-    141 |   } catch (e) {
-  > 142 |     return e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        |                                                                                                            ^
-    143 |   }
-    144 |   return "";
-    145 | };
+    126 |     else errorMessage = message || "Missing error message";
+    127 |   }
+    128 |
 ERROR in src/common/components/Smart/Editor/v1.tsx:155:21
 TS2322: Type 'string' is not assignable to type 'null'.
     153 |                 if (err?.mark) {
@@ -2700,6 +2277,16 @@ TS2538: Type 'undefined' cannot be used as an index type.
     222 |       )}
     223 |       {textOutputType === availableOutputTypes.YAML && (
     224 |         <div>
+ERROR in src/common/components/Smart/Editor/v4.tsx:86:20
+TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+    84 |       handleFormUpdate(
+    85 |         initialValue?.content || "",
+  > 86 |         getKeyName(initialValue.textOutputType, initialValue.textInputType)
+       |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    87 |       );
+    88 |   }, [handleFormUpdate, initialValue]);
+    89 |
 ERROR in src/common/components/Smart/Editor/v4.tsx:213:45
 TS2353: Object literal may only specify known properties, and 'formData' does not exist in type 'never[]'.
     211 |       )}
@@ -2709,152 +2296,25 @@ TS2353: Object literal may only specify known properties, and 'formData' does no
     214 |     </div>
     215 |   );
     216 | };
-ERROR in src/common/components/Smart/Previewer/v4.tsx:42:86
-TS2339: Property 'name' does not exist on type 'never'.
-    40 |               expandAll={true}
-    41 |               renderNode={(node) => (
-  > 42 |                 <MarkdownComponent className="bg-transparent p-1" markdownText={node.name || "**tree node name is missing!**"} />
-       |                                                                                      ^^^^
-    43 |               )}
-    44 |             />
-    45 |             {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
-ERROR in src/common/components/Smart/Previewer/v4.tsx:62:39
+ERROR in src/common/components/Smart/Previewer/v4.tsx:50:39
+TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+    48 |             />
+    49 |             {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
+  > 50 |             {debug && <JSONDataViewer metadata={resultData} title="Skeleton Raw Data Preview" />}
+       |                                       ^^^^^^^^
+    51 |           </>
+    52 |         ) : null;
+    53 |
+ERROR in src/common/components/Smart/Previewer/v4.tsx:66:39
 TS2353: Object literal may only specify known properties, and 'data' does not exist in type 'never[]'.
-    60 |         <>
-    61 |           <CopyButton buttonText="Copy Skeleton As Yaml" textToCopy="" onCopy={() => {}} />
-  > 62 |           <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />
+    64 |         <>
+    65 |           <CopyButton buttonText="Copy Skeleton As Yaml" textToCopy="" onCopy={() => {}} />
+  > 66 |           <JSONDataViewer metadata={{ data, resultData, errorMessage }} title="X-Ray" />
        |                                       ^^^^
-    63 |         </>
-    64 |       )}
-    65 |     </>
-ERROR in src/common/components/tree-base/TreeBase.tsx:3:25
-TS2307: Cannot find module './TooltipSpan' or its corresponding type declarations.
-    1 | import React, { useEffect, useRef, useState } from "react";
-    2 | import CustomButton from "../custom-button/CustomButton";
-  > 3 | import TooltipSpan from "./TooltipSpan";
-      |                         ^^^^^^^^^^^^^^^
-    4 |
-    5 | // Sample treeList data
-    6 | const treeList = [
-ERROR in src/common/components/tree-base/TreeBase.tsx:66:29
-TS2339: Property 'scrollIntoView' does not exist on type 'never'.
-    64 |     useEffect(() => {
-    65 |         if (selectedNodeId === node.id && nodeRef.current) {
-  > 66 |             nodeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-       |                             ^^^^^^^^^^^^^^
-    67 |         }
-    68 |     }, [selectedNodeId, node.id]);
-    69 |
-ERROR in src/common/components/tree-base/TreeBase.tsx:74:29
-TS2554: Expected 0 arguments, but got 1.
-    72 |
-    73 |         if (onNodeSelection && selectedNodeId !== node.id) {
-  > 74 |             onNodeSelection({ id: node.id, name: node.name, type: node.type });
-       |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    75 |         }
-    76 |         // else{
-    77 |         //     console.log(`Already selected!!`);
-ERROR in src/common/components/tree-base/TreeBase.tsx:117:25
-TS2554: Expected 0 arguments, but got 1.
-    115 |     const handleNodeSelection = (node) => {
-    116 |         // console.log(`[TreeList]: Mr node : ${JSON.stringify(node, null, 2)}. Please wait. TreenList is working you to get selected`);
-  > 117 |         onNodeSelection(node);
-        |                         ^^^^
-    118 |     };
-    119 |     return (
-    120 |     <div className={`rounded-2xl border border-gray-200 bg-white p-4 shadow-sm ${className}`} style={customStyle}>
-ERROR in src/common/components/tree-base/TreeBase.tsx:125:25
-TS2339: Property 'id' does not exist on type 'never'.
-    123 |           {treeList.map((link) => (
-    124 |             <TreeNode
-  > 125 |               key={link.id}
-        |                         ^^
-    126 |               node={link}
-    127 |               selectedNodeId={selectedNodeId}
-    128 |               onNodeSelection={handleNodeSelection}
-ERROR in src/common/components/tree-base/TreeBase.tsx:128:15
-TS2322: Type '(node: any) => void' is not assignable to type '() => void'.
-  Target signature provides too few arguments. Expected 1 or more, but got 0.
-    126 |               node={link}
-    127 |               selectedNodeId={selectedNodeId}
-  > 128 |               onNodeSelection={handleNodeSelection}
-        |               ^^^^^^^^^^^^^^^
-    129 |             />
-    130 |           ))}
-    131 |         </ul>
-ERROR in src/common/components/tree-base/TreeBase.tsx:142:22
-TS2322: Type '{ id: any; name: any; type: any; }' is not assignable to type 'never'.
-    140 |     if (list && list.length > 0) {
-    141 |         list.forEach((t) => {
-  > 142 |             queue = [...queue, { ...{ id: t.id, name: t.name, type: t.type } }];
-        |                      ^^^^^^^^
-    143 |             const childQ = flattenTree(t.children, []);
-    144 |             queue = [...queue, ...childQ];
-    145 |         });
-ERROR in src/common/components/tree-base/TreeBase.tsx:142:32
-TS2322: Type '{ id: any; name: any; type: any; }' is not assignable to type 'never'.
-    140 |     if (list && list.length > 0) {
-    141 |         list.forEach((t) => {
-  > 142 |             queue = [...queue, { ...{ id: t.id, name: t.name, type: t.type } }];
-        |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    143 |             const childQ = flattenTree(t.children, []);
-    144 |             queue = [...queue, ...childQ];
-    145 |         });
-ERROR in src/common/components/tree-base/TreeBase.tsx:166:25
-TS2554: Expected 0 arguments, but got 1.
-    164 |
-    165 |     useEffect(() => {
-  > 166 |         onNodeSelection(flattenedTree[selectedIndex]);
-        |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    167 |     }, [selectedIndex]);
-    168 |
-    169 |     useEffect(() => {
-ERROR in src/common/components/tree-base/TreeBase.tsx:173:57
-TS2339: Property 'id' does not exist on type 'never'.
-    171 |             setSelectedIndex((prev) => {
-    172 |                 const calculatedIndex =
-  > 173 |                     flattenedTree?.findIndex((td) => td.id === selectedTreeNodeUID) || 0;
-        |                                                         ^^
-    174 |                 return calculatedIndex;
-    175 |             });
-    176 |         }
-ERROR in src/common/components/tree-base/TreeBase.tsx:195:60
-TS2339: Property 'id' does not exist on type 'never'.
-    193 |     const handleNodeSelection = (node) => {
-    194 |         if (node) {
-  > 195 |             const index = flattenedTree.findIndex((t) => t.id === node.id);
-        |                                                            ^^
-    196 |             if (index >= 0) {
-    197 |                 setSelectedIndex(index);
-    198 |             }
-ERROR in src/common/components/tree-base/TreeBase.tsx:214:55
-TS2339: Property 'id' does not exist on type 'never'.
-    212 |       <TreeList
-    213 |         treeList={treeList}
-  > 214 |         selectedNodeId={flattenedTree[selectedIndex]?.id || 0}
-        |                                                       ^^
-    215 |         customStyle={customStyle}
-    216 |         onNodeSelection={handleNodeSelection}
-    217 |       />
-ERROR in src/common/components/tree-base/TreeBase.tsx:216:9
-TS2322: Type '(node: any) => void' is not assignable to type '() => void'.
-  Target signature provides too few arguments. Expected 1 or more, but got 0.
-    214 |         selectedNodeId={flattenedTree[selectedIndex]?.id || 0}
-    215 |         customStyle={customStyle}
-  > 216 |         onNodeSelection={handleNodeSelection}
-        |         ^^^^^^^^^^^^^^^
-    217 |       />
-    218 |     </div>
-    219 |   );
-ERROR in src/common/components/tree-viewer/TreeViewer.tsx:103:12
-TS18048: 'node.children' is possibly 'undefined'.
-    101 |       {expanded && hasChildren && (
-    102 |         <div>
-  > 103 |           {node.children.map((child: any) => (
-        |            ^^^^^^^^^^^^^
-    104 |             <TreeNode
-    105 |               key={child[uniqueIdFieldName]}
-    106 |               node={child}
+    67 |         </>
+    68 |       )}
+    69 |     </>
 ERROR in src/common/components/wysiwyg-editor/WysiwygEditor.tsx:37:10
 TS2322: Type '{ display: string; flexDirection: string; width: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
   Types of property 'flexDirection' are incompatible.
@@ -3106,717 +2566,3 @@ TS2322: Type 'Id' is not assignable to type 'null'.
     230 |         );
     231 |         dispatch(showBackdrop());
 ERROR in src/common/hooks/useFlatTreeData.ts:9:9
-TS2322: Type 'any' is not assignable to type 'never'.
-     7 |     nodes.forEach((node) => {
-     8 |       queue = [
-  >  9 |         ...queue,
-       |         ^^^^^^^^
-    10 |         {
-    11 |           ...node,
-    12 |           [idField]: node[idField],
-ERROR in src/common/hooks/useFlatTreeData.ts:10:9
-TS2322: Type 'any' is not assignable to type 'never'.
-     8 |       queue = [
-     9 |         ...queue,
-  > 10 |         {
-       |         ^
-  > 11 |           ...node,
-       | ^^^^^^^^^^^^^^^^^^
-  > 12 |           [idField]: node[idField],
-       | ^^^^^^^^^^^^^^^^^^
-  > 13 |           name: node.name,
-       | ^^^^^^^^^^^^^^^^^^
-  > 14 |           title: buildTitleWithAncestors(node, idField),
-       | ^^^^^^^^^^^^^^^^^^
-  > 15 |           ancestors: node.ancestors,
-       | ^^^^^^^^^^^^^^^^^^
-  > 16 |           children: node.children,
-       | ^^^^^^^^^^^^^^^^^^
-  > 17 |           _id: node._id,
-       | ^^^^^^^^^^^^^^^^^^
-  > 18 |         },
-       | ^^^^^^^^^^
-    19 |       ];
-    20 |       const childQueue = flattenTreeData(node.children, [], idField);
-    21 |       queue = [...queue, ...childQueue];
-ERROR in src/common/hooks/useFlatTreeData.ts:36:24
-TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
-    34 |     node.ancestors?.find((ancestor) => !ancestor.parentId) || null;
-    35 |   while (currentAncestor) {
-  > 36 |     ancestorNames.push(currentAncestor.name);
-       |                        ^^^^^^^^^^^^^^^^^^^^
-    37 |     const currentId = currentAncestor[idField];
-    38 |     currentAncestor =
-    39 |       node.ancestors.find((ancestor) => ancestor.parentId === currentId) ||
-ERROR in src/common/hooks/useFlatTreeData.ts:42:22
-TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
-    40 |       null;
-    41 |   }
-  > 42 |   ancestorNames.push(node.name);
-       |                      ^^^^^^^^^
-    43 |   return ancestorNames.join(" / ");
-    44 | };
-    45 |
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:24:17
-TS2554: Expected 4 arguments, but got 1.
-    22 |     /** ----- Initial Routes  ---------------------- */
-    23 |
-  > 24 |     home: () => prepareObject("/"),
-       |                 ^^^^^^^^^^^^^
-    25 |     login: () => prepareObject("/login"),
-    26 |     testRoute: (id, state, search, hash) =>
-    27 |       prepareObject(`/test-route/${id}`, state, search, hash),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:25:18
-TS2554: Expected 4 arguments, but got 1.
-    23 |
-    24 |     home: () => prepareObject("/"),
-  > 25 |     login: () => prepareObject("/login"),
-       |                  ^^^^^^^^^^^^^
-    26 |     testRoute: (id, state, search, hash) =>
-    27 |       prepareObject(`/test-route/${id}`, state, search, hash),
-    28 |
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:30:34
-TS2554: Expected 4 arguments, but got 1.
-    28 |
-    29 |     /** ----- Notifications Module  ---------------------- */
-  > 30 |     notificationsMgmtBase: () => prepareObject("/notifications"),
-       |                                  ^^^^^^^^^^^^^
-    31 |
-    32 |     /** ----- Apna Playground Module  ---------------------- */
-    33 |     apnaPlaygroundMgmtBase: () => prepareObject("/apna-playground"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:33:35
-TS2554: Expected 4 arguments, but got 1.
-    31 |
-    32 |     /** ----- Apna Playground Module  ---------------------- */
-  > 33 |     apnaPlaygroundMgmtBase: () => prepareObject("/apna-playground"),
-       |                                   ^^^^^^^^^^^^^
-    34 |
-    35 |     /** ----- TWEET MANAGEMENT Module  ---------------------- */
-    36 |
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:37:26
-TS2554: Expected 4 arguments, but got 1.
-    35 |     /** ----- TWEET MANAGEMENT Module  ---------------------- */
-    36 |
-  > 37 |     tweetMgmtBase: () => prepareObject("/tweet-base"),
-       |                          ^^^^^^^^^^^^^
-    38 |
-    39 |     /** ----- Task Container Module  ---------------------- */
-    40 |     taskMgmtModuleBase: () => prepareObject("/task-mgmt"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:40:31
-TS2554: Expected 4 arguments, but got 1.
-    38 |
-    39 |     /** ----- Task Container Module  ---------------------- */
-  > 40 |     taskMgmtModuleBase: () => prepareObject("/task-mgmt"),
-       |                               ^^^^^^^^^^^^^
-    41 |
-    42 |     /** ----- User Mgmt Module  ---------------------- */
-    43 |     userMgmtModuleBase: () => prepareObject("/user-mgmt"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:43:31
-TS2554: Expected 4 arguments, but got 1.
-    41 |
-    42 |     /** ----- User Mgmt Module  ---------------------- */
-  > 43 |     userMgmtModuleBase: () => prepareObject("/user-mgmt"),
-       |                               ^^^^^^^^^^^^^
-    44 |
-    45 |     /** ----- Resume Mgmt Module  ---------------------- */
-    46 |     resumeMgmtModuleBase: () => prepareObject("/resume-mgmt"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:46:33
-TS2554: Expected 4 arguments, but got 1.
-    44 |
-    45 |     /** ----- Resume Mgmt Module  ---------------------- */
-  > 46 |     resumeMgmtModuleBase: () => prepareObject("/resume-mgmt"),
-       |                                 ^^^^^^^^^^^^^
-    47 |
-    48 |     /** ----- My Resume Module  ---------------------- */
-    49 |     myResumeModuleBase: () => prepareObject("/my-resume"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:49:31
-TS2554: Expected 4 arguments, but got 1.
-    47 |
-    48 |     /** ----- My Resume Module  ---------------------- */
-  > 49 |     myResumeModuleBase: () => prepareObject("/my-resume"),
-       |                               ^^^^^^^^^^^^^
-    50 |
-    51 |     /** ----- Topic Mgmt Module  ---------------------- */
-    52 |     topicMgmtModuleBase: () => prepareObject("/topic-mgmt"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:52:32
-TS2554: Expected 4 arguments, but got 1.
-    50 |
-    51 |     /** ----- Topic Mgmt Module  ---------------------- */
-  > 52 |     topicMgmtModuleBase: () => prepareObject("/topic-mgmt"),
-       |                                ^^^^^^^^^^^^^
-    53 |
-    54 |     /** ----- Words Module  ---------------------- */
-    55 |     wordMgmtModuleBase: () => prepareObject("/words"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:55:31
-TS2554: Expected 4 arguments, but got 1.
-    53 |
-    54 |     /** ----- Words Module  ---------------------- */
-  > 55 |     wordMgmtModuleBase: () => prepareObject("/words"),
-       |                               ^^^^^^^^^^^^^
-    56 |
-    57 |     /** ----- Interview Mgmt Module  ---------------------- */
-    58 |
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:59:30
-TS2554: Expected 4 arguments, but got 1.
-    57 |     /** ----- Interview Mgmt Module  ---------------------- */
-    58 |
-  > 59 |     interviewMgmtBase: () => prepareObject(`/interview-mgmt`),
-       |                              ^^^^^^^^^^^^^
-    60 |     interviewMgmtModuleSearch: () => prepareObject(`/interview-mgmt/search`),
-    61 |     question: (uniqueId) =>
-    62 |       prepareObject(`/interview-mgmt/questions/${uniqueId}`),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:60:38
-TS2554: Expected 4 arguments, but got 1.
-    58 |
-    59 |     interviewMgmtBase: () => prepareObject(`/interview-mgmt`),
-  > 60 |     interviewMgmtModuleSearch: () => prepareObject(`/interview-mgmt/search`),
-       |                                      ^^^^^^^^^^^^^
-    61 |     question: (uniqueId) =>
-    62 |       prepareObject(`/interview-mgmt/questions/${uniqueId}`),
-    63 |     createQuestion: (qid) =>
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:62:7
-TS2554: Expected 4 arguments, but got 1.
-    60 |     interviewMgmtModuleSearch: () => prepareObject(`/interview-mgmt/search`),
-    61 |     question: (uniqueId) =>
-  > 62 |       prepareObject(`/interview-mgmt/questions/${uniqueId}`),
-       |       ^^^^^^^^^^^^^
-    63 |     createQuestion: (qid) =>
-    64 |       prepareObject(
-    65 |         `/interview-mgmt/questions/create`,
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:64:7
-TS2554: Expected 4 arguments, but got 3.
-    62 |       prepareObject(`/interview-mgmt/questions/${uniqueId}`),
-    63 |     createQuestion: (qid) =>
-  > 64 |       prepareObject(
-       |       ^^^^^^^^^^^^^
-    65 |         `/interview-mgmt/questions/create`,
-    66 |         undefined,
-    67 |         qid ? { parent: qid } : undefined
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:71:32
-TS2554: Expected 4 arguments, but got 1.
-    69 |
-    70 |     /** ----- Links Management Module  ---------------------- */
-  > 71 |     linksMgmtModuleBase: () => prepareObject("/links-mgmt"),
-       |                                ^^^^^^^^^^^^^
-    72 |
-    73 |     /** ----- Tags Management Module  ---------------------- */
-    74 |     tagMgmtModuleBase: () => prepareObject("/tags"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:74:30
-TS2554: Expected 4 arguments, but got 1.
-    72 |
-    73 |     /** ----- Tags Management Module  ---------------------- */
-  > 74 |     tagMgmtModuleBase: () => prepareObject("/tags"),
-       |                              ^^^^^^^^^^^^^
-    75 |
-    76 |     /** ----- Memory Maps Management Module  ---------------------- */
-    77 |     memoryMapsModuleBase: () => prepareObject("/memory-maps"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:77:33
-TS2554: Expected 4 arguments, but got 1.
-    75 |
-    76 |     /** ----- Memory Maps Management Module  ---------------------- */
-  > 77 |     memoryMapsModuleBase: () => prepareObject("/memory-maps"),
-       |                                 ^^^^^^^^^^^^^
-    78 |
-    79 |     /** ----- Node Story- Distorted Style Module  ---------------------- */
-    80 |     nodeStoryDistortedStyleModuleBase: () => prepareObject("/node-story"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:80:46
-TS2554: Expected 4 arguments, but got 1.
-    78 |
-    79 |     /** ----- Node Story- Distorted Style Module  ---------------------- */
-  > 80 |     nodeStoryDistortedStyleModuleBase: () => prepareObject("/node-story"),
-       |                                              ^^^^^^^^^^^^^
-    81 |
-    82 |     /** ----- Node Story V1 Module  ---------------------- */
-    83 |     nodeStoryV1ModuleBase: () => prepareObject("/node_story_v1"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:83:34
-TS2554: Expected 4 arguments, but got 1.
-    81 |
-    82 |     /** ----- Node Story V1 Module  ---------------------- */
-  > 83 |     nodeStoryV1ModuleBase: () => prepareObject("/node_story_v1"),
-       |                                  ^^^^^^^^^^^^^
-    84 |
-    85 |     /** ----- Settings Module  ---------------------- */
-    86 |     settingsModuleBase: () => prepareObject("/settings"),
-ERROR in src/common/hooks/useSPPNavigation/util.tsx:86:31
-TS2554: Expected 4 arguments, but got 1.
-    84 |
-    85 |     /** ----- Settings Module  ---------------------- */
-  > 86 |     settingsModuleBase: () => prepareObject("/settings"),
-       |                               ^^^^^^^^^^^^^
-    87 |   };
-    88 | })();
-    89 |
-ERROR in src/common/service/authService.ts:28:22
-TS18046: 'decodedToken' is of type 'unknown'.
-    26 |
-    27 |       // Extract the userId from the decoded token
-  > 28 |       const userId = decodedToken.userId;
-       |                      ^^^^^^^^^^^^
-    29 |       localStorage.setItem("userId", userId);
-    30 |
-    31 |       return userId;
-ERROR in src/common/service/authService.ts:52:24
-TS18046: 'decodedToken' is of type 'unknown'.
-    50 |
-    51 |       // Extract the userId from the decoded token
-  > 52 |       const userName = decodedToken.userName;
-       |                        ^^^^^^^^^^^^
-    53 |       localStorage.setItem("userName", userName);
-    54 |
-    55 |       return userName;
-ERROR in src/common/service/authService.ts:83:11
-TS18046: 'decodedToken' is of type 'unknown'.
-    81 |       // Check if the token has expired
-    82 |       const currentTime = Date.now() / 1000; // Convert to seconds
-  > 83 |       if (decodedToken.exp && decodedToken.exp < currentTime) {
-       |           ^^^^^^^^^^^^
-    84 |         // Token has expired
-    85 |         return false;
-    86 |       }
-ERROR in src/common/service/authService.ts:83:31
-TS18046: 'decodedToken' is of type 'unknown'.
-    81 |       // Check if the token has expired
-    82 |       const currentTime = Date.now() / 1000; // Convert to seconds
-  > 83 |       if (decodedToken.exp && decodedToken.exp < currentTime) {
-       |                               ^^^^^^^^^^^^
-    84 |         // Token has expired
-    85 |         return false;
-    86 |       }
-ERROR in src/common/service/commonService.ts:3:63
-TS2769: No overload matches this call.
-  Overload 1 of 3, '(locales?: LocalesArgument, options?: DateTimeFormatOptions | undefined): string', gave the following error.
-    Argument of type '{ year: string; month: string; day: string; }' is not assignable to parameter of type 'DateTimeFormatOptions'.
-      Types of property 'year' are incompatible.
-        Type 'string' is not assignable to type '"numeric" | "2-digit" | undefined'.
-  Overload 2 of 3, '(locales?: string | string[] | undefined, options?: DateTimeFormatOptions | undefined): string', gave the following error.
-    Argument of type '{ year: string; month: string; day: string; }' is not assignable to parameter of type 'DateTimeFormatOptions'.
-      Types of property 'year' are incompatible.
-        Type 'string' is not assignable to type '"numeric" | "2-digit" | undefined'.
-    1 | export const formatDateToDDMMMYYYY = (dateString) => {
-    2 |     const options = { year: "numeric", month: "short", day: "numeric" };
-  > 3 |     return new Date(dateString).toLocaleDateString(undefined, options);
-      |                                                               ^^^^^^^
-    4 | };
-    5 |
-    6 | export const formatDateToDDMMMYYYYWithTime = (dateString) => {
-ERROR in src/common/service/commonService.ts:14:63
-TS2769: No overload matches this call.
-  Overload 1 of 3, '(locales?: LocalesArgument, options?: DateTimeFormatOptions | undefined): string', gave the following error.
-    Argument of type '{ year: string; month: string; day: string; hour: string; minute: string; }' is not assignable to parameter of type 'DateTimeFormatOptions'.
-      Types of property 'year' are incompatible.
-        Type 'string' is not assignable to type '"numeric" | "2-digit" | undefined'.
-  Overload 2 of 3, '(locales?: string | string[] | undefined, options?: DateTimeFormatOptions | undefined): string', gave the following error.
-    Argument of type '{ year: string; month: string; day: string; hour: string; minute: string; }' is not assignable to parameter of type 'DateTimeFormatOptions'.
-      Types of property 'year' are incompatible.
-        Type 'string' is not assignable to type '"numeric" | "2-digit" | undefined'.
-    12 |         minute: "numeric",
-    13 |     };
-  > 14 |     return new Date(dateString).toLocaleDateString(undefined, options);
-       |                                                               ^^^^^^^
-    15 | };
-    16 |
-    17 | export const getDateAsMillisecondsString = () => Date.now().toString();
-ERROR in src/common/service/commonService.ts:140:31
-TS2345: Argument of type 'any' is not assignable to parameter of type 'never'.
-    138 |         group.questions.forEach((question) => {
-    139 |             const gqt = replaceTopic(question, t);
-  > 140 |             gq.questions.push(gqt);
-        |                               ^^^
-    141 |             // console.log("\t" + gqt);
-    142 |         });
-    143 |         gqArr.push(gq);
-ERROR in src/common/service/commonService.ts:143:20
-TS2345: Argument of type '{ name: string; questions: never[]; }' is not assignable to parameter of type 'never'.
-    141 |             // console.log("\t" + gqt);
-    142 |         });
-  > 143 |         gqArr.push(gq);
-        |                    ^^
-    144 |     });
-    145 |     return gqArr;
-    146 | }
-ERROR in src/common/service/transformations.ts:5:56
-TS18046: 'error' is of type 'unknown'.
-    3 |     return json ? JSON.stringify(json, null, pretty ? 2 : 0) : null;
-    4 |   } catch (error) {
-  > 5 |     console.error("Failed to convert to JSON string:", error.message);
-      |                                                        ^^^^^
-    6 |     return null; // Or handle the fallback based on your needs
-    7 |   }
-    8 | };
-ERROR in src/common/util/indentation-based-string-parser-to-tree-data.ts:182:22
-TS2345: Argument of type '{ name: any; children: never[]; }' is not assignable to parameter of type 'never'.
-    180 |
-    181 |     if (nodeStack.length === 0) {
-  > 182 |       rootNodes.push(node);
-        |                      ^^^^
-    183 |     } else {
-    184 |       nodeStack[nodeStack.length - 1].children.push(node);
-    185 |     }
-ERROR in src/common/util/indentation-based-string-parser-to-tree-data.ts:184:39
-TS2339: Property 'children' does not exist on type 'never'.
-    182 |       rootNodes.push(node);
-    183 |     } else {
-  > 184 |       nodeStack[nodeStack.length - 1].children.push(node);
-        |                                       ^^^^^^^^
-    185 |     }
-    186 |
-    187 |     nodeStack.push(node);
-ERROR in src/common/util/indentation-based-string-parser-to-tree-data.ts:187:20
-TS2345: Argument of type '{ name: any; children: never[]; }' is not assignable to parameter of type 'never'.
-    185 |     }
-    186 |
-  > 187 |     nodeStack.push(node);
-        |                    ^^^^
-    188 |   });
-    189 |
-    190 |   return { data: rootNodes, isValid, message };
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:13:20
-TS2339: Property 'uniqueId' does not exist on type 'never'.
-    11 |   return treeArr.reduce((acc, question) => {
-    12 |     const questionNode = {
-  > 13 |       id: question.uniqueId,
-       |                    ^^^^^^^^
-    14 |       name: question.heading,
-    15 |       type: "question",
-    16 |       children: [],
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:14:22
-TS2339: Property 'heading' does not exist on type 'never'.
-    12 |     const questionNode = {
-    13 |       id: question.uniqueId,
-  > 14 |       name: question.heading,
-       |                      ^^^^^^^
-    15 |       type: "question",
-    16 |       children: [],
-    17 |     };
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:18:14
-TS2345: Argument of type '{ id: any; name: any; type: string; children: never[]; }' is not assignable to parameter of type 'never'.
-    16 |       children: [],
-    17 |     };
-  > 18 |     acc.push(questionNode);
-       |              ^^^^^^^^^^^^
-    19 |
-    20 |     // Recursive handling of child categories
-    21 |     if (question.children && question.children.length > 0) {
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:21:18
-TS2339: Property 'children' does not exist on type 'never'.
-    19 |
-    20 |     // Recursive handling of child categories
-  > 21 |     if (question.children && question.children.length > 0) {
-       |                  ^^^^^^^^
-    22 |       questionNode.children = questionNode.children.concat(
-    23 |         buildCategoryTree(question.children)
-    24 |       );
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:21:39
-TS2339: Property 'children' does not exist on type 'never'.
-    19 |
-    20 |     // Recursive handling of child categories
-  > 21 |     if (question.children && question.children.length > 0) {
-       |                                       ^^^^^^^^
-    22 |       questionNode.children = questionNode.children.concat(
-    23 |         buildCategoryTree(question.children)
-    24 |       );
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:23:36
-TS2339: Property 'children' does not exist on type 'never'.
-    21 |     if (question.children && question.children.length > 0) {
-    22 |       questionNode.children = questionNode.children.concat(
-  > 23 |         buildCategoryTree(question.children)
-       |                                    ^^^^^^^^
-    24 |       );
-    25 |     }
-    26 |
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:42:30
-TS2554: Expected 1 arguments, but got 0.
-    40 | };
-    41 |
-  > 42 | const InterviewMgmtContext = createContext();
-       |                              ^^^^^^^^^^^^^
-    43 |
-    44 | export const InterviewMgmtProvider = ({ children }) => {
-    45 |   const dispatch = useDispatch();
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:48:16
-TS18046: 'state' is of type 'unknown'.
-    46 |   const [showOnlyLeafQuestions, setShowOnlyLeafQuestions] = useState(false);
-    47 |   const selectedTreeNodeUID = useSelector(
-  > 48 |     (state) => state.interviewMgmt.selectedTreeNodeUID
-       |                ^^^^^
-    49 |   );
-    50 |
-    51 |   const data = useSelector((state) => state.interviewMgmt.data);
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:51:39
-TS18046: 'state' is of type 'unknown'.
-    49 |   );
-    50 |
-  > 51 |   const data = useSelector((state) => state.interviewMgmt.data);
-       |                                       ^^^^^
-    52 |   const { flatData: flatCategoryItemData } = useFlatTreeData(data);
-    53 |
-    54 |   // const buildQuestionIdMap = (treeArr = []) => {
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:52:46
-TS2554: Expected 2-3 arguments, but got 1.
-    50 |
-    51 |   const data = useSelector((state) => state.interviewMgmt.data);
-  > 52 |   const { flatData: flatCategoryItemData } = useFlatTreeData(data);
-       |                                              ^^^^^^^^^^^^^^^
-    53 |
-    54 |   // const buildQuestionIdMap = (treeArr = []) => {
-    55 |   //   if (!treeArr?.length) return [];
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:83:14
-TS2345: Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
-    81 |
-    82 |   const refreshCategoryTree = () => {
-  > 83 |     dispatch(fetchAllQuestions());
-       |              ^^^^^^^^^^^^^^^^^^^
-    84 |     dispatch(fetchTags());
-    85 |   };
-    86 |
-ERROR in src/components/interview-mgmt/common/InterviewMgmtContextUtil.tsx:84:14
-TS2345: Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
-    82 |   const refreshCategoryTree = () => {
-    83 |     dispatch(fetchAllQuestions());
-  > 84 |     dispatch(fetchTags());
-       |              ^^^^^^^^^^^
-    85 |   };
-    86 |
-    87 |   const categoryTree = useMemo(() => buildCategoryTree(data), [data]);
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:30:11
-TS2339: Property 'categoryTree' does not exist on type 'unknown'.
-    28 | const InterviewMgmtBase = () => {
-    29 |   const navigate = useNavigate();
-  > 30 |   const { categoryTree, selectedTreeNodeUID, refreshCategoryTree } =
-       |           ^^^^^^^^^^^^
-    31 |     useInterviewMgmt();
-    32 |
-    33 |   const selectedElementRef = useRef(null);
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:30:25
-TS2339: Property 'selectedTreeNodeUID' does not exist on type 'unknown'.
-    28 | const InterviewMgmtBase = () => {
-    29 |   const navigate = useNavigate();
-  > 30 |   const { categoryTree, selectedTreeNodeUID, refreshCategoryTree } =
-       |                         ^^^^^^^^^^^^^^^^^^^
-    31 |     useInterviewMgmt();
-    32 |
-    33 |   const selectedElementRef = useRef(null);
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:30:46
-TS2339: Property 'refreshCategoryTree' does not exist on type 'unknown'.
-    28 | const InterviewMgmtBase = () => {
-    29 |   const navigate = useNavigate();
-  > 30 |   const { categoryTree, selectedTreeNodeUID, refreshCategoryTree } =
-       |                                              ^^^^^^^^^^^^^^^^^^^
-    31 |     useInterviewMgmt();
-    32 |
-    33 |   const selectedElementRef = useRef(null);
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:36:34
-TS2339: Property 'scrollIntoView' does not exist on type 'never'.
-    34 |   useEffect(() => {
-    35 |     if (selectedElementRef.current) {
-  > 36 |       selectedElementRef.current.scrollIntoView({
-       |                                  ^^^^^^^^^^^^^^
-    37 |         behavior: "smooth",
-    38 |         block: "center",
-    39 |         inline: "start",
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:61:13
-TS2322: Type '{ id: number; onClick: () => void; children: string; }' is not assignable to type 'never'.
-    59 |         <ButtonGroup
-    60 |           options={[
-  > 61 |             {
-       |             ^
-  > 62 |               id: 1,
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 63 |               onClick: () => navigate(`/interview-mgmt/questions/create`),
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 64 |               children: "Create Question",
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 65 |             },
-       | ^^^^^^^^^^^^^^
-    66 |             { id: 2, onClick: refreshCategoryTree, children: "Refresh" },
-    67 |             // {
-    68 |             //   id: 3,
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:66:13
-TS2322: Type '{ id: number; onClick: any; children: string; }' is not assignable to type 'never'.
-    64 |               children: "Create Question",
-    65 |             },
-  > 66 |             { id: 2, onClick: refreshCategoryTree, children: "Refresh" },
-       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    67 |             // {
-    68 |             //   id: 3,
-    69 |             //   onClick: () =>
-ERROR in src/components/interview-mgmt/InterviewMgmtBase.tsx:85:13
-TS2322: Type '{ id: number; onClick: () => void; children: string; }' is not assignable to type 'never'.
-    83 |             //   children: "Next",
-    84 |             // },
-  > 85 |             {
-       |             ^
-  > 86 |               id: 5,
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 87 |               onClick: () => navigate(`/interview-mgmt/search`),
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 88 |               children: "Search",
-       | ^^^^^^^^^^^^^^^^^^^^
-  > 89 |             },
-       | ^^^^^^^^^^^^^^
-    90 |           ]}
-    91 |         />
-    92 |         <Tree
-ERROR in src/components/interview-mgmt/sub-components/AnswerCard.tsx:18:75
-TS2554: Expected 0 arguments, but got 1.
-    16 |             <CustomButton
-    17 |               className={`${tagButtonClass} mr-2.5`}
-  > 18 |               onClick={() => { onUpdateAnswerClick && onUpdateAnswerClick(ansObj) }}
-       |                                                                           ^^^^^^
-    19 |             >
-    20 |               Edit
-    21 |             </CustomButton>
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:22:11
-TS2339: Property 'refreshCategoryTree' does not exist on type 'unknown'.
-    20 |   const dispatch = useDispatch();
-    21 |
-  > 22 |   const { refreshCategoryTree } = useInterviewMgmt();
-       |           ^^^^^^^^^^^^^^^^^^^
-    23 |
-    24 |   const [formData, setFormData] = useState({
-    25 |     uniqueId: initialFormData?.uniqueId || "",
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:45:19
-TS2345: Argument of type '"Name is required"' is not assignable to parameter of type 'never'.
-    43 |
-    44 |     if (!formData.name.trim()) {
-  > 45 |       errors.push("Name is required");
-       |                   ^^^^^^^^^^^^^^^^^^
-    46 |     }
-    47 |
-    48 |     if (!formData.heading.trim()) {
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:49:19
-TS2345: Argument of type '"Heading is required"' is not assignable to parameter of type 'never'.
-    47 |
-    48 |     if (!formData.heading.trim()) {
-  > 49 |       errors.push("Heading is required");
-       |                   ^^^^^^^^^^^^^^^^^^^^^
-    50 |     }
-    51 |
-    52 |     if (formData.rating <= 0) {
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:53:19
-TS2345: Argument of type '"Rating is required, it should have non-zero value"' is not assignable to parameter of type 'never'.
-    51 |
-    52 |     if (formData.rating <= 0) {
-  > 53 |       errors.push("Rating is required, it should have non-zero value");
-       |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    54 |     }
-    55 |
-    56 |     if (smartEditorError) {
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:90:13
-TS2345: Argument of type 'AsyncThunkAction<any, { uniqueId: string; } & Record<string, any>, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
-    88 |       const action = initialFormData?.uniqueId
-    89 |         ? dispatch(
-  > 90 |             updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })
-       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    91 |           )
-    92 |         : dispatch(createAnswer(formData));
-    93 |
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:92:20
-TS2345: Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
-    90 |             updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })
-    91 |           )
-  > 92 |         : dispatch(createAnswer(formData));
-       |                    ^^^^^^^^^^^^^^^^^^^^^^
-    93 |
-    94 |       // if (initialFormData?.uniqueId) {
-    95 |       //   // dispatch(
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:92:33
-TS2554: Expected 0 arguments, but got 1.
-    90 |             updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })
-    91 |           )
-  > 92 |         : dispatch(createAnswer(formData));
-       |                                 ^^^^^^^^
-    93 |
-    94 |       // if (initialFormData?.uniqueId) {
-    95 |       //   // dispatch(
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:174:11
-TS2322: Type '(editedValue: any) => void' is not assignable to type '() => void'.
-  Target signature provides too few arguments. Expected 1 or more, but got 0.
-    172 |           rating={formData.rating}
-    173 |           editable={true}
-  > 174 |           onEdit={(editedValue) => {
-        |           ^^^^^^
-    175 |             setFormData((prev) => ({ ...prev, rating: editedValue }));
-    176 |           }}
-    177 |         />
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:199:23
-TS2322: Type '(event: any) => void' is not assignable to type '() => void'.
-  Target signature provides too few arguments. Expected 1 or more, but got 0.
-    197 |       )}
-    198 |       <div className="mt-6 flex gap-2">
-  > 199 |         <CustomButton onClick={handleSaveCategory}>
-        |                       ^^^^^^^
-    200 |           {initialFormData?.uniqueId ? "Update Changes" : "Save Changes"}
-    201 |         </CustomButton>
-    202 |         <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
-ERROR in src/components/interview-mgmt/sub-components/AnswerForm.tsx:207:13
-TS2353: Object literal may only specify known properties, and 'initialFormData' does not exist in type 'never[]'.
-    205 |         <JSONDataViewer
-    206 |           metadata={{
-  > 207 |             initialFormData,
-        |             ^^^^^^^^^^^^^^^
-    208 |             formData,
-    209 |           }}
-    210 |           title="All collated Responses"
-ERROR in src/components/interview-mgmt/sub-components/CategoryCard.tsx:2:27
-TS2307: Cannot find module '../../../common/components/HoverableSpan' or its corresponding type declarations.
-    1 | import React from "react";
-  > 2 | import HoverableSpan from "../../../common/components/HoverableSpan";
-      |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    3 | import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-    4 | import RatingComponent from "../../../common/components/RatingComponent";
-    5 | import { SmartPreviewer } from "../../../common/components/SmartEditor";
-ERROR in src/components/interview-mgmt/sub-components/CategoryCard.tsx:3:29
-TS2307: Cannot find module '../../../common/components/HtmlTextRenderer' or its corresponding type declarations.
-    1 | import React from "react";
-    2 | import HoverableSpan from "../../../common/components/HoverableSpan";
-  > 3 | import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-      |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    4 | import RatingComponent from "../../../common/components/RatingComponent";
-    5 | import { SmartPreviewer } from "../../../common/components/SmartEditor";
-    6 |
-ERROR in src/components/interview-mgmt/sub-components/CategoryCard.tsx:4:29
-TS2307: Cannot find module '../../../common/components/RatingComponent' or its corresponding type declarations.
-    2 | import HoverableSpan from "../../../common/components/HoverableSpan";
-    3 | import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-  > 4 | import RatingComponent from "../../../common/components/RatingComponent";
-      |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    5 | import { SmartPreviewer } from "../../../common/components/SmartEditor";
-    6 |
-    7 | const CategoryCard = ({
-ERROR in src/components/interview-mgmt/sub-components/CategoryCard.tsx:5:32
-TS2307: Cannot find module '../../../common/components/SmartEditor' or its corresponding type declarations.
-    3 | import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-    4 | import RatingComponent from "../../../common/components/RatingComponent";
-  > 5 | import { SmartPreviewer } from "../../../common/components/SmartEditor";
-      |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    6 |
-    7 | const CategoryCard = ({
-    8 |   category,
-ERROR in src/components/interview-mgmt/sub-components/CategoryCard.tsx:54:69
-TS2554: Expected 0 arguments, but got 1.
-    52 |                   key={q.uniqueId}
-    53 |                 >
-  > 54 |                   <HoverableSpan onClick={() => onQuestionSelection(q)}>
-       |                                                                     ^
-    55 |                     {q.heading || q.name}
-    56 |                   </HoverableSpan>
-    57 |                 </div>
-ERROR in src/components/interview-mgmt/sub-components/CategoryForm.tsx:5:28
-TS2307: Cannot find module '../../../common/components/JSONDataViewer' or its corresponding type declarations.
-    3 | import Select from "react-select";
-    4 | import CustomButton from "../../../common/components/custom-button/CustomButton";
-  > 5 | import JSONDataViewer from "../../../common/components/JSONDataViewer";
-      |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    6 | import RatingComponent from "../../../common/components/RatingComponent";
-    7 | import { SmartEditor } from "../../../common/components/SmartEditor";
-    8 | import {
-ERROR in src/components/interview-mgmt/sub-components/CategoryForm.tsx:6:29
-TS2307: Cannot find module '../../../common/components/RatingComponent' or its corresponding type declarations.
-    4 | import CustomButton from "../../../common/components/custom-button/CustomButton";
-    5 | import JSONDataViewer from "../../../common/components/JSONDataViewer";
-  > 6 | import RatingComponent from "../../../common/components/RatingComponent";
-      |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    7 | import { SmartEditor } from "../../../common/components/SmartEditor";
-    8 | import {
-    9 |   createCategory,

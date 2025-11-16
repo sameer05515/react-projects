@@ -19,7 +19,7 @@ const FloatingButton = ({
     <>
       <div className="relative inline-block">
         <CustomButton
-          title={!showButtonText && buttonText}
+          title={showButtonText ? buttonText : undefined}
           className={`bg-gray-100 border border-gray-300 px-2 py-1 text-xs font-semibold text-gray-800 hover:bg-gray-200 ${buttonClassName}`}
           iconName={iconName}
           onClick={handleClick}

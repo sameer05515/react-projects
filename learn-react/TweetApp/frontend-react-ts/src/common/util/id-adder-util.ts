@@ -8,7 +8,7 @@ const defaultPrefix = 'NODE_ID_';
  * @param {boolean} overrideId - Whether to override existing IDs.
  * @returns {Object} - The node with unique IDs added.
  */
-export const addUniqueIdsToTree = (nodes = [], prefix, overrideId = true) => {
+export const addUniqueIdsToTree = (nodes: any[] = [], prefix?: string, overrideId: boolean = true) => {
 
     if(!nodes || !Array.isArray(nodes) || nodes.length<1) return [];
 

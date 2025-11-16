@@ -76,5 +76,12 @@
       "PORT",
       "BACKEND_APPLICATION_BASE_URL"
     ]
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
   }
 }

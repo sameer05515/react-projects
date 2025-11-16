@@ -31,42 +31,35 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
   return (
     <div>
       {Object.entries(dataByDate).map(([date, items]) => (
-        <div key={date}>
-          <h4 className="mt-4">{date}</h4>
-          <div className="accordion" id={`accordion_${date}`}>
-            {items.map((item) => (
-              <div className="card" key={item._id}>
-                <div className="card-header" id={`heading_${item._id}`}>
-                  <h5 className="mb-0">
-                    <button
-                      className="btn btn-link"
-                      type="button"
-                      data-toggle="collapse"
-                      data-target={`#collapse_${item._id}`}
-                      aria-expanded="true"
-                      aria-controls={`collapse_${item._id}`}
-                      onClick={() => showData(item._id)}
-                      style={{ width: "100%", textAlign: "left" }}
-                    >
+        <div key={date} className="mt-4">
+          <h4 className="mb-2 font-semibold text-gray-900">{date}</h4>
+          <div className="space-y-2">
+            {items.map((item) => {
+              const isOpen = selectedItemId === item._id;
+              return (
+                <div className="rounded border border-gray-200 bg-white shadow-sm" key={item._id}>
+                  <button
+                    type="button"
+                    className="w-full text-left"
+                    onClick={() => showData(item._id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`collapse_${item._id}`}
+                  >
+                    <div className="px-3 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-50">
                       {item.title}
-                    </button>
-                  </h5>
+                    </div>
+                  </button>
+                  {isOpen && (
+                    <div id={`collapse_${item._id}`} className="border-t border-gray-200 px-3 py-2 text-sm text-gray-700">
+                      <p className="text-gray-500">
+                        [ {format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB })} ]
+                      </p>
+                      <p>{item.htmlText}</p>
+                    </div>
+                  )}
                 </div>
-
-                <div
-                  id={`collapse_${item._id}`}
-                  className={`collapse ${selectedItemId === item._id ? "show" : ""}`}
-                  aria-labelledby={`heading_${item._id}`}
-                  data-parent={`#accordion_${date}`}
-                >
-                  <div className="card-body">
-                    <p>[ {format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB })} ]</p>
-                    <p>{item.htmlText}</p>
-                    {/* Display other data fields in the card body */}
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ))}

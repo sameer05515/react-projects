@@ -103,5 +103,5 @@ export const getRelationStringForId = (id, first, second, showReverseString = fa
     const [rs, rev] = showReverseString ? [rel.reverseName, rel.name] : [rel.name, rel.reverseName];
 
     // return `If '<b>${f}</b>' '<b>${rs}</b>' '<b>${s}</b>', then '<b>${s}</b>' '<b>${rev}</b>' '<b>${f}</b>'.`;
-    return (<>If '<b>{f}</b>' '<b style={{color:'red'}}>{rs}</b>' '<b>{s}</b>', then '<b>{s}</b>' '<b style={{color:'red'}}>{rev}</b>' '<b>{f}</b></>)
+    return (<>If '<b>{f}</b>' '<b className="text-red-600">{rs}</b>' '<b>{s}</b>', then '<b>{s}</b>' '<b className="text-red-600">{rev}</b>' '<b>{f}</b></>)
 };

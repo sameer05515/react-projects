@@ -1,5 +1,4 @@
 import React from 'react';
-import './Breadcrumb.css';
 
 const Breadcrumb = () => {
   const breadcrumbs = [
@@ -11,21 +10,24 @@ const Breadcrumb = () => {
   ];
 
   return (
-    <div className="container">
-      <div className="breadcrumb">
+    <div className="mx-auto max-w-5xl p-4">
+      <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-700" aria-label="Breadcrumb">
         {breadcrumbs.map((crumb, index) => (
-          <a key={index} href={crumb.href} className={index === breadcrumbs.length - 1 ? 'active' : ''}>
-            <span className="breadcrumb__inner">
-              <span className="breadcrumb__title">{crumb.title}</span>
-              {Array.isArray(crumb.desc) ? (
-                crumb.desc.map((d, i) => <span key={i} className="breadcrumb__desc">{d}</span>)
-              ) : (
-                crumb.desc && <span className="breadcrumb__desc">{crumb.desc}</span>
-              )}
-            </span>
-          </a>
+          <span key={index} className="inline-flex items-center">
+            <button
+              type="button"
+              className={`rounded px-1 py-0.5 transition-colors hover:text-blue-700 ${
+                index === breadcrumbs.length - 1 ? 'font-semibold text-gray-900 cursor-default hover:text-gray-900' : 'text-blue-600'
+              }`}
+              title={Array.isArray(crumb.desc) ? crumb.desc.join(' • ') : (crumb.desc || '')}
+              disabled={index === breadcrumbs.length - 1}
+            >
+              {crumb.title}
+            </button>
+            {index < breadcrumbs.length - 1 && <span className="px-1 text-gray-400">/</span>}
+          </span>
         ))}
-      </div>
+      </nav>
     </div>
   );
 };

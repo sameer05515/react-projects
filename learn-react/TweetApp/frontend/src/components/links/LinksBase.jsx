@@ -4,7 +4,6 @@ import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } f
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import useDataFetching from "../../common/hooks/useDataFetching/v2";
 import { createLink, fetchLinks, fetchLinksByUniqueId, selectLinksStateCombined, updateLink } from "../../redux/slices/linksSlice";
-import "./Links.css";
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import { SmartEditor, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
 import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
@@ -518,22 +517,24 @@ const LinksBase = () => {
   }
 
   return (
-    <div className="linksContainer">
-      <div className="left-section">
-        {/* <pre>{links && JSON.stringify(links)}</pre> */}
-        <CustomButton onClick={() => handleButtonClick("create")}>Create Link</CustomButton>
-        {getLinksJSX(links)}
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="lg:w-72 lg:flex-shrink-0">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <CustomButton onClick={() => handleButtonClick("create")}>Create Link</CustomButton>
+          </div>
+          <div className="text-sm">
+            {getLinksJSX(links)}
+          </div>
+        </div>
       </div>
-      {/* -- left-section */}
 
-      <div className="right-section">
-        <div>
+      <div className="flex-1">
+        <div className="min-h-[24rem] rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
           <Outlet />
         </div>
       </div>
-      {/* -- right-section */}
     </div>
-    // -- linksContainer
   );
 };
 

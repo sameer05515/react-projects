@@ -1,11 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
 
 const Details = () => {
-  const {
-    sharedData: { styles },
-  } = useSharedConfigurations();
 
   return (
     <div className="flex flex-1 items-center justify-center rounded border border-gray-200 bg-white p-3 shadow-sm">

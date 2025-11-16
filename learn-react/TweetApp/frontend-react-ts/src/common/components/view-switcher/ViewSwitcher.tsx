@@ -1,6 +1,11 @@
 import React from 'react';
 
-const ViewSwitcher = ({ viewList, onChange, selectedView, children }) => {
+const ViewSwitcher: React.FC<{
+  viewList: { viewName: string; viewLabel: string }[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedView: string;
+  children?: React.ReactNode;
+}> = ({ viewList, onChange, selectedView, children }) => {
   return (
     <div>
       <div>

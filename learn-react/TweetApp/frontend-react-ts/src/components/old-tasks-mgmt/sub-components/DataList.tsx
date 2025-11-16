@@ -3,22 +3,23 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../../redux/slices/dataSlice1"; 
+import type { RootState } from "../../../redux/store";
 
-const DataList = ({ itemSelectionHandler = () => {} }) => {
+const DataList = ({ itemSelectionHandler = (_id: string) => {} }: { itemSelectionHandler?: (id: string) => void }) => {
   const dispatch = useDispatch();
-  const dataList = useSelector((state) => state.data);
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const dataList = useSelector((state: RootState) => state.data as any[]);
+  const [selectedItemId, setSelectedItemId] = useState<string>("");
 
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  const showData = (id) => {
+  const showData = (id: string) => {
     itemSelectionHandler(id);
     setSelectedItemId(id);
   };
 
-  const handleKeyDown = (e, id) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>, id: string) => {
     if (e.key === "Enter") {
       showData(id);
     }

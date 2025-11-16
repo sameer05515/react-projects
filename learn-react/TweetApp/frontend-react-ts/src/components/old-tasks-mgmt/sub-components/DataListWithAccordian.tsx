@@ -2,25 +2,26 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../redux/dataSlice1";
+import { fetchData } from "../../../redux/slices/dataSlice1";
+import type { RootState } from "../../../redux/store";
 
-const DataList = ({ itemSelectionHandler = () => {} }) => {
+const DataList = ({ itemSelectionHandler = (_id: string) => {} }: { itemSelectionHandler?: (id: string) => void }) => {
   const dispatch = useDispatch();
-  const dataList = useSelector((state) => state.data);
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const dataList = useSelector((state: RootState) => state.data as any[]);
+  const [selectedItemId, setSelectedItemId] = useState<string>("");
 
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  const showData = (id) => {
+  const showData = (id: string) => {
     itemSelectionHandler(id);
     setSelectedItemId(id);
   };
 
   // Group data by date
-  const dataByDate = {};
-  dataList.forEach((item) => {
+  const dataByDate: Record<string, any[]> = {};
+  dataList.forEach((item: any) => {
     const formattedDate = format(new Date(item.date), "dd/MMM/yyyy", { locale: enGB });
     if (!dataByDate[formattedDate]) {
       dataByDate[formattedDate] = [];
@@ -30,7 +31,7 @@ const DataList = ({ itemSelectionHandler = () => {} }) => {
 
   return (
     <div>
-      {Object.entries(dataByDate).map(([date, items]) => (
+      {Object.entries(dataByDate).map(([date, items]: [string, any[]]) => (
         <div key={date} className="mt-4">
           <h4 className="mb-2 font-semibold text-gray-900">{date}</h4>
           <div className="space-y-2">

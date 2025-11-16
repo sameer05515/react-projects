@@ -18,7 +18,7 @@ import { prepareTaskTitle } from "./sub-components/common/taskUtils";
 
 const TaskBase = () => {
   const [selectedView, setSelectedView] = useState("tree");
-  const handleChangeView = (event) => {
+  const handleChangeView = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedView(event.target.value);
   };
 
@@ -31,7 +31,9 @@ const TaskBase = () => {
         ]}
         onChange={handleChangeView}
         selectedView={selectedView}
-      />
+      >
+        {/* no-op */}
+      </ViewSwitcher>
       {selectedView === "tree" && <TaskTreeViewDashboard />}
       {selectedView === "card" && <TaskCardViewDashboard />}
     </div>
@@ -41,7 +43,7 @@ const TaskBase = () => {
 const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const selectedElementRef = useRef(null);
+  const selectedElementRef = useRef<HTMLSpanElement | null>(null);
   const sidebarButtonClass =
     "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
 
@@ -89,13 +91,13 @@ const TaskTreeViewDashboard = () => {
             <CustomButton className={sidebarButtonClass} onClick={() => handleButtonClick("create")}>
               Create Task
             </CustomButton>
-            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTasks())}>
+            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTasks() as any)}>
               Refresh
             </CustomButton>
           </div>
           <Tree
             data={tasks}
-            selectedNodeId={selectedTaskUniqueId}
+            selectedNodeId={selectedTaskUniqueId || undefined}
             renderNode={(t) => (
               <span
                 ref={selectedTaskUniqueId === t.uniqueId ? selectedElementRef : null}
@@ -113,6 +115,9 @@ const TaskTreeViewDashboard = () => {
                 />
               </span>
             )}
+            onDragStart={undefined as any}
+            onDrop={undefined as any}
+            errorMessageOnNoData={"" as any}
           />
         </div>
       </div>

@@ -1,12 +1,10 @@
 import React from 'react';
 import DOMPurify from 'dompurify';
-import { Parser } from 'html-to-react';
 
-const HtmlTextRendrer = ({ htmlString="" }) => {
+const HtmlTextRendrer: React.FC<{ htmlString?: string }> = ({ htmlString = "" }) => {
   const sanitizedHtml = DOMPurify.sanitize(htmlString);
-  const htmlToReactParser = new Parser();
 
-  return <>{htmlToReactParser.parse(sanitizedHtml)}</>;
+  return <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
 };
 
 export default HtmlTextRendrer;

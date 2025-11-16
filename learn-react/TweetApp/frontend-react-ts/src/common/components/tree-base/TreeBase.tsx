@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import CustomButton from "../custom-button/CustomButton";
-import TooltipSpan from "./TooltipSpan";
+import TooltipSpan from "../tooltip-span/TooltipSpan";
 
 // Sample treeList data
 const treeList = [
@@ -58,16 +58,27 @@ const treeList = [
     },
 ];
 
+type TreeNodeItem = {
+    id: string;
+    name: string;
+    type: string;
+    children?: TreeNodeItem[];
+};
+
 // TreeNode component to render individual nodes
-const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => {} }) => {
-    const nodeRef = useRef(null);
+const TreeNode: React.FC<{
+    node: TreeNodeItem;
+    selectedNodeId?: string | number;
+    onNodeSelection?: (node: TreeNodeItem) => void;
+}> = ({ node, selectedNodeId, onNodeSelection = () => {} }) => {
+    const nodeRef = useRef<HTMLSpanElement | null>(null);
     useEffect(() => {
         if (selectedNodeId === node.id && nodeRef.current) {
             nodeRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
         }
     }, [selectedNodeId, node.id]);
 
-    const handleNodeSelection = (node) => {
+    const handleNodeSelection = (node: TreeNodeItem) => {
         // console.log(`[TreeNode]: this node has been clicked : ${JSON.stringify(node)}`);
 
         if (onNodeSelection && selectedNodeId !== node.id) {
@@ -90,7 +101,7 @@ const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => {} }) => {
       </span>
       {node.children && node.children.length > 0 && (
         <ul className="mt-1 space-y-1">
-          {node.children.map((child) => (
+          {node.children!.map((child: TreeNodeItem) => (
             <TreeNode
               key={child.id}
               node={child}
@@ -105,14 +116,20 @@ const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => {} }) => {
 };
 
 // TreeList component to render the entire tree
-const TreeList = ({
+const TreeList: React.FC<{
+  treeList?: TreeNodeItem[];
+  selectedNodeId?: string | number;
+  className?: string;
+  customStyle?: React.CSSProperties;
+  onNodeSelection?: (node: TreeNodeItem) => void;
+}> = ({
   treeList = [],
   selectedNodeId,
   className = "",
   customStyle = {},
   onNodeSelection = () => {},
 }) => {
-    const handleNodeSelection = (node) => {
+    const handleNodeSelection = (node: TreeNodeItem) => {
         // console.log(`[TreeList]: Mr node : ${JSON.stringify(node, null, 2)}. Please wait. TreenList is working you to get selected`);
         onNodeSelection(node);
     };
@@ -120,7 +137,7 @@ const TreeList = ({
     <div className={`rounded-2xl border border-gray-200 bg-white p-4 shadow-sm ${className}`} style={customStyle}>
       {treeList && treeList.length > 0 && (
         <ul className="space-y-1">
-          {treeList.map((link) => (
+          {treeList.map((link: TreeNodeItem) => (
             <TreeNode
               key={link.id}
               node={link}
@@ -135,12 +152,12 @@ const TreeList = ({
 };
 
 // Function to flatten the tree structure into an array
-const flattenTree = (list, prevQueue = []) => {
-    let queue = [...prevQueue];
+const flattenTree = (list: TreeNodeItem[], prevQueue: TreeNodeItem[] = []): TreeNodeItem[] => {
+    let queue: TreeNodeItem[] = [...prevQueue];
     if (list && list.length > 0) {
-        list.forEach((t) => {
+        list.forEach((t: TreeNodeItem) => {
             queue = [...queue, { ...{ id: t.id, name: t.name, type: t.type } }];
-            const childQ = flattenTree(t.children, []);
+            const childQ = flattenTree(t.children || [], []);
             queue = [...queue, ...childQ];
         });
     }
@@ -148,15 +165,21 @@ const flattenTree = (list, prevQueue = []) => {
 };
 
 // TreeBase Example component to render the TreeList component and handle selection
-const TreeBase = ({
+const TreeBase: React.FC<{
+  treeList?: TreeNodeItem[];
+  selectedTreeNodeUID?: string | null;
+  customStyle?: React.CSSProperties;
+  className?: string;
+  onNodeSelection?: (node: TreeNodeItem) => void;
+}> = ({
   treeList = [],
   selectedTreeNodeUID = null,
   customStyle = {},
   className = "",
   onNodeSelection = () => {},
 }) => {
-    const [flattenedTree, setFlattenedTree] = useState([]);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [flattenedTree, setFlattenedTree] = useState<TreeNodeItem[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
     useEffect(() => {
         setFlattenedTree(flattenTree(treeList));
@@ -190,7 +213,7 @@ const TreeBase = ({
         );
     };
 
-    const handleNodeSelection = (node) => {
+    const handleNodeSelection = (node: TreeNodeItem) => {
         if (node) {
             const index = flattenedTree.findIndex((t) => t.id === node.id);
             if (index >= 0) {

@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Navigate } from "react-router-dom";
-import { isAuthenticated } from "../authService";  // Import your authentication service
+import { isAuthenticated } from "../../service/authService";
 
 
-function PrivateRoute({ element, ...rest }) {
+function PrivateRoute({ element, ...rest }: { element: JSX.Element }) {
   return (
     <Route
       {...rest}

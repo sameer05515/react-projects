@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
-import ReactHtmlParser from "react-html-parser";
 import CustomButton from "../custom-button/CustomButton";
+
+interface EditableLabelProps {
+  text?: string;
+  postUpdateClick?: (updatedText: string) => void;
+  placeholder?: string;
+  editMode?: boolean;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+  flushSavedText?: boolean;
+  editable?: boolean;
+  containerClassName?: string;
+  displayClassName?: string;
+  editorClassName?: string;
+  labelStyle?: React.CSSProperties;
+  textAreaStyle?: React.CSSProperties;
+}
 
 function EditableLabel({
   text = "",
@@ -17,21 +32,21 @@ function EditableLabel({
   editorClassName = "",
   labelStyle = {},
   textAreaStyle = {},
-}) {
-  const [editing, setEditing] = useState(editMode);
-  const [editedText, setEditedText] = useState(text);
+}: EditableLabelProps) {
+  const [editing, setEditing] = useState<boolean>(editMode || false);
+  const [editedText, setEditedText] = useState<string>(text || "");
 
   const handleLabelClick = () => {
     if (editable) setEditing(true);
   };
 
-  const handleQuillChange = (value) => {
+  const handleQuillChange = (value: string) => {
     setEditedText(value);
   };
 
   const handleSubmitClick = () => {
     setEditing(false);
-    postUpdateClick(editedText);
+    postUpdateClick && postUpdateClick(editedText);
     if (flushSavedText) {
       setEditedText("");
     }
@@ -68,7 +83,7 @@ function EditableLabel({
           } ${displayClassName}`}
           style={labelStyle}
         >
-          {ReactHtmlParser(text || placeholder)}
+          <span dangerouslySetInnerHTML={{ __html: (text || placeholder) as string }} />
         </div>
       )}
     </div>

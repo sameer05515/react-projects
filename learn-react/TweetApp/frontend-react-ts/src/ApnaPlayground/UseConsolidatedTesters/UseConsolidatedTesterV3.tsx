@@ -13,7 +13,7 @@ const UseConsolidatedTesterV3 = () => {
   const handleGetRandomNumber = async () => {
     try {
       console.log("Starting fetch:", new Date());
-      const { randomNumber: number } = await getRandomNumber();
+      const { randomNumber: number } = (await getRandomNumber()) as any;
       console.log("Received result at:", new Date());
       console.log(`Random number: ${number}`);
       const doubledNumber = await doubleTheNumber(number);

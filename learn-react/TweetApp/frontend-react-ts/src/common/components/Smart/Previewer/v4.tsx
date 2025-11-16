@@ -7,7 +7,11 @@ import { SupportedOutFormats, getSmartPreviewerProcessedData } from "../common/u
 
 const debug = false;
 
-const SmartPreviewerV4 = ({ data }) => {
+interface SmartPreviewerV4Props {
+  data: { content: string; textOutputType: string; textInputType?: string };
+}
+
+const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
   const { content, textOutputType, yamlProcessedData, resultData, errorMessage } = useMemo(
     () => getSmartPreviewerProcessedData(data),
     [data]

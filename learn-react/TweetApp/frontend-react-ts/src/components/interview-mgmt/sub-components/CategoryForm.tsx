@@ -2,22 +2,23 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
-import JSONDataViewer from "../../../common/components/JSONDataViewer";
-import RatingComponent from "../../../common/components/RatingComponent";
-import { SmartEditor } from "../../../common/components/SmartEditor";
+import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
+import { SmartEditor } from "../../../common/components/Smart/Editor/v3";
 import {
   createCategory,
   updateCategory,
 } from "../../../redux/slices/interviewMgmtSlice";
 import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
+import type { AppDispatch, RootState } from "../../../redux/store";
 
 const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const tagOptions = useSelector(getTagsForComboOptions);
 
   const { createCategoryResponse, updateCategoryResponse } = useSelector(
-    (state) => state.interviewMgmt
+    (state: RootState) => state.interviewMgmt
   );
 
   const [formData, setFormData] = useState({

@@ -4,7 +4,7 @@ import UsingEarlierVersionsOfBackdrops from "./testers/UsingEarlierVersionsOfBac
 import { FallbackStrategies } from "../../common/best-practices/FallbackStrategies";
 
 // Default fallback component
-const DefaultTesterComponent = memo(({ invalidName }) => (
+const DefaultTesterComponent = memo(({ invalidName }: { invalidName: string }) => (
   <div>
     <h2>Component Not Found</h2>
     <p>
@@ -15,12 +15,12 @@ const DefaultTesterComponent = memo(({ invalidName }) => (
 ));
 
 
-const actAccordingToStrategy = (strategy, invalidName) => {
+const actAccordingToStrategy = (strategy: string, invalidName: string) => {
   if (!strategy) return DefaultTesterComponent;
 
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
-      return DefaultTesterComponent;
+      return () => <DefaultTesterComponent invalidName={invalidName} />;
 
     case FallbackStrategies.RETURN_NULL:
       return null;
@@ -32,7 +32,7 @@ const actAccordingToStrategy = (strategy, invalidName) => {
       console.warn(
         `Unknown strategy: ${strategy}. Falling back to default component.`
       );
-      return DefaultTesterComponent;
+      return () => <DefaultTesterComponent invalidName={invalidName} />;
   }
 };
 
@@ -48,6 +48,6 @@ export const testerNames = Object.keys(Testers).map((keyName, idx) => ({
 
 // Return default fallback component when name is not found
 export const getTesterComponent = (
-  name = "",
-  strategy = FallbackStrategies.RETURN_DEFAULT_COMPONENT
-) => Testers[name] || actAccordingToStrategy(strategy);
+  name: string = "",
+  strategy: string = FallbackStrategies.RETURN_DEFAULT_COMPONENT
+) => Testers[name] || actAccordingToStrategy(strategy, name);

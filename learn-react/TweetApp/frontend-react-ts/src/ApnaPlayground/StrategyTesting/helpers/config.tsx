@@ -10,7 +10,7 @@ const Testers = {
 const error = { color: "red" };
 
 // Default fallback component
-const DefaultComponent = memo(({ invalidName }) => (
+const DefaultComponent = memo(({ invalidName }: { invalidName: string }) => (
   <div>
     <strong>Component Not Found: </strong>
     <span style={error}>
@@ -21,7 +21,7 @@ const DefaultComponent = memo(({ invalidName }) => (
 ));
 
 // Act according to the specified strategy
-const actAccordingToStrategy = (strategy, invalidName) => {
+const actAccordingToStrategy = (strategy: string, invalidName: string) => {
   switch (strategy) {
     case FallbackStrategies.RETURN_DEFAULT_COMPONENT:
       return () => <DefaultComponent invalidName={invalidName} />;
@@ -47,6 +47,6 @@ export const testerNames = Object.keys(Testers).map((keyName, idx) => ({
 
 // Get tester component with fallback logic
 export const getTesterComponent = (
-  name = "",
-  strategy = FallbackStrategies.RETURN_DEFAULT_COMPONENT
+  name: string = "",
+  strategy: string = FallbackStrategies.RETURN_DEFAULT_COMPONENT
 ) => Testers[name] || actAccordingToStrategy(strategy, name);

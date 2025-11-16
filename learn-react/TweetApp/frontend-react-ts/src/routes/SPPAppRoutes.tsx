@@ -2,8 +2,8 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 const Welcome = lazy(() => import('../stub-pages/Welcome'))
-const Login = lazy(() => import('../stub-pages/Login'))
-const Registration = lazy(() => import('../stub-pages/Registration'))
+const Login = lazy(() => import('../pages/auth/LoginUser'))
+const Registration = lazy(() => import('../pages/auth/Registration'))
 const Notifications = lazy(() => import('../stub-pages/Notifications'))
 const TweetBase = lazy(() => import('../stub-pages/TweetBase'))
 const TaskBase = lazy(() => import('../stub-pages/TaskBase'))

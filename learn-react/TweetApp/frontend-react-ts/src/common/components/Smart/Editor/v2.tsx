@@ -2,9 +2,8 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
 import React, { useEffect, useRef, useState } from "react";
-import ReactHtmlParser from "react-html-parser";
 import CustomButton from "../../custom-button/CustomButton";
-import MarkdownComponent from "../MarkdownComponent";
+import MarkdownComponent from "../../markdown-component/MarkdownComponent";
 
 const inpOutp = () => {
     const availableOutputTypes = {
@@ -53,7 +52,20 @@ const inpOutp = () => {
     };
 };
 
-const SmartEditor = ({
+interface SmartEditorValue {
+    content: string;
+    textOutputType: string;
+    textInputType: string;
+}
+
+interface SmartEditorProps {
+    initialValue?: Partial<SmartEditorValue>;
+    preview?: boolean;
+    onChange?: (value: SmartEditorValue) => void;
+    onError?: (message: string | null) => void;
+}
+
+const SmartEditor: React.FC<SmartEditorProps> = ({
     initialValue,
     preview: previewIntialValue = true,
     onChange = () => { },
@@ -66,20 +78,20 @@ const SmartEditor = ({
         getOutputTypeByName,
     } = inpOutp();
 
-    const textareaRef = useRef(null);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const [selectedOutputTypeName, setSelectedOutputTypeName] = useState(
         initialValue?.textOutputType || availableOutputTypes.HTML
     );
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SmartEditorValue>({
         content: initialValue?.content || "",
         textOutputType: initialValue?.textOutputType || availableOutputTypes.HTML,
         textInputType: initialValue?.textInputType || availableInputTypes.ckEditor,
     });
 
-    const [yamlProcessedData, setYamlProcessedData] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [yamlProcessedData, setYamlProcessedData] = useState<any>(null);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [showPreview, setShowPreview] = useState(previewIntialValue);
 
     useEffect(() => {
@@ -105,13 +117,14 @@ const SmartEditor = ({
     }, [initialValue]);
 
     useEffect(() => {
-        let metadata = {};
-        let error = null;
+        let metadata: any = {};
+        let error: string | null = null;
         if (formData?.content && formData?.textOutputType === availableOutputTypes.YAML) {
             try {
                 metadata = yaml.load(formData.content);
-            } catch (e) {
-                error = `Error parsing YAML: ${e.message}`;
+            } catch (e: unknown) {
+                const err = e as any;
+                error = `Error parsing YAML: ${String(err?.message || e)}`;
             }
             setYamlProcessedData(metadata);
             setErrorMessage(error);
@@ -123,8 +136,10 @@ const SmartEditor = ({
 
         if (formData.content && formData.textInputType === availableInputTypes.textArea) {
             const textarea = textareaRef.current;
-            textarea.style.height = "auto";
-            textarea.style.height = textarea.scrollHeight * 1.3 + "px";
+            if (textarea) {
+                textarea.style.height = "auto";
+                textarea.style.height = textarea.scrollHeight * 1.3 + "px";
+            }
         }
 
         if (formData) {
@@ -134,7 +149,7 @@ const SmartEditor = ({
         onError(error);
     }, [formData.content, formData.textOutputType]);
 
-    const handleChangeOutputTypes = (event) => {
+    const handleChangeOutputTypes = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOutputTypeName(event.target.value);
         setFormData((prev) => ({
             ...prev,
@@ -142,18 +157,18 @@ const SmartEditor = ({
         }));
     };
 
-    const handleChangeInputTypes = (event) => {
+    const handleChangeInputTypes = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData((prev) => ({
             ...prev,
             textInputType: event.target.value,
         }));
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    const handleEditorChange = (event, editor) => {
+    const handleEditorChange = (_event: any, editor: any) => {
         const data = editor.getData();
         setFormData({ ...formData, content: data });
     };
@@ -216,9 +231,7 @@ const SmartEditor = ({
                         Content:
                     </label>
                     <CKEditor
-                        id="ckeditor"
-                        name="content"
-                        editor={ClassicEditor}
+                        editor={ClassicEditor as any}
                         data={formData.content}
                         onChange={handleEditorChange}
                     />
@@ -241,20 +254,20 @@ const SmartEditor = ({
     );
 };
 
-const SmartPreviewer = ({ data: initialValue }) => {
+const SmartPreviewer: React.FC<{ data: SmartEditorValue }> = ({ data: initialValue }) => {
     const {
         availableOutputTypes,
         availableInputTypes,
     } = inpOutp();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SmartEditorValue>({
         content: initialValue?.content || "",
         textOutputType: initialValue?.textOutputType || availableOutputTypes.HTML,
         textInputType: initialValue?.textInputType || availableInputTypes.ckEditor,
     });
 
-    const [yamlProcessedData, setYamlProcessedData] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [yamlProcessedData, setYamlProcessedData] = useState<any>(null);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
         if (formData?.content && formData?.textOutputType === availableOutputTypes.YAML) {
@@ -262,8 +275,9 @@ const SmartPreviewer = ({ data: initialValue }) => {
             let error = "";
             try {
                 metadata = yaml.load(formData.content);
-            } catch (e) {
-                error = `Error parsing YAML: ${e.message}`;
+            } catch (e: unknown) {
+                const err = e as any;
+                error = `Error parsing YAML: ${String(err?.message || e)}`;
             }
             setYamlProcessedData(metadata);
             setErrorMessage(error);
@@ -284,10 +298,10 @@ const SmartPreviewer = ({ data: initialValue }) => {
                 <pre>{formData.content}</pre>
             )}
             {formData.textOutputType === availableOutputTypes.HTML && (
-                <div>{ReactHtmlParser(formData.content)}</div>
+                <div dangerouslySetInnerHTML={{ __html: formData.content }} />
             )}
             {formData.textOutputType === availableOutputTypes.MARKDOWN && (
-                <MarkdownComponent text={formData.content} />
+                <MarkdownComponent markdownText={formData.content} />
             )}
             {formData.textOutputType === availableOutputTypes.YAML && (
                 <div>

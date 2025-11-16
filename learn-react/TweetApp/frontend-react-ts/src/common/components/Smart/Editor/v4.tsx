@@ -19,7 +19,23 @@ const debug = false;
 
 // const FormError = ({ error }) => (error ? <div className="alert alert-danger mt-2">{error}</div> : null);
 
-const SmartEditorV4 = ({
+type FormMessage = { type: string; message: string };
+
+interface SmartContent {
+  content: string;
+  textOutputType: string;
+  textInputType: string;
+}
+
+interface SmartEditorV4Props {
+  initialValue?: Partial<SmartContent>;
+  preview?: boolean;
+  disableSaveButton?: boolean;
+  disableResetButton?: boolean;
+  onSubmit?: (data: SmartContent) => Promise<{ isError: boolean; messages: FormMessage[] }>;
+}
+
+const SmartEditorV4: React.FC<SmartEditorV4Props> = ({
   initialValue = {
     content: "",
     textOutputType: "",
@@ -31,9 +47,9 @@ const SmartEditorV4 = ({
   onSubmit = async () => ({ isError: false, messages: [{ type: "info", message: "Action performed successfully!" }] }),
 }) => {
   const [showPreview, setShowPreview] = useState(previewInitialValue);
-  const [formMessages, setFormMessages] = useState([]);
+  const [formMessages, setFormMessages] = useState<FormMessage[]>([]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SmartContent>({
     content: "",
     textOutputType: "",
     textInputType: "",
@@ -47,7 +63,7 @@ const SmartEditorV4 = ({
     [formData.textInputType, formData.textOutputType]
   );
 
-  const handleFormUpdate = useCallback((newContent, newOutputType) => {
+  const handleFormUpdate = useCallback((newContent?: string, newOutputType?: string) => {
     if (newContent == null) return;
     const { textInputType, textOutputType } = getInpOupDetailsForKey(newOutputType);
     const validationError = validateSmartContent(newContent, textOutputType);
@@ -72,7 +88,7 @@ const SmartEditorV4 = ({
   }, [handleFormUpdate, initialValue]);
 
   const handleChangeOutputTypes = useCallback(
-    (newOutputType) => {
+    (newOutputType: string) => {
       if (typeof newOutputType !== "string") {
         // setFormMessages([{ type: "error", message: `Invalid newOutputType: '${newOutputType}'` }]);
         setFormMessages(FormMessageBuilder.builder().appendError(`Invalid newOutputType: '${newOutputType}'`).build());
@@ -84,7 +100,7 @@ const SmartEditorV4 = ({
   );
 
   const updateFormContent = useCallback(
-    (content = "") => {
+    (content: string = "") => {
       setFormMessages([]);
       if (!content?.trim()) {
         setFormMessages([{ type: "error", message: "Content cannot be empty" }]);
@@ -96,7 +112,7 @@ const SmartEditorV4 = ({
   );
 
   const handleSave = async () => {
-    const result = await onSubmit(formData);
+    const result = await onSubmit!(formData);
     if (result.isError) {
       // setFormMessages([...result.messages] || [{ type: "error", message: "Some unexpected error occurred!" }]);
       setFormMessages([
@@ -155,11 +171,9 @@ const SmartEditorV4 = ({
           </label>
           <div className="mt-1 rounded-lg border border-gray-200 bg-white p-2 shadow-inner">
             <CKEditor
-              id="ckeditor"
-              name="ckeditorContent"
-              editor={ClassicEditor}
+              editor={ClassicEditor as any}
               data={formData.content}
-              onChange={(event, editor) => updateFormContent(editor.getData())}
+              onChange={(_event: any, editor: any) => updateFormContent(editor.getData())}
             />
           </div>
         </div>

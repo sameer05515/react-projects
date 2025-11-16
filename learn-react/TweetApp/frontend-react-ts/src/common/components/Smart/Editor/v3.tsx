@@ -51,25 +51,38 @@ const inputOutputMapping = {
   },
 };
 
-const getKeyName = (textOutputType, textInputType) =>
+const getKeyName = (textOutputType: string, textInputType: string) =>
   Object.keys(inputOutputMapping).find(
-    (key) => inputOutputMapping[key].textOutputType === textOutputType && inputOutputMapping[key].textInputType === textInputType
+    (key) => (inputOutputMapping as any)[key].textOutputType === textOutputType && (inputOutputMapping as any)[key].textInputType === textInputType
   ) || "HTML_OUTPUT_FROM_RAW_TEXT";
 
-const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
-  const textareaRef = useRef(null);
+interface SmartEditorValue {
+  content: string;
+  textOutputType: string;
+  textInputType: string;
+}
+
+interface SmartEditorProps {
+  initialValue?: Partial<SmartEditorValue>;
+  preview?: boolean;
+  onChange?: (value: SmartEditorValue) => void;
+  onError?: (message: string) => void;
+}
+
+const SmartEditor: React.FC<SmartEditorProps> = ({ initialValue, preview: previewInitialValue = true, onChange = () => {}, onError = () => {} }) => {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [selectedOutputType, setSelectedOutputType] = useState(getKeyName(initialValue?.textOutputType, initialValue?.textInputType));
   const [showPreview, setShowPreview] = useState(previewInitialValue);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SmartEditorValue>({
     content: initialValue?.content || "",
-    textOutputType: inputOutputMapping[selectedOutputType].textOutputType,
-    textInputType: inputOutputMapping[selectedOutputType].textInputType,
+    textOutputType: (inputOutputMapping as any)[selectedOutputType].textOutputType,
+    textInputType: (inputOutputMapping as any)[selectedOutputType].textInputType,
   });
 
   useEffect(() => {
-    const { textInputType, textOutputType } = inputOutputMapping[selectedOutputType];
+    const { textInputType, textOutputType } = (inputOutputMapping as any)[selectedOutputType];
     if (formData.textOutputType !== textOutputType || formData.textInputType !== textInputType) {
       setFormData((prev) => ({ ...prev, textInputType, textOutputType }));
     }
@@ -82,8 +95,9 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
     if (textOutputType === availableOutputTypes.YAML && content) {
       try {
         yaml.load(content);
-      } catch (e) {
-        error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+      } catch (e: unknown) {
+        const err = e as any;
+        error = err?.mark ? `Error parsing YAML at line ${err.mark.line + 1}: ${String(err.message)}` : `Error parsing YAML: ${String(err?.message || e)}`;
       }
     }
 
@@ -107,9 +121,9 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
     handleFormDataChange();
   }, [formData.content, formData.textOutputType, handleFormDataChange]);
 
-  const handleChangeOutputTypes = (event) => setSelectedOutputType(event.target.value);
-  const handleInputChange = (e) => setFormData((prev) => ({ ...prev, content: e.target.value }));
-  const handleEditorChange = (event, editor) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
+  const handleChangeOutputTypes = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedOutputType(event.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev) => ({ ...prev, content: e.target.value }));
+  const handleEditorChange = (_event: any, editor: any) => setFormData((prev) => ({ ...prev, content: editor.getData() }));
 
   return (
     <div className="space-y-4">
@@ -151,7 +165,7 @@ const SmartEditor = ({ initialValue, preview: previewInitialValue = true, onChan
           <label htmlFor="ckeditor" className="font-bold block mb-2">
             Content:
           </label>
-          <CKEditor id="ckeditor" name="content" editor={ClassicEditor} data={formData.content} onChange={handleEditorChange} />
+          <CKEditor editor={ClassicEditor as any} data={formData.content} onChange={handleEditorChange} />
         </div>
       )}
 
@@ -174,27 +188,28 @@ const FONT_SIZE_CLASS_MAP = {
   "25px": "text-[25px]",
 };
 
-const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } }) => {
+const SmartPreviewer: React.FC<{ data: SmartEditorValue; markdownStyles?: { fontSize?: string } }> = ({ data, markdownStyles: { fontSize } = { fontSize: "" } }) => {
   const { content, textOutputType } = data;
 
-  const [yamlProcessedData, setYamlProcessedData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [resultData, setResultData] = useState([]);
+  const [yamlProcessedData, setYamlProcessedData] = useState<any>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [resultData, setResultData] = useState<any[]>([]);
 
   useEffect(() => {
     if (textOutputType === availableOutputTypes.YAML && content) {
       try {
         setYamlProcessedData(yaml.load(content));
         setErrorMessage("");
-      } catch (e) {
-        const error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
+      } catch (e: unknown) {
+        const err = e as any;
+        const error = err?.mark ? `Error parsing YAML at line ${err.mark.line + 1}: ${String(err.message)}` : `Error parsing YAML: ${String(err?.message || e)}`;
         setErrorMessage(error);
       }
     }
     if (textOutputType === availableOutputTypes.SKELETON && content) {
       const { data: skeletonData, isValid, message } = buildTree(content);
       if (!isValid) setErrorMessage(message || "Missing error message");
-      else setResultData([...addUniqueIdsToTree(skeletonData)]);
+      else setResultData([...addUniqueIdsToTree(skeletonData as any[])]);
     }
   }, [content, textOutputType]);
 

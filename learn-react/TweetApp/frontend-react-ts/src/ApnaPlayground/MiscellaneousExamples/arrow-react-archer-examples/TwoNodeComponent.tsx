@@ -44,7 +44,7 @@ const TwoNodeComponent = () => {
 };
 
 // Basic styles for the container and nodes
-const styles = {
+const styles: { container: React.CSSProperties; node: React.CSSProperties } = {
     container: {
         display: 'flex',
         flexDirection: 'column',

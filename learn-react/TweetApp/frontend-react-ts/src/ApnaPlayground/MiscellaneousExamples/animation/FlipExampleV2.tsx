@@ -13,20 +13,20 @@ const FlipExampleV2 = () => {
     styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
   }, []);
 
-  const containerStyle = {
+  const containerStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
   };
 
-  const flipBoxStyle = {
+  const flipBoxStyle: React.CSSProperties = {
     width: '150px',
     height: '150px',
     perspective: '1000px',
   };
 
-  const flipContentStyle = {
+  const flipContentStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
     backgroundColor: '#3498db',

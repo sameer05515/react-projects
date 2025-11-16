@@ -10,9 +10,9 @@ const LanguageSelectorV2 = () => {
 
     const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
-    const handleLanguageChange = (event) => {
+    const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedLang = languages.find(lang => lang.name === event.target.value);
-        setSelectedLanguage(selectedLang);
+        setSelectedLanguage(selectedLang || languages[0]);
     };
 
     return (
@@ -71,7 +71,7 @@ const LanguageSelectorV2 = () => {
     );
 };
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
     container: {
         padding: '20px',
         border: '1px solid #ccc',

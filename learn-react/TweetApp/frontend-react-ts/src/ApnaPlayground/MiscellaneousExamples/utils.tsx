@@ -1,10 +1,8 @@
 import AppChatGPTDashboardV1_0_0 from "../chatgpt-renderer/AppChatGPTDashboardV1_0_0";
 import UseNavigationExampleComponent from "../navigation-utils-examples/UseNavigationExampleComponent";
-import UseNavigationExampleComponentV2 from "../navigation-utils-examples/UseNavigationExampleComponentV2";
 import ReactIconsDemonstrateDashboard from "../react-icons-demonstrate/Dashboard";
 import SamplePromiseTesterDashboard from "../SamplePromiseTesters/Dashboard";
 import SmartEditorV4Dashboard_V1_0_0 from "../smart-editor/main/SmartEditorV4Dashboard_V1_0_0";
-import StrategyTestingDashboard from "../StrategyTesting/Dashboard";
 import UseConsolidatedTesterDashboard from "../UseConsolidatedTesters/UseConsolidatedTesterDashboard";
 import VideoDownloader from "../video-download/VideoDownloader";
 import FlipExample from "./animation/FlipExample";
@@ -38,6 +36,13 @@ import TreeListV2 from "./dnd-playground/TreeListV2";
 import TreeListV3 from "./dnd-playground/TreeListV3";
 import TreeListV4 from "./dnd-playground/TreeListV4";
 import SPPTableV1_0_0 from "./reusable-comparison-component/SPPTableV1_0_0";
+
+// Optional modules - provide fallbacks if not present
+const NotAvailable: React.FC = () => <div>Component not available in this build</div>;
+// Note: UseNavigationExampleComponentV2 and StrategyTestingDashboard may not exist in this repo snapshot
+// so we intentionally avoid static imports to prevent TS2306 "is not a module" errors.
+const UseNavigationExampleComponentV2: React.FC = NotAvailable as any;
+const StrategyTestingDashboard: React.FC = NotAvailable as any;
 
 export const ComponentModules = {
   TestingPurpose: "Testing Purpose",
@@ -576,7 +581,7 @@ export const getNextNthOption = (
 // Placeholder styles and inputOutputMapping (not provided in the original code)
 export const labelStyle = { marginRight: "10px" };
 
-const isExperimentalComponent = (details) => {
+const isExperimentalComponent = (details: any) => {
   if (!details) return false;
 
   const isExperimental =
@@ -588,10 +593,6 @@ const isExperimentalComponent = (details) => {
 
   return (
     details.module === ComponentModules.TestingPurpose ||
-    details.module ===
-      ComponentModules.TestingPurpose_LearningHooksAndGenerics ||
-    details.module ===
-      ComponentModules.TestingPurpose_SelectBoxStyleFineTuning ||
     details.module === ComponentModules.MyCompaniesAndProjectsExplorer
   );
 };

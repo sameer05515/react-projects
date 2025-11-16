@@ -1,7 +1,23 @@
 import React from "react";
 import CustomButton from "../custom-button/CustomButton";
 
-const ButtonGroup = ({
+type ButtonOption = {
+    id?: string | number;
+    onClick?: () => void;
+    iconName?: any;
+    title?: string;
+    children?: React.ReactNode;
+    className?: string;
+};
+
+interface ButtonGroupProps {
+    options?: ButtonOption[];
+    className?: string;
+    buttonClassName?: string;
+    orientation?: "row" | "column";
+}
+
+const ButtonGroup: React.FC<ButtonGroupProps> = ({
     options = [],
     className = "",
     buttonClassName = "",

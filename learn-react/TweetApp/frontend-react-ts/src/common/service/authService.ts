@@ -21,12 +21,12 @@ export const getUserIdFromToken = () => {
   if (token) {
     try {
       // Decode the JWT token
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<{ userId?: string; userName?: string; exp?: number }>(token);
       // console.log(`decodedToken : ${JSON.stringify(decodedToken)}`);
 
       // Extract the userId from the decoded token
-      const userId = decodedToken.userId;
-      localStorage.setItem("userId", userId);
+      const userId = decodedToken.userId || "";
+      localStorage.setItem("userId", userId || "");
 
       return userId;
     } catch (error) {
@@ -45,12 +45,12 @@ export const getUserNameFromToken = () => {
   if (token) {
     try {
       // Decode the JWT token
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<{ userId?: string; userName?: string; exp?: number }>(token);
       // console.log(`decodedToken : ${JSON.stringify(decodedToken)}`);
 
       // Extract the userId from the decoded token
-      const userName = decodedToken.userName;
-      localStorage.setItem("userName", userName);
+      const userName = decodedToken.userName || "";
+      localStorage.setItem("userName", userName || "");
 
       return userName;
     } catch (error) {
@@ -76,11 +76,11 @@ export const isAuthenticated = () => {
   if (token) {
     try {
       // Decode the JWT token
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<{ exp?: number }>(token);
 
       // Check if the token has expired
       const currentTime = Date.now() / 1000; // Convert to seconds
-      if (decodedToken.exp && decodedToken.exp < currentTime) {
+      if (decodedToken?.exp && decodedToken.exp < currentTime) {
         // Token has expired
         return false;
       }

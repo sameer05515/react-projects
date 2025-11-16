@@ -104,7 +104,7 @@ router.get('', async (req, res) => {
  *         schema:
  *           type: string
  *         required: true
- *         description: The aggregation type. Supported: getTagsCountByDate
+ *         description: "The aggregation type. Supported: getTagsCountByDate"
  *     responses:
  *       200:
  *         description: Aggregation results

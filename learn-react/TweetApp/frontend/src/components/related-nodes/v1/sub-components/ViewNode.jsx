@@ -8,14 +8,11 @@ import {
     boxStyle,
     getArcherBoxesForLanguage,
     getNodeForId,
-    styles,
 } from "../util";
 
 // InfoBoxV1 component
 export const InfoBoxV1 = ({ boxes }) => (
-    <div
-        style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
+    <div className="flex flex-col items-center">
         {boxes.map((box) => (
             <ArcherBox
                 key={box.id}
@@ -75,14 +72,14 @@ export const ViewNode = () => {
             </CustomButton>
 
             <ArcherContainer strokeColor="black">
-                <div style={styles.rowDiv}>
+                <div className="flex justify-around gap-4 p-2">
                     <InfoBoxV1 boxes={prevBoxes} />
                     <InfoBoxV1 boxes={selBoxes} />
                     <InfoBoxV1 boxes={nextBoxes} />
                 </div>
             </ArcherContainer>
             {showPreview && (
-                <div style={styles.rowDiv}>
+                <div className="mt-4 flex justify-around gap-4 p-2">
                     <JSONPreview data={{ selectedNode }} title={"selectedNode"} />
                 </div>
             )}

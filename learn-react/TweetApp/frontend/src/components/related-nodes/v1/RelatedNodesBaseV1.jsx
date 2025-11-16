@@ -4,7 +4,7 @@ import {
     useSharedConfigurations,
 } from "../util/RelatedNodeUtil";
 import { Outlet, useNavigate } from "react-router-dom";
-import { styles, Select } from "./util";
+import { Select } from "./util";
 
 const RelatedNodesBaseV1 = () => {
   const navigate = useNavigate();
@@ -31,13 +31,13 @@ const RelatedNodesBaseV1 = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.columnDiv}>
+    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="mb-4">
         <Select options={nodeOptions} value={selectedNode?.uniqueId || ""} onChange={handleLanguageChange} />
       </div>
-      <div>
+      <div className="rounded border border-gray-100 bg-gray-50 p-3">
         <Outlet/>
-      </div>      
+      </div>
     </div>
   );
 };

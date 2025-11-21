@@ -31,7 +31,7 @@ const ViewTaskRouterPage = () => {
       refetch();
       dispatch(setSelectedTaskUniqueId(id));
     }
-  }, [id, tasks, dispatch]);
+  }, [id, dispatch, refetch]);
 
   useEffect(() => {
     if (

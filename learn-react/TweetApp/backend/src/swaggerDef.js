@@ -1,11 +1,35 @@
 const swaggerDefinition = {
-    openapi: '3.0.0', // OpenAPI version
-    info: {
-      title: 'Your API Title',
-      version: '1.0.0',
-      description: 'Description of your API',
+  openapi: '3.0.0',
+  info: {
+    title: 'My Backend API Documentation',
+    version: '1.0.0',
+    description:
+      'Documentation for my backend APIs. Below you will find all available endpoints, their methods, parameters, request/response schemas, and possible responses.',
+    contact: {
+      name: 'API Support',
+      email: 'support@example.com',
     },
-  };
-  
-  module.exports = swaggerDefinition;
-  
+  },
+  servers: [
+    {
+      url: 'http://localhost:3000',
+      description: 'Local development server',
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+};
+
+module.exports = swaggerDefinition;

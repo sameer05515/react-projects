@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./list-tweets3.css";
 import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/constants/globalConstants";
@@ -175,34 +174,40 @@ function ListTweetsUpdate({
 
   return (
     <div>
-      <h2>Tweets</h2>
-      <CreateTweet onTweetCreated={handleTweetCreated} />
-      <div className="button-row">
-        <div className="toggle-expand-button">
-          <button onClick={handleToggleExpandAll}>
-            {expandAll ? "Collapse All" : "Expand All"}
-          </button>
-        </div>
-        <div className="sort-button">
-          <button onClick={toggleSort}>
-            Sort by {sortAscending ? "Newest" : "Oldest"}
-          </button>
-        </div>
+      <h2 className="text-3xl font-bold mb-6 text-blue-800">Tweets</h2>
+      <div className="mb-6 bg-white p-4 rounded-lg shadow-md">
+        <CreateTweet onTweetCreated={handleTweetCreated} />
+      </div>
+      <div className="flex items-center gap-4 mb-6">
+        <button 
+          onClick={handleToggleExpandAll}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
+        >
+          {expandAll ? "Collapse All" : "Expand All"}
+        </button>
+        <button 
+          onClick={toggleSort}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
+        >
+          Sort by {sortAscending ? "Newest" : "Oldest"}
+        </button>
       </div>
 
-      {sortedTweets.map((tweet) => (
-        <Accordion key={tweet._id} title={tweet.content} isExpanded={expandAll}>
-          <Tweet
-            tweet={tweet}
-            handleUpdateTweet={handleUpdateTweet}
-            handleUpdateComment={handleUpdateComment}
-            handleUpdateNestedComment={handleUpdateNestedComment}
-            handleAddComment={handleAddComment}
-            handleAddNestedComment={handleAddNestedComment}
-            formatTimestamp={formatTimestamp}
-          />
-        </Accordion>
-      ))}
+      <div className="space-y-4">
+        {sortedTweets.map((tweet) => (
+          <Accordion key={tweet._id} title={tweet.content} isExpanded={expandAll}>
+            <Tweet
+              tweet={tweet}
+              handleUpdateTweet={handleUpdateTweet}
+              handleUpdateComment={handleUpdateComment}
+              handleUpdateNestedComment={handleUpdateNestedComment}
+              handleAddComment={handleAddComment}
+              handleAddNestedComment={handleAddNestedComment}
+              formatTimestamp={formatTimestamp}
+            />
+          </Accordion>
+        ))}
+      </div>
     </div>
   );
 }

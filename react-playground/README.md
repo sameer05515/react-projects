@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# React Playground
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive React learning playground featuring examples and demonstrations of React concepts, hooks, and patterns.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+This project demonstrates:
 
-### `npm start`
+- **React Hooks**: useState, useEffect, useReducer, useContext
+- **Component Patterns**: Class vs Functional Components
+- **State Management**: Context API, useReducer patterns
+- **Form Handling**: Contact forms with state management
+- **Reactive Programming**: RxJS integration examples
+- **HTTP Requests**: Axios-based data fetching
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React 18.2.0
+- Bootstrap 5.2.3
+- Axios 1.3.4
+- RxJS 7.8.0
+- React Testing Library
 
-### `npm test`
+## Quick Start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Install dependencies
+npm install
 
-### `npm run build`
+# Start development server
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app will open at [http://localhost:3000](http://localhost:3000)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── components/
+│   ├── context-hook-ex/      # Context API examples
+│   ├── reducer-hook-ex/      # useReducer examples
+│   ├── useeffect-ex/         # useEffect examples
+│   ├── usestate-ex/          # useState examples
+│   └── save-form/            # Form handling examples
+├── App.js                    # Main app (forms & context)
+├── App_reducer.js            # useReducer examples
+├── App_rxjs1.js              # RxJS examples (part 1)
+├── App_rxjs2.js              # RxJS examples (part 2)
+├── App_rxjs3.js              # RxJS examples (part 3)
+└── index.js                  # Entry point
+```
 
-### `npm run eject`
+## Examples
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### useState Hook
+- Counter implementations (class & functional)
+- Multiple state variables
+- State with objects and arrays
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### useEffect Hook
+- Effect cleanup and dependencies
+- Data fetching patterns
+- Event listeners and intervals
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### useReducer Hook
+- Simple and complex state management
+- Multiple reducers
+- Data fetching with useReducer
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Context API
+- Single and multiple context providers
+- Nested component consumption
 
-## Learn More
+### Forms & RxJS
+- Contact form with state management
+- Observable patterns and reactive programming
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Switching Examples
 
-### Code Splitting
+Update the import in `src/index.js`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```javascript
+import App from './App';           // Main app
+import App from './App_reducer';   // useReducer examples
+import App from './App_rxjs1';     // RxJS examples (or App_rxjs2/3)
+```
 
-### Analyzing the Bundle Size
+Alternatively, uncomment components in `App.js` to explore different examples.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Scripts
 
-### Making a Progressive Web App
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start development server |
+| `npm test` | Run tests in watch mode |
+| `npm run build` | Build for production |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Resources
 
-### Advanced Configuration
+- [React Documentation](https://reactjs.org/)
+- [React Hooks](https://reactjs.org/docs/hooks-intro.html)
+- [Bootstrap](https://getbootstrap.com/docs/5.2/)
+- [RxJS](https://rxjs.dev/)
+- [Axios](https://axios-http.com/docs/intro)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Note**: This is a learning playground project. Examples may be commented out in `App.js` - uncomment them to explore different concepts.

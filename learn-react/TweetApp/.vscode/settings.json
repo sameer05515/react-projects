@@ -1,0 +1,13 @@
+{
+  "vsicons.associations.folders": [
+    {
+      "icon": "module",
+      "extensions": [
+        "backend",
+        "backend-spring-boot",
+        "frontend"
+      ],
+      "format": "svg"
+    }
+  ]
+}

@@ -9,10 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.prem.user.repository.UserRepository;
 import com.prem.user.entity.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -105,6 +101,23 @@ public class UserService {
 
         user= userRepository.save(user);
         return userUtil.convertToResponse(user);
+    }
+
+    public void deleteUserById(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomValidationException("User not found"));
+        userRepository.delete(user);
+    }
+
+    public UserDto getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomValidationException("User not found"));
+        user.setPassword(null); // Exclude password
+        return userUtil.convertToResponse(user);
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 
 //    private String generateToken(User user) {

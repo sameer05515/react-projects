@@ -44,16 +44,14 @@ const MoveQuestionToAnotherParentQuestionRouterPage = () => {
     navigate(`/interview-mgmt/questions/${qid}`);
   };
 
-  const topicFormStyle = {};
-
   const [selectedOption] = useState("");
 
   return (
     <>
-      <div style={topicFormStyle}>
-        <p>{topic?.title}</p>
-        <div>
-          <label htmlFor="tags">Select Parent Question:</label>
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <p className="mb-2 text-sm text-gray-700">{topic?.title}</p>
+        <div className="space-y-1.5">
+          <label htmlFor="tags" className="text-sm font-semibold text-gray-700">Select Parent Question:</label>
           <Select
             name="topics"
             options={topicOptions}
@@ -65,7 +63,7 @@ const MoveQuestionToAnotherParentQuestionRouterPage = () => {
 
       {/* <JSONDataViewer metadata={{formData,flatData}} title="Raw Data"/> */}
 
-      <div>
+      <div className="mt-2 flex gap-2">
         <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
         <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
       </div>

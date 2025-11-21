@@ -22,26 +22,10 @@ const Select = ({ options, value, onChange }) => (
     </select>
 );
 
-const Node = ({ item }) => {
-    return <div style={boxStyle}>{item}</div>;
-};
-
-// Component to render ArcherBox
-export const ArcherBox = ({ id, relations = [], label, style = {} }) => (
-    <ArcherElement id={id} relations={relations}>
-        <div style={style}>{label}</div>
-    </ArcherElement>
-);
-
-const InfoBox = ({ title, items, styles = {} }) => (
-    <div style={{ ...styles }}>
-        <strong>{title}</strong>
-        <div>
-            {items.map((item, index) => (
-                <Node key={index} item={item} />
-            ))}
-        </div>
-    </div>
+const ArcherBox = ({ id, relations = [], label, style = {} }) => (
+  <ArcherElement id={id} relations={relations}>
+    <div style={style}>{label}</div>
+  </ArcherElement>
 );
 
 const InfoBoxV1 = ({ boxes }) => {

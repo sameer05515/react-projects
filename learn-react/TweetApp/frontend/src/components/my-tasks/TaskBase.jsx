@@ -8,11 +8,10 @@ import {
 } from "../../common/components/Smart/Editor/v3";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
-import { fetchTags } from "../../redux/slices/tagsSlice";
+import useDataFetching from "../../common/hooks/useDataFetching/v2";
 import {
   fetchTasks,
-  selectAllTreeTasks,
-  selectSelectedTaskUniqueId,
+  selectTasksStateCombined,
 } from "../../redux/slices/taskSlice";
 import TaskCardViewDashboard from "./sub-components/common/TaskCardViewDashboard";
 import { prepareTaskTitle } from "./sub-components/common/taskUtils";
@@ -42,11 +41,18 @@ const TaskBase = () => {
 const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tasks = useSelector(selectAllTreeTasks);
-  const status = useSelector((state) => state.tasks.status);
-  const error = useSelector((state) => state.tasks.error);
-  const selectedTaskUniqueId = useSelector(selectSelectedTaskUniqueId);
   const selectedElementRef = useRef(null);
+  const sidebarButtonClass =
+    "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
+
+  // Fetch tasks data only when component mounts (with smart caching)
+  useDataFetching(
+    fetchTasks,
+    (state) => state.tasks
+  );
+
+  // Use combined selector to optimize multiple useSelector calls
+  const { tasks, status, error, selectedId: selectedTaskUniqueId } = useSelector(selectTasksStateCombined);
 
   useEffect(() => {
     if (selectedElementRef.current) {
@@ -67,39 +73,6 @@ const TaskTreeViewDashboard = () => {
     navigate(`${selectedItem.uniqueId}`);
   };
 
-  const getTasksJSX = (tasksList) => {
-    return (
-      <>
-        {tasksList && tasksList.length > 0 && (
-          <ul>
-            {tasksList.map((t) => (
-              <li key={t.uniqueId}>
-                <span
-                  ref={
-                    selectedTaskUniqueId === t.uniqueId
-                      ? selectedElementRef
-                      : null
-                  }
-                  style={{
-                    fontSize: "12px",
-                    ...(selectedTaskUniqueId &&
-                    selectedTaskUniqueId === t.uniqueId
-                      ? styles.selected
-                      : {}),
-                  }}
-                  onClick={() => handleLinkSelection(t)}
-                >
-                  {t.name}
-                </span>
-                {getTasksJSX(t.children)}
-              </li>
-            ))}
-          </ul>
-        )}
-      </>
-    );
-  };
-
   if (status === "loading") {
     return <div>Loading...</div>;
   }
@@ -109,62 +82,46 @@ const TaskTreeViewDashboard = () => {
   }
 
   return (
-    <>
-      <div className="linksContainer">
-        <div className="left-section">
-          {/* <pre>{links && JSON.stringify(links)}</pre> */}
-          <CustomButton onClick={() => handleButtonClick("create")}>
-            Create Task
-          </CustomButton>
-          <CustomButton onClick={() => dispatch(fetchTasks())}>
-            Refresh
-          </CustomButton>
-
-          {/* {getTasksJSX(tasks)} */}
-
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="lg:w-72 lg:flex-shrink-0">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <CustomButton className={sidebarButtonClass} onClick={() => handleButtonClick("create")}>
+              Create Task
+            </CustomButton>
+            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTasks())}>
+              Refresh
+            </CustomButton>
+          </div>
           <Tree
             data={tasks}
             selectedNodeId={selectedTaskUniqueId}
             renderNode={(t) => (
-              <>
-                <span
-                  ref={
-                    selectedTaskUniqueId === t.uniqueId
-                      ? selectedElementRef
-                      : null
-                  }
-                  style={{
-                    fontSize: "12px",
-                    ...(selectedTaskUniqueId &&
-                    selectedTaskUniqueId === t.uniqueId
-                      ? styles.selected
-                      : {}),
+              <span
+                ref={selectedTaskUniqueId === t.uniqueId ? selectedElementRef : null}
+                className={`block cursor-pointer py-1 text-xs ${
+                  selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId ? "font-semibold text-red-600 text-sm" : "text-gray-700"
+                }`}
+                onClick={() => handleLinkSelection(t)}
+              >
+                <SmartPreviewer
+                  data={{
+                    content: prepareTaskTitle(t, "TaskBase"),
+                    textOutputType: SupportedTextFormats.MARKDOWN,
                   }}
-                  onClick={() => handleLinkSelection(t)}
-                >
-                  {/* {t.name} */}
-                  <SmartPreviewer
-                    data={{
-                      content: prepareTaskTitle(t, "TaskBase"),
-                      textOutputType: SupportedTextFormats.MARKDOWN,
-                    }}
-                    markdownStyles={{ fontSize: "12px" }}
-                  />
-                </span>
-              </>
+                  markdownStyles={{ fontSize: "12px" }}
+                />
+              </span>
             )}
           />
         </div>
-        {/* -- left-section */}
-
-        <div className="right-section">
-          <div>
-            <Outlet />
-          </div>
-        </div>
-        {/* -- right-section */}
       </div>
-    </>
+      <div className="flex-1">
+        <div className="min-h-[24rem] rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -180,13 +137,6 @@ const TaskTreeViewDashboard = () => {
 //     return queue;
 // };
 
-const styles = {
-  selected: {
-    fontWeight: "bold" /* Make selected link text bold */,
-    fontSize: "15px" /* Increase font size for selected link */,
-    color: "#e91140",
-  },
-};
 
 export default TaskBase;
 // export {

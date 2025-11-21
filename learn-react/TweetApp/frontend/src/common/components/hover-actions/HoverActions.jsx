@@ -1,5 +1,4 @@
 import { useMemo, useState, /**FC, ReactNode*/ } from "react";
-import styles from "./HoverActions.module.css";
 
 // interface HoverActionsProps {
 //   actions?: ReactNode[]; // Optional array of strings for actions
@@ -23,15 +22,21 @@ const HoverActions = /**: FC<HoverActionsProps> */ ({ actions = [], title }) => 
     <div
       onMouseEnter={() => setIsHovered(true)}
       // onMouseLeave={() => setIsHovered(false)}
-      className={styles.container}
+      className="relative inline-block w-56 cursor-pointer rounded-lg border border-gray-400 bg-white p-2 text-center text-gray-800 shadow-sm transition-all hover:border-blue-200 hover:shadow-lg"
     >
-      <span title={`Actions: Total Actions ${calculatedActions.length}`}>
+      <span
+        className="block font-medium"
+        title={`Actions: Total Actions ${calculatedActions.length}`}
+      >
         {calculatedTitle}
       </span>
       {isHovered && (
-        <div className={styles.actionsDropdown}>
+        <div className="absolute left-1/2 top-full z-10 mt-2 max-h-44 w-full -translate-x-1/2 overflow-y-auto rounded-lg border border-gray-300 bg-white p-1 shadow-xl">
           {calculatedActions.map((action, index) => (
-            <span key={index} className={styles.actionItem}>
+            <span
+              key={index}
+              className="block cursor-pointer rounded-md px-3 py-2 text-sm text-gray-800 transition-colors hover:bg-blue-50 hover:text-blue-700"
+            >
               {action}
             </span>
           ))}

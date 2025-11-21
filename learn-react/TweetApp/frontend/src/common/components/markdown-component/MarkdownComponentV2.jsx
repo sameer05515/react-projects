@@ -18,35 +18,25 @@ const CodeBlock = ({ children }) => {
     };
 
     return (
-        <div style={{ position: 'relative' }}>
-            <pre>
+        <div className="relative">
+            <pre className="overflow-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
                 <code>{children}</code>
             </pre>
             <button
                 onClick={handleCopyCode}
-                style={{
-                    position: 'absolute',
-                    right: 10,
-                    top: 10,
-                    background: isCopied ? 'green' : 'gray',
-                    color: 'white',
-                    border: 'none',
-                    padding: '5px',
-                    cursor: 'pointer',
-                }}
+                className={`absolute right-2 top-2 rounded px-2 py-1 text-xs font-semibold text-white transition ${
+                    isCopied ? "bg-green-600" : "bg-gray-600 hover:bg-gray-700"
+                }`}
             >
-                {isCopied ? 'Copied!' : 'Copy'}
+                {isCopied ? "Copied!" : "Copy"}
             </button>
         </div>
     );
 };
 
-const MarkdownComponentV2 = ({ markdownText = "", additionalStyle = {} }) => {
+const MarkdownComponentV2 = ({ markdownText = "", className = "" }) => {
     return (
-        <div
-            className="markdown-body"
-            style={{ padding: "5px", ...additionalStyle }}
-        >
+        <div className={`markdown-body whitespace-pre-wrap break-words rounded-md bg-transparent p-3 text-gray-900 ${className}`}>
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}  // Use rehype-highlight for block code syntax highlighting

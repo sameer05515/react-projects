@@ -41,6 +41,5 @@ export const CreateRelation = () => {
 };
 
 export const EditRelation = () => {
-  const navigate = useNavigate();
   return <RelationForm />;
 };

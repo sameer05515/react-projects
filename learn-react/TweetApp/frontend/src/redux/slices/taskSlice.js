@@ -62,22 +62,25 @@ const getNameWithAncestors = (task) => {
   if (!task) {
     return "";
   }
-  let ancestorNames = [];
+  const ancestorNames = [];
   let currentAncestor =
     task.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
     ancestorNames.push(currentAncestor.name);
-    currentAncestor = task.ancestors.find(
-      (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-    );
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      task.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(task.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
 // Helper function to prepare flat data from tree-structured data
-const prepareTasksQueue = (list, prevQueue = []) => {
+// Export for use in selectors
+export const prepareTasksQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   if (list && list.length > 0) {
     list.forEach((t) => {
@@ -102,8 +105,7 @@ const prepareTasksQueue = (list, prevQueue = []) => {
 // Define an initial state for tasks
 const initialState = {
   selectedTaskUniqueId: null,
-  data: [],
-  flatData: [],
+  data: [], // Only store tree structure - flatData computed via selector
   status: "idle",
   error: null,
 };
@@ -125,7 +127,7 @@ const taskSlice = createSlice({
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
-        state.flatData = prepareTasksQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.status = "failed";
@@ -140,20 +142,21 @@ export default taskSlice.reducer;
 export const { setSelectedTaskUniqueId } = taskSlice.actions;
 
 /* ============== Selectors ======================*/
-const selectTasksState = (state) => state.tasks;
+const selectTasksStateBase = (state) => state.tasks;
 
 export const selectAllTreeTasks = createSelector(
-  selectTasksState,
+  selectTasksStateBase,
   (tasksState) => tasksState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatTasks = createSelector(
-  selectTasksState,
-  (tasksState) => tasksState.flatData
+  [selectAllTreeTasks],
+  (treeTasks) => prepareTasksQueue(treeTasks)
 );
 
 export const selectSelectedTaskUniqueId = createSelector(
-  selectTasksState,
+  selectTasksStateBase,
   (tasksState) => tasksState.selectedTaskUniqueId
 );
 
@@ -185,4 +188,20 @@ export const selectPrevTaskUniqueId = createSelector(
     const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
     return flatTaskList[prevIndex].uniqueId;
   }
+);
+
+// Combined selector for common task state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for tasks, status, error, and selectedId
+export const selectTasksStateCombined = createSelector(
+  [
+    selectAllTreeTasks,
+    selectSelectedTaskUniqueId,
+    selectTasksStateBase,
+  ],
+  (tasks, selectedId, tasksState) => ({
+    tasks,
+    status: tasksState.status,
+    error: tasksState.error,
+    selectedId,
+  })
 );

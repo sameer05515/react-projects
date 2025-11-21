@@ -129,29 +129,53 @@ const DyanmicFormDashboard = () => {
   };
 
   return (
-    <div>
-      <DynamicFormRenderer schema={formSchema} onSubmit={handleFormSubmit} />
+    <div className="space-y-8">
+      {/* First Form Section */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+          User Registration Form
+        </h2>
+        <DynamicFormRenderer schema={formSchema} onSubmit={handleFormSubmit} />
+      </div>
+
+      {/* First Form Submitted Data */}
       {submittedData && (
-        <>
-          <h2>1st Form Submitted Data</h2>
-          <DynamicDataRenderer data={submittedData} />
-        </>
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Submitted Data
+          </h2>
+          <div className="border-t border-gray-200 pt-4">
+            <DynamicDataRenderer data={submittedData} />
+          </div>
+        </div>
       )}
 
-      <DynamicFormRenderer
-        schema={{
-          dynamicContent: {
-            label: "Dynamic Content",
-            type: "textarea",
-          },
-        }}
-        onSubmit={handleSecondFormSubmit}
-      />
+      {/* Second Form Section */}
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+          Dynamic Content Form
+        </h2>
+        <DynamicFormRenderer
+          schema={{
+            dynamicContent: {
+              label: "Dynamic Content",
+              type: "textarea",
+            },
+          }}
+          onSubmit={handleSecondFormSubmit}
+        />
+      </div>
+
+      {/* Second Form Submitted Data */}
       {secondFormSubmittedData && (
-        <>
-          <h2>2nd Form Submitted Data</h2>
-          <DynamicDataRenderer data={secondFormSubmittedData} />
-        </>
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Parsed Dynamic Content
+          </h2>
+          <div className="border-t border-gray-200 pt-4">
+            <DynamicDataRenderer data={secondFormSubmittedData} />
+          </div>
+        </div>
       )}
     </div>
   );

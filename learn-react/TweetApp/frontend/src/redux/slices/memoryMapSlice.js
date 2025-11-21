@@ -51,24 +51,27 @@ export const fetchMemoryMapByUniqueId = createAsyncThunk("memoryMaps/fetchMemory
 
 const getNameWithAncestors = (topic) => {
   if (!topic) {
-      return "";
+    return "";
   }
-  let ancestorNames = [];
-  let currentAncestor = topic.ancestors?.find(
-      (ancestor) => !ancestor.parentId
-  )||null;
+  const ancestorNames = [];
+  let currentAncestor =
+    topic.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
-      ancestorNames.push(currentAncestor.name);
-      currentAncestor = topic.ancestors.find(
-          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-      );
+    ancestorNames.push(currentAncestor.name);
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      topic.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(topic.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
-const prepareMemoryMapsQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareMemoryMapsQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
 
   if (list && list.length > 0) {
@@ -96,8 +99,7 @@ const memoryMapSlice = createSlice({
   name: "memoryMaps",
   initialState: {
     selectedMemoryMapUniqueId: null,
-    data: [],
-    flatData: [],
+    data: [], // Only store tree structure - flatData computed via selector
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -119,7 +121,7 @@ const memoryMapSlice = createSlice({
       .addCase(fetchMemoryMaps.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.data = action.payload;
-        state.flatData = prepareMemoryMapsQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchMemoryMaps.rejected, (state, action) => {
         state.loading = "rejected";
@@ -130,7 +132,7 @@ const memoryMapSlice = createSlice({
       })
       .addCase(createMemoryMap.fulfilled, (state, action) => {
         state.data.push(action.payload);
-        state.flatData = prepareMemoryMapsQueue(state.data);
+        // flatData now computed via memoized selector
       })
       .addCase(updateMemoryMap.fulfilled, (state, action) => {
         const updatedMemoryMap = action.payload;
@@ -139,7 +141,7 @@ const memoryMapSlice = createSlice({
         );
         if (index !== -1) {
           state.data[index] = updatedMemoryMap;
-          state.flatData = prepareMemoryMapsQueue(state.data);
+          // flatData now computed via memoized selector
         }
       });
   },
@@ -156,9 +158,10 @@ export const selectAllTreeMemoryMaps = createSelector(
   (memoryMapsState) => memoryMapsState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatMemoryMaps = createSelector(
-  selectMemoryMapsState,
-  (memoryMapsState) => memoryMapsState.flatData
+  [selectAllTreeMemoryMaps],
+  (treeMemoryMaps) => prepareMemoryMapsQueue(treeMemoryMaps)
 );
 
 export const selectSelectedMemoryMapUniqueId = createSelector(
@@ -190,4 +193,20 @@ export const selectPrevMemoryMapUniqueId = createSelector(
     const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
     return flatMemoryMapList[prevIndex].uniqueId;
   }
+);
+
+// Combined selector for common memory map state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for memoryMaps, loading, error, and selectedId
+export const selectMemoryMapsStateCombined = createSelector(
+  [
+    selectAllTreeMemoryMaps,
+    selectSelectedMemoryMapUniqueId,
+    selectMemoryMapsState,
+  ],
+  (memoryMaps, selectedId, memoryMapsState) => ({
+    memoryMaps,
+    loading: memoryMapsState.loading,
+    error: memoryMapsState.error,
+    selectedId,
+  })
 );

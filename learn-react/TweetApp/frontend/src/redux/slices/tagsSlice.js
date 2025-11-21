@@ -63,21 +63,25 @@ const getNameWithAncestors = (tag) => {
   if (!tag) {
     return "";
   }
-  let ancestorNames = [];
+  const ancestorNames = [];
   let currentAncestor =
     tag.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
     ancestorNames.push(currentAncestor.name);
-    currentAncestor = tag.ancestors.find(
-      (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-    );
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      tag.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(tag.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
-const prepareTagsQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareTagsQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
 
   if (list && list.length > 0) {
@@ -97,17 +101,15 @@ const prepareTagsQueue = (list, prevQueue = []) => {
       queue = [...queue, ...childQ];
     });
   }
-  // console.log(JSON.stringify(queue, null, 2));
   return queue;
 };
 
 const tagsSlice = createSlice({
   name: "tags",
   initialState: {
-    data: [],
+    data: [], // Only store tree structure - flatData computed via selector
     loading: "idle",
     error: null,
-    flatData: [],
     searchedData: [],
     searchString: "",
     selectedTagUniqueId: null,
@@ -128,7 +130,7 @@ const tagsSlice = createSlice({
       .addCase(fetchTags.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.data = action.payload;
-        state.flatData = prepareTagsQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchTags.rejected, (state, action) => {
         state.loading = "rejected";
@@ -149,9 +151,10 @@ export const selectAllTreeTags = createSelector(
   (tagsState) => tagsState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatTags = createSelector(
-  selectTagsState,
-  (tagsState) => tagsState.flatData
+  [selectAllTreeTags],
+  (treeTags) => prepareTagsQueue(treeTags)
 );
 
 export const selectSelectedTagUniqueId = createSelector(
@@ -221,3 +224,19 @@ export const getTagForUniqueId = (uniqueId = "") =>
     console.trace("Tag options ka request aaya");
     return flatTagList.find((t) => t.uniqueId === uniqueId) || null;
   });
+
+// Combined selector for common tag state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for tags, loading, error, and selectedId
+export const selectTagsStateCombined = createSelector(
+  [
+    selectAllTreeTags,
+    selectSelectedTagUniqueId,
+    selectTagsState,
+  ],
+  (tags, selectedId, tagsState) => ({
+    tags,
+    loading: tagsState.loading,
+    error: tagsState.error,
+    selectedId,
+  })
+);

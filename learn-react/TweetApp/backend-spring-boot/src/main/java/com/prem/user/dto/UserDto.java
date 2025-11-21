@@ -19,6 +19,8 @@ public class UserDto {
     private String name;
     private String email;
     private String mobileNumber;
+    @Builder.Default
     private String role = "user";
+    @Builder.Default
     private Set<AuthorityDto> authorities = new HashSet<>();
 }

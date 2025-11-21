@@ -1,96 +1,161 @@
+/**
+ * Main server initialization for the Node.js backend application.
+ * Sets up Express, middleware, MongoDB, CORS, API documentation, and routes.
+ */
+
+require("dotenv").config(); // Load environment variables ASAP
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-require("dotenv").config();
 
 const swaggerUi = require("swagger-ui-express");
+const redoc = require("redoc-express");
 const swaggerSpec = require("./swagger");
 
+// App & port configuration
 const app = express();
 const PORT = process.env.PORT || 3003;
 const REACT_PORT = process.env.REACT_PORT || 3002;
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test";
 
-const docRoutes = require("./routes/doc.routes");
+// Routers map for maintainability and easy extension
+const routers = [
+  { path: "/tweets/v1", handler: "./routes/tweet/Tweet.v1.routes" },
+  { path: "/tweets/v2", handler: "./routes/tweet/Tweet.v2.routes" },
+  { path: "/activities", handler: "./routes/activity/Activity.routes" },
+  { path: "/tasks", handler: "./routes/task/Task.routes" },
+  { path: "/api/users", handler: "./routes/user/User.routes" },
+  { path: "/tags", handler: "./routes/tag/Tag.routes" },
+  { path: "/topics", handler: "./routes/topic/Topic.routes" },
+  { path: "/c-objects", handler: "./routes/comparable-object/ComparableObject.routes" },
+  { path: "/api/words", handler: "./routes/word/Word.routes" },
+  { path: "/my-resume", handler: "./routes/my-resume/MyResume.routes" },
+  { path: "/links", handler: "./routes/link/Link.routes" },
+  { path: "/intvw-mgmt/v1/categories", handler: "./routes/interview-mgmt/InterviewMgmt.v1.routes" },
+  { path: "/pinned-items", handler: "./routes/pinned-item/PinnedItem.routes" },
+  { path: "/intvw-mgmt/v2", handler: "./routes/interview-mgmt/InterviewMgmt.v2.routes" },
+  { path: "/memory-maps", handler: "./routes/memory-map/MemoryMap.routes" },
+  { path: "/node-story", handler: "./routes/related-node/RelatedNode.routes" },
+  { path: "/consolidated-reporting", handler: "./routes/consolidated-reporting/ConsolidatedReporting.routes" },
+  { path: "/cgpt", handler: "./routes/chatgpt/ChatGPTConversation.routes" },
+  { path: "/think-tank/v1", handler: "./routes/think-tank/ThinkTank.v1.routes" },
+  { path: "/think-tank/v1/stats", handler: "./routes/think-tank/ThinkTank.v1.stats.routes" },
+];
 
-const tweetRoutesV1 = require("./routes/Tweet.v1.routes"); // Import the tweets routes
-const tweetRoutesV2 = require("./routes/Tweet.v2.routes");
-const activityRoutes = require("./routes/Activity.routes");
-const tasksRouter = require("./routes/Task.routes");
-const userRoutes = require("./routes/User.routes"); // Import the user registration router
-// Import the tag router
-const tagRouter = require("./routes/Tag.routes"); // Replace with the correct path
-const topicRouter = require("./routes/Topic.routes");
-const comparableObjectRouter = require("./routes/ComparableObject.routes");
-const wordRouter = require("./routes/Word.routes");
-const myResumeRouter = require("./routes/MyResume.routes");
-const linkRouter = require("./routes/Link.routes");
-const interviewMgmtRouter = require("./routes/InterviewMgmt.v1.routes");
-const interviewMgmtV2Router = require("./routes/InterviewMgmt.v2.routes");
-const pinnedItemRouter = require("./routes/PinnedItem.routes");
-const memoryMapRouter = require("./routes/MemoryMap.routes");
-const relatedNodeRouter = require("./routes/RelatedNode.routes");
+// General documentation routes at root
+const docRoutes = require("./routes/docs/doc.routes");
 
-const consolidatedReportingRouter = require("./routes/ConsolidatedReporting.routes");
-
-const cgptRouter = require("./routes/ChatGPTConversation.routes");
-const thinkTankRouter = require("./routes/ThinkTank.v1.routes");
-
-// mongoose.connect("mongodb://127.0.0.1:27017/mongodb_test", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
+// Start MongoDB connection early
 mongoose.connect(MONGODB_URI, {
-  // Use process.env.MONGODB_URI
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.connection.on("error", err => {
+  console.error(`MongoDB connection error: ${err}`);
+  process.exit(1);
+});
 
-// app.use(
-//   cors({
-//     origin: `http://127.0.0.1:${REACT_PORT}`,
-//   })
-// );
-// Enable CORS globally
-app.use(cors());
+// CORS configuration and usage
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_URL
+    : `http://127.0.0.1:${REACT_PORT}`,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
 
-// Middleware
-// app.use(bodyParser.json());
-// Increase the limit for JSON and URL-encoded payloads
-app.use(bodyParser.json({ limit: "100mb" }));
-app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+if (process.env.NODE_ENV === "development") {
+  app.use(cors());
+  console.warn("WARNING: CORS is enabled for all origins in development mode.");
+} else {
+  app.use(cors(corsOptions));
+}
 
-app.use("/tweets/v1", tweetRoutesV1);
-app.use("/tweets/v2", tweetRoutesV2);
-app.use("/activities", activityRoutes);
-app.use("/tasks", tasksRouter);
-app.use("/api/users", userRoutes);
-// Use the tag router
-app.use("/tags", tagRouter);
-app.use("/topics", topicRouter);
-app.use("/c-objects", comparableObjectRouter);
-app.use("/api/words", wordRouter);
-app.use("/my-resume", myResumeRouter);
-app.use("/links", linkRouter);
-app.use("/intvw-mgmt/v1/categories", interviewMgmtRouter);
-app.use("/pinned-items", pinnedItemRouter);
-app.use("/intvw-mgmt/v2", interviewMgmtV2Router);
-app.use("/memory-maps", memoryMapRouter);
-app.use("/node-story", relatedNodeRouter);
+// Body parser middleware with configurable limit
+const bodyParserLimit = process.env.BODY_PARSER_LIMIT || "10mb";
+app.use(bodyParser.json({ limit: bodyParserLimit }));
+app.use(bodyParser.urlencoded({ limit: bodyParserLimit, extended: true }));
 
-app.use("/consolidated-reporting", consolidatedReportingRouter);
-app.use("/cgpt", cgptRouter);
-app.use("/think-tank/v1", thinkTankRouter);
+// Register all routers dynamically
+routers.forEach(({ path, handler }) => {
+  app.use(path, require(handler));
+});
 
-// Serve Swagger documentation at /api-docs
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Register general documentation routes
 app.use("", docRoutes);
 
+// Serve Swagger UI API documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Serve Redoc API documentation (alternative, more modern UI)
+app.get(
+  "/redoc",
+  redoc({
+    title: "SmartNote API Documentation",
+    specUrl: "/api-docs-json",
+  })
+);
+
+// Serve OpenAPI JSON spec for Redoc (with cleaned invalid references)
+app.get("/api-docs-json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  
+  // Create a deep copy to avoid modifying the original spec
+  const cleanedSpec = JSON.parse(JSON.stringify(swaggerSpec));
+  
+  // Ensure components.schemas exists (even if empty)
+  if (!cleanedSpec.components) {
+    cleanedSpec.components = {};
+  }
+  if (!cleanedSpec.components.schemas) {
+    cleanedSpec.components.schemas = {};
+  }
+  
+  // Function to recursively remove invalid $ref references
+  function cleanInvalidRefs(obj, path = '') {
+    if (Array.isArray(obj)) {
+      obj.forEach((item, index) => cleanInvalidRefs(item, `${path}[${index}]`));
+    } else if (obj && typeof obj === 'object') {
+      for (const key in obj) {
+        if (key === '$ref' && typeof obj[key] === 'string') {
+          const refPath = obj[key];
+          // Check if it's a schema reference
+          if (refPath.startsWith('#/components/schemas/')) {
+            const schemaName = refPath.replace('#/components/schemas/', '');
+            // If schema doesn't exist, replace with a generic object schema
+            if (!cleanedSpec.components.schemas[schemaName]) {
+              // Replace $ref with inline schema
+              delete obj.$ref;
+              obj.type = 'object';
+              obj.additionalProperties = true;
+              obj.description = `Schema definition for ${schemaName} (placeholder)`;
+            }
+          }
+        } else {
+          cleanInvalidRefs(obj[key], path ? `${path}.${key}` : key);
+        }
+      }
+    }
+  }
+  
+  // Clean the spec
+  cleanInvalidRefs(cleanedSpec);
+  
+  res.send(cleanedSpec);
+});
+
+// Global error handler (add more robust error handling if desired)
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(
-    `[${new Date()}] :- Server is running on http://localhost:${PORT}`
-  );
+  const baseUrl = `http://localhost:${PORT}`;
+  console.log(`[${new Date().toISOString()}] Server running at ${baseUrl}`);
+  console.log(`[${new Date().toISOString()}] Swagger UI docs: ${baseUrl}/api-docs`);
+  console.log(`[${new Date().toISOString()}] Redoc docs: ${baseUrl}/redoc`);
 });

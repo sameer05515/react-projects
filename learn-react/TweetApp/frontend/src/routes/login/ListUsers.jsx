@@ -22,8 +22,12 @@ function MarkAsAdminButton({ userId }) {
 
   return (
     <div>
-      <CustomButton onClick={handleMarkAsAdmin} disabled={isAdmin}>
-        Mark As Admin
+      <CustomButton 
+        onClick={handleMarkAsAdmin} 
+        disabled={isAdmin}
+        className={isAdmin ? "opacity-50 cursor-not-allowed" : ""}
+      >
+        {isAdmin ? "Already Admin" : "Mark As Admin"}
       </CustomButton>
     </div>
   );
@@ -46,30 +50,38 @@ function ListUsers() {
   }, []);
 
   return (
-    <div>
-      <h2>List of Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Actions</th>
-            {/* Add more user attributes as needed */}
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user._id}</td>
-              <td>{user.username}</td>
-              <td>
-                <MarkAsAdminButton userId={user._id}/>
-              </td>
-              {/* Render additional user attributes here */}
+    <div className="max-w-6xl mx-auto p-6">
+      <h2 className="text-3xl font-bold mb-6 text-blue-900">List of Users</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-3 text-left font-semibold text-gray-700 border-b border-gray-300">User ID</th>
+              <th className="p-3 text-left font-semibold text-gray-700 border-b border-gray-300">Username</th>
+              <th className="p-3 text-left font-semibold text-gray-700 border-b border-gray-300">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user._id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                  <td className="p-3 text-gray-700">{user._id}</td>
+                  <td className="p-3 text-gray-700 font-medium">{user.username}</td>
+                  <td className="p-3">
+                    <MarkAsAdminButton userId={user._id}/>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="p-6 text-center text-gray-500">
+                  No users found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

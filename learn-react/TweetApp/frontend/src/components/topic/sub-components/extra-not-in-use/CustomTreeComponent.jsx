@@ -136,14 +136,14 @@ const CustomTreeComponent = () => {
   };
 
   const renderNode = (node) => (
-    <span style={{ color: isNodeExpanded(node.uniqueId) ? "blue" : "black" }}>
+    <span className={`${isNodeExpanded(node.uniqueId) ? "text-blue-600" : "text-black"}`}>
       {node.name}
     </span>
   );
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ flex: 1 }}>
+    <div className="flex">
+      <div className="flex-1">
         <Tree
           data={treeData}
           renderNode={(node) => (
@@ -155,18 +155,18 @@ const CustomTreeComponent = () => {
           )}
         />
       </div>
-      <div
-        style={{ marginLeft: "20px", display: "flex", flexDirection: "column" }}
-      >
+      <div className="ml-5 flex flex-col">
         <button
           onClick={() => handleExpand("prev")}
           disabled={currentNodeIndex === 0}
+          className="mb-2 rounded border border-gray-300 bg-white px-3 py-1 text-xs hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Prev
         </button>
         <button
           onClick={() => handleExpand("next")}
           disabled={currentNodeIndex === allNodes.length - 1}
+          className="rounded border border-gray-300 bg-white px-3 py-1 text-xs hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Next
         </button>
@@ -191,15 +191,15 @@ const TreeNodeWithExpand = ({ node, isExpanded, renderNode }) => {
   const hasChildren = node.children && node.children.length > 0;
 
   return (
-    <div style={styles.container}>
-      <div style={styles.node}>
-        <span style={styles.toggleButton} onClick={toggleExpand}>
+    <div className="mb-1">
+      <div className="flex items-center gap-2">
+        <span className="inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded border border-gray-300 text-xs" onClick={toggleExpand}>
           {hasChildren ? (expanded ? "-" : "+") : null}
         </span>
         {renderNode ? renderNode(node) : <DefaultNodeComponent node={node} />}
       </div>
       {expanded && hasChildren && (
-        <div>
+        <div className="ml-5">
           {node.children.map((child) => (
             <TreeNodeWithExpand
               key={child.uniqueId}
@@ -219,7 +219,7 @@ const DefaultNodeComponent = ({ node }) => (
     {/* <div>
               {node.name} (ID: {node.uniqueId})
           </div> */}
-    <span style={styles.nodeName}>
+    <span className="text-sm">
       <b>{node.name ? node.name : node.uniqueId}</b>
     </span>
   </>

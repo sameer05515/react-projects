@@ -4,6 +4,7 @@ import com.prem.base.entity.AuditableEntity;
 import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Document(collection = "my_resume_v2")
 public class MyResume extends AuditableEntity {
     @Column(unique = true)

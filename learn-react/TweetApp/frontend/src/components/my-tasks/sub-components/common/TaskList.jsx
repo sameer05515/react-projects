@@ -9,42 +9,23 @@ const TaskList = ({
   onEditTask,
   onViewTask,  
 }) => {
-  const containerStyle = {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between", // Adjust as needed
-  };
-
-  const taskItemStyle = {
-    flex: "0 0 calc(33.33% - 10px)", // Default to 3 items per row with 10px spacing
-    margin: "5px", // Adjust spacing between items as needed
-    padding: "10px",
-    border: "1px solid #ccc",
-    boxSizing: "border-box",
-    backgroundColor: "light-green",
-    borderRadius: "10px",
-    /* Add any other styling you need */
-  };
-
   const rows = [];
   for (let i = 0; i < tasks.length; i += itemsPerRow) {
     const rowTasks = tasks.slice(i, i + itemsPerRow);
     rows.push(
-      <div style={containerStyle} key={i}>
+      <div className="flex flex-wrap justify-between gap-2.5 mb-2.5" key={i}>
         {rowTasks.map((task) => (
-          <div style={taskItemStyle} key={task.uniqueId}>
-            {/* <strong>Name:</strong> {task.name}<br />
-            <div>{ReactHtmlParser(task.description || "")}</div>
-            <strong>Status:</strong> {task.taskStatus}<br />
-            <strong>Total linked tasks:</strong> {task.linkedTasks?task.linkedTasks.length:0}<br /> */}
+          <div 
+            key={task.uniqueId}
+            className="flex-[0_0_calc(33.33%-10px)] m-1.5 p-2.5 border border-gray-300 box-border bg-green-50 rounded-[10px]"
+          >
             <TaskCard task={task} />
-            <CustomButton
-              onClick={() => onEditTask(task)}
-              style={{ marginRight: "10px" }}
-            >
-              Edit
-            </CustomButton>
-            <CustomButton onClick={() => onViewTask(task)}>View</CustomButton>
+            <div className="mt-2.5 flex gap-2">
+              <CustomButton onClick={() => onEditTask(task)}>
+                Edit
+              </CustomButton>
+              <CustomButton onClick={() => onViewTask(task)}>View</CustomButton>
+            </div>
           </div>
         ))}
       </div>
@@ -52,10 +33,12 @@ const TaskList = ({
   }
 
   return (
-    <div>
-      <h2>Task List</h2>
+    <div className="max-w-7xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Task List</h2>
       {rows}
-      <AutoCompleteDropdown names={tasks.map((t) => t.title)} />
+      <div className="mt-6">
+        <AutoCompleteDropdown names={tasks.map((t) => t.title)} />
+      </div>
     </div>
   );
 };

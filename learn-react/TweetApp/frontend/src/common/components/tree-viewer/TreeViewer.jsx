@@ -1,30 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 
-const styles = {
-  container: {
-    paddingLeft: "20px",
-    margin: "5px 0",
-    borderLeft: "1px solid #ccc",
-  },
-  node: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: "5px",
-  },
-  toggleButton: {
-    cursor: "pointer",
-    marginRight: "10px",
-    fontWeight: "bold",
-    color: "green",
-  },
-  nodeName: {
-    fontSize: "14px",
-    color: "#333",
-  },
-  errorText: {
-    color: "red",
-  },
-};
 
 const TreeNode = ({
   node,
@@ -39,7 +14,7 @@ const TreeNode = ({
   const [expanded, setExpanded] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
 
-  const checkIfIdOfNodeOrItsOneOfTheChildren = (id, currentNode) => {
+  const checkIfIdOfNodeOrItsOneOfTheChildren = useCallback((id, currentNode) => {
     if (!id) return false;
     if (id === currentNode[uniqueIdFieldName]) return true;
     if (currentNode.children && currentNode.children.length > 0) {
@@ -48,13 +23,13 @@ const TreeNode = ({
       );
     }
     return false;
-  };
+  }, [uniqueIdFieldName]);
 
   const shouldExpand = useMemo(() => {
     return (
       checkIfIdOfNodeOrItsOneOfTheChildren(selectedNodeId, node) || expandAll
     );
-  }, [selectedNodeId, node, expandAll]);
+  }, [selectedNodeId, node, expandAll, checkIfIdOfNodeOrItsOneOfTheChildren]);
 
   useEffect(() => {
     if (shouldExpand) {
@@ -78,10 +53,10 @@ const TreeNode = ({
         onDrop(node);
       }}
       onDragOver={(e) => e.preventDefault()} // Needed to allow drop
-      style={styles.container}
+      className="pl-5 my-1.5 border-l border-gray-300"
     >
-      <div style={styles.node}>
-        <span style={styles.toggleButton} onClick={toggleExpand}>
+      <div className="flex items-center mb-1.5">
+        <span className="cursor-pointer mr-2.5 font-bold text-green-600" onClick={toggleExpand}>
           {hasChildren ? (expanded ? "v" : ">") : "*"}
         </span>
         {renderNode ? (
@@ -105,7 +80,6 @@ const TreeNode = ({
               isDraggable={isDraggable}
               onDragStart={onDragStart}
               onDrop={onDrop}
-              // expandAll={expandAll}
             />
           ))}
         </div>
@@ -115,8 +89,7 @@ const TreeNode = ({
 };
 
 const DefaultNodeComponent = ({ node, uniqueIdFieldName }) => (
-  <span style={styles.nodeName}>
-    {/* <b></b> */}
+  <span className="text-sm text-gray-800">
     {node.name || node[uniqueIdFieldName]}
   </span>
 );
@@ -149,7 +122,7 @@ const Tree = ({
           />
         ))
       ) : (
-        <span style={styles.errorText}>
+        <span className="text-red-600">
           {errorMessageOnNoData || "No Data to render tree!!"}
         </span>
       )}

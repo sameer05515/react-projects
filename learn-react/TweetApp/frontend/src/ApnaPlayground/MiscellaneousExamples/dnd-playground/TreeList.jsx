@@ -44,14 +44,6 @@ const initialTreeData = [
   },
 ];
 
-// Helper function to move nodes in the tree
-const moveNodeInTree = (tree, fromIndex, toIndex) => {
-  const updatedTree = [...tree];
-  const [movedNode] = updatedTree.splice(fromIndex, 1);
-  updatedTree.splice(toIndex, 0, movedNode);
-  return updatedTree;
-};
-
 const NodeItem = ({ node, index, moveNode, path }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: ItemType,

@@ -4,7 +4,6 @@ import FloatingButton from "../../../../common/components/floating-button/Floati
 import Select from "react-select";
 import { useSharedConfigurations } from "../../util/RelatedNodeUtil";
 import {
-    deleteObjectById,
     updateOrAdd,
     generateOptions,
     CONSTANTS, NODE_ITEM_TYPES
@@ -18,12 +17,12 @@ export const NodeItemForm = ({
 }) => {
     const {
         SharedService: { refreshNodes, createNode, updateNodeByUniqueId },
-        sharedData: { selectedNode, styles, allNodes },
+        sharedData: { selectedNode, allNodes },
     } = useSharedConfigurations();
 
     const [formErrors, setFormErrors] = useState([]);
     const [showRelationForm, setShowRelationForm] = useState(false);
-    const [selectedRelation, setSelectedRelation] = useState(null);
+    const selectedRelation = null; // Reserved for future edit relation functionality
     const [formData, setFormData] = useState({
         uniqueId: initialFormData.uniqueId || "",
         name: initialFormData.name || "",
@@ -69,18 +68,6 @@ export const NodeItemForm = ({
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleRelationEdit = (det = null) => {
-        setSelectedRelation(det ? { ...det } : null);
-        setShowRelationForm(true);
-    };
-
-    const handleRelationDelete = (uniqueId) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            relations: deleteObjectById(prevData.relations, uniqueId),
-        }));
-    };
-
     const mergeRelation = (detailData) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -102,10 +89,10 @@ export const NodeItemForm = ({
     };
 
     return (
-        <div style={{ ...styles.greenBorder, fontSize: "12px" }}>
-            <h3>{formData.uniqueId ? "Edit" : "Add"}</h3>
-            <div style={{ display: "flex", flexDirection: "column", padding: "10px" }}>
-                <label htmlFor="name" style={{ fontWeight: "bold" }}>Name</label>
+        <div className="border border-green-500 text-xs">
+            <h3 className="text-lg font-semibold mb-4">{formData.uniqueId ? "Edit" : "Add"}</h3>
+            <div className="flex flex-col p-2.5">
+                <label htmlFor="name" className="font-bold mb-2">Name</label>
                 <input
                     type="text"
                     id="name"
@@ -113,12 +100,12 @@ export const NodeItemForm = ({
                     placeholder="Name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    style={{ width: "90%" }}
+                    className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
 
-            <div style={{ padding: "10px" }}>
-                <label htmlFor="itemType" style={{ fontWeight: "bold" }}>Select Item Type:</label>
+            <div className="p-2.5">
+                <label htmlFor="itemType" className="font-bold block mb-2">Select Item Type:</label>
                 <Select
                     name="itemType"
                     options={nodeItemTypesOptions}
@@ -130,10 +117,9 @@ export const NodeItemForm = ({
             </div>
 
             {formData.uniqueId && (
-                <div style={{ display: "flex", flexDirection: "column", padding: "10px" }}>
+                <div className="flex flex-col p-2.5">
                     <div>
-                        <label style={{ fontWeight: "bold" }} htmlFor="description">Relations:</label>
-                        {/* <CustomButton onClick={() => handleRelationEdit()}>Add</CustomButton> */}
+                        <label className="font-bold block mb-2" htmlFor="description">Relations:</label>
                         {showRelationForm && (
                             <RelationForm
                                 nodeInfo={{ name: formData.name, uniqueId: formData.uniqueId }}
@@ -146,15 +132,18 @@ export const NodeItemForm = ({
                     </div>
                     <div>
                         {formData.relations.map(({ uniqueId, name, type }, index) => (
-                            <div key={index} style={{ display: "flex", padding: "5px" }}>
-                                <div style={{ width: "90%", border: "1px solid #999", borderRadius: "4px" }}>
+                            <div key={index} className="flex p-1.5 mb-2">
+                                <div className="w-[90%] border border-gray-600 rounded p-2">
                                     {`uniqueId: ${uniqueId}, name: ${name}, direction-type: ${type}`}
                                 </div>
-                                <div style={{ width: "5%", border: "1px solid #999", borderRadius: "4px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <FloatingButton floatingChildrenStyle={{ width: "50px", height: "80px" }} showButtonText={false} buttonText={"Actions"} iconName={"FaSettings"}>
-                                        {/* <CustomButton style={{ marginTop: "5px" }} title={"Edit"} iconName={"FaEdit"} onClick={() => handleRelationEdit({ uniqueId, name, type })} />
-                                        <CustomButton style={{ marginTop: "5px" }} title={"Delete"} iconName={"FaDelete"} onClick={() => handleRelationDelete(uniqueId)} /> */}
-                                    </FloatingButton>
+                                <div className="w-[5%] border border-gray-600 rounded flex justify-center items-center">
+                                    <FloatingButton
+                                        panelClassName="h-20 w-12"
+                                        buttonClassName="bg-gray-200 border border-gray-400 text-[10px] px-1 py-0.5"
+                                        showButtonText={false}
+                                        buttonText={"Actions"}
+                                        iconName={"FaSettings"}
+                                    />
                                 </div>
                             </div>
                         ))}
@@ -163,14 +152,14 @@ export const NodeItemForm = ({
             )}
 
             {formErrors.length > 0 && (
-                <div style={{ padding: "10px" }}>
+                <div className="p-2.5">
                     {formErrors.map((error, index) => (
-                        <span key={index} style={{ color: "red" }}>{error}</span>
+                        <span key={index} className="block text-red-600 text-sm mt-1.5">{error}</span>
                     ))}
                 </div>
             )}
 
-            <div style={{ display: "block", margin: "10px" }}>
+            <div className="block my-2.5 mx-2.5 flex gap-2">
                 <CustomButton onClick={handleSubmit}>
                     {formData.uniqueId ? "Update" : "Create"}
                 </CustomButton>

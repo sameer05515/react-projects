@@ -7,19 +7,26 @@ import {
 } from "../../../common/components/Smart/Editor/v3";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
+import useDataFetching from "../../../common/hooks/useDataFetching/v2";
 import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
 import { buildTree } from "../../../common/util/indentation-based-string-parser-to-tree-data";
-import { selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
+import { fetchMemoryMaps, selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
 // import PopupMenuV3 from "../../miscelleneous/misc/sub-components/PopupMenuV3";
 import PopupMenuV3 from "../../../ApnaPlayground/MiscellaneousExamples/PopupMenu/v3";
 import CopyButton from "../copy-to-clipboard/CopyButton";
 import { Header } from "./HelperComponents";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
-import { styles } from "./util";
 
 const MemoryMapList = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Fetch memory maps data only when component mounts (with smart caching)
+  useDataFetching(
+    fetchMemoryMaps,
+    (state) => state.memoryMaps
+  );
+
   const memoryMaps = useSelector(selectAllTreeMemoryMaps);
   const [selectedMemoryMap, setSelectedMemoryMap] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -132,15 +139,15 @@ const MemoryMapList = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="flex flex-col max-h-[90vh] max-w-[95vw] pl-6 overflow-auto">
       <Header
         navigate={navigate}
         onNextClick={() => handleMemoryMapSelection(nextTreeNode)}
         onPrevClick={() => handleMemoryMapSelection(prevTreeNode)}
         onSearchTextChange={(text) => setSearchString(() => text?.trim() || "")}
       />
-      <div style={styles.content}>
-        <div style={styles.treeContainer}>
+      <div className="flex flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto">
           <Tree
             data={filteredMemoryMaps()}
             renderNode={(node) => (
@@ -148,7 +155,6 @@ const MemoryMapList = () => {
                 <MemoryMapItemV2
                   node={node}
                   isSelected={selectedMemoryMap?.uniqueId === node.uniqueId}
-                  // onMemoryMapSelection={setSelectedMemoryMap}
                   onMemoryMapSelection={(node) =>
                     handleMemoryMapSelection(node)
                   }
@@ -166,40 +172,36 @@ const MemoryMapList = () => {
           />
         </div>
         <div
-          style={styles.detailsContainer}
+          className="flex-[4] overflow-auto p-2.5"
           onClick={() => setPopupVisible(false)}
         >
-          {/* <h4>{selectedMemoryMap?.name}</h4> */}
-          <h4>
+          <h4 className="text-lg font-semibold mb-4">
             <SmartPreviewer
               data={{
                 content: selectedMemoryMap?.name || "",
                 textOutputType: SupportedTextFormats.MARKDOWN,
               }}
-              // markdownStyles={{ fontSize: '10px' }}
             />
           </h4>
           {!selectedMemoryMap?.skeleton ? (
-            <>
+            <div className="text-gray-500 italic">
               This section will show the skeleton by default. Later on, based on
               actions, we will show JsonPreview or details or references.
-            </>
+            </div>
           ) : (
             <div>
-              <CopyButton
-                buttonText={"Copy skeleton to clipboard"}
-                textToCopy={selectedMemoryMap.skeleton}
-                onCopy={handleCopy}
-              />
-              {copied && <span style={styles.copiedMessage}>Copied!</span>}
-              {/* <CustomButton onClick={()=>{}}>Expand All</CustomButton> */}
+              <div className="mb-3">
+                <CopyButton
+                  buttonText={"Copy skeleton to clipboard"}
+                  textToCopy={selectedMemoryMap.skeleton}
+                  onCopy={handleCopy}
+                />
+                {copied && <span className="text-green-600 mb-2.5 block ml-2">Copied!</span>}
+              </div>
               <Tree
                 data={getTreeDataFromSelectedSkeleton()}
                 expandAll={true}
                 renderNode={(node) => (
-                  // <MarkdownComponent
-                  //     markdownText={node.name || "**tree node name is missing!**"}
-                  // />
                   <SmartPreviewer
                     data={{
                       content: node?.name || "**tree node name is missing!**",
@@ -212,14 +214,11 @@ const MemoryMapList = () => {
             </div>
           )}
           {selectedMemoryMap?.details?.length > 0 && (
-            <>Details related to memory map will be shown soon!!</>
+            <div className="mt-4 text-gray-600">Details related to memory map will be shown soon!!</div>
           )}
           {selectedMemoryMap?.references?.length > 0 && (
-            <>References related to memory map will be shown soon!!</>
+            <div className="mt-4 text-gray-600">References related to memory map will be shown soon!!</div>
           )}
-          {/* <JSONPreview
-                        data={{ prevTreeNode, nextTreeNode, selectedMemoryMap }}
-                    /> */}
         </div>
       </div>
       {popupVisible && (
@@ -227,7 +226,7 @@ const MemoryMapList = () => {
           position={popupPosition}
           popupOptions={popupOptions}
           onOptionSelect={handlePopupOption}
-          popupOptionStyle={styles.popupOption}
+          popupOptionStyle={{ fontSize: "12px" }}
         />
       )}
     </div>

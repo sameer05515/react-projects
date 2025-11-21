@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchTags,
@@ -39,40 +39,24 @@ function TagList() {
     setEditTag(null); // Clear the edit state
   };
 
-  const cardContainerStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr)", // Adjust the minmax value to set the minimum and maximum card width
-    gap: "20px", // Adjust the gap as needed
-    padding: "20px", // Optional: Add additional styling to the container
-  };
-
-  const cardStyle = {
-    border: "1px solid #ccc",
-    padding: "10px",
-    // Optional: Add additional styling to the individual cards
-  };
-
   return (
-    <div>
-      <h2>Tag List</h2>
-      {loading === "pending" && <p>Loading tags...</p>}
-      {error && <p>Error: {error}</p>}
-      {/* TagsCreate component for creating and editing tags */}
-      <TagsCreate
-        tag={editTag}
-        onSave={handleCreateOrUpdateTag}
-        onCancelEdit={handleCancelEdit}
-      />
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-900">Tag List</h2>
+        {loading === "pending" && <p className="mt-2 text-sm text-gray-500">Loading tags...</p>}
+        {error && <p className="mt-2 text-sm text-red-600">Error: {error}</p>}
+      </div>
+      <TagsCreate tag={editTag} onSave={handleCreateOrUpdateTag} onCancelEdit={handleCancelEdit} />
       {loading === "fulfilled" && (
-        <div style={cardContainerStyle}>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {tags.map((tag) => (
             <div
               key={tag._id}
-              style={cardStyle}
+              className="cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-gray-300"
               onDoubleClick={() => handleEditTag(tag)}
             >
-              <strong>{tag.name}</strong>
-              <p>{tag.description}</p>
+              <strong className="text-lg text-gray-900">{tag.name}</strong>
+              <p className="mt-2 text-sm text-gray-600">{tag.description}</p>
             </div>
           ))}
         </div>

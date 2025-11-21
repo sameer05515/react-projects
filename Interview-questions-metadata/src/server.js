@@ -1,72 +1,90 @@
-const express = require('express');
-const path = require('path');
-const { publicFolderPath, FileTraversalAPI, MarkdownReaderAPI } = require('./util');
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const redoc = require("redoc-express");
 
-const { createFileList, findNextFileObject, findPrevFileObject } = FileTraversalAPI();
-const { getFileHtmlContent } = MarkdownReaderAPI();
+const serverV1Router = require("./routes/v1");
+const serverV2Router = require("./routes/v2");
+const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Enable CORS globally
+app.use(cors());
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 // Serve static files from "assets" directory
-// app.use(express.static(path.join(__dirname, 'assets')));
-app.use(express.static('assets'));
+app.use(express.static("assets"));
 
+// Mount the content route
+// app.use("/api", contentDetailsForAPIRoutesV1);
+app.use("/v1", serverV1Router);
+app.use("/v2", serverV2Router);
 
-// Route to render the file list and optionally render selected MD file as HTML
-app.get('/', (req, res) => {
-    const fileList = createFileList(publicFolderPath);
-    let htmlContent = null;
+// Swagger JSON endpoint - MUST be defined BEFORE Swagger UI route
+// Otherwise Swagger UI middleware will intercept this request
+app.get("/api-docs/swagger.json", (req, res) => {
+  try {
+    // Ensure we're sending valid JSON with proper content type
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader("Cache-Control", "no-cache");
+    // Use res.json() to ensure proper JSON formatting
+    res.json(swaggerSpec);
+  } catch (error) {
+    console.error("Error serving swagger.json:", error);
+    res.status(500).json({ error: "Failed to generate API specification" });
+  }
+});
 
-    let filename = req.query.filename;
-    const direction = req.query.direction;
+// Swagger UI documentation - Must come AFTER the JSON endpoint
+// Swagger UI uses the spec directly, so it doesn't need the JSON endpoint
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: ".swagger-ui .topbar { display: none }",
+  customSiteTitle: "Interview Questions Metadata API Documentation",
+}));
 
-    // Check if a specific MD file is requested
-    if (req.query.filename) {
+// Redocly documentation
+app.get(
+  "/docs",
+  redoc({
+    title: "Interview Questions Metadata API Documentation",
+    specUrl: "/api-docs/swagger.json",
+    nonce: "", // optional, for CSP
+    redocOptions: {
+      theme: {
+        colors: {
+          primary: {
+            main: "#32329f",
+          },
+        },
+      },
+    },
+  })
+);
 
-        if (req.query.direction && req.query.direction === 'next') {
-            const nextFile = findNextFileObject(fileList, filename);
-            const nextFileName = nextFile && nextFile.name ? nextFile.name : null;
-            if (nextFileName) {
-                filename = nextFileName;
-            }
-        } else if (req.query.direction && req.query.direction === 'prev') {
-            const prevFile = findPrevFileObject(fileList, filename);
-            const prevFileName = prevFile && prevFile.name ? prevFile.name : null;
-            if (prevFileName) {
-                filename = prevFileName;
-            }
-        }
+app.get("/", (req, res) => res.render('home'));
 
+// // 404 Handler (This should be the last middleware)
+// app.use((req, res) => {
+//   res.status(404).render("404");
+// });
 
-        try {
-            htmlContent = getFileHtmlContent(filename);
-            const resetSelected = (list) => {
-                if (list && list.length > 0) {
-                    // Set the 'selected' property for the selected file
-                    const selectedFile = list.find(file => file.path === filename && file.fileType === 'file');
-                    if (selectedFile) {
-                        selectedFile.selected = true;
-                    }
-                    list.forEach(file => {
-                        // file.selected = (file.path === filename && file.fileType === 'file');
-                        resetSelected(file.children);
-                    });
-                }
-            }
-            // Set the 'selected' property for the selected file
-            resetSelected(fileList);
-
-        } catch (err) {
-            console.error('Error reading file:', err);
-        }
-    }
-
-    res.render('index', { fileList, htmlContent, filename, direction });
+// 404 Handler (This should be the last middleware)
+app.use((req, res) => {
+  if (req.accepts("html")) {
+    // If the request expects an HTML response, render 404.ejs
+    res.status(404).render("404");
+  } else {
+    // If the request is for JSON (API call), send a JSON response
+    res.status(404).json({ message: "The requested resource not found" });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

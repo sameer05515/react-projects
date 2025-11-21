@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import ActionableForm from "./ActionableForm";
 import ActionableList from './ActionableList';
 import axios from 'axios';
@@ -19,18 +19,18 @@ const ActionableContainer = () => {
    
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(`${BASE_URL}/activities`);
       setActivities(response.data);
     } catch (error) {
       console.error('Error fetching activities:', error);
     }
-  };
+  }, [BASE_URL]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchMemoryMaps, updateMemoryMapForGivenSkeleton } from "../../redux/slices/memoryMapSlice";
@@ -17,78 +17,7 @@ import { toast } from "react-toastify";
 import { SkeletonTextType } from "./util/constants";
 import { SmartPreviewer, availableOutputTypes as SupportedTextFormats } from "../../common/components/Smart/Editor/v3";
 
-// Define styles in a JSON object
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    marginTop: "20px",
-    padding: "0 20px", // Add padding to the container
-  },
-  textarea: {
-    width: "90vw",
-    height: "100px",
-    marginBottom: "10px",
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    boxSizing: "border-box",
-    resize: "none", // Disable manual resizing
-  },
-  button: {
-    padding: "10px 20px",
-    fontSize: "16px",
-    borderRadius: "4px",
-    border: "none",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    cursor: "pointer",
-    marginTop: "10px",
-    transition: "background-color 0.3s ease",
-  },
-  buttonHover: {
-    backgroundColor: "#0056b3", // Darker blue for hover state
-  },
-  buttonFocus: {
-    outline: "2px solid #0056b3", // Outline on focus for accessibility
-  },
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    gap: "10px", // Adds spacing between buttons
-    marginTop: "10px",
-  },
-  errorMessage: {
-    color: "red",
-    fontWeight: "bold",
-    marginBottom: "10px",
-  },
-  treeContainer: {
-    border: "1px solid #ccc",
-    marginTop: "20px",
-    width: "100%", // Ensures the tree takes full width of container
-    height: "50vh",
-    overflow: "auto",
-  },
-  diffContainer: {
-    marginTop: "20px",
-    width: "100%", // Ensures the diff viewer takes full width of container
-  },
-  popupOption: {
-    fontSize: "12px",
-  },
-  TreeNodeItem: {
-    fontSize: "10px",
-    margin: "2px 0",
-    display: "flex",
-    cursor: "pointer",
-  },
-  treeNodeItemName: {
-    wordWrap: "break-word",
-  },
-};
+// Styles moved to Tailwind CSS classes
 
 export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
   const location = useLocation();
@@ -140,6 +69,22 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
   });
 
+  const previewSkeleton = useCallback(() => {
+    if (!formData.skeleton?.trim()) {
+      //setErrorMessage("Please provide some valid skeleton text!!");
+      return;
+    }
+    const { data: treeData, isValid, message } = buildTree(formData.skeleton);
+
+    if (isValid) {
+      setIsValidSkeleton(true);
+      setResultData(addUniqueIdsToTree(treeData, "preview_Skeleton".toUpperCase(), false));
+    } else {
+      setIsValidSkeleton(false);
+      setErrorMessage(message || "Missing Error message");
+    }
+  }, [formData.skeleton]);
+
   const handleRightClick = (event, selectedMap) => {
     event.preventDefault();
     if (!selectedMap) return;
@@ -150,7 +95,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
 
   useEffect(() => {
     previewSkeleton();
-  }, []);
+  }, [previewSkeleton]);
 
   // Find a node by uniqueId
   // const findNodeById = (nodes, id) => {
@@ -284,22 +229,6 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     // navigate(-1);
   };
 
-  const previewSkeleton = () => {
-    if (!formData.skeleton?.trim()) {
-      //setErrorMessage("Please provide some valid skeleton text!!");
-      return;
-    }
-    const { data: treeData, isValid, message } = buildTree(formData.skeleton);
-
-    if (isValid) {
-      setIsValidSkeleton(true);
-      setResultData(addUniqueIdsToTree(treeData, "preview_Skeleton".toUpperCase(), false));
-    } else {
-      setIsValidSkeleton(false);
-      setErrorMessage(message || "Missing Error message");
-    }
-  };
-
   const handleAddChildrenOrSiblingsNodesSubmit = (data) => {
     if (!data) return;
 
@@ -378,47 +307,49 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
 
       {showEditTreeNodePopup && selectedTreeNode && <EditTreeNodePopup initialFormData={selectedTreeNode} onClose={() => setShowEditTreeNodePopup(false)} onSubmit={handleEditTreeNodeSubmit} />}
 
-      <h2>AddUpdateSkeletonUsingTreeEditor</h2>
-      <h2> {formData?.skeleton ? "Update " : "Add "}Skeleton</h2>
-      {!initialFormData?.uniqueId ? (
-        <p>Invalid memory map provided. Unable to process!!</p>
-      ) : (
-        <span>
-          Memory map name : <span style={{ fontWeight: "bold" }}>{initialFormData?.name}</span>
-        </span>
-      )}
-
-      {errorMessage && <div style={styles.errorMessage}>{errorMessage}</div>}
-
-      <div style={styles.container}>
-        {!resultData.length && !formData.skeleton?.trim() && (
-          <button
-            onClick={() => {
-              setSelectedTreeNode(() => ({ uniqueId: "", children: [] }));
-              setChildrenMode(() => false);
-              setShowAddChildrenOrSiblingsNodesPopup(true);
-            }}
-          >
-            Add First node
-          </button>
+      <div className="max-w-6xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-4">AddUpdateSkeletonUsingTreeEditor</h2>
+        <h2 className="text-xl font-semibold mb-4"> {formData?.skeleton ? "Update " : "Add "}Skeleton</h2>
+        {!initialFormData?.uniqueId ? (
+          <p className="text-red-600 font-semibold">Invalid memory map provided. Unable to process!!</p>
+        ) : (
+          <span className="text-gray-700">
+            Memory map name : <span className="font-bold">{initialFormData?.name}</span>
+          </span>
         )}
 
-        {resultData.length > 0 && isValidSkeleton && (
-          <div style={styles.treeContainer}>
-            <Tree
-              data={resultData}
-              expandAll={true}
-              areNodesDraggable={true}
-              onDragStart={(node) => setDraggedNode(node)}
-              onDrop={(node) => handleDrop(node)}
-              renderNode={(node) => (
-                <>
-                  <TreeNodeItem node={node} isSelected={selectedTreeNode?.uniqueId === node.uniqueId} onTreeNodeSelection={setSelectedTreeNode} onItemRightClick={handleRightClick} />
-                </>
-              )}
-            />
-          </div>
-        )}
+        {errorMessage && <div className="text-red-600 font-bold mb-2.5">{errorMessage}</div>}
+
+        <div className="flex flex-col items-start mt-5 px-5">
+          {!resultData.length && !formData.skeleton?.trim() && (
+            <button
+              className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer mt-2.5 transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => {
+                setSelectedTreeNode(() => ({ uniqueId: "", children: [] }));
+                setChildrenMode(() => false);
+                setShowAddChildrenOrSiblingsNodesPopup(true);
+              }}
+            >
+              Add First node
+            </button>
+          )}
+
+          {resultData.length > 0 && isValidSkeleton && (
+            <div className="border border-gray-300 mt-5 w-full h-[50vh] overflow-auto">
+              <Tree
+                data={resultData}
+                expandAll={true}
+                areNodesDraggable={true}
+                onDragStart={(node) => setDraggedNode(node)}
+                onDrop={(node) => handleDrop(node)}
+                renderNode={(node) => (
+                  <>
+                    <TreeNodeItem node={node} isSelected={selectedTreeNode?.uniqueId === node.uniqueId} onTreeNodeSelection={setSelectedTreeNode} onItemRightClick={handleRightClick} />
+                  </>
+                )}
+              />
+            </div>
+          )}
         {/* <textarea
                     style={styles.textarea}
                     value={formData.skeleton}
@@ -443,32 +374,24 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
                     </button>
                 )} */}
 
-        <div style={styles.buttonContainer}>
-          {formData?.skeleton?.trim() && isValidSkeleton && resultData?.length > 0 && (
+          <div className="flex flex-row gap-2.5 mt-2.5">
+            {formData?.skeleton?.trim() && isValidSkeleton && resultData?.length > 0 && (
+              <button
+                className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={upsertSkeleton}
+              >
+                Upsert
+              </button>
+            )}
             <button
-              style={styles.button}
-              onClick={upsertSkeleton}
-              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
-              onFocus={(e) => (e.currentTarget.style.outline = styles.buttonFocus.outline)}
-              onBlur={(e) => (e.currentTarget.style.outline = "none")}
+              className="px-5 py-2.5 text-base rounded border-none bg-gray-600 text-white cursor-pointer transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              onClick={() => navigate(-1)}
             >
-              Upsert
+              Cancel
             </button>
-          )}
-          <button
-            style={styles.button}
-            onClick={() => navigate(-1)}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = styles.button.backgroundColor)}
-            onFocus={(e) => (e.currentTarget.style.outline = styles.buttonFocus.outline)}
-            onBlur={(e) => (e.currentTarget.style.outline = "none")}
-          >
-            Cancel
-          </button>
-        </div>
+          </div>
 
-        <div style={styles.diffContainer}>
+          <div className="mt-5 w-full">
           <JSONDataViewer
             title="X-Ray for data"
             metadata={{
@@ -482,28 +405,22 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
           <ToggleablePanel title="Diff" showContent={false}>
             <TextDiffViewer oldContent={initialFormData?.skeleton} newContent={formData?.skeleton} />
           </ToggleablePanel>
+          </div>
         </div>
 
-        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionStyle={styles.popupOption} />}
+        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionStyle={{ fontSize: "12px" }} />}
       </div>
     </div>
   );
 };
 
 const TreeNodeItem = ({ node: treeNode, isSelected, onTreeNodeSelection, onItemRightClick }) => (
-  <div style={styles.TreeNodeItem}>
+  <div className="text-[10px] my-0.5 flex cursor-pointer hover:bg-gray-50 rounded px-1 py-0.5 transition-colors">
     <span
-      style={{
-        ...styles.treeNodeItemName,
-        fontWeight: isSelected ? "bold" : "normal",
-      }}
+      className={`break-words ${isSelected ? "font-bold text-blue-700" : "font-normal"}`}
       onClick={() => onTreeNodeSelection(treeNode)}
       onContextMenu={(e) => onItemRightClick(e, treeNode)}
     >
-      {/* {treeNode.name} */}
-      {/* <MarkdownComponent
-        markdownText={treeNode.name || "**tree node name is missing!**"}
-      /> */}
       <SmartPreviewer
         data={{
           content: treeNode?.name || "**tree node name is missing!**",
@@ -571,18 +488,18 @@ const AddChildrenOrSiblingsNodesPopup = ({ onClose = () => {}, initialFormData =
           <JSONDataViewer metadata={{ formData }} />
         </div>
 
-        <div style={{ display: "block", padding: "10px" }}>
-          <label style={{ width: "9%", fontWeight: "bold" }} htmlFor="text">
+        <div className="block p-2.5 mb-4">
+          <label className="w-[9%] font-bold text-gray-700 inline-block mb-2" htmlFor="text">
             name:
           </label>
-          <textarea type="text" id="text" name="text" placeholder="Enter children names" value={formData.text} onChange={handleInputChange} rows={10} style={{ width: "90%" }} />
+          <textarea type="text" id="text" name="text" placeholder="Enter children names" value={formData.text} onChange={handleInputChange} rows={10} className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <div style={{ display: "block", padding: "10px" }}>
+        <div className="block p-2.5 mb-4">
           {formErrors.length > 0 && (
-            <div>
+            <div className="space-y-1">
               {formErrors.map((error, index) => (
-                <span key={index} style={{ color: "red" }}>
+                <span key={index} className="text-red-600 block">
                   {error}
                 </span>
               ))}
@@ -639,11 +556,11 @@ const EditTreeNodePopup = ({ onSubmit = () => {}, onClose = () => {}, initialFor
         <div>
           <JSONDataViewer metadata={{ formData }} />
         </div>
-        <div style={{ display: "block", padding: "10px" }}>
-          <label style={{ width: "9%", fontWeight: "bold" }} htmlFor="name">
+        <div className="block p-2.5 mb-4">
+          <label className="w-[9%] font-bold text-gray-700 inline-block mb-2" htmlFor="name">
             name:
           </label>
-          <input type="text" id="name" name="name" placeholder="Name" value={formData.name} onChange={handleInputChange} style={{ width: "90%" }} />
+          <input type="text" id="name" name="name" placeholder="Name" value={formData.name} onChange={handleInputChange} className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div>

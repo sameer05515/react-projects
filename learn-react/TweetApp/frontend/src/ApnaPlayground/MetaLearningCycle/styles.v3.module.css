@@ -1,0 +1,48 @@
+.container {
+    position: relative;
+    width: 24rem;
+    height: 24rem;
+  }
+  
+  .stage {
+    position: absolute;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .stage:hover {
+    filter: brightness(0.9);
+  }
+  
+  /* Stage Positions */
+  .top {
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .right {
+    top: 50%;
+    right: -10%;
+    transform: translateY(-50%);
+  }
+  
+  .bottom {
+    bottom: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .left {
+    top: 50%;
+    left: -10%;
+    transform: translateY(-50%);
+  }
+  

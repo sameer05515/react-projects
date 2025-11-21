@@ -1,0 +1,15 @@
+/* ActivityForm.css */
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  /* Additional styling can be added as needed */
+  

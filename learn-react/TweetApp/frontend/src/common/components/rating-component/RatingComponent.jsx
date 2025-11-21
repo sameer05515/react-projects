@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { IconButton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
@@ -21,27 +20,27 @@ const RatingComponent = ({
   };
 
   return (
-    <span>
+    <div className="inline-flex items-center gap-1 text-sm text-gray-800">
       {[...Array(ratingScale)].map((_, index) => {
         const starValue = index + 1;
         return (
           <span
             key={starValue}
             onClick={() => handleRating(starValue)}
-            style={{ padding: 0,cursor:editable?'pointer':"" }}
+            className={`p-0 ${editable ? "cursor-pointer" : ""}`}
           >
             {starValue <= rating ? (
-              <StarIcon style={{ color: "gold" }} />
+              <StarIcon className="text-yellow-400" fontSize="small" />
             ) : (
-              <StarBorderIcon style={{ color: "gold" }} />
+              <StarBorderIcon className="text-yellow-400" fontSize="small" />
             )}
           </span>
         );
-      })}{" "}
-      <span style={{ paddingLeft: "2px", fontWeight: "bold",  }}>       
+      })}
+      <span className="font-semibold text-gray-900">
         {rating}/{ratingScale}
       </span>
-    </span>
+    </div>
   );
 };
 

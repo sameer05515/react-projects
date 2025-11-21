@@ -66,24 +66,27 @@ export const updateLink = createAsyncThunk(
 
 const getNameWithAncestors = (link) => {
   if (!link) {
-      return "";
+    return "";
   }
-  let ancestorNames = [];
-  let currentAncestor = link.ancestors?.find(
-      (ancestor) => !ancestor.parentId
-  )||null;
+  const ancestorNames = [];
+  let currentAncestor =
+    link.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
-      ancestorNames.push(currentAncestor.name);
-      currentAncestor = link.ancestors.find(
-          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-      );
+    ancestorNames.push(currentAncestor.name);
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      link.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(link.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
-const prepareLinksQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareLinksQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   
   if (list && list.length > 0) {
@@ -103,7 +106,6 @@ const prepareLinksQueue = (list, prevQueue = []) => {
           queue = [...queue, ...childQ];
       });
   }
-  // console.log(JSON.stringify(queue, null, 2));
   return queue;
 };
 
@@ -111,9 +113,8 @@ const linksSlice = createSlice({
   name: "links",
   initialState: {
     selectedLinkUniqueId: null,
-    data: [],
+    data: [], // Only store tree structure - flatData computed via selector
     linkDetails: {},
-    flatData:[],
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -134,8 +135,8 @@ const linksSlice = createSlice({
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
         state.loading = "fulfilled";
-        state.data = action.payload;               
-        state.flatData = prepareLinksQueue(action.payload);
+        state.data = action.payload;
+        // flatData now computed via memoized selector
       })
       .addCase(fetchLinks.rejected, (state, action) => {
         state.loading = "rejected";
@@ -180,9 +181,10 @@ export const selectAllTreeLinks = createSelector(
   (linksState) => linksState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatLinks = createSelector(
-  selectLinksState,
-  (linksState) => linksState.flatData
+  [selectAllTreeLinks],
+  (treeLinks) => prepareLinksQueue(treeLinks)
 );
 
 export const selectSelectedLinkUniqueId = createSelector(
@@ -214,4 +216,21 @@ export const selectPrevLinkUniqueId = createSelector(
     const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
     return flatLinkList[prevIndex].uniqueId;
   }
+);
+
+// Combined selector for common link state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for links, loading, error, selectedId, and linkDetails
+export const selectLinksStateCombined = createSelector(
+  [
+    selectAllTreeLinks,
+    selectSelectedLinkUniqueId,
+    selectLinksState,
+  ],
+  (links, selectedId, linksState) => ({
+    links,
+    loading: linksState.loading,
+    error: linksState.error,
+    selectedId,
+    linkDetails: linksState.linkDetails,
+  })
 );

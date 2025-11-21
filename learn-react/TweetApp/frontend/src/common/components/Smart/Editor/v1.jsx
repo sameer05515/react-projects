@@ -197,65 +197,70 @@ const SmartEditor = ({
     return (
         <div>
             SmartEditor
-            <div>
-                <label htmlFor="textOutputType" style={labelStyle}>
+            <div className="mb-4">
+                <label htmlFor="textOutputType" className="w-[15%] font-bold inline-block mb-2">
                     Text Output Type:
                 </label>
-                {outputTypeList.map((view) => (
-                    <label key={view.name} style={{ padding: "5px" }}>
-                        <input
-                            type="radio"
-                            value={view.name}
-                            checked={selectedOutputTypeName === view.name}
-                            onChange={handleChangeOutputTypes}
-                        />
-                        {view.label}
-                    </label>
-                ))}
-            </div>
-            <div>
-                <label htmlFor="textInputType" style={labelStyle}>
-                    Text Input Type:
-                </label>
-                {selectedOutputType?.linkedInputTypes?.length > 0 &&
-                    selectedOutputType.linkedInputTypes.map((lit) => (
-                        <label key={lit} style={{ padding: "5px" }}>
+                <div className="flex flex-wrap gap-2">
+                    {outputTypeList.map((view) => (
+                        <label key={view.name} className="p-1.5 cursor-pointer">
                             <input
                                 type="radio"
-                                value={lit}
-                                disabled={formData.textOutputType !== availableOutputTypes.HTML}
-                                checked={
-                                    formData.textOutputType !== availableOutputTypes.HTML
-                                        ? true
-                                        : formData.textInputType === lit
-                                }
-                                onChange={handleChangeInputTypes}
+                                value={view.name}
+                                checked={selectedOutputTypeName === view.name}
+                                onChange={handleChangeOutputTypes}
+                                className="mr-1"
                             />
-                            {lit}
+                            {view.label}
                         </label>
                     ))}
+                </div>
+            </div>
+            <div className="mb-4">
+                <label htmlFor="textInputType" className="w-[15%] font-bold inline-block mb-2">
+                    Text Input Type:
+                </label>
+                <div className="flex flex-wrap gap-2">
+                    {selectedOutputType?.linkedInputTypes?.length > 0 &&
+                        selectedOutputType.linkedInputTypes.map((lit) => (
+                            <label key={lit} className="p-1.5 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    value={lit}
+                                    disabled={formData.textOutputType !== availableOutputTypes.HTML}
+                                    checked={
+                                        formData.textOutputType !== availableOutputTypes.HTML
+                                            ? true
+                                            : formData.textInputType === lit
+                                    }
+                                    onChange={handleChangeInputTypes}
+                                    className="mr-1 disabled:opacity-50"
+                                />
+                                {lit}
+                            </label>
+                        ))}
+                </div>
             </div>
             {formData?.textInputType &&
                 formData.textInputType === availableInputTypes.textArea && (
-                    <div>
-                        <label htmlFor="content" style={labelStyle}>
+                    <div className="mb-4">
+                        <label htmlFor="content" className="font-bold block mb-2">
                             Content:
                         </label>
-                        <br />
                         <textarea
                             ref={textareaRef}
                             id="content"
                             name="content"
                             value={formData.content}
                             onChange={handleInputChange}
-                            style={styles.textarea}
+                            className="w-full px-3 py-2.5 box-border text-base rounded border border-gray-300 resize-none overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 )}
             {formData?.textInputType &&
                 formData.textInputType === availableInputTypes.ckEditor && (
-                    <div>
-                        <label htmlFor="ckeditor" style={labelStyle}>
+                    <div className="mb-4">
+                        <label htmlFor="ckeditor" className="font-bold block mb-2">
                             Content:
                         </label>
                         <CKEditor
@@ -291,28 +296,6 @@ const SmartEditor = ({
     );
 };
 
-const labelStyle = {
-    width: "15%", // Set label width to 25%
-    fontWeight: "bold", // Make label text bold
-};
-
-// const pairedComponentStyle = {
-//     width: "100%", // Set paired component width to 100%
-// };
-
-const styles = {
-    textarea: {
-        width: "100%",
-        padding: "10px",
-        boxSizing: "border-box",
-        fontSize: "16px",
-        // lineHeight: '1.5',
-        borderRadius: "4px",
-        border: "1px solid #ccc",
-        resize: "none",
-        overflow: "hidden",
-    },
-};
 
 const SmartPreviewer = ({ data: initialValue }) => {
     const {
@@ -396,8 +379,8 @@ const SmartPreviewer = ({ data: initialValue }) => {
             {formData?.textOutputType &&
                 formData.textOutputType === availableOutputTypes.YAML && (
                     <div>
-                        <pre>{JSON.stringify(yamlProcessedData, null, 2) || ""}</pre>
-                        <span style={{ color: "red" }}>{errorMessage}</span>
+                        <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2) || ""}</pre>
+                        {errorMessage && <span className="text-red-600">{errorMessage}</span>}
                     </div>
                 )}
         </>

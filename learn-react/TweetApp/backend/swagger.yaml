@@ -1,8 +1,141 @@
 openapi: 3.0.0
 info:
-  title: Your API Title
+  title: My Backend API Documentation
   version: 1.0.0
-  description: Description of your API
-paths: {}
-components: {}
-tags: []
+  description: >
+    Documentation for my backend APIs. Below you will find all available endpoints, their methods, parameters, request/response schemas, and possible responses.
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: User
+    description: API for user operations
+  - name: Word
+    description: API for Word operations
+  - name: TweetV2
+    description: API for Tweet version 2 operations
+
+paths:
+  /users/register:
+    post:
+      summary: Register a new user
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+              required:
+                - username
+                - password
+                - email
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /words:
+    get:
+      summary: Get paginated list of words
+      tags: [Word]
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          required: false
+          description: The page number for paginated results
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            default: 10
+          required: false
+          description: Number of items per page
+      responses:
+        '200':
+          description: A paginated list of words
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  totalCount:
+                    type: integer
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /tweets-v2:
+    get:
+      summary: Get all tweets
+      tags: [TweetV2]
+      responses:
+        '200':
+          description: A list of tweets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '500':
+          description: Error fetching tweets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

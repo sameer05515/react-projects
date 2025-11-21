@@ -1,10 +1,10 @@
 import { RELATION_DIRECTION_TYPES } from "../util/common.util";
-import { getRelationNameForId, getRelationObjectForId } from "../util/relation-data";
+import { getRelationNameForId } from "../util/relation-data";
 
 export const JSONPreview = ({ data, title }) => (
-    <div style={{ flex: 1, margin: "10px" }}>
+    <div className="m-2 flex-1">
         {title && <b>{title}</b>}
-        <pre style={{ background: "#f5f5f5", padding: "10px", borderRadius: "4px" }}>
+        <pre className="rounded bg-gray-100 p-2">
             {JSON.stringify(data, null, 2)}
         </pre>
     </div>
@@ -12,7 +12,11 @@ export const JSONPreview = ({ data, title }) => (
 
 // Select component
 export const Select = ({ options, value, onChange }) => (
-    <select onChange={onChange} value={value} style={styles.select}>
+    <select
+      onChange={onChange}
+      value={value}
+      className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
       <option value="" disabled>Select Node</option>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
@@ -22,36 +26,7 @@ export const Select = ({ options, value, onChange }) => (
     </select>
   );
 
-export const styles = {
-    container: {
-        padding: "20px",
-        border: "1px solid red",
-        borderRadius: "8px",
-        margin: "0",
-    },
-    columnDiv: {
-        marginBottom: "20px",
-        border: "1px solid green",
-    },
-    select: {
-        width: "100%",
-        padding: "8px",
-        borderRadius: "4px",
-        border: "1px solid #ccc",
-    },
-    rowDiv: {
-        display: "flex",
-        justifyContent: "space-around",
-        border: "1px solid yellow",
-        padding: "10px",
-    },
-    infoBox: {
-        flex: 1,
-        marginRight: "10px",
-        border: "1px solid red",
-        padding: "10px",
-    },
-};
+// styles object removed in favor of Tailwind utility classes
 
 export const boxStyle = {
     margin: "5px",

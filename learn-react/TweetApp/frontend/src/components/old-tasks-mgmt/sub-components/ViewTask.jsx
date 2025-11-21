@@ -1,8 +1,7 @@
-import Card from "react-bootstrap/Card";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
-import { Button } from "react-bootstrap";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 function ViewTask({ id, itemEditHandler = () => {} }) {
   const dataList = useSelector((state) => state.data);
@@ -11,30 +10,30 @@ function ViewTask({ id, itemEditHandler = () => {} }) {
     itemEditHandler(selectedItem);
   };
   return (
-    <Card style={{ maxHeight: "400px", overflowY: "auto" }}>
-      <Card.Body>
-        <Card.Title>
+    <div className="border border-gray-300 rounded-lg shadow-sm max-h-[400px] overflow-y-auto">
+      <div className="p-4">
+        <h5 className="text-lg font-semibold mb-2">
           [
           {format(new Date(selectedItem.date), "dd/MMM/yyyy", { locale: enGB })}
           ] -{selectedItem.title}
-        </Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-        <Card.Text>
+        </h5>
+        <h6 className="mb-2 text-sm text-gray-600">Card Subtitle</h6>
+        <div className="mb-4">
           <div dangerouslySetInnerHTML={{ __html: selectedItem.htmlText }} />
-        </Card.Text>
+        </div>
 
         {selectedItem &&
           selectedItem.tags &&
           selectedItem.tags.map((tag, _index) => (
-            <Card.Link key={_index} href="#">
+            <span key={_index} className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm mr-2 mb-2">
               {tag}
-            </Card.Link>
+            </span>
           ))}
-        <Card.Footer>
-          <Button onClick={editData}>Edit</Button>
-        </Card.Footer>
-      </Card.Body>
-    </Card>
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <CustomButton onClick={editData}>Edit</CustomButton>
+        </div>
+      </div>
+    </div>
   );
 }
 

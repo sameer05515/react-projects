@@ -88,4 +88,33 @@ public class UserController {
 //            return ResponseEntity.status(500).body("Error updating user.");
 //        }
     }
+
+    // Delete user by ID
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUserById(@PathVariable String userId) {
+        try {
+            userService.deleteUserById(userId);
+            return ResponseEntity.ok().body("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("User not found or error deleting user.");
+        }
+    }
+
+    // Get user by username
+    @GetMapping("/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
+            UserDto user = userService.getUserByUsername(username);
+            return ResponseEntity.ok().body(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("User not found.");
+        }
+    }
+
+    // Check if username exists
+    @GetMapping("/exists/{username}")
+    public ResponseEntity<?> checkUsernameExists(@PathVariable String username) {
+        boolean exists = userService.usernameExists(username);
+        return ResponseEntity.ok().body(exists);
+    }
 }

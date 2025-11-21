@@ -47,37 +47,49 @@ const Notifications = ({ id = memoryMapId }) => {
   const { data, isError, message } = apiResponse;
 
   if (loading) {
-    return <span>Loading</span>;
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
+          <span className="text-gray-600">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: isDarkMode ? "black" : "white",
-        color: isDarkMode ? "white" : "black",
-        padding: "5px 25px",
-      }}
-    >
-      <div>
-        <strong>Status:</strong> {isError ? "Error Occurred" : "Success"}
-        <br />
-        <strong>Message:</strong> {message}
+    <div className={`${isDarkMode ? "bg-black text-white" : "bg-white text-black"} px-6 py-1`}>
+      <div className="mb-4 p-4 rounded-lg border border-gray-200">
+        <div className="mb-2">
+          <strong className="text-lg">Status:</strong>{" "}
+          <span className={isError ? "text-red-600 font-semibold" : "text-green-600 font-semibold"}>
+            {isError ? "Error Occurred" : "Success"}
+          </span>
+        </div>
+        <div>
+          <strong className="text-lg">Message:</strong>{" "}
+          <span className="text-gray-700">{message}</span>
+        </div>
       </div>
 
-      <SmartPreviewer
-        data={{
-          content: data?.name || "No content available",
-          textOutputType: SupportedTextFormats.MARKDOWN,
-        }}
-        markdownStyles={{ fontSize: "25px" }}
-      />
+      <div className="mb-4">
+        <SmartPreviewer
+          data={{
+            content: data?.name || "No content available",
+            textOutputType: SupportedTextFormats.MARKDOWN,
+          }}
+          markdownStyles={{ fontSize: "25px" }}
+        />
+      </div>
 
-      <SmartPreviewer
-        data={{
-          content: data?.skeleton || "No skeleton available",
-          textOutputType: SupportedTextFormats.SKELETON,
-        }}
-      />
+      <div className="mb-4">
+        <SmartPreviewer
+          data={{
+            content: data?.skeleton || "No skeleton available",
+            textOutputType: SupportedTextFormats.SKELETON,
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import ReactHtmlParser from "react-html-parser";
+import CustomButton from "../custom-button/CustomButton";
 
 function EditableLabel({
-  text,
+  text = "",
   postUpdateClick = () => {},
-  labelStyle = { fontSize: "10px" },
-  textAreaStyle = {},
   placeholder = "No placeholder given",
   editMode = false,
   submitButtonText = "Update",
   cancelButtonText = "Cancel",
   flushSavedText = false,
-  saveOnBlur = true,
   editable = true,
+  containerClassName = "",
+  displayClassName = "",
+  editorClassName = "",
+  labelStyle = {},
+  textAreaStyle = {},
 }) {
   const [editing, setEditing] = useState(editMode);
   const [editedText, setEditedText] = useState(text);
@@ -23,14 +26,14 @@ function EditableLabel({
   };
 
   const handleQuillChange = (value) => {
-    setEditedText((prevEditedText) => value);
+    setEditedText(value);
   };
 
   const handleSubmitClick = () => {
     setEditing(false);
     postUpdateClick(editedText);
     if (flushSavedText) {
-      setEditedText((prevEditedText) => "");
+      setEditedText("");
     }
   };
 
@@ -39,40 +42,34 @@ function EditableLabel({
   };
 
   return (
-    <div>
+    <div className={`space-y-3 ${containerClassName}`}>
       {editing ? (
         <>
-          <ReactQuill
-            value={editedText}
-            onChange={handleQuillChange}
-            //onBlur={handleTextAreaBlur}
-            placeholder={placeholder}
-            editable={editing}            
-            style={{
-              ...textAreaStyle, // Apply custom style passed via prop
-              width: "100%", // Expand the textarea width
-              //height: `${editedText.split("\n").length + 3}em`, // Set height based on number of lines
-            }}
-          />
-          <button onClick={handleSubmitClick}>{submitButtonText}</button>
-          <button onClick={cancelEdit}>{cancelButtonText}</button>
-        </>
-      ) : (
-        <>          
           <div
-            onDoubleClick={handleLabelClick}
-            style={{
-              ...labelStyle, // Apply custom style passed via prop
-              //whiteSpace: "pre-wrap", // Allows wrapping within <pre>
-              cursor: "pointer", // Change cursor to pointer on hover
-              //padding: "10px", // Add padding for visual comfort
-              border: editable ? "1px solid #ccc" : "", // Add a border for clarity
-            }}
-            // dangerouslySetInnerHTML={{ __html: text || placeholder }}
+            className={`rounded-xl border border-gray-200 bg-white p-3 shadow-inner ${editorClassName}`}
+            style={textAreaStyle}
           >
-            {ReactHtmlParser(text || placeholder)}
+            <ReactQuill value={editedText} onChange={handleQuillChange} placeholder={placeholder} />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <CustomButton className="bg-emerald-600 hover:bg-emerald-700" onClick={handleSubmitClick}>
+              {submitButtonText}
+            </CustomButton>
+            <CustomButton className="bg-gray-200 text-gray-800" onClick={cancelEdit}>
+              {cancelButtonText}
+            </CustomButton>
           </div>
         </>
+      ) : (
+        <div
+          onDoubleClick={handleLabelClick}
+          className={`rounded-xl border border-dashed border-gray-300 px-3 py-2 text-sm text-gray-900 transition ${
+            editable ? "cursor-pointer hover:border-gray-400" : "cursor-default"
+          } ${displayClassName}`}
+          style={labelStyle}
+        >
+          {ReactHtmlParser(text || placeholder)}
+        </div>
       )}
     </div>
   );

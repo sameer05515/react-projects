@@ -1,73 +1,65 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const RadioButtonsComponent = ({
-    initialSelectedOption = '',
-    options = [],
-    onChange = () => {},
-    containerStyle = {},
-    labelStyle = {},
+  initialSelectedOption = "",
+  options = [],
+  onChange = () => {},
+  orientation = "row",
+  className = "",
+  optionClassName = "",
 }) => {
-    const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
+  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
 
-    const handleOptionChange = (e, option) => {
-        setSelectedOption(e.target.value);
-        onChange(option);
-    };
+  const handleOptionChange = (e, option) => {
+    setSelectedOption(e.target.value);
+    onChange(option);
+  };
 
-    // Default styles with ability to override via props
-    const defaultStyles = {
-        container: {
-            display: 'flex',
-            alignItems: 'start',
-            ...containerStyle, // Merges external container style
-        },
-        label: {
-            margin: '5px 0',
-            paddingLeft: '5px',
-            fontSize: '16px',
-            color: '#333',
-            ...labelStyle, // Merges external label style
-        },
-    };
+  const containerClasses =
+    orientation === "column" ? "flex flex-col gap-2" : "flex flex-wrap gap-4";
 
-    return (
-        <div style={defaultStyles.container}>
-            {options.map((option) => (
-                <label key={option.value} style={defaultStyles.label}>
-                    <input
-                        type="radio"
-                        value={option.value}
-                        checked={selectedOption === option.value}
-                        onChange={(e) => handleOptionChange(e, option)}
-                    />
-                    {option.label}
-                </label>
-            ))}
-        </div>
-    );
+  return (
+    <div className={`${containerClasses} ${className}`}>
+      {options.map((option) => (
+        <label
+          key={option.value}
+          className={`inline-flex items-center gap-2 text-sm text-gray-800 ${optionClassName}`}
+        >
+          <input
+            type="radio"
+            value={option.value}
+            checked={selectedOption === option.value}
+            onChange={(e) => handleOptionChange(e, option)}
+            className="h-4 w-4 cursor-pointer text-blue-600 focus:ring-blue-500"
+          />
+          <span>{option.label}</span>
+        </label>
+      ))}
+    </div>
+  );
 };
 
-// Prop type validation
 RadioButtonsComponent.propTypes = {
-    initialSelectedOption: PropTypes.string,
-    options: PropTypes.arrayOf(
-        PropTypes.shape({
-            value: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-    onChange: PropTypes.func,
-    containerStyle: PropTypes.object,
-    labelStyle: PropTypes.object,
+  initialSelectedOption: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onChange: PropTypes.func,
+  orientation: PropTypes.oneOf(["row", "column"]),
+  className: PropTypes.string,
+  optionClassName: PropTypes.string,
 };
 
-// Default props
 RadioButtonsComponent.defaultProps = {
-    initialSelectedOption: '',
-    onChange: () => {},
-    containerStyle: {},
-    labelStyle: {},
+  initialSelectedOption: "",
+  onChange: () => {},
+  orientation: "row",
+  className: "",
+  optionClassName: "",
 };
 
 export default RadioButtonsComponent;

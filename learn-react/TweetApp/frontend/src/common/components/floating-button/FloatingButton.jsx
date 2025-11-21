@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import CustomButton from "../custom-button/CustomButton";
 
 const FloatingButton = ({
-  buttonStyle = {},
-  floatingChildrenStyle = {},
+  buttonClassName = "",
+  panelClassName = "",
   iconName,
   showButtonText = true,
   buttonText = "???",
@@ -15,34 +15,19 @@ const FloatingButton = ({
     setShow(!show);
   };
 
-  const childrenStyle = {
-    position: "absolute",
-    top: "30px",
-    left: "0",
-    padding: "10px",
-    border: "1px solid #ccc",
-    backgroundColor: "#fff",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
-    zIndex: "1000",
-    width: "500px", // Set the desired width here
-    fontSize: "12px",
-    height: "150px",
-    overflow: "auto",
-  };
-
   return (
     <>
-      <div style={{ position: "relative", display: "inline-block" }}>
+      <div className="relative inline-block">
         <CustomButton
           title={!showButtonText && buttonText}
-          style={buttonStyle}
+          className={`bg-gray-100 border border-gray-300 px-2 py-1 text-xs font-semibold text-gray-800 hover:bg-gray-200 ${buttonClassName}`}
           iconName={iconName}
           onClick={handleClick}
         >
           {showButtonText && buttonText}
         </CustomButton>
         {show && (
-          <div style={{ ...childrenStyle, ...floatingChildrenStyle }}>
+          <div className={`absolute left-0 top-[34px] z-[1000] h-40 w-[500px] overflow-auto rounded border border-gray-200 bg-white p-2.5 text-xs shadow-lg ${panelClassName}`}>
             {children || "Nothing to display!"}
           </div>
         )}

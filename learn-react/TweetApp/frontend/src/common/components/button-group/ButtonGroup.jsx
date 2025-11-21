@@ -1,36 +1,34 @@
 import React from "react";
 import CustomButton from "../custom-button/CustomButton";
 
-const defaultStyles = {
-    container: { flex: 1, overflow: "auto",
-        paddingBottom:'20px' },
-    button: {
-        backgroundColor: "#ccc", // Grey background color
-        border: "1px solid #999", // Grey border
-        padding: "2px 5px", // Adjust padding as needed
-        fontSize: "12px", // Small font size
-        borderRadius: "4px", // Rounded corners
-        marginRight: "10px",
-    },
-};
-
-const ButtonGroup = ({ options = [], style = {} }) => {
-    const combinedContainerStyle = {
-        ...defaultStyles.container,
-        ...style.container,
-    };
-    const combinedButtonStyle = { ...defaultStyles.button, ...style.button };
+const ButtonGroup = ({
+    options = [],
+    className = "",
+    buttonClassName = "",
+    orientation = "row",
+}) => {
+    const containerClasses =
+        orientation === "column"
+            ? "flex flex-col gap-2"
+            : "flex flex-wrap items-center gap-2";
 
     return (
-        <div style={combinedContainerStyle}>
+        <div className={`${containerClasses} ${className}`}>
             {options.map(
                 (
-                    { id, onClick, iconName, title, children, style: buttonStyle },
+                    {
+                        id,
+                        onClick,
+                        iconName,
+                        title,
+                        children,
+                        className: optionClassName = "",
+                    },
                     idx
                 ) => (
                     <CustomButton
                         key={id || `BTN_${idx}`}
-                        style={{ ...combinedButtonStyle, ...buttonStyle }}
+                        className={`bg-slate-100 border border-slate-300 px-2 py-1 text-xs font-semibold text-gray-800 transition hover:bg-slate-200 ${buttonClassName} ${optionClassName}`}
                         onClick={onClick}
                         iconName={iconName}
                         title={title}

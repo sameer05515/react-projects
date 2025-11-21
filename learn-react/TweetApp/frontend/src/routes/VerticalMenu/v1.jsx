@@ -2,21 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
-  const menuStyle = {
-    //width: "200px", // Set the width of the menu
-    backgroundColor: "#333", // Set the background color
-    color: "white", // Set the text color
-  };
-
-  const selectedLinkStyle = {
-    color: "white",
-    fontSize: "18px",
-  };
-
-  const listItemStyle = {
-    padding: "10px",
-  };
-
   const isPathStartsWith = (path) => {
     return window.location.pathname === path || window.location.pathname.startsWith(path);
   };
@@ -37,11 +22,14 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
   ];
 
   return (
-    <nav style={menuStyle}>
-      <ul>
+    <nav className="bg-gray-800 text-white">
+      <ul className="flex flex-col">
         {links.map(({ linkPath, linkHeader }) => (
-          <li key={linkPath} style={listItemStyle}>
-            <NavLink to={linkPath} style={isPathStartsWith(linkPath) ? selectedLinkStyle : {}}>
+          <li key={linkPath} className="p-2.5">
+            <NavLink 
+              to={linkPath} 
+              className={isPathStartsWith(linkPath) ? "text-white text-lg font-semibold" : "text-gray-300 hover:text-white"}
+            >
               {linkHeader}
             </NavLink>
           </li>
@@ -49,16 +37,10 @@ const VerticalMenu = ({ isAuthenticated, handleLogout }) => {
 
         {/* Add a Logout button */}
         {isAuthenticated && (
-          <li style={{ ...listItemStyle, marginLeft: "auto" }}>
+          <li className="p-2.5 ml-auto">
             <button
               onClick={handleLogout}
-              style={{
-                backgroundColor: "red", // Set the background color of the button
-                color: "white", // Set the text color of the button
-                border: "none", // Remove the button border
-                padding: "5px 10px", // Add some padding
-                cursor: "pointer", // Change the cursor to a hand pointer
-              }}
+              className="bg-red-600 text-white border-none py-1.5 px-2.5 cursor-pointer rounded hover:bg-red-700 transition-colors"
             >
               Logout
             </button>

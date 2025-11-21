@@ -12,7 +12,6 @@ import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
 import { getTagsForGivenIds } from "../../../redux/slices/tagsSlice";
-import { styles } from "../common/util";
 import AnswerCard from "./AnswerCard";
 
 // Utility function to format date
@@ -63,13 +62,13 @@ const QuestionCard = ({
           />
           {/* {category} */}
           {/* <div style={styles.datesStyle}>
-            <span style={{ marginRight: "10px" }}>
+            <span className="mr-2.5">
               <strong>Rating:</strong> {question.rating}
             </span>
-            <span style={{ marginRight: "10px" }}>
+            <span className="mr-2.5">
               <strong>Unique ID:</strong> {question.uniqueId}
             </span>
-            <span style={{ marginRight: "10px" }}>
+            <span className="mr-2.5">
               <strong>Category Id:</strong> {categoryId}
             </span>
           </div> */}
@@ -94,24 +93,24 @@ const QuestionCard = ({
             </time>
           </div>
 
-          <div>
+          <div className="mb-2">
             <span>
               <b>Last Revised On:- </b>{" "}
               {question.lastRevisedOn ? (
                 formatDateToDDMMMYYYYWithTime(question.lastRevisedOn)
               ) : (
-                <span style={{ color: "red" }}>{"Question never revised"}</span>
+                <span className="text-red-600">{"Question never revised"}</span>
               )}
             </span>
           </div>
 
-          <div style={{ ...styles.datesStyle }}>
+          <div className="text-xs rounded mb-2">
             <b>Tags: </b> {filteredTags?.length > 0 ? "" : "No tags added yet!"}
             {filteredTags.map(
               (tag) =>
                 tag && (
                   <HoverableSpan
-                    style={{ ...styles.tagStyle, margin: "5px" }}
+                    className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded m-1.5 inline-block cursor-pointer hover:bg-gray-400 transition-colors"
                     key={tag._id}
                     onClick={() => handleLinkedTagSelection(tag.uniqueId)}
                   >
@@ -120,16 +119,7 @@ const QuestionCard = ({
                 )
             )}
           </div>
-          <div
-            style={{
-              border: "1px solid #999", // Grey border
-              padding: "2px 5px", // Adjust padding as needed
-              borderRadius: "4px",
-              marginBottom: "10px",
-              width: "67vw",
-              overflow: "auto",
-            }}
-          >
+          <div className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5 w-[67vw] overflow-auto">
             <ToggleablePanel
               title="Additional Description for Question:-"
               showContent={true}
@@ -138,14 +128,10 @@ const QuestionCard = ({
                 <SmartPreviewer data={question.smartContent} />
               )}
             </ToggleablePanel>
-            {/* <b>Additional Description for Question:</b>
-            {question.smartContent && (
-              <SmartPreviewer data={question.smartContent} />
-            )} */}
           </div>
 
           {question.children && question.children.length > 0 && (
-            <div style={styles.descriptionStyle}>
+            <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
               <ToggleablePanel title="Child Questions:-">
                 <Tree
                   data={question.children}
@@ -162,12 +148,11 @@ const QuestionCard = ({
           )}
         </div>
         <div>
-          <div>
+          <div className="mb-2">
             <strong>{question.answers.length || 0} Answers</strong>
             <HoverableSpan
-              style={{ padding: "0px 5px" }}
+              className="px-1.5 cursor-pointer hover:underline"
               onClick={() =>
-                // alert("Add Answer functionality will be added soon")
                 onCreateAnswerClick && onCreateAnswerClick()
               }
             >

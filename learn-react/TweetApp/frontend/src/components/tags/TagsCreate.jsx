@@ -70,12 +70,15 @@ function TagsCreate({ tag, onCancelEdit }) {
   };
 
   return (
-    <div>
-      <h2>{isEditing ? 'Edit Tag' : 'Create Tag'}</h2>
-      <form onSubmit={handleSaveTag}>
+    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <h2 className="text-xl font-semibold text-gray-900">{isEditing ? "Edit Tag" : "Create Tag"}</h2>
+      <form className="mt-6 space-y-5" onSubmit={handleSaveTag}>
         <div>
-          <label htmlFor="name">Name:</label>
+          <label className="block text-sm font-medium text-gray-700" htmlFor="name">
+            Name
+          </label>
           <input
+            className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
             id="name"
             name="name"
@@ -83,19 +86,23 @@ function TagsCreate({ tag, onCancelEdit }) {
             onChange={handleInputChange}
             required
           />
-          {formErrors.name && <span className="error">{formErrors.name}</span>}
+          {formErrors.name && <span className="mt-1 block text-xs text-red-600">{formErrors.name}</span>}
         </div>
         <div>
-          <label htmlFor="description">Description:</label>
+          <label className="block text-sm font-medium text-gray-700" htmlFor="description">
+            Description
+          </label>
           <textarea
+            className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={4}
             id="description"
             name="description"
             value={tagData.description}
             onChange={handleInputChange}
           />
         </div>
-        <div>
-          <CustomButton type="submit">{isEditing ? 'Save Changes' : 'Create Tag'}</CustomButton>
+        <div className="flex flex-wrap gap-3">
+          <CustomButton type="submit">{isEditing ? "Save Changes" : "Create Tag"}</CustomButton>
           {isEditing && (
             <CustomButton type="button" onClick={onCancelEdit}>
               Cancel

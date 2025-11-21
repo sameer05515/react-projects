@@ -12,7 +12,6 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 const SearchInterviewMgmtRouterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const topicFormStyle = {};
 
   const [formData, setFormData] = useState({
     title: "",
@@ -77,11 +76,11 @@ const SearchInterviewMgmtRouterPage = () => {
   // }
 
   return (
-    <>
-      <h1>Search</h1>
-      <div style={topicFormStyle}>
-        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-          <label htmlFor="title" style={{ width: "9%", fontWeight: "bold" }}>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Search</h1>
+      <div className="mb-6">
+        <div className="flex items-center p-2.5 mb-4">
+          <label htmlFor="title" className="w-[9%] font-bold text-gray-700">
             Title
           </label>
           <input
@@ -91,48 +90,49 @@ const SearchInterviewMgmtRouterPage = () => {
             placeholder="Search {currently only searching in name of topic. search in description will be available soon!}"
             value={formData.title}
             onChange={handleInputChange}
-            style={{ width: "90%" }}
+            className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <pre>{JSON.stringify(criteriaList)}</pre>
-        <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+        <pre className="bg-gray-100 p-4 rounded overflow-auto text-sm">{JSON.stringify(criteriaList, null, 2)}</pre>
+        <div className="flex items-center p-2.5 mb-4">
           <label
             htmlFor="searchOptions"
-            style={{ width: "9%", fontWeight: "bold" }}
+            className="w-[9%] font-bold text-gray-700"
           >
             Search Options
           </label>
-          {Object.keys(criteriaList).map((criteria) => (
-            <div key={criteria}>
-              <label>
+          <div className="flex gap-4">
+            {Object.keys(criteriaList).map((criteria) => (
+              <label key={criteria} className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   name={criteria}
                   checked={criteriaList[criteria].value}
                   onChange={handleChange}
                   disabled={!criteriaList[criteria].editable}
+                  className="w-4 h-4"
                 />
-                {criteria.charAt(0).toUpperCase() + criteria.slice(1)}
+                <span>{criteria.charAt(0).toUpperCase() + criteria.slice(1)}</span>
               </label>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      <div>
+      <div className="mb-6 flex gap-2">
         <CustomButton onClick={() => handleSearch()}>Search</CustomButton>
         <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
       </div>
 
-      <div>
+      <div className="mt-6">
         {data && data.length > 0 ? (
           <>
-            <b>Search Results:- </b>
-            <ul>
+            <b className="text-lg">Search Results:- </b>
+            <ul className="list-disc list-inside mt-4 space-y-2">
               {data.map((t) => (
-                <li>
+                <li key={t.uniqueId}>
                   <HoverableSpan
-                    key={t.uniqueId}
+                    className="cursor-pointer hover:underline"
                     onClick={() => onChildTopicClick(t)}
                   >
                     {flatData?.find((ft) => ft.uniqueId === t.uniqueId)
@@ -143,10 +143,10 @@ const SearchInterviewMgmtRouterPage = () => {
             </ul>
           </>
         ) : (
-          <>No Result Found, or Search functionality not used yet!</>
+          <p className="text-gray-600">No Result Found, or Search functionality not used yet!</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

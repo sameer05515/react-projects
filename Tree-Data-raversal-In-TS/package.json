@@ -1,0 +1,29 @@
+{
+  "name": "tree-data-traversal-in-ts",
+  "version": "1.0.0",
+  "description": "Tree data structure and traversal algorithms implementation in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node index.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "tree",
+    "traversal",
+    "data-structures",
+    "typescript",
+    "dfs",
+    "bfs",
+    "algorithms"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
+

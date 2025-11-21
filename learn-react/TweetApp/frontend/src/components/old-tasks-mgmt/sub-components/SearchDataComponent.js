@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
-import { Button } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
+import CustomButton from "../../../common/components/custom-button/CustomButton";
 
 const SearchComponent = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -43,43 +42,41 @@ const SearchComponent = () => {
         />
       </div>
       {/* Add other search fields here */}
-      <button onClick={handleSearch}>Search</button>
+      <CustomButton onClick={handleSearch}>Search</CustomButton>
       {searchResults.length > 0 && (
-        <div>
-          <h6>Search Results:</h6>
-          <ul>
+        <div className="mt-4">
+          <h6 className="text-lg font-semibold mb-4">Search Results:</h6>
+          <ul className="space-y-4">
             {searchResults.map((selectedItem) => (
               <li key={selectedItem?._id}>
-                <Card>
-                  <Card.Body>
-                    <Card.Title>
-                      [{" "}
-                      {format(new Date(selectedItem?.date), "dd/MMM/yyyy", {
-                        locale: enGB,
-                      })}{" "}
-                      ] -{selectedItem?.title}
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      Card Subtitle
-                    </Card.Subtitle>
-                    <Card.Text>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: selectedItem?.htmlText,
-                        }}
-                      />
-                    </Card.Text>
+                <div className="border border-gray-300 rounded-lg shadow-sm p-4">
+                  <h5 className="text-lg font-semibold mb-2">
+                    [{" "}
+                    {format(new Date(selectedItem?.date), "dd/MMM/yyyy", {
+                      locale: enGB,
+                    })}{" "}
+                    ] -{selectedItem?.title}
+                  </h5>
+                  <h6 className="mb-2 text-sm text-gray-600">
+                    Card Subtitle
+                  </h6>
+                  <div className="mb-4">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: selectedItem?.htmlText,
+                      }}
+                    />
+                  </div>
 
-                    {selectedItem?.tags?.map((tag, _index) => (
-                      <Card.Link key={_index} href="#">
-                        {tag}
-                      </Card.Link>
-                    ))}
-                    <Card.Footer>
-                      <Button onClick={editData}>Edit</Button>
-                    </Card.Footer>
-                  </Card.Body>
-                </Card>
+                  {selectedItem?.tags?.map((tag, _index) => (
+                    <span key={_index} className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm mr-2 mb-2">
+                      {tag}
+                    </span>
+                  ))}
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <CustomButton onClick={editData}>Edit</CustomButton>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>

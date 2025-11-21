@@ -10,7 +10,7 @@ import TopicSectionForm from "./TopicSectionForm";
 const CreateSectionRouterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const topics = useSelector(selectAllFlatTopics) || []; // Fallback to an empty array
+  const topics = useSelector(selectAllFlatTopics);
   const { id } = useParams();
 
   const [formData] = useState({
@@ -22,7 +22,7 @@ const CreateSectionRouterPage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
 
   useEffect(() => {
-    if (id) {
+    if (id && topics) {
       const topic = topics.find((t) => t.uniqueId === id);
       setSelectedTopic(topic || null);
     }

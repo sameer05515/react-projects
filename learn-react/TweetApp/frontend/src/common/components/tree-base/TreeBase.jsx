@@ -59,7 +59,7 @@ const treeList = [
 ];
 
 // TreeNode component to render individual nodes
-const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => { } }) => {
+const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => {} }) => {
     const nodeRef = useRef(null);
     useEffect(() => {
         if (selectedNodeId === node.id && nodeRef.current) {
@@ -77,64 +77,61 @@ const TreeNode = ({ node, selectedNodeId, onNodeSelection = () => { } }) => {
         //     console.log(`Already selected!!`);
         // }
     };
-    return (
-        <li>
-            <span
-                ref={nodeRef}
-                style={{
-                    color: selectedNodeId === node.id ? "blue" : "black",
-                    fontSize: selectedNodeId === node.id ? "15px" : "12px",
-                }}
-                onClick={() => handleNodeSelection(node)}
-            >
-                {/* {node.name} */}
-                <TooltipSpan maxCharLength={25} text={node.name} />
-            </span>
-            {node.children && node.children.length > 0 && (
-                <ul>
-                    {node.children.map((child) => (
-                        <TreeNode
-                            key={child.id}
-                            node={child}
-                            selectedNodeId={selectedNodeId}
-                            onNodeSelection={onNodeSelection}
-                        />
-                    ))}
-                </ul>
-            )}
-        </li>
-    );
+  return (
+    <li className="ml-4 border-l border-gray-200 pl-4">
+      <span
+        ref={nodeRef}
+        className={`block cursor-pointer rounded px-1.5 py-0.5 text-xs transition hover:bg-emerald-50 ${
+          selectedNodeId === node.id ? "text-emerald-600 font-semibold text-sm" : "text-gray-800"
+        }`}
+        onClick={() => handleNodeSelection(node)}
+      >
+        <TooltipSpan maxCharLength={25} text={node.name} />
+      </span>
+      {node.children && node.children.length > 0 && (
+        <ul className="mt-1 space-y-1">
+          {node.children.map((child) => (
+            <TreeNode
+              key={child.id}
+              node={child}
+              selectedNodeId={selectedNodeId}
+              onNodeSelection={onNodeSelection}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
 };
 
 // TreeList component to render the entire tree
 const TreeList = ({
-    treeList = [],
-    selectedNodeId,
-    customStyle,
-    onNodeSelection = () => { },
+  treeList = [],
+  selectedNodeId,
+  className = "",
+  customStyle = {},
+  onNodeSelection = () => {},
 }) => {
     const handleNodeSelection = (node) => {
         // console.log(`[TreeList]: Mr node : ${JSON.stringify(node, null, 2)}. Please wait. TreenList is working you to get selected`);
         onNodeSelection(node);
     };
     return (
-        <div style={customStyle}>
-            {treeList && treeList.length > 0 && (
-                <>
-                    <ul>
-                        {treeList.map((link) => (
-                            <TreeNode
-                                key={link.id}
-                                node={link}
-                                selectedNodeId={selectedNodeId}
-                                onNodeSelection={handleNodeSelection}
-                            />
-                        ))}
-                    </ul>
-                </>
-            )}
-        </div>
-    );
+    <div className={`rounded-2xl border border-gray-200 bg-white p-4 shadow-sm ${className}`} style={customStyle}>
+      {treeList && treeList.length > 0 && (
+        <ul className="space-y-1">
+          {treeList.map((link) => (
+            <TreeNode
+              key={link.id}
+              node={link}
+              selectedNodeId={selectedNodeId}
+              onNodeSelection={handleNodeSelection}
+            />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 
 // Function to flatten the tree structure into an array
@@ -152,10 +149,11 @@ const flattenTree = (list, prevQueue = []) => {
 
 // TreeBase Example component to render the TreeList component and handle selection
 const TreeBase = ({
-    treeList = [],
-    selectedTreeNodeUID = null,
-    customStyle = {},
-    onNodeSelection = () => { },
+  treeList = [],
+  selectedTreeNodeUID = null,
+  customStyle = {},
+  className = "",
+  onNodeSelection = () => {},
 }) => {
     const [flattenedTree, setFlattenedTree] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -201,18 +199,24 @@ const TreeBase = ({
         }
     };
 
-    return (
-        <div>
-            <CustomButton onClick={handlePrevClick}>Previous</CustomButton>
-            <CustomButton onClick={handleNextClick}>Next</CustomButton>
-            <TreeList
-                treeList={treeList}
-                selectedNodeId={flattenedTree[selectedIndex]?.id || 0}
-                customStyle={customStyle}
-                onNodeSelection={handleNodeSelection}
-            />
-        </div>
-    );
+  return (
+    <div className={`space-y-4 ${className}`}>
+      <div className="flex flex-wrap gap-2">
+        <CustomButton className="bg-gray-200 text-gray-800" onClick={handlePrevClick}>
+          Previous
+        </CustomButton>
+        <CustomButton className="bg-gray-200 text-gray-800" onClick={handleNextClick}>
+          Next
+        </CustomButton>
+      </div>
+      <TreeList
+        treeList={treeList}
+        selectedNodeId={flattenedTree[selectedIndex]?.id || 0}
+        customStyle={customStyle}
+        onNodeSelection={handleNodeSelection}
+      />
+    </div>
+  );
 };
 
 export default TreeBase;

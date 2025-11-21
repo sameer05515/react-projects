@@ -2,9 +2,7 @@ package com.prem.myresume.util;
 
 import com.prem.base.util.Convertible;
 import com.prem.myresume.dto.ProfessionalExperienceDto;
-import com.prem.myresume.dto.UserInfoDto;
 import com.prem.myresume.entity.ProfessionalExperience;
-import com.prem.myresume.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

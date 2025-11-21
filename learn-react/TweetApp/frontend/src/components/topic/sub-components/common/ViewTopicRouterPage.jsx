@@ -44,9 +44,8 @@ const ViewTopic = () => {
     if (id) {
       refetch();
       dispatch(setSelectedTopicUniqueId(id));
-      // handleTopicTraversal(0);
     }
-  }, [id, topics, dispatch]);
+  }, [id, dispatch, refetch]);
 
   useEffect(() => {
     if (
@@ -77,7 +76,7 @@ const ViewTopic = () => {
 
   useEffect(() => {
     sectionsRefetch();
-  }, [id, sectionId]);
+  }, [id, sectionId, sectionsRefetch]);
 
   const handleEdit = (item) => {
     navigate(`/topic-mgmt/${data.uniqueId}/edit`);

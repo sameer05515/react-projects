@@ -7,38 +7,6 @@ const Login = () => {
     password: '',
   });
 
-  const inputStyle = {
-    width: '100%',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    fontSize: '16px',
-  };
-
-  const buttonStyle = {
-    width: '100%',
-    padding: '10px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    fontSize: '16px',
-    cursor: 'pointer',
-  };
-
-  const containerStyle = {
-    maxWidth: '300px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    backgroundColor: '#f5f5f5',
-  };
-
-  const labelStyle = {
-    display: 'block',
-    fontWeight: 'bold',
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,11 +24,11 @@ const Login = () => {
   };
 
   return (
-    <div style={containerStyle}>
-      <h2>Login</h2>
+    <div className="max-w-xs mx-auto p-5 border border-gray-300 rounded-lg bg-gray-50">
+      <h2 className="text-2xl font-bold mb-4">Login</h2>
       <form onSubmit={handleSubmit}>
-        <div style={labelStyle}>
-          <label htmlFor="username">Username:</label>
+        <div className="block mb-4">
+          <label htmlFor="username" className="block font-bold mb-2">Username:</label>
           <input
             type="text"
             id="username"
@@ -68,11 +36,11 @@ const Login = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div style={labelStyle}>
-          <label htmlFor="password">Password:</label>
+        <div className="block mb-4">
+          <label htmlFor="password" className="block font-bold mb-2">Password:</label>
           <input
             type="password"
             id="password"
@@ -80,10 +48,10 @@ const Login = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            style={inputStyle}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <CustomButton type="submit" style={buttonStyle}>
+        <CustomButton type="submit" className="w-full py-2 px-4 bg-blue-600 text-white border-none rounded text-base cursor-pointer hover:bg-blue-700 transition-colors">
           Login
         </CustomButton>
       </form>

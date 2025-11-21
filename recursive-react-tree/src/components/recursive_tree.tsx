@@ -1,13 +1,13 @@
 import React, { Fragment, useState } from "react"
-import { styled } from "@material-ui/core/styles"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"
-import Box from "@material-ui/core/Box"
+import { styled } from "@mui/material/styles"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"
+import Box from "@mui/material/Box"
 import { Tree, TreeBranch } from "../types/types"
 
 interface TreeItemProps {
     readonly id: string
-    readonly onSelectCallback: (e: React.MouseEvent<HTMLInputElement>) => void
+    readonly onSelectCallback: (e: React.MouseEvent<HTMLElement>) => void
     readonly label: string
     readonly isSelected: boolean | undefined
     readonly children: ReadonlyArray<JSX.Element>
@@ -40,7 +40,7 @@ const TreeItem = ({
           )}
           <StyledLabel
             className="label"
-            onClick={(e: React.MouseEvent<HTMLInputElement>) =>{
+            onClick={(e: React.MouseEvent<HTMLElement>) =>{
               setSelected(!selected)
               onSelectCallback(e)
             }}
@@ -58,8 +58,7 @@ const TreeItem = ({
 }
 
 const RecursiveTree = ({ listMeta, onSelectCallback }: RecursiveTreeProps) => {
-    const createTree = (branch: TreeBranch) =>
-        branch.branches && (
+    const createTree = (branch: TreeBranch) => (
         <TreeItem
             id={branch.id}
             key={branch.id}
@@ -69,16 +68,16 @@ const RecursiveTree = ({ listMeta, onSelectCallback }: RecursiveTreeProps) => {
             isSelected={branch.selected}
             label={branch.label}
         >
-            {branch.branches.map((branch: TreeBranch) => {
+            {branch.branches?.map((branch: TreeBranch) => {
             return <Fragment key={branch.id}>{createTree(branch)}</Fragment>
-            })}
+            }) || []}
         </TreeItem>
         )
 
     return (
       <Box>
-        {listMeta.map((branch: TreeBranch, i: any) => (
-          <Box key={i}>{createTree(branch)}</Box>
+        {listMeta.map((branch: TreeBranch) => (
+          <Box key={branch.id}>{createTree(branch)}</Box>
         ))}
       </Box>
     )

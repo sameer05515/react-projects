@@ -1,0 +1,40 @@
+/* Accordion container */
+.accordion {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  /* Accordion header */
+  .accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  /* Accordion icon */
+  .accordion-icon {
+    font-size: 14px;
+    transition: transform 0.3s;
+  }
+  
+  /* Icon rotation for open accordion */
+  .open {
+    transform: rotate(180deg);
+  }
+  
+  /* Icon rotation for closed accordion */
+  .closed {
+    transform: rotate(0deg);
+  }
+  
+  /* Accordion content */
+  .accordion-content {
+    padding: 10px;
+    background-color: white;
+    border-top: 1px solid #ddd;
+  }
+  

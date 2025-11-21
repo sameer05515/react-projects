@@ -14,40 +14,17 @@ const CountFullStopLines = () => {
     setCount(fullStopSentences);
   };
 
-  const styles = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: '20px',
-    },
-    textarea: {
-      width: '95%',
-      height: '200px',
-      padding: '10px',
-      fontSize: '16px',
-      borderRadius: '5px',
-      border: '1px solid #ccc',
-      marginBottom: '10px',
-      resize: 'none',
-    },
-    label: {
-      fontSize: '18px',
-      color: '#333',
-    },
-  };
-
   return (
-    <div style={styles.container}>
+    <div className="flex flex-col items-center justify-center mt-5">
       <textarea
-        style={styles.textarea}
+        className="w-[95%] h-[200px] p-2.5 text-base rounded border border-gray-300 mb-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={text}
         onChange={handleChange}
         rows="10"
+        placeholder="Enter text to count sentences ending with a full stop..."
       />
-      <label style={styles.label}>
-        Lines ending with a full stop: {count}
+      <label className="text-lg text-gray-700 font-semibold">
+        Lines ending with a full stop: <span className="text-blue-600">{count}</span>
       </label>
     </div>
   );

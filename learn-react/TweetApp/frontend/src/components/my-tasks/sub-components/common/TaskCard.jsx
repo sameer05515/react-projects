@@ -60,7 +60,7 @@ const TaskCard = ({
 
       <TaskDetails task={task} />
 
-      <CustomButton style={styles.tagStyle} onClick={() => onAddSubTask(task)}>
+      <CustomButton className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer" onClick={() => onAddSubTask(task)}>
         Add Sub Task
       </CustomButton>
 
@@ -95,52 +95,56 @@ const TaskButtons = ({
   isPinned,
   pinnedTasks,
   onChildTaskClick,
-}) => (
-  <div>
-    <CustomButton style={styles.tagStyle} onClick={() => handleTraverse(-1)}>
-      Previous
-    </CustomButton>
-    <CustomButton style={styles.tagStyle} onClick={onEdit}>
-      Edit
-    </CustomButton>
-    <CustomButton style={styles.tagStyle} onClick={handleDescriptionToggle}>
-      {showDescr ? "Hide Description" : "Show Description"}
-    </CustomButton>
-    <CustomButton style={styles.tagStyle} onClick={() => handleTraverse(1)}>
-      Next
-    </CustomButton>
-    <CustomButton style={styles.tagStyle} onClick={handlePinTask}>
-      {isPinned ? "Un-Pin" : "Pin"} Task
-    </CustomButton>
+}) => {
+  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
+  
+  return (
+    <div className="mb-4 flex flex-wrap gap-2">
+      <CustomButton className={tagButtonClass} onClick={() => handleTraverse(-1)}>
+        Previous
+      </CustomButton>
+      <CustomButton className={tagButtonClass} onClick={onEdit}>
+        Edit
+      </CustomButton>
+      <CustomButton className={tagButtonClass} onClick={handleDescriptionToggle}>
+        {showDescr ? "Hide Description" : "Show Description"}
+      </CustomButton>
+      <CustomButton className={tagButtonClass} onClick={() => handleTraverse(1)}>
+        Next
+      </CustomButton>
+      <CustomButton className={tagButtonClass} onClick={handlePinTask}>
+        {isPinned ? "Un-Pin" : "Pin"} Task
+      </CustomButton>
 
-    <FloatingButton
-      buttonStyle={styles.tagStyle}
-      buttonText={"Show Pinned Tasks"}
-    >
-      <div style={{ padding: "10px" }}>
-        <b>List of All Pinned Tasks:</b>
-      </div>
-      {pinnedTasks.length > 0 ? (
-        <ul style={styles.ulStyle}>
-          {pinnedTasks.map((t) => (
-            <li style={styles.liStyles} key={t.uniqueId}>
-              <HoverableSpan
-                onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}
-              >
-                {t.title}
-              </HoverableSpan>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div style={{ padding: "10px" }}>No pinned tasks available.</div>
-      )}
-    </FloatingButton>
-  </div>
-);
+      <FloatingButton
+        buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
+        buttonText={"Show Pinned Tasks"}
+      >
+        <div className="p-2.5">
+          <b>List of All Pinned Tasks:</b>
+        </div>
+        {pinnedTasks.length > 0 ? (
+          <ul className="list-none pl-0">
+            {pinnedTasks.map((t) => (
+              <li className="ml-4 pb-1" key={t.uniqueId}>
+                <HoverableSpan
+                  onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}
+                >
+                  {t.title}
+                </HoverableSpan>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="p-2.5">No pinned tasks available.</div>
+        )}
+      </FloatingButton>
+    </div>
+  );
+};
 
 const TaskDetails = ({ task }) => (
-  <div>
+  <div className="mb-4">
     <SmartPreviewer
       data={{
         content: prepareTaskTitle(task, "TaskCard"),
@@ -149,7 +153,7 @@ const TaskDetails = ({ task }) => (
       markdownStyles={{ fontSize: "20px" }}
     />
 
-    <div style={styles.datesStyle}>
+    <div className="text-xs rounded flex flex-wrap gap-2.5 mb-1.5">
       <span>
         <strong>Status:</strong> {getStatusLabelForId(task.taskStatus)}
       </span>
@@ -172,7 +176,7 @@ const TaskDetails = ({ task }) => (
 );
 
 const TaskDescription = ({ task }) => (
-  <div style={styles.descriptionStyle}>
+  <div className="bg-amber-50 border border-gray-600 p-1.5 rounded mb-2.5">
     <ToggleablePanel showContent={true} title={"Descriptions:"}>
       {task.descriptions?.map((descr, idx) => (
         <ToggleablePanel
@@ -187,28 +191,32 @@ const TaskDescription = ({ task }) => (
   </div>
 );
 
-const TaskTags = ({ tags, handleLinkedTagSelection }) => (
-  <div style={styles.tagContainerStyle}>
-    <b>Tags:</b>
-    {tags.map(
-      (tag) =>
-        tag && (
-          <HoverableSpan
-            style={styles.tagStyle}
-            key={tag._id}
-            onClick={() => handleLinkedTagSelection(tag.uniqueId)}
-          >
-            {tag.title}
-          </HoverableSpan>
-        )
-    )}
-  </div>
-);
+const TaskTags = ({ tags, handleLinkedTagSelection }) => {
+  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
+  
+  return (
+    <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
+      <b>Tags:</b>
+      {tags.map(
+        (tag) =>
+          tag && (
+            <HoverableSpan
+              className={`${tagButtonClass} inline-block`}
+              key={tag._id}
+              onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+            >
+              {tag.title}
+            </HoverableSpan>
+          )
+      )}
+    </div>
+  );
+};
 
 const TaskChildren = ({ children, onChildTaskClick }) => (
-  <div style={styles.childrenContainerStyle}>
+  <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
     <b>Child Tasks:</b>
-    <ul>
+    <ul className="list-disc list-inside">
       {children.map((t) => (
         <li key={t.uniqueId}>
           <HoverableSpan onClick={() => onChildTaskClick(t)}>
@@ -311,10 +319,10 @@ const ActivityComp = ({ task }) => {
 
   const renderActivities = () =>
     tActivities.map((activity, idx) => (
-      <div key={activity.uniqueId} style={styles.activityCard}>
-        <div style={styles.datesStyle}>
-          <strong style={styles.userName}>{activity.userDetails.name}</strong>
-          <span style={styles.dateSpan}>
+      <div key={activity.uniqueId} className="bg-yellow-100 border border-gray-600 p-1.5 rounded mb-2.5">
+        <div className="text-xs rounded flex flex-wrap gap-2.5 mb-1.5">
+          <strong className="text-sm mr-2.5">{activity.userDetails.name}</strong>
+          <span className="mr-2.5">
             <strong>Created:</strong>{" "}
             {formatDateToDDMMMYYYYWithTime(activity.createdDate)}
           </span>
@@ -328,7 +336,7 @@ const ActivityComp = ({ task }) => {
         </ToggleablePanel>
         {activity.userDetails.id === getUserIdFromToken() && (
           <CustomButton
-            style={styles.tagStyle}
+            className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer"
             onClick={() => handleEditActivity(activity)}
           >
             Edit
@@ -345,7 +353,7 @@ const ActivityComp = ({ task }) => {
         <>
           {!showForm && (
             <CustomButton
-              style={styles.tagStyle}
+              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer"
               onClick={() => setShowForm(true)}
             >
               Add New Comment
@@ -367,7 +375,7 @@ const ActivityComp = ({ task }) => {
           {tActivities.length > 0 ? (
             renderActivities()
           ) : (
-            <div style={{ padding: "10px" }}>No comments available.</div>
+            <div className="p-2.5">No comments available.</div>
           )}
         </>
       );
@@ -375,14 +383,16 @@ const ActivityComp = ({ task }) => {
   };
 
   return (
-    <div style={styles.activityContainer}>
+    <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
       <b>Activity</b>
-      <div>
+      <div className="mt-2">
         Show
         {activityList.map((a) => (
           <HoverableSpan
             key={a.id}
-            style={styles.activityStyle}
+            className={`px-1.5 py-0.5 text-xs rounded mr-2.5 ml-2.5 cursor-pointer ${
+              selectedActivity.id === a.id ? "bg-blue-200" : ""
+            }`}
             isSelected={selectedActivity.id === a.id}
             isHoverable={a.active}
             onClick={() => setSelectedActivity(a)}
@@ -404,124 +414,54 @@ const CommentForm = ({
   handleSmartEditorError,
   saveComment,
   setShowForm,
-}) => (
-  <div>
-    <label htmlFor="description">
-      {formData.uniqueId ? "Edit" : "New"} Comment
-    </label>
-    <SmartEditor
-      preview={false}
-      initialValue={formData.description}
-      onChange={handleSmartEditorChange}
-      onError={handleSmartEditorError}
-    />
+}) => {
+  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
+  
+  return (
+    <div className="mt-4">
+      <label htmlFor="description" className="block font-semibold mb-2">
+        {formData.uniqueId ? "Edit" : "New"} Comment
+      </label>
+      <SmartEditor
+        preview={false}
+        initialValue={formData.description}
+        onChange={handleSmartEditorChange}
+        onError={handleSmartEditorError}
+      />
 
-    {formErrors.length > 0 && (
-      <div>
-        {formErrors.map((error, index) => (
-          <span key={index} style={styles.error}>
-            {error}
-          </span>
-        ))}
+      {formErrors.length > 0 && (
+        <div className="mt-2">
+          {formErrors.map((error, index) => (
+            <span key={index} className="block text-red-600 text-sm mt-1.5">
+              {error}
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="mt-4 flex gap-2">
+        <CustomButton className={tagButtonClass} onClick={saveComment}>
+          {formData.uniqueId ? "Update" : "Save"}
+        </CustomButton>
+        <CustomButton
+          className={tagButtonClass}
+          onClick={() => {
+            setShowForm(false);
+            setFormData({
+              uniqueId: "",
+              type: "comment",
+              description: {
+                content: "",
+                textOutputType: "",
+                textInputType: "",
+              },
+            });
+          }}
+        >
+          Cancel
+        </CustomButton>
       </div>
-    )}
-    <CustomButton style={styles.tagStyle} onClick={saveComment}>
-      {formData.uniqueId ? "Update" : "Save"}
-    </CustomButton>
-    <CustomButton
-      style={styles.tagStyle}
-      onClick={() => {
-        setShowForm(false);
-        setFormData({
-          uniqueId: "",
-          type: "comment",
-          description: {
-            content: "",
-            textOutputType: "",
-            textInputType: "",
-          },
-        });
-      }}
-    >
-      Cancel
-    </CustomButton>
-  </div>
-);
-
-const styles = {
-  error: {
-    color: "red",
-    fontSize: "14px",
-    marginTop: "5px",
-    display: "block",
-  },
-  activityStyle: {
-    padding: "2px 5px",
-    fontSize: "12px",
-    borderRadius: "4px",
-    marginRight: "10px",
-    marginLeft: "10px",
-    cursor: "pointer",
-  },
-  tagStyle: {
-    backgroundColor: "#ccc",
-    border: "1px solid #999",
-    padding: "2px 5px",
-    fontSize: "12px",
-    borderRadius: "4px",
-    marginRight: "10px",
-    cursor: "pointer",
-  },
-  datesStyle: {
-    fontSize: "12px",
-    borderRadius: "4px",
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "10px",
-    marginBottom: "5px",
-  },
-  descriptionStyle: {
-    backgroundColor: "cornsilk",
-    border: "1px solid #999",
-    padding: "5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  tagContainerStyle: {
-    backgroundColor: "lemonchiffon",
-    border: "1px solid #999",
-    padding: "5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  childrenContainerStyle: {
-    backgroundColor: "lightgoldenrodyellow",
-    border: "1px solid #999",
-    padding: "5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  activityContainer: {
-    backgroundColor: "lightgoldenrodyellow",
-    border: "1px solid #999",
-    padding: "5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  activityCard: {
-    backgroundColor: "lightyellow",
-    border: "1px solid #999",
-    padding: "5px",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  userName: {
-    fontSize: "15px",
-    marginRight: "10px",
-  },
-  dateSpan: {
-    marginRight: "10px",
-  },
+    </div>
+  );
 };
 
 export default TaskCard;

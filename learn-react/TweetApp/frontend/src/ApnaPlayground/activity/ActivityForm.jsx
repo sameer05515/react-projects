@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import EditActivityForm from "./EditActivityForm";
 import APPLICATION_BASE_URL from "../../common/service/config";

@@ -102,24 +102,27 @@ export const updateTopic = createAsyncThunk(
 
 const getNameWithAncestors = (topic) => {
   if (!topic) {
-      return "";
+    return "";
   }
-  let ancestorNames = [];
-  let currentAncestor = topic.ancestors?.find(
-      (ancestor) => !ancestor.parentId
-  )||null;
+  const ancestorNames = [];
+  let currentAncestor =
+    topic.ancestors?.find((ancestor) => !ancestor.parentId) || null;
+
   while (currentAncestor) {
-      ancestorNames.push(currentAncestor.name);
-      currentAncestor = topic.ancestors.find(
-          (ancestor) => ancestor.parentId === currentAncestor.uniqueId
-      );
+    ancestorNames.push(currentAncestor.name);
+    const currentId = currentAncestor.uniqueId;
+    currentAncestor =
+      topic.ancestors?.find((ancestor) => ancestor.parentId === currentId) ||
+      null;
   }
+
   ancestorNames.push(topic.name);
-  const fullyQualifiedName = ancestorNames.join(" / ");
-  return fullyQualifiedName;
+  return ancestorNames.join(" / ");
 };
 
-const prepareTopicsQueue = (list, prevQueue = []) => {
+// Helper function to prepare flat data from tree-structured data
+// Export for use in selectors
+export const prepareTopicsQueue = (list, prevQueue = []) => {
   let queue = [...prevQueue];
   
   if (list && list.length > 0) {
@@ -139,7 +142,6 @@ const prepareTopicsQueue = (list, prevQueue = []) => {
           queue = [...queue, ...childQ];
       });
   }
-  // console.log(JSON.stringify(queue, null, 2));
   return queue;
 };
 
@@ -147,8 +149,7 @@ const topicSlice = createSlice({
   name: "topics",
   initialState: {
     selectedTopicUniqueId: null,
-    data: [],
-    flatData:[],
+    data: [], // Only store tree structure - flatData computed via selector
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -170,7 +171,7 @@ const topicSlice = createSlice({
       .addCase(fetchTopics.fulfilled, (state, action) => {
         state.loading = "fulfilled";
         state.data = action.payload;
-        state.flatData = prepareTopicsQueue(action.payload);
+        // flatData now computed via memoized selector
       })
       .addCase(fetchTopics.rejected, (state, action) => {
         state.loading = "rejected";
@@ -227,9 +228,10 @@ export const selectAllTreeTopics = createSelector(
   (topicsState) => topicsState.data
 );
 
+// Memoized selector to derive flat data from tree structure
 export const selectAllFlatTopics = createSelector(
-  selectTopicsState,
-  (topicsState) => topicsState.flatData
+  [selectAllTreeTopics],
+  (treeTopics) => prepareTopicsQueue(treeTopics)
 );
 
 export const selectSelectedTopicUniqueId = createSelector(
@@ -261,4 +263,20 @@ export const selectPrevTopicUniqueId = createSelector(
     const prevIndex = (selectedIndex + dataLength - 1) % dataLength;
     return flatTopicList[prevIndex].uniqueId;
   }
+);
+
+// Combined selector for common topic state properties (optimizes multiple useSelector calls)
+// Use this instead of multiple useSelector calls for topics, loading, error, and selectedId
+export const selectTopicsStateCombined = createSelector(
+  [
+    selectAllTreeTopics,
+    selectSelectedTopicUniqueId,
+    selectTopicsState,
+  ],
+  (topics, selectedId, topicsState) => ({
+    topics,
+    loading: topicsState.loading,
+    error: topicsState.error,
+    selectedId,
+  })
 );

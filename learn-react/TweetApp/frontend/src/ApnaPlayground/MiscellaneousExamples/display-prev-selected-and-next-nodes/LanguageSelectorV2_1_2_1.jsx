@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArcherContainer } from "react-archer";
-import { languages, styles, getArcherBoxesForLanguage, getAllArcherBoxes } from "./common/utils";
+import { languages, styles, getArcherBoxesForLanguage } from "./common/utils";
 import { Select, InfoBoxV1, JSONPreview } from "./common/sub-components";
 
 const LanguageSelectorV2_1_2_1 = () => {

@@ -145,7 +145,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
       />
 
       <div>
-        <Breadcrumbs providedItem={topic as any} providedItemType={BreadcrumbItemType.TOPIC as any} ancestors={topic.ancestors as any} onAncestorClick={(a) => handleAncestorClick(a)} onBaseSpanClick={onBaseSpanClick} />
+        <Breadcrumbs providedItem={topic as any} providedItemType={BreadcrumbItemType.TOPIC as any} ancestors={topic.ancestors as any} onAncestorClick={handleAncestorClick as any} onBaseSpanClick={onBaseSpanClick} />
         <h3>{topic.name}</h3>
         <div className="text-xs rounded mb-2.5">
           <ListSection
@@ -254,7 +254,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
 
       <ToggleablePanel
         className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
-        showContent={topic?.sections?.length > 0}
+        showContent={(topic?.sections?.length ?? 0) > 0}
         title={`Sections [${topic?.sections?.length || 0}]:-`}
       >
         <ListSection
@@ -271,11 +271,11 @@ const TopicCard: React.FC<TopicCardProps> = ({
 
       <ToggleablePanel
         className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
-        showContent={topic?.children?.length > 0}
+        showContent={(topic?.children?.length ?? 0) > 0}
         title={`Child Topics [${topic?.children?.length || 0}]:-`}
       >
         <Tree
-          data={topic.children}
+          data={topic.children || []}
           errorMessageOnNoData="No Child Topic Added Yet!!"
           renderNode={(t) => (
             <>
@@ -294,7 +294,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
       >
         {topic.description && !topic.smartContent && (
           // ReactHtmlParser(topic.description || "")
-          <SmartPreviewer data={{ content: topic.description || "", textOutputType: "html" }} />
+          <SmartPreviewer data={{ content: topic.description || "", textOutputType: "html", textInputType: "html" }} />
         )}
         {topic.smartContent && <SmartPreviewer data={topic.smartContent} />}
       </ToggleablePanel>
@@ -302,7 +302,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
       {topicSections && topicSections.length > 0 ? (
         <ToggleablePanel
           className="mb-2.5 rounded border border-gray-300 px-1.5 py-1"
-          showContent={topic?.sections?.length > 0}
+          showContent={(topic?.sections?.length ?? 0) > 0}
           title={`Sections [${topic?.sections?.length || 0}]:-`}
         >
           <ListSection

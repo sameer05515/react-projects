@@ -9,7 +9,16 @@ export const BreadcrumbItemType={
 }
 
 
-const Breadcrumbs = ({
+interface BreadcrumbsProps {
+    parentId?: string;
+    providedItem?: any;
+    providedItemType?: any;
+    ancestors?: any[];
+    onAncestorClick?: (ancestor: any) => void;
+    onBaseSpanClick?: () => void;
+}
+
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     parentId = "",
     providedItem = null,
     providedItemType= null,

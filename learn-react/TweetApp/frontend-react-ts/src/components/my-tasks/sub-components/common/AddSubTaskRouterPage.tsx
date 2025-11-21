@@ -10,10 +10,11 @@ import CustomButton from "../../../../common/components/custom-button/CustomButt
 import {
     selectAllFlatTasks, updateTask
 } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 
 const AddSubTaskRouterPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const { id } = useParams();
   
     const tasks = useSelector(selectAllFlatTasks);
@@ -21,7 +22,7 @@ const AddSubTaskRouterPage = () => {
     const task = tasks?.find((t) => t.uniqueId === id);
   
     const taskOptions = tasks
-      .filter((t) => t.uniqueId !== task.uniqueId)
+      .filter((t) => task && t.uniqueId !== task.uniqueId)
       .map((t) => ({
         value: t.uniqueId, // Assuming task have unique IDs
         label: t.title, // Display tag title in the dropdown
@@ -36,29 +37,29 @@ const AddSubTaskRouterPage = () => {
     };
   
     const [formData, setFormData] = useState({
-      _id: task && task._id ? task._id : "",
+      _id: task && (task as any)._id ? (task as any)._id : "",
       uniqueId: task && task.uniqueId ? task.uniqueId : "",
       name: task && task.name ? task.name : "",
-      description: task && task.description ? task.description : "",
-      parentId: task && task.parentId ? task.parentId : "",
-      linkedTasks: task && task.linkedTasks ? task.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs
-      tags: task && task.tags ? task.tags : [], // Set the initial tags based on the task
+      description: task && (task as any).description ? (task as any).description : "",
+      parentId: task && (task as any).parentId ? (task as any).parentId : "",
+      linkedTasks: task && (task as any).linkedTasks ? (task as any).linkedTasks : [], // Assuming 'linkedTasks' is an array of linked task IDs
+      tags: task && (task as any).tags ? (task as any).tags : [], // Set the initial tags based on the task
       children: task && task.children ? task.children.map((c) => c.uniqueId) : [],
     });
   
     const handleSaveTask = () => {
-      console.log(
-        `Going to save: taskId: ${task._id} , formData : ${JSON.stringify(
-          formData
-        )}`
-      );
-      if (task && task._id && task.uniqueId) {
+      if (task && (task as any)._id && task.uniqueId) {
+        console.log(
+          `Going to save: taskId: ${(task as any)._id} , formData : ${JSON.stringify(
+            formData
+          )}`
+        );
         // If a task is provided, it's an update
         dispatch(
           updateTask({
-            taskId: task._id,
+            taskId: (task as any)._id,
             taskData: { children: formData.children },
-          })
+          }) as any
         );
         // dispatch(updateTask({ taskId: task._id, taskData: {} }));
         // alert('going to edit')
@@ -73,7 +74,7 @@ const AddSubTaskRouterPage = () => {
       navigate({
         pathname: `/task-mgmt/create`,
         search: createSearchParams({
-          parent: id,
+          parent: id || "",
         }).toString(),
       });
     };

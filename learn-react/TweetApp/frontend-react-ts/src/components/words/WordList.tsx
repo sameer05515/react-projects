@@ -67,7 +67,7 @@ const WordList: React.FC = () => {
               </div>
               {word.details && (
                 <div className="mt-4 text-gray-700 prose prose-sm max-w-none">
-                  <SmartPreviewer data={{ content: word.details || "", textOutputType: "html" }} />
+                  <SmartPreviewer data={{ content: word.details || "", textOutputType: "html", textInputType: "TextArea" }} />
                 </div>
               )}
             </div>

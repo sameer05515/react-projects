@@ -74,7 +74,7 @@ function EditableLabel({
             className={`rounded-xl border border-gray-200 bg-white p-3 shadow-inner ${editorClassName}`}
             style={textAreaStyle}
           >
-            <CKEditor editor={ClassicEditor} data={editedText} onChange={handleEditorChange} />
+            <CKEditor editor={ClassicEditor as any} data={editedText} onChange={handleEditorChange} />
           </div>
           <div className="flex flex-wrap gap-2">
             <CustomButton className="bg-emerald-600 hover:bg-emerald-700" onClick={handleSubmitClick}>

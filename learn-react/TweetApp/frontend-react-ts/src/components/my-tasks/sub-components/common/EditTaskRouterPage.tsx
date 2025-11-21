@@ -3,19 +3,20 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
 import { fetchTasks } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import TaskForm from "./TaskForm";
 import { apiRequest } from "../../../../common/service/apiClient/v1";
 
 const EditTaskRouterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   // const [searchParams] = useSearchParams();
   // const parentId = searchParams.get("parent");
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchTaskDetails = useCallback(() => {
     setLoading(true);
@@ -29,7 +30,7 @@ const EditTaskRouterPage = () => {
         }
       })
       .catch((err) => console.error("Some unexpected error occurred", err))
-      .finally(setLoading(false));
+      .finally(() => setLoading(false));
   }, [url]);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const EditTaskRouterPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
   return (
     <>
@@ -49,7 +50,7 @@ const EditTaskRouterPage = () => {
         <TaskForm
           task={data}
           onSave={() => {
-            dispatch(fetchTasks());
+            dispatch(fetchTasks() as any);
             navigate(-1);
           }}
           onCancelEdit={() => navigate(`/task-mgmt/${id}`)}

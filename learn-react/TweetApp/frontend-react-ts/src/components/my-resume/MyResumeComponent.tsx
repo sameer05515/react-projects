@@ -2,17 +2,22 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyResumeData } from '../../redux/slices/myResumeSlice'; 
+import { fetchMyResumeData } from '../../redux/slices/myResumeSlice';
+import type { AppDispatch, RootState } from '../../redux/store';
 
-const MyResumeComponent = ({ uniqueId }) => {
-  const dispatch = useDispatch();
-  const myResumeData = useSelector((state) => state.myResume.data);
-  const status = useSelector((state) => state.myResume.status);
-  const error = useSelector((state) => state.myResume.error);
+interface MyResumeComponentProps {
+  uniqueId?: string;
+}
+
+const MyResumeComponent: React.FC<MyResumeComponentProps> = ({ uniqueId }) => {
+  const dispatch: AppDispatch = useDispatch();
+  const myResumeData = useSelector((state: RootState) => (state.myResume as any).data);
+  const status = useSelector((state: RootState) => (state.myResume as any).status);
+  const error = useSelector((state: RootState) => (state.myResume as any).error);
 
   useEffect(() => {
     if (uniqueId) {
-      dispatch(fetchMyResumeData(uniqueId));
+      dispatch(fetchMyResumeData(uniqueId) as any);
     }
   }, [dispatch, uniqueId]);
 

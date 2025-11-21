@@ -13,6 +13,7 @@ import {
   fetchTasks,
   selectTasksStateCombined,
 } from "../../redux/slices/taskSlice";
+import type { AppDispatch, RootState } from "../../redux/store";
 import TaskCardViewDashboard from "./sub-components/common/TaskCardViewDashboard";
 import { prepareTaskTitle } from "./sub-components/common/taskUtils";
 
@@ -41,7 +42,7 @@ const TaskBase = () => {
 };
 
 const TaskTreeViewDashboard = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const selectedElementRef = useRef<HTMLSpanElement | null>(null);
   const sidebarButtonClass =
@@ -54,7 +55,7 @@ const TaskTreeViewDashboard = () => {
   );
 
   // Use combined selector to optimize multiple useSelector calls
-  const { tasks, status, error, selectedId: selectedTaskUniqueId } = useSelector(selectTasksStateCombined);
+  const { tasks, status, error, selectedId: selectedTaskUniqueId } = useSelector((state: RootState) => selectTasksStateCombined(state));
 
   useEffect(() => {
     if (selectedElementRef.current) {
@@ -108,8 +109,9 @@ const TaskTreeViewDashboard = () => {
               >
                 <SmartPreviewer
                   data={{
-                    content: prepareTaskTitle(t, "TaskBase"),
+                    content: prepareTaskTitle(t as any, "TaskBase"),
                     textOutputType: SupportedTextFormats.MARKDOWN,
+                    textInputType: "TextArea",
                   }}
                   markdownStyles={{ fontSize: "12px" }}
                 />

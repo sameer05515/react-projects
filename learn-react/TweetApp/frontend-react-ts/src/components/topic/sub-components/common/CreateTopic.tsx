@@ -10,11 +10,12 @@ import {
   fetchTopics,
   updateTopic,
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch, RootState } from "../../../../redux/store";
 
-function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
-  const dispatch = useDispatch();
+function CreateTopic({ parentId, topic, onSave, onCancelEdit }: { parentId?: string | null; topic?: any; onSave?: () => void; onCancelEdit?: () => void }) {
+  const dispatch: AppDispatch = useDispatch();
 
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector((state: RootState) => getTagsForComboOptions(state));
 
   const [showDescr, setShowDescr] = useState(false);
 
@@ -34,11 +35,11 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
     tags: topic ? topic.tags : [], // Set the initial tags based on the topic
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!topicData.name.trim()) {
       errors.push("Name is required");
@@ -68,19 +69,18 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
     setTopicData({ ...topicData, tags: selectedTags.map((tag) => tag.value) });
   };
 
-  const handleSaveTopic = (event) => {
-    event.preventDefault();
+  const handleSaveTopic = () => {
     if (!validateForm()) {
       return;
     }
     if (topic) {
       // If a topic is provided, it's an update
-      dispatch(updateTopic({ ...topicData, uniqueId: topic.uniqueId }));
+      dispatch(updateTopic({ ...topicData, uniqueId: topic.uniqueId }) as any);
     } else {
       // Otherwise, it's a new topic creation
-      dispatch(createTopic(topicData));
+      dispatch(createTopic(topicData) as any);
     }
-    dispatch(fetchTopics());
+    dispatch(fetchTopics() as any);
 
     // Notify the parent component to handle closing the CreateTopic form
     if (onSave) {
@@ -135,7 +135,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         {showDescr && (
           <div className="border border-gray-300 p-1.5 m-1.5 rounded">
             {/* {ReactHtmlParser(topicData.description || "")} */}
-            <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html" }}/>
+            <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html", textInputType: "TextArea" }}/>
           </div>
         )}
 
@@ -181,10 +181,10 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         )}
       </div>
       <div className="flex gap-2.5">
-        <CustomButton onClick={(event) => handleSaveTopic(event)}>
+        <CustomButton onClick={handleSaveTopic}>
           {topic ? "Save Changes" : "Create Topic"}
         </CustomButton>
-        <CustomButton onClick={() => onCancelEdit()}>Cancel</CustomButton>
+        <CustomButton onClick={() => onCancelEdit?.()}>Cancel</CustomButton>
       </div>
       {/* </form> */}
     </div>

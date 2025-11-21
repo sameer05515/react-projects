@@ -73,6 +73,7 @@ Main aim of TweetApp is to help users to
   - Using Memory-maps we want to relate learnings (in form of Topics, Questions, Tags, Words or other Memory-maps too.)
 `,
             textOutputType: availableOutputTypes.HTML,
+            textInputType: "TextArea",
           }}
         />
       </div>

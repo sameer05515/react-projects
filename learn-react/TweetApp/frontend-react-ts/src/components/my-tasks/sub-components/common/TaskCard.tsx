@@ -19,10 +19,24 @@ import {
 } from "../../../../common/service/authService";
 import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
 import { updateTask } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import { prepareTaskTitle } from "./taskUtils";
 import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 
-const TaskCard = ({
+interface TaskCardProps {
+  task?: any;
+  showDescription?: boolean;
+  pinnedTasks?: any[];
+  isPinned?: boolean;
+  onEdit?: (item: any) => void;
+  onTaskTraversal?: (increment: number) => void;
+  onAddSubTask?: (item: any) => void;
+  onChildTaskClick?: (item: any) => void;
+  onPinTask?: (item: any, isPinned: boolean) => void;
+  onLinkedTagSelection?: (linkedTagUID: string) => void;
+}
+
+const TaskCard: React.FC<TaskCardProps> = ({
   task,
   showDescription = false,
   pinnedTasks = [],
@@ -119,6 +133,7 @@ const TaskButtons = ({
       <FloatingButton
         buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
         buttonText={"Show Pinned Tasks"}
+        iconName={undefined}
       >
         <div className="p-2.5">
           <b>List of All Pinned Tasks:</b>
@@ -149,6 +164,7 @@ const TaskDetails = ({ task }) => (
       data={{
         content: prepareTaskTitle(task, "TaskCard"),
         textOutputType: SupportedTextFormats.MARKDOWN,
+        textInputType: "TextArea",
       }}
       markdownStyles={{ fontSize: "20px" }}
     />
@@ -229,7 +245,7 @@ const TaskChildren = ({ children, onChildTaskClick }) => (
 );
 
 const ActivityComp = ({ task }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [selectedActivity, setSelectedActivity] = useState(activityList[1]);
   const [showForm, setShowForm] = useState(false);
   const [tActivities, setTActivities] = useState(task.activities || []);
@@ -297,7 +313,7 @@ const ActivityComp = ({ task }) => {
       updateTask({
         taskId: task._id,
         taskData: { ...task, activities: updatedActivities },
-      })
+      }) as any
     );
 
     setShowForm(false);

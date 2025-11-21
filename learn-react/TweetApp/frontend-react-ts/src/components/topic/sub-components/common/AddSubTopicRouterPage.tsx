@@ -7,10 +7,11 @@ import {
   selectAllFlatTopics,
   updateTopic,
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch } from "../../../../redux/store";
 
 const AddSubTopicRouterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
 
   const topics = useSelector(selectAllFlatTopics);
@@ -18,7 +19,7 @@ const AddSubTopicRouterPage = () => {
   const topic = topics?.find((t) => t.uniqueId === id);
 
   const topicOptions = topics
-    .filter((t) => t.uniqueId !== topic.uniqueId)
+    .filter((t) => topic && t.uniqueId !== topic.uniqueId)
     .map((t) => ({
       value: t.uniqueId, // Assuming topic have unique IDs
       label: t.title, // Display tag title in the dropdown
@@ -55,7 +56,7 @@ const AddSubTopicRouterPage = () => {
         updateTopic({
           ...{ children: formData.children },
           uniqueId: topic.uniqueId,
-        })
+        }) as any
       );
     } else {
       console.log("Not updated!!!");
@@ -67,7 +68,7 @@ const AddSubTopicRouterPage = () => {
     navigate({
       pathname: `/topic-mgmt/create`,
       search: createSearchParams({
-        parent: id,
+        parent: id || "",
       }).toString(),
     });
   };

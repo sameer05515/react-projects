@@ -87,7 +87,7 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
         <CKEditor
           id="description"
           name="description"
-          editor={ClassicEditor}
+          editor={ClassicEditor as any}
           data={formData.description}
           onChange={handleEditorChange}
         />

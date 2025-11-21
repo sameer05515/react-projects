@@ -10,13 +10,18 @@ import {
   selectTasksStateCombined,
   updateTask,
 } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import TaskList from "./TaskList";
 import TaskModel from "./TaskModel";
 import TaskSearch from "./TaskSearch";
 import ViewTask from "./ViewTask";
 
-const TaskCardViewDashboard = ({ underContruction = true }) => {
-  const dispatch = useDispatch();
+interface TaskCardViewDashboardProps {
+  underContruction?: boolean;
+}
+
+const TaskCardViewDashboard: React.FC<TaskCardViewDashboardProps> = ({ underContruction = true }) => {
+  const dispatch: AppDispatch = useDispatch();
 
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
@@ -76,10 +81,10 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
         // console.log(`Update task ${JSON.stringify(newTask)}`);
         // console.log(`selectedTask : ${JSON.stringify(selectedTask)}`);
         await dispatch(
-          updateTask({ taskId: newTask._id, taskData: { ...newTask } })
+          updateTask({ taskId: newTask._id, taskData: { ...newTask } }) as any
         );
 
-        dispatch(fetchTasks());
+        dispatch(fetchTasks() as any);
 
         // After updating, exit the editing mode
         // setIsEditing(false);
@@ -92,10 +97,10 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
       try {
         // Dispatch the saveTask async thunk to save the task
         console.log(`Save task ${JSON.stringify(newTask)}`);
-        await dispatch(saveTask(newTask));
+        await dispatch(saveTask(newTask) as any);
 
         // After saving, refresh the task list by fetching tasks
-        dispatch(fetchTasks());
+        dispatch(fetchTasks() as any);
       } catch (error) {
         console.error("Error saving task:", error);
       }
@@ -104,7 +109,7 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
   };
 
   if (underContruction) {
-    return <UnderConstruction title="Card View of Task Management" />;
+    return <UnderConstruction title="Card View of Task Management" showBackButton={false} showHomeButton={false} />;
   }
 
   return (
@@ -112,7 +117,7 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap gap-3">
           <CustomButton onClick={openAddTaskModal}>Add Task</CustomButton>
-          <CustomButton onClick={() => dispatch(fetchTasks())}>Refresh Tasks</CustomButton>
+          <CustomButton onClick={() => dispatch(fetchTasks() as any)}>Refresh Tasks</CustomButton>
         </div>
         <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 p-4">
           <TaskSearch tasks={tasks} />
@@ -128,6 +133,7 @@ const TaskCardViewDashboard = ({ underContruction = true }) => {
 
       {isAddTaskModalOpen && (
         <TaskModel
+          task={undefined}
           onSave={handleSaveTask}
           onCancel={closeTaskModal}
           tasks={tasks}

@@ -92,6 +92,7 @@ const Notifications: React.FC<NotificationsProps> = ({ id = memoryMapId }) => {
           data={{
             content: data?.name || "No content available",
             textOutputType: SupportedTextFormats.MARKDOWN,
+            textInputType: "TextArea",
           }}
           markdownStyles={{ fontSize: "25px" }}
         />
@@ -102,6 +103,7 @@ const Notifications: React.FC<NotificationsProps> = ({ id = memoryMapId }) => {
           data={{
             content: data?.skeleton || "No skeleton available",
             textOutputType: SupportedTextFormats.SKELETON,
+            textInputType: "TextArea",
           }}
         />
       </div>

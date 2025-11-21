@@ -236,7 +236,7 @@ const TagCard: React.FC<TagCardProps> = ({
         <div className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5 w-[67vw] overflow-auto">
           <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
           {
-            tag.description && !tag.smartContent && <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html" }} />
+            tag.description && !tag.smartContent && <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html", textInputType: "TextArea" }} />
 
             // ReactHtmlParser(tag.description || "")
           }

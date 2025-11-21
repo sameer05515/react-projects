@@ -11,6 +11,7 @@ const CreateTopicRouterPage = () => {
       <span>Create Topic: parentId : {parentId}</span> <br />
       <CreateTopic
         parentId={parentId}
+        topic={undefined}
         onSave={() => {
           // console.log(`New topic created`);
           navigate(-1);

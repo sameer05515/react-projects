@@ -9,23 +9,24 @@ import {
     searchTopic,
     selectAllFlatTopics, setSearchString
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch, RootState } from "../../../../redux/store";
 
 const SearchRouterPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const [formData, setFormData] = useState({
       title: "",
     });
-    const data = useSelector((state) => state.topics.searchedData);
-    const searchString = useSelector((state) => state.topics.searchString);
-    const flatData = useSelector(selectAllFlatTopics);
+    const data = useSelector((state: RootState) => state.topics.searchedData);
+    const searchString = useSelector((state: RootState) => state.topics.searchString);
+    const flatData = useSelector((state: RootState) => selectAllFlatTopics(state));
   
     const [criteriaList, setCriteriaList] = useState({
       name: { value: 1, editable: false },
       description: { value: 0, editable: true },
     });
   
-    const handleChange = (event) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, checked } = event.target;
       setCriteriaList((prevFruits) => ({
         ...prevFruits,
@@ -39,7 +40,7 @@ const SearchRouterPage = () => {
       }
     }, [searchString]);
   
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setFormData({
         ...formData,
@@ -51,7 +52,7 @@ const SearchRouterPage = () => {
       const searchOptions = Object.keys(criteriaList).reduce((acc, key) => {
         acc[key] = criteriaList[key].value;
         return acc;
-      }, {});
+      }, {} as Record<string, number>);
   
       const raw = {
         searchString: formData.title,
@@ -59,10 +60,10 @@ const SearchRouterPage = () => {
       };
   
       dispatch(setSearchString(formData.title));
-      dispatch(searchTopic(raw));
+      dispatch(searchTopic(raw) as any);
     };
   
-    const onChildTopicClick = (selectedTopic) => {
+    const onChildTopicClick = (selectedTopic: { uniqueId: string }) => {
       navigate(`/topic-mgmt/${selectedTopic?.uniqueId}`);
     };
   

@@ -15,8 +15,19 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import tagList from "./tagList";
 import GitDiff from '../../../ApnaPlayground/GitDiff/v1'
+import type { AppDispatch } from "../../../redux/store";
 
-const EditDataComponent = ({ savedData }) => {
+interface FormErrors {
+  selectedDate?: string;
+  title?: string;
+  htmlText?: string;
+}
+
+interface EditDataComponentProps {
+  savedData: any;
+}
+
+const EditDataComponent: React.FC<EditDataComponentProps> = ({ savedData }) => {
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(savedData.date), "yyyy-MM-dd", { locale: enGB })
   );
@@ -25,9 +36,9 @@ const EditDataComponent = ({ savedData }) => {
   const [selectedTags, setSelectedTags] = useState(savedData.tags || []);
   const [privateData, setPrivateData] = useState(savedData.private || false);
   const [tagFilterText, setTagFilterText] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
@@ -55,7 +66,7 @@ const EditDataComponent = ({ savedData }) => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: FormErrors = {};
 
     if (!selectedDate.trim()) {
       newErrors.selectedDate = "Date is required";
@@ -83,7 +94,7 @@ const EditDataComponent = ({ savedData }) => {
         tags: selectedTags,
         private: privateData,
       };
-      dispatch(updateData(newData));
+      dispatch(updateData(newData) as any);
 
       // Optionally, you can display a success message or clear the form after saving.
     }
@@ -122,7 +133,6 @@ const EditDataComponent = ({ savedData }) => {
         <ReactQuill
           value={htmlText}
           onChange={handleHtmlTextChange}
-          error={Boolean(errors.htmlText)}
         />
         {errors.htmlText && (
           <Typography variant="caption" color="error">

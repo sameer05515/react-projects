@@ -4,6 +4,7 @@ import { Outlet, createSearchParams, useNavigate, useParams, useSearchParams } f
 import CustomButton from "../../common/components/custom-button/CustomButton";
 import useDataFetching from "../../common/hooks/useDataFetching/v2";
 import { createLink, fetchLinks, fetchLinksByUniqueId, selectLinksStateCombined, updateLink } from "../../redux/slices/linksSlice";
+import type { AppDispatch, RootState } from "../../redux/store";
 import ToggleablePanel from "../../common/components/toggleable-panel/ToggleablePanel";
 import { SmartEditor, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
 import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
@@ -12,18 +13,18 @@ import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConst
 
 const ViewLink = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
 
   // Use combined selector to optimize multiple useSelector calls
-  const { linkDetails, loading, error } = useSelector(selectLinksStateCombined);
+  const { linkDetails, loading, error } = useSelector((state: RootState) => selectLinksStateCombined(state));
 
   const handleLinkSelection = (selectedItem) => {
     navigate(`/links-mgmt/${selectedItem.uniqueId}`);
   };
 
   useEffect(() => {
-    dispatch(fetchLinksByUniqueId(id));
+    dispatch(fetchLinksByUniqueId(id as any) as any);
   }, [dispatch, id]);
 
   if (loading === "pending") {

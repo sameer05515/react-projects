@@ -5,23 +5,25 @@ import Select from "react-select";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import {
     selectAllFlatTopics,
-    updateTopic
+    updateTopic,
+    type FlatTopic,
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch, RootState } from "../../../../redux/store";
 
 const MoveToAnotherTopicParentRouterPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     // const treeStructuredTasks = useSelector((state) => state.topics.data);
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
   
     // const topics = prepareTasksQueue(treeStructuredTasks);
-    const topics = useSelector(selectAllFlatTopics);
+    const topics = useSelector((state: RootState) => selectAllFlatTopics(state)) as FlatTopic[];
   
-    const topic = topics?.find((t) => t.uniqueId === id);
+    const topic: FlatTopic | undefined = topics?.find((t) => t.uniqueId === id);
   
     const topicOptions = topics
-      .filter((t) => t.uniqueId !== topic.uniqueId)
-      .filter((t) => !t.ancestors.map((a) => a.uniqueId).includes(topic.uniqueId))
+      .filter((t) => topic && t.uniqueId !== topic.uniqueId)
+      .filter((t) => topic && !t.ancestors?.map((a: any) => a.uniqueId).includes(topic.uniqueId))
       .map((t) => ({
         value: t.uniqueId, // Assuming topic have unique IDs
         label: t.title, // Display tag title in the dropdown
@@ -31,7 +33,7 @@ const MoveToAnotherTopicParentRouterPage = () => {
     //     label: 'ROOT', // Display tag title in the dropdown
     // });
   
-    const handleTaskSelect = (selectedTags) => {
+    const handleTaskSelect = (selectedTags: any) => {
       // Extract the tag values and store them in the 'tags' property of the topic data
       // console.log(
       //     `JSON.stringify(selectedTags): ${JSON.stringify(selectedTags)}`
@@ -44,7 +46,7 @@ const MoveToAnotherTopicParentRouterPage = () => {
       uniqueId: topic && topic.uniqueId ? topic.uniqueId : "",
       // title: topic && topic.title ? topic.title : "",
       // description: topic && topic.description ? topic.description : "",
-      parentId: topic && topic.parentId ? topic.parentId : "",
+      parentId: (topic as any) && (topic as any).parentId ? (topic as any).parentId : "",
       // linkedTasks: topic && topic.linkedTasks ? topic.linkedTasks : [], // Assuming 'linkedTasks' is an array of linked topic IDs
       // tags: topic && topic.tags ? topic.tags : [], // Set the initial tags based on the topic
       // children: topic && topic.children ? topic.children.map(c => c.uniqueId) : []
@@ -63,7 +65,7 @@ const MoveToAnotherTopicParentRouterPage = () => {
           updateTopic({
             ...{ parentId: formData.parentId },
             uniqueId: topic.uniqueId,
-          })
+          }) as any
         );
         // console.log("updated!!!");
       } else {
@@ -82,7 +84,7 @@ const MoveToAnotherTopicParentRouterPage = () => {
             <label htmlFor="tags" className="block font-bold mb-2">Select New Parent Topic:</label>
             <Select
               name="topics"
-              options={topicOptions}
+              options={topicOptions as any}
               defaultValue={selectedOption}
               onChange={handleTaskSelect}
             />

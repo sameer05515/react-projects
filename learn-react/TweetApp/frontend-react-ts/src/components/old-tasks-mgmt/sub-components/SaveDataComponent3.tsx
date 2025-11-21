@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
 import { saveData } from "../../../redux/slices/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -11,7 +12,7 @@ const SaveDataComponent = () => {
   const [htmlText, setHtmlText] = useState<string>("");
   const [errors, setErrors] = useState<{ selectedDate?: string; title?: string; htmlText?: string }>({});
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);

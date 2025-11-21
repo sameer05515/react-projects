@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
 import { fetchData } from "../../../redux/slices/dataSlice1";
 import type { RootState } from "../../../redux/store";
 
 const DataList = ({ itemSelectionHandler = (_id: string) => {} }: { itemSelectionHandler?: (id: string) => void }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const dataList = useSelector((state: RootState) => state.data as any[]);
   const [selectedItemId, setSelectedItemId] = useState<string>("");
 

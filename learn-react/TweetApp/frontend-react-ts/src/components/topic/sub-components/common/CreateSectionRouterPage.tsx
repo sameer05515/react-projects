@@ -4,12 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   createTopicSection,
   selectAllFlatTopics,
+  type FlatTopic,
 } from "../../../../redux/slices/topicSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import TopicSectionForm from "./TopicSectionForm";
 
 const CreateSectionRouterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const topics = useSelector(selectAllFlatTopics);
   const { id } = useParams();
 
@@ -19,7 +21,7 @@ const CreateSectionRouterPage = () => {
     description: "",
   });
 
-  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState<FlatTopic | null>(null);
 
   useEffect(() => {
     if (id && topics) {
@@ -28,8 +30,8 @@ const CreateSectionRouterPage = () => {
     }
   }, [topics, id]);
 
-  const handleSaveSection = (data) => {
-    dispatch(createTopicSection(data));
+  const handleSaveSection = (data: any) => {
+    dispatch(createTopicSection(data) as any);
     navigate(-1);
   };
 

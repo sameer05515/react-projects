@@ -8,6 +8,7 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
 import { saveData as addData } from "../../../redux/slices/dataSlice1"; 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -21,7 +22,7 @@ const SaveDataComponent = () => {
   const [tagFilterText, setTagFilterText] = useState<string>("");
   const [privateData, setPrivateData] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ selectedDate?: string; title?: string; htmlText?: string }>({});
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);

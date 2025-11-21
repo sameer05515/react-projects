@@ -17,7 +17,7 @@ const TopicSectionCard = ({
   // Callback for linked tag selection
   const handleLinkedTagSelection = useCallback(
     (linkedTagUID) => {
-      onLinkedTagSelection(linkedTagUID);
+      (onLinkedTagSelection as any)(linkedTagUID);
     },
     [onLinkedTagSelection]
   );
@@ -31,7 +31,7 @@ const TopicSectionCard = ({
       {
         id: 1,
         title: "Edit",
-        action: () => onEditSection(ts.uniqueId),
+        action: () => (onEditSection as any)(ts.uniqueId),
       },
       {
         id: 2,

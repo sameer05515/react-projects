@@ -11,9 +11,16 @@ import {
   selectAllFlatTasks,
   updateTask,
 } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 
-const TaskForm = ({ task, onSave, onCancelEdit }) => {
-  const dispatch = useDispatch();
+interface TaskFormProps {
+  task?: any;
+  onSave?: (formData: any) => void;
+  onCancelEdit?: () => void;
+}
+
+const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancelEdit }) => {
+  const dispatch: AppDispatch = useDispatch();
   const tagOptions = useSelector(getTagsForComboOptions);
   const tasks = useSelector(selectAllFlatTasks);
   const [formData, setFormData] = useState({
@@ -37,11 +44,11 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     tags: task && task.tags ? task.tags : [], // Set the initial tags based on the topic
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -79,19 +86,18 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     });
   };
 
-  const handleSaveTask = (event) => {
-    event.preventDefault();
+  const handleSaveTask = () => {
     if (!validateForm()) {
       return;
     }
 
     if (task && task._id && task.uniqueId) {
       // If a topic is provided, it's an update
-      dispatch(updateTask({ taskId: task._id, taskData: { ...formData } }));
+      dispatch(updateTask({ taskId: task._id, taskData: { ...formData } }) as any);
       // console.log(`going to edit`);
     } else {
       // Otherwise, it's a new topic creation
-      dispatch(saveTask(formData));
+      dispatch(saveTask(formData) as any);
       // console.log("going to save");
     }
 
@@ -101,11 +107,11 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
     }
   };
 
-  const handleLinkedTasksChange = (e) => {
+  const handleLinkedTasksChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, options } = e.target;
-    const selectedLinkedTasks = Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
+    const selectedLinkedTasks = Array.from(options as HTMLOptionsCollection)
+      .filter((option: HTMLOptionElement) => option.selected)
+      .map((option: HTMLOptionElement) => option.value);
 
     setFormData({
       ...formData,
@@ -230,7 +236,7 @@ const TaskForm = ({ task, onSave, onCancelEdit }) => {
           )}
         </div>
         <div className="mt-6 flex gap-2">
-          <CustomButton onClick={(event) => handleSaveTask(event)}>
+          <CustomButton onClick={handleSaveTask}>
             Save
           </CustomButton>
           <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>

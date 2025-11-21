@@ -22,7 +22,7 @@ const ViewTask = ({ task, onClose, }) => {
         <h3 className="mb-2 text-lg font-semibold text-gray-900">View Task</h3>        
         <TaskCard task={task}/>
         <div className="mt-2 text-right">
-          <CustomButton onClick={onClose} label="Close">
+          <CustomButton onClick={onClose}>
             Close
           </CustomButton>
         </div>

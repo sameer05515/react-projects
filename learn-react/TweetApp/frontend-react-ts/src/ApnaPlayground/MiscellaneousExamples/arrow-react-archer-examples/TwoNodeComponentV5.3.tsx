@@ -139,17 +139,17 @@ const styles: {
 } = {
   container: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as React.CSSProperties["flexDirection"],
     alignItems: "center",
     marginTop: "50px",
-    overflow: "auto",
+    overflow: "auto" as React.CSSProperties["overflow"],
   },
   relationsRow: {
     display: "flex",
     justifyContent: "flex-start",
     marginTop: "50px",
     maxWidth: "90vw",
-    overflowX: "auto",
+    overflowX: "auto" as React.CSSProperties["overflowX"],
   },
   node: {
     padding: "10px 20px",

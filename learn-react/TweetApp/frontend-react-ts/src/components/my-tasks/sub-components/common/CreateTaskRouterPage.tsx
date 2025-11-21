@@ -6,11 +6,12 @@ import {
 import {
     fetchTasks
 } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch } from "../../../../redux/store";
 import TaskForm from "./TaskForm";
 
 const CreateTaskRouterPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const [searchParams] = useSearchParams();
     const parentId = searchParams.get("parent");
   
@@ -19,7 +20,7 @@ const CreateTaskRouterPage = () => {
         {/* <span>Create Task: parentId : {parentId}</span> <br /> */}
         <TaskForm
           onSave={() => {
-            dispatch(fetchTasks());
+            dispatch(fetchTasks() as any);
             navigate(-1);
           }}
           onCancelEdit={() => navigate(-1)}

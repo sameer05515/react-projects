@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
 import {
   hideBackdrop,
   showBackdrop,
@@ -197,7 +198,7 @@ import {
  */
 
 const useConsolidated = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   /**
    * Execute an API request with validation, loading, and error handling.
@@ -255,7 +256,7 @@ const useConsolidated = () => {
         );
 
         return { data, isError, message };
-      } catch (error) {
+      } catch (error: any) {
         // Handle unexpected errors
         const errorMessage = prepareErrorMessage(
           error,

@@ -11,9 +11,9 @@ const EditTopicRouterPage = () => {
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`;
   // const { data, loading, error } = useDataFetching({url});
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchDetailsForId = useCallback(() => {
     setLoading(true);
@@ -27,7 +27,7 @@ const EditTopicRouterPage = () => {
         }
       })
       .catch((err) => console.error("Some unexpected error occurred", err))
-      .finally(setLoading(false));
+      .finally(() => setLoading(false));
   }, [url]);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const EditTopicRouterPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
   return (
     <>
@@ -49,6 +49,7 @@ const EditTopicRouterPage = () => {
       <br />
       {data && (
         <CreateTopic
+          parentId={parentId || undefined}
           topic={data}
           onSave={() => {
             // console.log(`Edited topic created`);

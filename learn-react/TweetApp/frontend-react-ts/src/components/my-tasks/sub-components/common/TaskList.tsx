@@ -3,13 +3,20 @@ import AutoCompleteDropdown from "../../../../common/components/auto-complete/Au
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import TaskCard from "./TaskCard";
 
-const TaskList = ({
+interface TaskListProps {
+  tasks: any[];
+  itemsPerRow?: number;
+  onEditTask?: (task: any) => void;
+  onViewTask?: (task: any) => void;
+}
+
+const TaskList: React.FC<TaskListProps> = ({
   tasks,
   itemsPerRow = 3,
-  onEditTask,
-  onViewTask,  
+  onEditTask = () => {},
+  onViewTask = () => {},
 }) => {
-  const rows = [];
+  const rows: JSX.Element[] = [];
   for (let i = 0; i < tasks.length; i += itemsPerRow) {
     const rowTasks = tasks.slice(i, i + itemsPerRow);
     rows.push(

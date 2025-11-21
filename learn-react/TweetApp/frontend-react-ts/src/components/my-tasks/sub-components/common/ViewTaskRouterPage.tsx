@@ -10,18 +10,19 @@ import {
   selectPrevTaskUniqueId,
   setSelectedTaskUniqueId,
 } from "../../../../redux/slices/taskSlice";
+import type { AppDispatch, RootState } from "../../../../redux/store";
 import TaskCard from "./TaskCard";
 
 const ViewTaskRouterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
   const { data, loading, error, refetch } = useDataFetching({ url });
-  const pinnedItems = useSelector((state) => state.pinnedItems.data);
+  const pinnedItems = useSelector((state: RootState) => (state.pinnedItems as any).data);
 
   const tasks = useSelector(selectAllFlatTasks);
-  const [pinnedTasks, setPinnedTasks] = useState([]);
+  const [pinnedTasks, setPinnedTasks] = useState<any[]>([]);
   const [isPinned, setIsPinned] = useState(false);
   const nextTaskUniqueId = useSelector(selectNextTaskUniqueId);
   const prevTaskUniqueId = useSelector(selectPrevTaskUniqueId);
@@ -51,7 +52,7 @@ const ViewTaskRouterPage = () => {
               tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
           }))
         : [];
-      setPinnedTasks((prev) => [...pinnedTasksList]);
+      setPinnedTasks([...pinnedTasksList]);
       setIsPinned(
         () => pinnedTasksList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
       );
@@ -81,13 +82,13 @@ const ViewTaskRouterPage = () => {
     navigate(`/tags/${linkedTagUID}`);
   };
 
-  const handlePinTask = (item, isPinned) => {
+  const handlePinTask = (item: any, isPinned: boolean) => {
     dispatch(
       upsertPinnedItem({
         linkedUniqueId: item.uniqueId,
         linkedItemType: "task",
         softDelete: isPinned,
-      })
+      }) as any
     );
   };
 
@@ -96,7 +97,7 @@ const ViewTaskRouterPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {typeof error === 'string' ? error : (error as any)?.message || 'An error occurred'}</div>;
   }
   return (
     <>

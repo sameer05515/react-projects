@@ -8,15 +8,22 @@ import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import Select from "react-select";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 
-const TopicSectionForm = ({
+interface TopicSectionFormProps {
+  formData?: any;
+  selectedTopic?: any;
+  onSubmit?: (data: any) => void;
+  onCancel?: () => void;
+}
+
+const TopicSectionForm: React.FC<TopicSectionFormProps> = ({
   formData: initialValue,
   selectedTopic,
   onSubmit = () => {},
   onCancel = () => {},
 }) => {
   const tagOptions = useSelector(getTagsForComboOptions);
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -80,8 +87,7 @@ const TopicSectionForm = ({
     setFormData({ ...formData, tags: (selectedTags as any[]).map((tag) => (tag as any).value) });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleSubmitClick = () => {
     if (validateForm()) {
       onSubmit(formData);
     }
@@ -148,7 +154,7 @@ const TopicSectionForm = ({
       )}
 
       <div className="mt-5 flex gap-2.5">
-        <CustomButton onClick={handleSubmit}>
+        <CustomButton onClick={handleSubmitClick}>
           {formData.uniqueId ? "Update" : "Save"} Changes
         </CustomButton>
         <CustomButton onClick={onCancel}>Cancel</CustomButton>

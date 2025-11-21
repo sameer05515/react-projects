@@ -8,7 +8,7 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../redux/store";
+import type { RootState, AppDispatch } from "../../../redux/store";
 import { updateData } from "../../../redux/slices/dataSlice1";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -19,7 +19,7 @@ type ErrorState = { selectedDate?: string; title?: string; htmlText?: string };
 
 const UpdateDataComponent = ({ match, history }: UpdateDataProps) => {
   const { id } = match.params;
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const data = useSelector((state: RootState) => state.data as any[]);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -93,7 +93,7 @@ const UpdateDataComponent = ({ match, history }: UpdateDataProps) => {
         htmlText,
         tags: selectedTags,
       };
-      dispatch(updateData(updatedData));
+      dispatch(updateData(updatedData) as any);
       history.push("/"); // Redirect to the data list after updating
     }
   };

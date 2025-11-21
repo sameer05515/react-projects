@@ -38,7 +38,7 @@ const FlipExampleV2 = () => {
     borderRadius: '10px',
     transformStyle: 'preserve-3d',
     animation: 'flip 3s infinite',
-    backfaceVisibility: 'hidden',
+    backfaceVisibility: 'hidden' as React.CSSProperties['backfaceVisibility'],
   };
 
   return (

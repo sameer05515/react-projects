@@ -1,100 +1,318 @@
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:17:25
-TS2339: Property 'sourceName' does not exist on type 'never'.
-    15 |           key={`row_data_${suffixPageItemCount + idx + 1}`}
-    16 |           srNo={suffixPageItemCount + idx + 1}
-  > 17 |           sourceName={d.sourceName}
-       |                         ^^^^^^^^^^
-    18 |           sourceType={d.sourceType}
-    19 |           status={d.status}
-    20 |           location={d.location}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:104:36
+TS2339: Property 'uniqueId' does not exist on type '{}'.
+    102 |     const [selectedDetail, setSelectedDetail] = useState(null);
+    103 |     const [formData, setFormData] = useState({
+  > 104 |         uniqueId: initialFormData?.uniqueId || "",
+        |                                    ^^^^^^^^
+    105 |         name: initialFormData?.name || "",
+    106 |         details: initialFormData?.details || [],
+    107 |         references: initialFormData?.references || [],
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:18:25
-TS2339: Property 'sourceType' does not exist on type 'never'.
-    16 |           srNo={suffixPageItemCount + idx + 1}
-    17 |           sourceName={d.sourceName}
-  > 18 |           sourceType={d.sourceType}
-       |                         ^^^^^^^^^^
-    19 |           status={d.status}
-    20 |           location={d.location}
-    21 |           repositoryOrDbName={d.repositoryOrDbName}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:105:32
+TS2339: Property 'name' does not exist on type '{}'.
+    103 |     const [formData, setFormData] = useState({
+    104 |         uniqueId: initialFormData?.uniqueId || "",
+  > 105 |         name: initialFormData?.name || "",
+        |                                ^^^^
+    106 |         details: initialFormData?.details || [],
+    107 |         references: initialFormData?.references || [],
+    108 |         parentId: initialFormData?.parentId || "",
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:19:21
-TS2339: Property 'status' does not exist on type 'never'.
-    17 |           sourceName={d.sourceName}
-    18 |           sourceType={d.sourceType}
-  > 19 |           status={d.status}
-       |                     ^^^^^^
-    20 |           location={d.location}
-    21 |           repositoryOrDbName={d.repositoryOrDbName}
-    22 |           lastModified={d.lastModified}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:106:35
+TS2339: Property 'details' does not exist on type '{}'.
+    104 |         uniqueId: initialFormData?.uniqueId || "",
+    105 |         name: initialFormData?.name || "",
+  > 106 |         details: initialFormData?.details || [],
+        |                                   ^^^^^^^
+    107 |         references: initialFormData?.references || [],
+    108 |         parentId: initialFormData?.parentId || "",
+    109 |     });
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:20:23
-TS2339: Property 'location' does not exist on type 'never'.
-    18 |           sourceType={d.sourceType}
-    19 |           status={d.status}
-  > 20 |           location={d.location}
-       |                       ^^^^^^^^
-    21 |           repositoryOrDbName={d.repositoryOrDbName}
-    22 |           lastModified={d.lastModified}
-    23 |           owner={d.owner}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:107:38
+TS2339: Property 'references' does not exist on type '{}'.
+    105 |         name: initialFormData?.name || "",
+    106 |         details: initialFormData?.details || [],
+  > 107 |         references: initialFormData?.references || [],
+        |                                      ^^^^^^^^^^
+    108 |         parentId: initialFormData?.parentId || "",
+    109 |     });
+    110 |
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:21:33
-TS2339: Property 'repositoryOrDbName' does not exist on type 'never'.
-    19 |           status={d.status}
-    20 |           location={d.location}
-  > 21 |           repositoryOrDbName={d.repositoryOrDbName}
-       |                                 ^^^^^^^^^^^^^^^^^^
-    22 |           lastModified={d.lastModified}
-    23 |           owner={d.owner}
-    24 |           criticality={d.criticality}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:108:36
+TS2339: Property 'parentId' does not exist on type '{}'.
+    106 |         details: initialFormData?.details || [],
+    107 |         references: initialFormData?.references || [],
+  > 108 |         parentId: initialFormData?.parentId || "",
+        |                                    ^^^^^^^^
+    109 |     });
+    110 |
+    111 |     const validateForm = () => {
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:22:27
-TS2339: Property 'lastModified' does not exist on type 'never'.
-    20 |           location={d.location}
-    21 |           repositoryOrDbName={d.repositoryOrDbName}
-  > 22 |           lastModified={d.lastModified}
-       |                           ^^^^^^^^^^^^
-    23 |           owner={d.owner}
-    24 |           criticality={d.criticality}
-    25 |           purpose={d.purpose}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:113:48
+TS2345: Argument of type '"Name is required"' is not assignable to parameter of type 'never'.
+    111 |     const validateForm = () => {
+    112 |         const errors = [];
+  > 113 |         if (!formData.name.trim()) errors.push("Name is required");
+        |                                                ^^^^^^^^^^^^^^^^^^
+    114 |         setFormErrors(errors);
+    115 |         return errors.length === 0;
+    116 |     };
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:23:20
-TS2339: Property 'owner' does not exist on type 'never'.
-    21 |           repositoryOrDbName={d.repositoryOrDbName}
-    22 |           lastModified={d.lastModified}
-  > 23 |           owner={d.owner}
-       |                    ^^^^^
-    24 |           criticality={d.criticality}
-    25 |           purpose={d.purpose}
-    26 |           notes={d.notes}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:137:22
+TS2345: Argument of type 'AsyncThunkAction<any, { uniqueId: string; } & Record<string, any>, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
+    135 |
+    136 |         if (formData.uniqueId) {
+  > 137 |             dispatch(updateMemoryMap({ ...updatedMemoryMapObj, uniqueId: formData.uniqueId }));
+        |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    138 |         } else {
+    139 |             dispatch(createMemoryMap(updatedMemoryMapObj));
+    140 |         }
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:24:26
-TS2339: Property 'criticality' does not exist on type 'never'.
-    22 |           lastModified={d.lastModified}
-    23 |           owner={d.owner}
-  > 24 |           criticality={d.criticality}
-       |                          ^^^^^^^^^^^
-    25 |           purpose={d.purpose}
-    26 |           notes={d.notes}
-    27 |         />
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:139:22
+TS2345: Argument of type 'AsyncThunkAction<any, any, AsyncThunkConfig>' is not assignable to parameter of type 'AnyAction'.
+    137 |             dispatch(updateMemoryMap({ ...updatedMemoryMapObj, uniqueId: formData.uniqueId }));
+    138 |         } else {
+  > 139 |             dispatch(createMemoryMap(updatedMemoryMapObj));
+        |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    140 |         }
+    141 |
+    142 |         onSave();
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:25:22
-TS2339: Property 'purpose' does not exist on type 'never'.
-    23 |           owner={d.owner}
-    24 |           criticality={d.criticality}
-  > 25 |           purpose={d.purpose}
-       |                      ^^^^^^^
-    26 |           notes={d.notes}
-    27 |         />
-    28 |       ))}
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:229:21
+TS2322: Type 'null' is not assignable to type '{} | undefined'.
+    227 |             {showDetailPopup && (
+    228 |                 <DetailPopup
+  > 229 |                     initialFormData={selectedDetail}
+        |                     ^^^^^^^^^^^^^^^
+    230 |                     onSubmit={(data) => mergeDetail(data)}
+    231 |                     onClose={() => setShowDetailPopup(false)}
+    232 |                 />
 
-ERROR in src/components/my-reports/SourceDetails/Table.tsx:26:20
-TS2339: Property 'notes' does not exist on type 'never'.
-    24 |           criticality={d.criticality}
-    25 |           purpose={d.purpose}
-  > 26 |           notes={d.notes}
-       |                    ^^^^^
-    27 |         />
-    28 |       ))}
-    29 |     </div>
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:230:21
+TS2322: Type '(data: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+    228 |                 <DetailPopup
+    229 |                     initialFormData={selectedDetail}
+  > 230 |                     onSubmit={(data) => mergeDetail(data)}
+        |                     ^^^^^^^^
+    231 |                     onClose={() => setShowDetailPopup(false)}
+    232 |                 />
+    233 |             )}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:237:21
+TS2322: Type '{ value: string; label: string; }[]' is not assignable to type 'never[]'.
+  Type '{ value: string; label: string; }' is not assignable to type 'never'.
+    235 |             {showReferencePopup && (
+    236 |                 <ReferencePopup
+  > 237 |                     topicOptions={topicOptions}
+        |                     ^^^^^^^^^^^^
+    238 |                     linkOptions={linkOptions}
+    239 |                     onSubmit={(data) => mergeReference(data)}
+    240 |                     onClose={() => setShowReferencePopup(false)}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:238:21
+TS2322: Type '{ value: string; label: string; }[]' is not assignable to type 'never[]'.
+  Type '{ value: string; label: string; }' is not assignable to type 'never'.
+    236 |                 <ReferencePopup
+    237 |                     topicOptions={topicOptions}
+  > 238 |                     linkOptions={linkOptions}
+        |                     ^^^^^^^^^^^
+    239 |                     onSubmit={(data) => mergeReference(data)}
+    240 |                     onClose={() => setShowReferencePopup(false)}
+    241 |                 />
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:239:21
+TS2322: Type '(data: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+    237 |                     topicOptions={topicOptions}
+    238 |                     linkOptions={linkOptions}
+  > 239 |                     onSubmit={(data) => mergeReference(data)}
+        |                     ^^^^^^^^
+    240 |                     onClose={() => setShowReferencePopup(false)}
+    241 |                 />
+    242 |             )}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:294:42
+TS2741: Property 'children' is missing in type '{ className: string; title: string; iconName: string; onClick: () => void; }' but required in type 'CustomButtonProps'.
+    292 |                                         iconName={"FaSettings"}
+    293 |                                     >
+  > 294 |                                         <CustomButton
+        |                                          ^^^^^^^^^^^^
+    295 |                                             className="mt-1"
+    296 |                                             title={"Edit"}
+    297 |                                             iconName={"FaEdit"}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:300:42
+TS2741: Property 'children' is missing in type '{ className: string; title: string; iconName: string; onClick: () => void; }' but required in type 'CustomButtonProps'.
+    298 |                                             onClick={() => editDetail(det)}
+    299 |                                         />
+  > 300 |                                         <CustomButton
+        |                                          ^^^^^^^^^^^^
+    301 |                                             className="mt-1"
+    302 |                                             title={"Delete"}
+    303 |                                             iconName={"FaDelete"}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:340:42
+TS2741: Property 'children' is missing in type '{ className: string; title: string; iconName: string; onClick: () => void; }' but required in type 'CustomButtonProps'.
+    338 |                                         iconName={"FaSettings"}
+    339 |                                     >
+  > 340 |                                         <CustomButton
+        |                                          ^^^^^^^^^^^^
+    341 |                                             className="mt-1"
+    342 |                                             title={"Delete"}
+    343 |                                             iconName={"FaDelete"}
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:368:31
+TS2322: Type '(event: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+    366 |             </div>
+    367 |             <div className="block m-2.5">
+  > 368 |                 <CustomButton onClick={handleSubmitMemoryMap}>
+        |                               ^^^^^^^
+    369 |                     {formData.uniqueId ? "Update" : "Create"}
+    370 |                 </CustomButton>
+    371 |                 <CustomButton onClick={onCancelEdit}>Cancel</CustomButton>
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:383:36
+TS2339: Property 'uniqueId' does not exist on type '{}'.
+    381 | }) => {
+    382 |     const [formData, setFormData] = useState({
+  > 383 |         uniqueId: initialFormData?.uniqueId || "",
+        |                                    ^^^^^^^^
+    384 |         smartContent: initialFormData?.smartContent || {
+    385 |             content: "",
+    386 |             textOutputType: "",
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:384:40
+TS2339: Property 'smartContent' does not exist on type '{}'.
+    382 |     const [formData, setFormData] = useState({
+    383 |         uniqueId: initialFormData?.uniqueId || "",
+  > 384 |         smartContent: initialFormData?.smartContent || {
+        |                                        ^^^^^^^^^^^^
+    385 |             content: "",
+    386 |             textOutputType: "",
+    387 |             textInputType: "",
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:411:31
+TS2339: Property 'uniqueId' does not exist on type '{}'.
+    409 |         if (!validateForm()) return;
+    410 |         const dataToBeSubmitted = { ...formData };
+  > 411 |         if (!initialFormData?.uniqueId) {
+        |                               ^^^^^^^^
+    412 |             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_DETAIL_ID_PREFIX + getDateAsMillisecondsString()}`;
+    413 |         }
+    414 |         onSubmit(dataToBeSubmitted);
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:414:18
+TS2554: Expected 0 arguments, but got 1.
+    412 |             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_DETAIL_ID_PREFIX + getDateAsMillisecondsString()}`;
+    413 |         }
+  > 414 |         onSubmit(dataToBeSubmitted);
+        |                  ^^^^^^^^^^^^^^^^^
+    415 |     };
+    416 |
+    417 |     return (
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:451:39
+TS2322: Type '(event: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+    449 |
+    450 |                     <div className="flex gap-2 mt-4">
+  > 451 |                         <CustomButton onClick={handleSubmit}>Submit</CustomButton>
+        |                                       ^^^^^^^
+    452 |                         <CustomButton onClick={onClose}>Cancel</CustomButton>
+    453 |                     </div>
+    454 |                 </div>
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:484:36
+TS2339: Property 'uniqueId' does not exist on type '{}'.
+    482 |     ];
+    483 |     const [formData, setFormData] = useState({
+  > 484 |         uniqueId: initialFormData?.uniqueId || "",
+        |                                    ^^^^^^^^
+    485 |         itemType: initialFormData?.itemType || "",
+    486 |         itemMetadata: initialFormData?.itemMetadata || {},
+    487 |     });
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:485:36
+TS2339: Property 'itemType' does not exist on type '{}'.
+    483 |     const [formData, setFormData] = useState({
+    484 |         uniqueId: initialFormData?.uniqueId || "",
+  > 485 |         itemType: initialFormData?.itemType || "",
+        |                                    ^^^^^^^^
+    486 |         itemMetadata: initialFormData?.itemMetadata || {},
+    487 |     });
+    488 |
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:486:40
+TS2339: Property 'itemMetadata' does not exist on type '{}'.
+    484 |         uniqueId: initialFormData?.uniqueId || "",
+    485 |         itemType: initialFormData?.itemType || "",
+  > 486 |         itemMetadata: initialFormData?.itemMetadata || {},
+        |                                        ^^^^^^^^^^^^
+    487 |     });
+    488 |
+    489 |     const [formErrors, setFormErrors] = useState([]);
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:521:31
+TS2339: Property 'uniqueId' does not exist on type '{}'.
+    519 |         if (!validateForm()) return;
+    520 |         const dataToBeSubmitted = { ...formData };
+  > 521 |         if (!initialFormData?.uniqueId) {
+        |                               ^^^^^^^^
+    522 |             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_REFERENCE_ID_PREFIX + getDateAsMillisecondsString()}`;
+    523 |         }
+    524 |         onSubmit(dataToBeSubmitted);
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:524:18
+TS2554: Expected 0 arguments, but got 1.
+    522 |             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_REFERENCE_ID_PREFIX + getDateAsMillisecondsString()}`;
+    523 |         }
+  > 524 |         onSubmit(dataToBeSubmitted);
+        |                  ^^^^^^^^^^^^^^^^^
+    525 |     };
+    526 |
+    527 |     const customStyles = {
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:570:77
+TS2554: Expected 1 arguments, but got 2.
+    568 |                                 name="topics"
+    569 |                                 options={topicOptions}
+  > 570 |                                 onChange={(data) => handleTopicSelect(data, ITEM_TYPES.TOPIC)}
+        |                                                                             ^^^^^^^^^^^^^^^^
+    571 |                                 styles={customStyles}
+    572 |                                 menuPortalTarget={document.body}
+    573 |                             />
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:588:76
+TS2554: Expected 1 arguments, but got 2.
+    586 |                                 name="links"
+    587 |                                 options={linkOptions}
+  > 588 |                                 onChange={(data) => handleLinkSelect(data, ITEM_TYPES.LINK)}
+        |                                                                            ^^^^^^^^^^^^^^^
+    589 |                                 styles={customStyles}
+    590 |                                 menuPortalTarget={document.body}
+    591 |                             />
+
+ERROR in src/components/memory-maps/CreateUpdateMemoryMapItemRouterPage.tsx:608:39
+TS2322: Type '(event: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+    606 |
+    607 |                     <div className="flex gap-2 mt-4">
+  > 608 |                         <CustomButton onClick={handleSubmit}>Submit</CustomButton>
+        |                                       ^^^^^^^
+    609 |                         <CustomButton onClick={onClose}>Cancel</CustomButton>
+    610 |                     </div>
+    611 |                 </div>
+
+ERROR in src/components/memory-maps/list/HelperComponents.tsx:97:13
+TS2322: Type '{ node: MemoryMapNode; onAddUpdateSkeleton: (uniqueId: any, data: any) => void; onEditMemoryMap: (uniqueId: any) => void; }' is not assignable to type 'IntrinsicAttributes & { node: any; isSelected: any; onMemoryMapSelection: any; onItemRightClick: any; }'.
+  Property 'onAddUpdateSkeleton' does not exist on type 'IntrinsicAttributes & { node: any; isSelected: any; onMemoryMapSelection: any; onItemRightClick: any; }'.
+     95 |           <MemoryMapItemV2
+     96 |             node={node}
+  >  97 |             onAddUpdateSkeleton={handleAddUpdateSkeleton}
+        |             ^^^^^^^^^^^^^^^^^^^
+     98 |             onEditMemoryMap={handleEditMemoryMap}
+     99 |           />
+    100 |         )}
 

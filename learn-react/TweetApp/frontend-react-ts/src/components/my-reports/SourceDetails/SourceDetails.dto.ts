@@ -46,20 +46,29 @@ class DataSource {
    * @param {Object} obj - The raw object containing data for the data source.
    * @returns {DataSource} A new DataSource instance.
    */
-  static fromObject(
-    { sourceName, sourceType, status, location, repositoryOrDbName, lastModified, owner, purpose, criticality, notes } = {
-      sourceName: "Unknown Source",
-      status: Status.NOT_IN_USE,
-      sourceType: "Unknown Type",
-      location: "Unknown Location",
-      repositoryOrDbName: "N/A",
-      lastModified: null,
-      owner: "Unknown Owner",
-      purpose: "No Purpose Specified",
-      criticality: "Low",
-      notes: "",
-    }
-  ) {
+  static fromObject({
+    sourceName = "Unknown Source",
+    sourceType = "Unknown Type",
+    status = Status.NOT_IN_USE,
+    location = "Unknown Location",
+    repositoryOrDbName = "N/A",
+    lastModified = null,
+    owner = "Unknown Owner",
+    purpose = "No Purpose Specified",
+    criticality = "Low",
+    notes = "",
+  }: {
+    sourceName?: string;
+    sourceType?: string;
+    status?: string;
+    location?: string;
+    repositoryOrDbName?: string;
+    lastModified?: string | null;
+    owner?: string;
+    purpose?: string;
+    criticality?: string;
+    notes?: string;
+  } = {}) {
     return new DataSource(sourceName, sourceType, status, location, repositoryOrDbName, lastModified, owner, purpose, criticality, notes);
   }
 }

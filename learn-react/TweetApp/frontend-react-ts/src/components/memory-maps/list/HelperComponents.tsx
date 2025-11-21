@@ -14,7 +14,14 @@ const JSONPreview = ({ data }) => (
   </div>
 );
 
-const Header = ({
+interface HeaderProps {
+  navigate: (path: string) => void;
+  onNextClick?: () => void;
+  onPrevClick?: () => void;
+  onSearchTextChange?: (text: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
   navigate,
   onNextClick = () => {},
   onPrevClick = () => {},
@@ -87,8 +94,9 @@ export const MemoryMapListV1 = () => {
         renderNode={(node) => (
           <MemoryMapItemV2
             node={node}
-            onAddUpdateSkeleton={handleAddUpdateSkeleton}
-            onEditMemoryMap={handleEditMemoryMap}
+            isSelected={false}
+            onMemoryMapSelection={() => {}}
+            onItemRightClick={() => {}}
           />
         )}
       />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../redux/store";
 import Select from "react-select";
 import { getDateAsMillisecondsString } from "../../common/service/commonService";
 import CustomButton from "../../common/components/custom-button/CustomButton";
@@ -17,6 +18,53 @@ import { createMemoryMap, updateMemoryMap } from "../../redux/slices/memoryMapSl
 import {
     selectAllFlatTopics
 } from "../../redux/slices/topicSlice";
+
+interface SmartContent {
+    content: string;
+    textOutputType: string;
+    textInputType: string;
+}
+
+interface MemoryMapFormData {
+    uniqueId: string;
+    name: string;
+    details: Array<{
+        uniqueId?: string;
+        smartContent?: SmartContent;
+        [key: string]: any;
+    }>;
+    references: Array<{
+        uniqueId?: string;
+        itemType?: string;
+        itemMetadata?: {
+            topicUniqueID?: string;
+            linkUniqueID?: string;
+            [key: string]: any;
+        };
+        [key: string]: any;
+    }>;
+    parentId: string;
+}
+
+interface DetailFormData {
+    uniqueId: string;
+    smartContent: SmartContent;
+}
+
+interface ReferenceFormData {
+    uniqueId: string;
+    itemType: string;
+    itemMetadata: {
+        topicUniqueID?: string;
+        linkUniqueID?: string;
+        [key: string]: any;
+    };
+}
+
+interface SelectOption {
+    value: string;
+    label: string;
+}
 
 export const CreateMemoryMapItem = () => {
     const navigate = useNavigate();
@@ -77,46 +125,59 @@ const CONSTANTS = {
     DRAFT_DETAIL_ID_PREFIX: 'DRAFT_DETAIL_ID_'
 }
 
-const MemoryMapForm = ({
+const ITEM_TYPES = {
+    TOPIC: "topic",
+    SECTION: "section",
+    LINK: "link",
+    INTERVIEW_QUESTION: "interview-question",
+    INTERVIEW_CATEGORY: "interview-category",
+};
+
+interface MemoryMapFormProps {
+    initialFormData?: Partial<MemoryMapFormData>;
+    onSave?: () => void;
+    onCancelEdit?: () => void;
+}
+
+const MemoryMapForm: React.FC<MemoryMapFormProps> = ({
     initialFormData = {},
     onSave = () => { },
     onCancelEdit = () => { },
 }) => {
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const topics = useSelector(selectAllFlatTopics);
     const links = useSelector(selectAllFlatLinks);
 
-    const topicOptions = topics.map((t) => ({
-        value: t.uniqueId, // Assuming topic have unique IDs
-        label: t.title, // Display tag title in the dropdown
+    const topicOptions: SelectOption[] = topics.map((t) => ({
+        value: t.uniqueId,
+        label: t.title,
     }));
 
-    const linkOptions = links.map((l) => ({
-        value: l.uniqueId, // Assuming link have unique IDs
-        label: l.title, // Display tag title in the dropdown
+    const linkOptions: SelectOption[] = links.map((l) => ({
+        value: l.uniqueId,
+        label: l.title,
     }));
 
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState<string[]>([]);
     const [showDetailPopup, setShowDetailPopup] = useState(false);
     const [showReferencePopup, setShowReferencePopup] = useState(false);
-    const [selectedDetail, setSelectedDetail] = useState(null);
-    const [formData, setFormData] = useState({
-        uniqueId: initialFormData?.uniqueId || "",
-        name: initialFormData?.name || "",
-        details: initialFormData?.details || [],
-        references: initialFormData?.references || [],
-        parentId: initialFormData?.parentId || "",
+    const [selectedDetail, setSelectedDetail] = useState<DetailFormData | null>(null);
+    const [formData, setFormData] = useState<MemoryMapFormData>({
+        uniqueId: (initialFormData as any)?.uniqueId || "",
+        name: (initialFormData as any)?.name || "",
+        details: (initialFormData as any)?.details || [],
+        references: (initialFormData as any)?.references || [],
+        parentId: (initialFormData as any)?.parentId || "",
     });
 
     const validateForm = () => {
-        const errors = [];
+        const errors: string[] = [];
         if (!formData.name.trim()) errors.push("Name is required");
         setFormErrors(errors);
         return errors.length === 0;
     };
 
-    const handleSubmitMemoryMap = (event) => {
-        event.preventDefault();
+    const handleSubmitMemoryMap = () => {
         if (!validateForm()) return;
 
         const updatedMemoryMapObj = {
@@ -131,18 +192,18 @@ const MemoryMapForm = ({
             }))],
         };
 
-        setFormData(() => ({ ...updatedMemoryMapObj }))
+        setFormData({ ...updatedMemoryMapObj });
 
         if (formData.uniqueId) {
-            dispatch(updateMemoryMap({ ...updatedMemoryMapObj, uniqueId: formData.uniqueId }));
+            dispatch(updateMemoryMap({ ...updatedMemoryMapObj, uniqueId: formData.uniqueId }) as any);
         } else {
-            dispatch(createMemoryMap(updatedMemoryMapObj));
+            dispatch(createMemoryMap(updatedMemoryMapObj) as any);
         }
 
         onSave();
     };
 
-    const getTitleCompForRefData = (det) => {
+    const getTitleCompForRefData = (det: any) => {
         if (!det) return null;
 
         if (det.itemType === ITEM_TYPES.TOPIC) {
@@ -169,17 +230,18 @@ const MemoryMapForm = ({
         return null;
     };
 
-    const handleInputChange = ({ target: { name, value } }) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const editDetail = (det) => {
+    const editDetail = (det: any) => {
         if (!det) return;
         setShowDetailPopup(true);
-        setSelectedDetail(() => ({ ...det }));
+        setSelectedDetail({ ...det } as DetailFormData);
     };
 
-    const deleteReference = (det) => {
+    const deleteReference = (det: any) => {
         const updatedReferencesArr = deleteObjectById(
             [...formData.references],
             det.uniqueId
@@ -190,7 +252,7 @@ const MemoryMapForm = ({
         }));
     };
 
-    const deleteDetail = (det) => {
+    const deleteDetail = (det: any) => {
         const updatedDetaillsArr = deleteObjectById(
             [...formData.details],
             det.uniqueId
@@ -201,7 +263,7 @@ const MemoryMapForm = ({
         }));
     };
 
-    const mergeDetail = (detailData) => {
+    const mergeDetail = (detailData: DetailFormData) => {
         const updatedDetaillsArr = updateOrAdd([...formData.details], detailData);
         setFormData((prevData) => ({
             ...prevData,
@@ -210,7 +272,7 @@ const MemoryMapForm = ({
         setShowDetailPopup(false);
     };
 
-    const mergeReference = (referenceData) => {
+    const mergeReference = (referenceData: ReferenceFormData) => {
         const updatedReferencesArr = updateOrAdd(
             [...formData.references],
             referenceData
@@ -226,7 +288,7 @@ const MemoryMapForm = ({
         <div>
             {showDetailPopup && (
                 <DetailPopup
-                    initialFormData={selectedDetail}
+                    initialFormData={selectedDetail || undefined}
                     onSubmit={(data) => mergeDetail(data)}
                     onClose={() => setShowDetailPopup(false)}
                 />
@@ -296,13 +358,17 @@ const MemoryMapForm = ({
                                             title={"Edit"}
                                             iconName={"FaEdit"}
                                             onClick={() => editDetail(det)}
-                                        />
+                                        >
+                                            Edit
+                                        </CustomButton>
                                         <CustomButton
                                             className="mt-1"
                                             title={"Delete"}
                                             iconName={"FaDelete"}
                                             onClick={() => deleteDetail(det)}
-                                        />
+                                        >
+                                            Delete
+                                        </CustomButton>
                                     </FloatingButton>
                                 </div>
                             </div>
@@ -342,7 +408,9 @@ const MemoryMapForm = ({
                                             title={"Delete"}
                                             iconName={"FaDelete"}
                                             onClick={() => deleteReference(det)}
-                                        />
+                                        >
+                                            Delete
+                                        </CustomButton>
                                     </FloatingButton>
                                 </div>
                             </div>
@@ -374,41 +442,46 @@ const MemoryMapForm = ({
     );
 };
 
-const DetailPopup = ({
+interface DetailPopupProps {
+    initialFormData?: Partial<DetailFormData>;
+    onSubmit?: (data: DetailFormData) => void;
+    onClose?: () => void;
+}
+
+const DetailPopup: React.FC<DetailPopupProps> = ({
     initialFormData = {},
     onSubmit = () => { },
     onClose = () => { },
 }) => {
-    const [formData, setFormData] = useState({
-        uniqueId: initialFormData?.uniqueId || "",
-        smartContent: initialFormData?.smartContent || {
+    const [formData, setFormData] = useState<DetailFormData>({
+        uniqueId: (initialFormData as any)?.uniqueId || "",
+        smartContent: (initialFormData as any)?.smartContent || {
             content: "",
             textOutputType: "",
             textInputType: "",
         },
     });
 
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState<string[]>([]);
 
-    const [smartEditorError, setSmartEditorError] = useState(null);
+    const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
-    const handleSmartEditorChange = (smartContent) =>
+    const handleSmartEditorChange = (smartContent: SmartContent) =>
         setFormData((prevData) => ({ ...prevData, smartContent }));
 
-    const handleSmartEditorError = (error) => setSmartEditorError(error);
+    const handleSmartEditorError = (error: string | null) => setSmartEditorError(error);
 
     const validateForm = () => {
-        const errors = [];
+        const errors: string[] = [];
         if (smartEditorError) errors.push(smartEditorError);
         setFormErrors(errors);
         return errors.length === 0;
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         if (!validateForm()) return;
         const dataToBeSubmitted = { ...formData };
-        if (!initialFormData?.uniqueId) {
+        if (!(initialFormData as any)?.uniqueId) {
             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_DETAIL_ID_PREFIX + getDateAsMillisecondsString()}`;
         }
         onSubmit(dataToBeSubmitted);
@@ -465,7 +538,15 @@ const ITEM_TYPES = {
     INTERVIEW_CATEGORY: "interview-category",
 };
 
-const ReferencePopup = ({
+interface ReferencePopupProps {
+    initialFormData?: Partial<ReferenceFormData>;
+    topicOptions?: SelectOption[];
+    linkOptions?: SelectOption[];
+    onSubmit?: (data: ReferenceFormData) => void;
+    onClose?: () => void;
+}
+
+const ReferencePopup: React.FC<ReferencePopupProps> = ({
     initialFormData = {},
     topicOptions = [],
     linkOptions = [],
@@ -473,34 +554,36 @@ const ReferencePopup = ({
     onClose = () => { },
 }) => {
 
-    const itemTypeOptions = [
+    const itemTypeOptions: SelectOption[] = [
         { value: ITEM_TYPES.TOPIC, label: "Topic" },
         { value: ITEM_TYPES.SECTION, label: "Section" },
         { value: ITEM_TYPES.LINK, label: "Link" },
         { value: ITEM_TYPES.INTERVIEW_QUESTION, label: "Interview Question" },
         { value: ITEM_TYPES.INTERVIEW_CATEGORY, label: "Interview Category" },
     ];
-    const [formData, setFormData] = useState({
-        uniqueId: initialFormData?.uniqueId || "",
-        itemType: initialFormData?.itemType || "",
-        itemMetadata: initialFormData?.itemMetadata || {},
+    const [formData, setFormData] = useState<ReferenceFormData>({
+        uniqueId: (initialFormData as any)?.uniqueId || "",
+        itemType: (initialFormData as any)?.itemType || "",
+        itemMetadata: (initialFormData as any)?.itemMetadata || {},
     });
 
-    const [formErrors, setFormErrors] = useState([]);
+    const [formErrors, setFormErrors] = useState<string[]>([]);
 
-    const handleItemTypeSelect = (selectedOption) => {
+    const handleItemTypeSelect = (selectedOption: SelectOption) => {
         console.log("Selected Option:", selectedOption);
         setFormData({ ...formData, itemType: selectedOption.value });
     };
 
-    const handleTopicSelect = (selectedTags) => {
+    const handleTopicSelect = (selectedTags: SelectOption | null) => {
+        if (!selectedTags) return;
         setFormData({
             ...formData,
             itemMetadata: { topicUniqueID: selectedTags.value },
         });
     };
 
-    const handleLinkSelect = (selectedTags) => {
+    const handleLinkSelect = (selectedTags: SelectOption | null) => {
+        if (!selectedTags) return;
         setFormData({
             ...formData,
             itemMetadata: { linkUniqueID: selectedTags.value },
@@ -508,17 +591,15 @@ const ReferencePopup = ({
     };
 
     const validateForm = () => {
-        const errors = [];
-        // if (smartEditorError) errors.push(smartEditorError);
+        const errors: string[] = [];
         setFormErrors(errors);
         return errors.length === 0;
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         if (!validateForm()) return;
         const dataToBeSubmitted = { ...formData };
-        if (!initialFormData?.uniqueId) {
+        if (!(initialFormData as any)?.uniqueId) {
             dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_REFERENCE_ID_PREFIX + getDateAsMillisecondsString()}`;
         }
         onSubmit(dataToBeSubmitted);
@@ -567,7 +648,7 @@ const ReferencePopup = ({
                             <Select
                                 name="topics"
                                 options={topicOptions}
-                                onChange={(data) => handleTopicSelect(data, ITEM_TYPES.TOPIC)}
+                                onChange={(data) => handleTopicSelect(data)}
                                 styles={customStyles}
                                 menuPortalTarget={document.body}
                             />
@@ -585,7 +666,7 @@ const ReferencePopup = ({
                             <Select
                                 name="links"
                                 options={linkOptions}
-                                onChange={(data) => handleLinkSelect(data, ITEM_TYPES.LINK)}
+                                onChange={(data) => handleLinkSelect(data)}
                                 styles={customStyles}
                                 menuPortalTarget={document.body}
                             />

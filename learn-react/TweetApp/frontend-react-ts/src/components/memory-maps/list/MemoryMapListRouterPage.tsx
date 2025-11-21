@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import type { RootState } from "../../../redux/store";
 import {
   SmartPreviewer,
   availableOutputTypes as SupportedTextFormats,
@@ -17,6 +18,15 @@ import CopyButton from "../copy-to-clipboard/CopyButton";
 import { Header } from "./HelperComponents";
 import MemoryMapItemV2 from "./MemoryMapItemV2";
 
+interface MemoryMapWithDetails {
+  uniqueId: string;
+  name: string;
+  skeleton?: string;
+  details?: any[];
+  references?: any[];
+  [key: string]: any;
+}
+
 const MemoryMapList = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,16 +34,16 @@ const MemoryMapList = () => {
   // Fetch memory maps data only when component mounts (with smart caching)
   useDataFetching(
     fetchMemoryMaps,
-    (state) => state.memoryMaps
+    (state: RootState) => state.memoryMaps
   );
 
-  const memoryMaps = useSelector(selectAllTreeMemoryMaps);
-  const [selectedMemoryMap, setSelectedMemoryMap] = useState(null);
+  const memoryMaps = useSelector((state: RootState) => selectAllTreeMemoryMaps(state));
+  const [selectedMemoryMap, setSelectedMemoryMap] = useState<MemoryMapWithDetails | null>(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [copied, setCopied] = useState(false);
-  const selectedElementRef = useRef(null);
-  const [searchString, setSearchString] = useState(null);
+  const selectedElementRef = useRef<HTMLSpanElement>(null);
+  const [searchString, setSearchString] = useState<string | null>(null);
   const { data: memoryMapDataToBeViewed } = location.state || {};
 
   const { prevItem: prevTreeNode, nextItem: nextTreeNode } = useFlatTreeData(
@@ -50,7 +60,7 @@ const MemoryMapList = () => {
 
   useEffect(() => {
     if (memoryMapDataToBeViewed) {
-      setSelectedMemoryMap(() => ({ ...memoryMapDataToBeViewed }));
+      setSelectedMemoryMap({ ...memoryMapDataToBeViewed } as MemoryMapWithDetails);
     }
   }, [memoryMapDataToBeViewed]);
 
@@ -77,12 +87,14 @@ const MemoryMapList = () => {
   };
 
   const handleEditMemoryMap = () => {
+    if (!selectedMemoryMap) return;
     navigate(`/memory-maps/${selectedMemoryMap.uniqueId}/edit`, {
       state: { data: selectedMemoryMap },
     });
   };
 
   const handleAddUpdateSkeleton = () => {
+    if (!selectedMemoryMap) return;
     navigate(
       `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton`,
       {
@@ -92,6 +104,7 @@ const MemoryMapList = () => {
   };
 
   const handleAddUpdateSkeletonUsingTreeEditor = () => {
+    if (!selectedMemoryMap) return;
     navigate(
       `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton-v2`,
       {
@@ -144,7 +157,7 @@ const MemoryMapList = () => {
         navigate={navigate}
         onNextClick={() => handleMemoryMapSelection(nextTreeNode)}
         onPrevClick={() => handleMemoryMapSelection(prevTreeNode)}
-        onSearchTextChange={(text) => setSearchString(() => text?.trim() || "")}
+        onSearchTextChange={(text) => setSearchString(text?.trim() || null)}
       />
       <div className="flex flex-1 overflow-auto">
         <div className="flex-1 overflow-auto">
@@ -180,6 +193,7 @@ const MemoryMapList = () => {
               data={{
                 content: selectedMemoryMap?.name || "",
                 textOutputType: SupportedTextFormats.MARKDOWN,
+                textInputType: "TextArea",
               }}
             />
           </h4>
@@ -206,6 +220,7 @@ const MemoryMapList = () => {
                     data={{
                       content: node?.name || "**tree node name is missing!**",
                       textOutputType: SupportedTextFormats.MARKDOWN,
+                      textInputType: "TextArea",
                     }}
                     markdownStyles={{ fontSize: "10px" }}
                   />
@@ -213,10 +228,10 @@ const MemoryMapList = () => {
               />
             </div>
           )}
-          {selectedMemoryMap?.details?.length > 0 && (
+          {(selectedMemoryMap?.details?.length ?? 0) > 0 && (
             <div className="mt-4 text-gray-600">Details related to memory map will be shown soon!!</div>
           )}
-          {selectedMemoryMap?.references?.length > 0 && (
+          {(selectedMemoryMap?.references?.length ?? 0) > 0 && (
             <div className="mt-4 text-gray-600">References related to memory map will be shown soon!!</div>
           )}
         </div>
@@ -226,7 +241,7 @@ const MemoryMapList = () => {
           position={popupPosition}
           popupOptions={popupOptions}
           onOptionSelect={handlePopupOption}
-          popupOptionStyle={{ fontSize: "12px" }}
+          popupOptionClassName="text-xs"
         />
       )}
     </div>

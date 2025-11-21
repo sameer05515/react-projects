@@ -20,6 +20,7 @@ const MemoryMapItemV2 = ({
                 data={{
                     content: memoryMap.name,
                     textOutputType: SupportedTextFormats.MARKDOWN,
+                    textInputType: "TextArea",
                 }}
                 markdownStyles={{fontSize:'10px'}}
             />

@@ -5,17 +5,28 @@ export const Status = {
 };
 
 class DataSource {
+  sourceName: string;
+  sourceType: string;
+  status: string;
+  location: string;
+  repositoryOrDbName: string;
+  lastModified: string;
+  owner: string;
+  purpose: string;
+  criticality: string;
+  notes: string;
+
   constructor(
-    sourceName = "Unknown Source",
-    sourceType = "Unknown Type",
-    status = Status.NOT_IN_USE,
-    location = "Unknown Location",
-    repositoryOrDbName = "N/A",
-    lastModified = null,
-    owner = "Unknown Owner",
-    purpose = "No Purpose Specified",
-    criticality = "Low",
-    notes = ""
+    sourceName: string = "Unknown Source",
+    sourceType: string = "Unknown Type",
+    status: string = Status.NOT_IN_USE,
+    location: string = "Unknown Location",
+    repositoryOrDbName: string = "N/A",
+    lastModified: string | null = null,
+    owner: string = "Unknown Owner",
+    purpose: string = "No Purpose Specified",
+    criticality: string = "Low",
+    notes: string = ""
   ) {
     this.sourceName = sourceName || "Unknown Source";
     this.sourceType = sourceType || "Unknown Type";

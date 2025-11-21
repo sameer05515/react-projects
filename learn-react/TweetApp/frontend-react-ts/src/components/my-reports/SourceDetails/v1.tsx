@@ -6,12 +6,18 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const PageSize = 10;
 const TotalVisibleLinks = 3;
 
-const PaginationNavigator = ({ currentPage, totalPages, onPageChange }) => {
+interface PaginationNavigatorProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+const PaginationNavigator: React.FC<PaginationNavigatorProps> = ({ currentPage, totalPages, onPageChange }) => {
   const createPageLinks = useCallback(() => {
     const startPage = Math.max(1, currentPage - Math.floor(TotalVisibleLinks / 2));
     const endPage = Math.min(totalPages, startPage + TotalVisibleLinks - 1);
 
-    const links = [];
+    const links: JSX.Element[] = [];
     for (let i = startPage; i <= endPage; i++) {
       links.push(
         <li className={`page-item ${i === currentPage ? "active" : ""}`} key={i}>
@@ -51,7 +57,7 @@ const PaginationNavigator = ({ currentPage, totalPages, onPageChange }) => {
 const SourceDetailsV1 = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const currentPage = +searchParams.get("pageNo") || 1;
+  const currentPage = +(searchParams.get("pageNo") || "1") || 1;
   //   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = useMemo(() => Math.ceil(myDataSources.length / PageSize), []);

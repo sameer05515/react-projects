@@ -50,10 +50,10 @@ const DetailsCard = ({
 
       <hr className="my-3 border-gray-200" />
       <h5 className="mb-1 font-semibold text-gray-900">Purpose: </h5>
-      <SmartPreviewer data={{ content: purpose, textOutputType: availableOutputTypes.HTML }} />
+      <SmartPreviewer data={{ content: purpose, textOutputType: availableOutputTypes.HTML, textInputType: "TextArea" }} />
       <hr className="my-3 border-gray-200" />
       <h5 className="mb-1 font-semibold text-gray-900">Notes: </h5>
-      <SmartPreviewer data={{ content: notes, textOutputType: availableOutputTypes.HTML }} />
+      <SmartPreviewer data={{ content: notes, textOutputType: availableOutputTypes.HTML, textInputType: "TextArea" }} />
     </div>
   </div>
 );

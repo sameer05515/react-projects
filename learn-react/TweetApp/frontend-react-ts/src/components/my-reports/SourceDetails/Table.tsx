@@ -1,5 +1,6 @@
 import React from "react";
 import DetailsCard from "./DetailsCard";
+import DataSource from "./SourceDetails.dto";
 
 // const headers = [
 //   //   "Source Name",
@@ -7,7 +8,12 @@ import DetailsCard from "./DetailsCard";
 //   //   "Purpose & Notes",
 // ].map((h, idx) => ({ id: `header_${idx + 1}`, title: h }));
 
-const Table = ({ filteredItems = [], suffixPageItemCount = 0 }) => {
+interface TableProps {
+  filteredItems?: DataSource[];
+  suffixPageItemCount?: number;
+}
+
+const Table: React.FC<TableProps> = ({ filteredItems = [], suffixPageItemCount = 0 }) => {
   return (
     <div className="bg-dark align-middle">
       {filteredItems.map((d, idx) => (

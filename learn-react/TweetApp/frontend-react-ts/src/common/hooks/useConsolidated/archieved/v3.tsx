@@ -166,14 +166,14 @@ export const updateNotification = (toastId, message, state = LoaderStates.spinne
 
 // API request wrapper that can handle retries and fallback errors
 export const apiRequestWithRetry = async (
-  dispatch,
-  method,
-  url,
+  dispatch: any,
+  method: string,
+  url: string,
   retries = 3,
-  data = null
-) => {
+  data: any = null
+): Promise<any> => {
   let attempts = 0;
-  let result = null;
+  let result: any = null;
   
   // Retry logic with exponential backoff
   while (attempts < retries) {
@@ -214,7 +214,8 @@ export const fetchTaskDetails = async (dispatch, toastId) => {
     return { data, isError, message };
   } catch (error) {
     updateNotification(toastId, "An error occurred while fetching data.", LoaderStates.error);
-    return { data: null, isError: true, message: error.message };
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return { data: null, isError: true, message: errorMessage };
   } finally {
     dispatch(hideBackdrop());
   }
@@ -301,13 +302,14 @@ const useConsolidated = () => {
       return { responseData, isError, message };
     } catch (error) {
       updateNotification(toastId, "Request failed after retries.", LoaderStates.error);
-      return { responseData: null, isError: true, message: error.message };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { responseData: null, isError: true, message: errorMessage };
     }
   };
 
   // Utility for handling multiple API requests
-  const fetchMultipleData = async (requests) => {
-    const results = [];
+  const fetchMultipleData = async (requests: any[]) => {
+    const results: any[] = [];
     const toastId = notify("Processing multiple requests...");
     dispatch(showBackdrop());
 

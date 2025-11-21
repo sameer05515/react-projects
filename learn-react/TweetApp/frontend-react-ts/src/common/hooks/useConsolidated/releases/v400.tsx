@@ -70,7 +70,7 @@ const useConsolidated = () => {
       unexpectedErrorMessage = "",
     } = {}
   ) => {
-    let toastId = null;
+    let toastId: any = null;
 
     try {
       // Validate input functions

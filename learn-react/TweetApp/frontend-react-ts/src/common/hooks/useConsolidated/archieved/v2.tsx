@@ -79,7 +79,8 @@ const useConsolidated = () => {
         "An error occurred while fetching data.",
         LoaderStates.error
       );
-      return { data: null, isError: true, message: error.message };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { data: null, isError: true, message: errorMessage };
     } finally {
       dispatch(hideBackdrop());
     }
@@ -165,7 +166,8 @@ const useConsolidated = () => {
         "An error occurred while fetching data.",
         LoaderStates.error
       );
-      return { data: null, isError: true, message: error.message };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { data: null, isError: true, message: errorMessage };
     } finally {
       dispatch(hideBackdrop());
     }

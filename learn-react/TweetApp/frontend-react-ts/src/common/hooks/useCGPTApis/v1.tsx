@@ -1,13 +1,10 @@
 import { useDispatch } from "react-redux";
-import {
-  hideBackdrop,
-  showBackdrop,
-} from "../../../../redux/slices/backdropSlice";
-import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
-import { apiRequest } from "../apiClient";
-import { LoaderStates } from "../LoaderWithTitle";
-import prepareErrorMessage from "../prepareErrorMessage";
-import { notify, updateNotification } from "../toast-utils";
+import { hideBackdrop, showBackdrop } from "../../../redux/slices/backdropSlice";
+import { BACKEND_APPLICATION_BASE_URL } from "../../constants/globalConstants";
+import { apiRequest } from "../../service/apiClient/v1";
+import { LoaderStates } from "../useConsolidated/LoaderWithTitle";
+import prepareErrorMessage from "../useConsolidated/prepareErrorMessage";
+import { notify, updateNotification } from "../useConsolidated/toast-utils";
 
 // Base URL for CGPT API requests
 const BASE_URL = `${BACKEND_APPLICATION_BASE_URL}/cgpt`;

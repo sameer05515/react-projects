@@ -59,7 +59,8 @@ const useConsolidated = () => {
       return { data, isError, message };
     } catch (error) {
       updateNotification(toastId, "An error occurred", LoaderStates.error);
-      return { data: null, isError: true, message: error.message };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { data: null, isError: true, message: errorMessage };
     }
   };
 

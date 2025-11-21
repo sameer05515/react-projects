@@ -1,163 +1,60 @@
-ERROR in src/common/hooks/useConsolidated/archieved/v1.tsx:62:52
-TS18046: 'error' is of type 'unknown'.
-    60 |     } catch (error) {
-    61 |       updateNotification(toastId, "An error occurred", LoaderStates.error);
-  > 62 |       return { data: null, isError: true, message: error.message };
-       |                                                    ^^^^^
-    63 |     }
-    64 |   };
-    65 |
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:5:8
+TS2307: Cannot find module '../../../../redux/slices/backdropSlice' or its corresponding type declarations.
+    3 |   hideBackdrop,
+    4 |   showBackdrop,
+  > 5 | } from "../../../../redux/slices/backdropSlice";
+      |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 | import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
+    7 | import { apiRequest } from "../apiClient";
+    8 | import { LoaderStates } from "../LoaderWithTitle";
 
-ERROR in src/common/hooks/useConsolidated/archieved/v2.tsx:82:52
-TS18046: 'error' is of type 'unknown'.
-    80 |         LoaderStates.error
-    81 |       );
-  > 82 |       return { data: null, isError: true, message: error.message };
-       |                                                    ^^^^^
-    83 |     } finally {
-    84 |       dispatch(hideBackdrop());
-    85 |     }
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:6:46
+TS2307: Cannot find module '../../../constants/globalConstants' or its corresponding type declarations.
+    4 |   showBackdrop,
+    5 | } from "../../../../redux/slices/backdropSlice";
+  > 6 | import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
+      |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    7 | import { apiRequest } from "../apiClient";
+    8 | import { LoaderStates } from "../LoaderWithTitle";
+    9 | import prepareErrorMessage from "../prepareErrorMessage";
 
-ERROR in src/common/hooks/useConsolidated/archieved/v2.tsx:168:52
-TS18046: 'error' is of type 'unknown'.
-    166 |         LoaderStates.error
-    167 |       );
-  > 168 |       return { data: null, isError: true, message: error.message };
-        |                                                    ^^^^^
-    169 |     } finally {
-    170 |       dispatch(hideBackdrop());
-    171 |     }
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:7:28
+TS2307: Cannot find module '../apiClient' or its corresponding type declarations.
+     5 | } from "../../../../redux/slices/backdropSlice";
+     6 | import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
+  >  7 | import { apiRequest } from "../apiClient";
+       |                            ^^^^^^^^^^^^^^
+     8 | import { LoaderStates } from "../LoaderWithTitle";
+     9 | import prepareErrorMessage from "../prepareErrorMessage";
+    10 | import { notify, updateNotification } from "../toast-utils";
 
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:181:7
-TS2322: Type '{ data: any; isError: boolean; message: string; }' is not assignable to type 'null'.
-    179 |   while (attempts < retries) {
-    180 |     try {
-  > 181 |       result = await apiRequest({ method, url, data });
-        |       ^^^^^^
-    182 |       return result;
-    183 |     } catch (error) {
-    184 |       if (attempts >= retries - 1) {
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:8:30
+TS2307: Cannot find module '../LoaderWithTitle' or its corresponding type declarations.
+     6 | import { BACKEND_APPLICATION_BASE_URL } from "../../../constants/globalConstants";
+     7 | import { apiRequest } from "../apiClient";
+  >  8 | import { LoaderStates } from "../LoaderWithTitle";
+       |                              ^^^^^^^^^^^^^^^^^^^^
+     9 | import prepareErrorMessage from "../prepareErrorMessage";
+    10 | import { notify, updateNotification } from "../toast-utils";
+    11 |
 
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:202:13
-TS2339: Property 'data' does not exist on type 'null'.
-    200 |   dispatch(showBackdrop());
-    201 |   try {
-  > 202 |     const { data, isError, message } = await apiRequestWithRetry(
-        |             ^^^^
-    203 |       dispatch,
-    204 |       "get",
-    205 |       `${BACKEND_APPLICATION_BASE_URL}/tags`
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:9:33
+TS2307: Cannot find module '../prepareErrorMessage' or its corresponding type declarations.
+     7 | import { apiRequest } from "../apiClient";
+     8 | import { LoaderStates } from "../LoaderWithTitle";
+  >  9 | import prepareErrorMessage from "../prepareErrorMessage";
+       |                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    10 | import { notify, updateNotification } from "../toast-utils";
+    11 |
+    12 | // Base URL for CGPT API requests
 
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:202:19
-TS2339: Property 'isError' does not exist on type 'null'.
-    200 |   dispatch(showBackdrop());
-    201 |   try {
-  > 202 |     const { data, isError, message } = await apiRequestWithRetry(
-        |                   ^^^^^^^
-    203 |       dispatch,
-    204 |       "get",
-    205 |       `${BACKEND_APPLICATION_BASE_URL}/tags`
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:202:28
-TS2339: Property 'message' does not exist on type 'null'.
-    200 |   dispatch(showBackdrop());
-    201 |   try {
-  > 202 |     const { data, isError, message } = await apiRequestWithRetry(
-        |                            ^^^^^^^
-    203 |       dispatch,
-    204 |       "get",
-    205 |       `${BACKEND_APPLICATION_BASE_URL}/tags`
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:217:50
-TS18046: 'error' is of type 'unknown'.
-    215 |   } catch (error) {
-    216 |     updateNotification(toastId, "An error occurred while fetching data.", LoaderStates.error);
-  > 217 |     return { data: null, isError: true, message: error.message };
-        |                                                  ^^^^^
-    218 |   } finally {
-    219 |     dispatch(hideBackdrop());
-    220 |   }
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:289:15
-TS2339: Property 'data' does not exist on type 'null'.
-    287 |     const toastId = notify("Fetching data...");
-    288 |     try {
-  > 289 |       const { data: responseData, isError, message } = await apiRequestWithRetry(
-        |               ^^^^
-    290 |         dispatch,
-    291 |         method,
-    292 |         url,
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:289:35
-TS2339: Property 'isError' does not exist on type 'null'.
-    287 |     const toastId = notify("Fetching data...");
-    288 |     try {
-  > 289 |       const { data: responseData, isError, message } = await apiRequestWithRetry(
-        |                                   ^^^^^^^
-    290 |         dispatch,
-    291 |         method,
-    292 |         url,
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:289:44
-TS2339: Property 'message' does not exist on type 'null'.
-    287 |     const toastId = notify("Fetching data...");
-    288 |     try {
-  > 289 |       const { data: responseData, isError, message } = await apiRequestWithRetry(
-        |                                            ^^^^^^^
-    290 |         dispatch,
-    291 |         method,
-    292 |         url,
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:304:60
-TS18046: 'error' is of type 'unknown'.
-    302 |     } catch (error) {
-    303 |       updateNotification(toastId, "Request failed after retries.", LoaderStates.error);
-  > 304 |       return { responseData: null, isError: true, message: error.message };
-        |                                                            ^^^^^
-    305 |     }
-    306 |   };
-    307 |
-
-ERROR in src/common/hooks/useConsolidated/archieved/v3.tsx:322:20
-TS2345: Argument of type '{ responseData: any; isError: any; message: any; }' is not assignable to parameter of type 'never'.
-    320 |         retries
-    321 |       );
-  > 322 |       results.push({ responseData, isError, message });
-        |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    323 |     }
-    324 |
-    325 |     updateNotification(toastId, "Multiple requests processed!", LoaderStates.success);
-
-ERROR in src/common/hooks/useConsolidated/archieved/v31.tsx:181:7
-TS2322: Type 'Id' is not assignable to type 'null'.
-  Type 'string' is not assignable to type 'null'.
-    179 |       isPromise(apiRequestPromise, "apiRequest");
-    180 |
-  > 181 |       toastId = notify(
-        |       ^^^^^^^
-    182 |         prepareMessage(loadingMessage, defaultMessages.loadingMessage)
-    183 |       );
-    184 |       dispatch(showBackdrop());
-
-ERROR in src/common/hooks/useConsolidated/releases/v400.tsx:85:7
-TS2322: Type 'Id' is not assignable to type 'null'.
-  Type 'string' is not assignable to type 'null'.
-    83 |
-    84 |       // Show loading notification and backdrop
-  > 85 |       toastId = notify(
-       |       ^^^^^^^
-    86 |         prepareMessage(loadingMessage, defaultMessages.loadingMessage)
-    87 |       );
-    88 |       dispatch(showBackdrop());
-
-ERROR in src/common/hooks/useConsolidated/v4.tsx:229:9
-TS2322: Type 'Id' is not assignable to type 'null'.
-  Type 'string' is not assignable to type 'null'.
-    227 |
-    228 |         // Show loading notification and backdrop
-  > 229 |         toastId = notify(
-        |         ^^^^^^^
-    230 |           prepareMessage(loadingMessage, defaultMessages.loadingMessage)
-    231 |         );
-    232 |         dispatch(showBackdrop());
+ERROR in src/common/hooks/useCGPTApis/v1.tsx:10:44
+TS2307: Cannot find module '../toast-utils' or its corresponding type declarations.
+     8 | import { LoaderStates } from "../LoaderWithTitle";
+     9 | import prepareErrorMessage from "../prepareErrorMessage";
+  > 10 | import { notify, updateNotification } from "../toast-utils";
+       |                                            ^^^^^^^^^^^^^^^^
+    11 |
+    12 | // Base URL for CGPT API requests
+    13 | const BASE_URL = `${BACKEND_APPLICATION_BASE_URL}/cgpt`;
 

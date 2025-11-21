@@ -69,12 +69,16 @@ export const MemoryMapListV1 = () => {
     console.log("Show children for parentId:", parentId);
   };
 
-  const handleEditMemoryMap = (uniqueId) => {
+  // Reserved for future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _handleEditMemoryMap = (uniqueId: string) => {
     console.log("handleEditMemoryMap for uniqueId:", uniqueId);
     navigate(`${uniqueId}/edit`);
   };
 
-  const handleAddUpdateSkeleton = (uniqueId, data) => {
+  // Reserved for future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _handleAddUpdateSkeleton = (uniqueId: string, data: any) => {
     console.log("handleAddUpdateSkeleton for uniqueId:", uniqueId);
     // navigate(`${uniqueId}/edit/append-skeleton`);
     navigate(`${uniqueId}/edit/append-skeleton`, { state: { data } });

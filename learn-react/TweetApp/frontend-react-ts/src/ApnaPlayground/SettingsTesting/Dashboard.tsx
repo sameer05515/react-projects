@@ -81,7 +81,7 @@ function SettingDashboard() {
       </div>
       <div className="mt-2.5 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         {activeTab === TabNames.goldRateCalculator && <GoldRateCalculator />}
-        {activeTab === TabNames.comparisonContainer && <ComparisonContainer />}
+        {activeTab === TabNames.comparisonContainer && <ComparisonContainer additionalProp={undefined} />}
         {activeTab === TabNames.comparisonTableContainer && <ComparisonTableContainer />}
         {activeTab === TabNames.studentListContainer && <StudentList students={students} />}
         {activeTab === TabNames.breadCrumbContainer && <Breadcrumb2 />}

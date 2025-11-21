@@ -2,6 +2,14 @@ import React, { useMemo, useState } from "react";
 import generateTreeData from "./treeDataGenerator";
 import RadioButtonsComponent from "../../../common/components/radiobutton-component/RadioButtonsComponent";
 
+interface TreeNode {
+    uniqueId: number;
+    name: string;
+    children: TreeNode[];
+    parentId: number;
+    currentDepth: number;
+}
+
 const DISPLAY_STYLE = {
   TREE: "tree",
   MEMORY_MAP: "memory-map",
@@ -13,7 +21,7 @@ const generateLabelValueArray = (obj = DISPLAY_STYLE) =>
     value: obj[key],
   }));
 
-const TreeNode = ({ node }) => {
+const TreeNodeComponent = ({ node }: { node: TreeNode }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +59,7 @@ const TreeNode = ({ node }) => {
       {isOpen && node.children.length > 0 && (
         <ul className="ml-5 mt-2 border-l border-gray-200 pl-4">
           {node.children.map((child) => (
-            <TreeNode key={child.uniqueId} node={child} />
+            <TreeNodeComponent key={child.uniqueId} node={child} />
           ))}
         </ul>
       )}
@@ -59,7 +67,7 @@ const TreeNode = ({ node }) => {
   );
 };
 
-const DisplayDataWithTree = ({ treeData = [] }) => {
+const DisplayDataWithTree = ({ treeData = [] }: { treeData?: TreeNode[] }) => {
   const rootNodes = useMemo(
     () => treeData.filter((node) => node.parentId === 0),
     [treeData]
@@ -69,14 +77,14 @@ const DisplayDataWithTree = ({ treeData = [] }) => {
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <ul className="space-y-3">
         {rootNodes.map((node) => (
-          <TreeNode key={node.uniqueId} node={node} />
+          <TreeNodeComponent key={node.uniqueId} node={node} />
         ))}
       </ul>
     </div>
   );
 };
 
-const MemoryMapNode = ({ node, level }) => (
+const MemoryMapNode = ({ node, level }: { node: TreeNode; level: number }) => (
   <div className="relative pl-5">
     {level > 0 && (
       <span className="absolute left-1 top-0 h-full border-l border-gray-200" />
@@ -94,7 +102,7 @@ const MemoryMapNode = ({ node, level }) => (
   </div>
 );
 
-const MemoryMap = ({ treeData }) => {
+const MemoryMap = ({ treeData }: { treeData: TreeNode[] }) => {
   const roots = useMemo(
     () => treeData.filter((node) => node.parentId === 0),
     [treeData]
@@ -111,7 +119,7 @@ const MemoryMap = ({ treeData }) => {
   );
 };
 
-const DisplayData = ({ treeData = generateTreeData(7, 4) }) => {
+const DisplayData = ({ treeData = generateTreeData(7, 4) }: { treeData?: TreeNode[] }) => {
   const [displayStyle, setDisplayStyle] = useState(DISPLAY_STYLE.TREE);
 
   const handleItemTypeSelect = (selectedOption) => {

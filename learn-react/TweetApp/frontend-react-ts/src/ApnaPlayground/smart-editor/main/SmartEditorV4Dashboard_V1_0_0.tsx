@@ -4,7 +4,7 @@ import { smartPreviewerDataArray as smartPreviewerData, observations } from "../
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 // import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
-import SmartPreviewerV4 from "../../../common/components/Smart/Editor/v4";
+import SmartPreviewerV4 from "../../../common/components/Smart/Previewer/v4";
 import ModalV3 from "../../../common/hoc/modal/ModalV3";
 import FormMessageBuilder from "../../../common/components/FormMessages/Builder";
 
@@ -13,7 +13,7 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
   const selectedData = useMemo(() => smartPreviewerData[selectedDataIndex], [selectedDataIndex]);
   const [showModal, setShowModal] = useState(false);
   // Mock async validation function
-  const handleEditorSubmit = async (data) => {
+  const handleEditorSubmit = async (data: { content: string; textOutputType: string; textInputType: string }): Promise<{ isError: boolean; messages: Array<{ type: string; message: string }> }> => {
     console.log("Submitting data:", data);
 
     return new Promise((resolve) => {
@@ -63,13 +63,12 @@ const SmartEditorV4Dashboard_V1_0_0 = () => {
           title={selectedData?.data ? "Update" : "Save"}
           isOpen={showModal}
           onClose={() => setShowModal(false)}
-          showCloseButton={true}
         >
-          <SmartEditorV4 initialValue={selectedData.data} onSubmit={handleEditorSubmit} />
+          <SmartEditorV4 initialValue={selectedData.data || undefined} onSubmit={handleEditorSubmit} />
         </ModalV3>
       )}
       <ToggleablePanel showContent={false} title="SmartEditorV4[_unstable]">
-        <SmartEditorV4 initialValue={selectedData.data} onSubmit={handleEditorSubmit} />
+        <SmartEditorV4 initialValue={selectedData.data || undefined} onSubmit={handleEditorSubmit} />
       </ToggleablePanel>
       {/* <JSONDataViewer metadata={{ selectedDataIndex, selectedData }} title="X-Ray" /> */}
     </div>

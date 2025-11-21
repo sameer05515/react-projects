@@ -6,6 +6,7 @@ import {
   saveThinkTankItem,
   updateThinkTankItem,
 } from "../../components/my-reports/ThinkTank/utils/ThinkTankApiServices";
+import { ThinkTankItemType } from "../../components/my-reports/ThinkTank/Item.dto";
 import { delayForMS } from "../sample-promises";
 
 const ALLOWED_SAVE_OF_HARDCODED_DATA = false;
@@ -19,15 +20,21 @@ const convertToISTDateWithTime = (dateStr, minutes = 10) => {
   // Parse date in IST by appending the time
   const parsedDate = new Date(`${dateStr} 10:${minutes}:00 GMT+0530`);
 
-  if (isNaN(parsedDate)) {
+  if (isNaN(parsedDate.getTime())) {
     throw new Error(`Invalid date format: ${dateStr}`);
   }
 
   return parsedDate.toISOString(); // Converts to UTC format for API
 };
 
+interface Message {
+  id: string;
+  type: "success" | "error";
+  message: string;
+}
+
 const TestHttpV1 = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const handleFetchThninkTankItems = () =>
     fetchThinkTankItems({})
       .then((response) => console.log(response))
@@ -39,6 +46,7 @@ const TestHttpV1 = () => {
         content: "<b>Create My Todo list</b> 2145/02Feb25 \n\n - Successfully created basic structure of Todo.",
         textInputType: "TextArea",
       },
+      itemType: ThinkTankItemType.ToDo,
     })
       .then((response) => console.log(response))
       .catch((err) => console.error(err));

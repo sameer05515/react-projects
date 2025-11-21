@@ -13,8 +13,16 @@
 //         parent.children.push(item);
 //     }
 // });
-const generateTreeData = (depth, itemsPerLevel) => {
-    const data = [];
+interface TreeNode {
+    uniqueId: number;
+    name: string;
+    children: TreeNode[];
+    parentId: number;
+    currentDepth: number;
+}
+
+const generateTreeData = (depth: number, itemsPerLevel: number): TreeNode[] => {
+    const data: TreeNode[] = [];
     let uniqueId = 1;
 
     const generateChildren = (parentId, currentDepth) => {
@@ -42,7 +50,9 @@ const generateTreeData = (depth, itemsPerLevel) => {
     data.forEach(item => {
         if (item.parentId !== 0) {
             const parent = data.find(parent => parent.uniqueId === item.parentId);
-            parent.children.push(item);
+            if (parent) {
+                parent.children.push(item);
+            }
         }
     });
 

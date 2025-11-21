@@ -4,7 +4,7 @@ const CountFullStopLines = () => {
   const [text, setText] = useState('');
   const [count, setCount] = useState(0);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     setText(newText);
 
@@ -20,7 +20,7 @@ const CountFullStopLines = () => {
         className="w-[95%] h-[200px] p-2.5 text-base rounded border border-gray-300 mb-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={text}
         onChange={handleChange}
-        rows="10"
+        rows={10}
         placeholder="Enter text to count sentences ending with a full stop..."
       />
       <label className="text-lg text-gray-700 font-semibold">

@@ -7,7 +7,7 @@ import SaveUpdateComparableData from "./SaveUpdateComparableData"; // Adjust the
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import type { AppDispatch } from "../../../redux/store";
 
-const ComparisonContainer = ({ additionalProp }) => {
+const ComparisonContainer = ({ additionalProp }: { additionalProp?: any }) => {
   const dispatch: AppDispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [showForm, setShowForm] = useState(false);

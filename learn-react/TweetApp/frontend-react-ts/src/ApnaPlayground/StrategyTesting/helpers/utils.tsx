@@ -10,10 +10,10 @@ const testData = [
 
 // Approach 1: Using forEach for segregation
 const segregateComponentsWithForEach = () => {
-  const validComponents = [];
+  const validComponents: React.ReactElement[] = [];
   const invalidComponents = {
     count: 0,
-    names: [],
+    names: [] as string[],
   };
 
   testData.forEach(({ name, id }) => {
@@ -43,8 +43,8 @@ const segregateComponentsWithReduce = () =>
       return result;
     },
     {
-      validComponents: [],
-      invalidComponents: { count: 0, names: [] },
+      validComponents: [] as React.ReactElement[],
+      invalidComponents: { count: 0, names: [] as string[] },
     }
   );
 

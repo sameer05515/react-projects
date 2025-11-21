@@ -28,7 +28,18 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-const QuestionCard = ({
+interface QuestionCardProps {
+  question: any;
+  categoryId?: string;
+  onCreateAnswerClick?: () => void;
+  onUpdateAnswerClick?: (answer: any) => void;
+  onAncestorClick?: (ancestor: any) => void;
+  onBaseSpanClick?: () => void;
+  onChildTopicClick?: (child: any) => void;
+  onLinkedTagSelection?: (linkedTagUID: any) => void;
+}
+
+const QuestionCard: React.FC<QuestionCardProps> = ({
   question,
   // categoryId,
   onCreateAnswerClick = () => {},

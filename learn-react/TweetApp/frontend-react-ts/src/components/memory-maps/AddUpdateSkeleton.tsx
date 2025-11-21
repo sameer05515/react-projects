@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../redux/store";
 import {
     fetchMemoryMaps,
     updateMemoryMapForGivenSkeleton,
@@ -11,23 +12,37 @@ import TextDiffViewer from "./diff/TextDiffViewerV2";
 import { addUniqueIdsToTree } from "../../common/util/id-adder-util";
 import { SkeletonTextType } from "./util/constants";
 
+interface TreeNode {
+    uniqueId: string;
+    name: string;
+    children?: TreeNode[];
+    [key: string]: any;
+}
+
+interface FormData {
+    uniqueId: string;
+    name: string;
+    skeleton: string;
+    skeletonTextType: string;
+}
+
 // Styles moved to Tailwind CSS classes
 
 export const AddUpdateSkeletonForMemoryMapItem = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { data: initialFormData } = location.state || {};
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
 
     const [isValidSkeleton, setIsValidSkeleton] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [resultData, setResultData] = useState([]);
+    const [resultData, setResultData] = useState<TreeNode[]>([]);
 
-    const [formData, setFormData] = useState({
-        uniqueId: initialFormData?.uniqueId || "",
-        name: initialFormData?.name || "",
-        skeleton: initialFormData?.skeleton || "",
-        skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
+    const [formData, setFormData] = useState<FormData>({
+        uniqueId: (initialFormData as any)?.uniqueId || "",
+        name: (initialFormData as any)?.name || "",
+        skeleton: (initialFormData as any)?.skeleton || "",
+        skeletonTextType: (initialFormData as any)?.skeletonTextType || SkeletonTextType.IndentedString,
     });
 
     const validate = () => {
@@ -38,21 +53,19 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
         return true;
     };
 
-    const upsertSkeleton = (event) => {
-        event.preventDefault();
+    const upsertSkeleton = () => {
         if (validate()) {
             const action = dispatch(
                 updateMemoryMapForGivenSkeleton({
                     ...formData,
                     uniqueId: formData.uniqueId,
-                })
+                }) as any
             );
             action.then(() => {
-                dispatch(fetchMemoryMaps());
+                dispatch(fetchMemoryMaps() as any);
                 navigate(-1);
-            })
+            });
         }
-
     };
 
     const previewSkeleton = () => {
@@ -65,7 +78,7 @@ export const AddUpdateSkeletonForMemoryMapItem = () => {
         if (isValid) {
             setIsValidSkeleton(true);
             // setResultData(treeData);
-            setResultData(addUniqueIdsToTree(treeData, 'preview_Skeleton'.toUpperCase(), false));
+            setResultData(addUniqueIdsToTree(treeData, 'preview_Skeleton'.toUpperCase(), false) as TreeNode[]);
         } else {
             setIsValidSkeleton(false);
             setErrorMessage(message || "Missing Error message");

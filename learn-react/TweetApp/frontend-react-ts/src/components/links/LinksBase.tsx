@@ -165,12 +165,12 @@ const ViewLink = () => {
 
 const CreateLink = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const parentId = searchParams.get("parent");
   const [formData, setFormData] = useState({
     name: "",
-    parentId: parentId,
+    parentId: parentId || "",
     linkType: "EXTERNAL-WEB",
     linkUrl: "",
     description: "",
@@ -183,24 +183,24 @@ const CreateLink = () => {
     ],
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSmartEditorChange = (smartContent) => {
+  const handleSmartEditorChange = (smartContent: any) => {
     setFormData((prev) => ({ ...prev, descriptions: [smartContent] }));
   };
 
-  const handleSmartEditorError = (error) => {
+  const handleSmartEditorError = (error: string | null) => {
     setSmartEditorError(error);
   };
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -222,12 +222,10 @@ const CreateLink = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSaveTag = (e) => {
-    e.preventDefault();
-
+  const handleSaveTag = () => {
     if (validateForm()) {
       // If creating a new tag, dispatch the createTag action
-      dispatch(createLink(formData));
+      dispatch(createLink(formData) as any);
       navigate(-1);
     }
   };
@@ -286,7 +284,7 @@ const CreateLink = () => {
             />
           </div>
         </div>
-        <CustomButton onClick={(e) => handleSaveTag(e)}>Save Changes</CustomButton>
+        <CustomButton onClick={handleSaveTag}>Save Changes</CustomButton>
         <JSONDataViewer metadata={{ formData }} title="X-Ray" />
       </div>
     </>
@@ -295,14 +293,26 @@ const CreateLink = () => {
 
 const EditLink = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
 
   // const links = useSelector((state) => state.links.flatData);
   // const [link, setLink] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [formErrors, setFormErrors] = useState([]);
-  const [formData, setFormData] = useState({
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [formData, setFormData] = useState<{
+    uniqueId?: string;
+    name: string;
+    parentId: string;
+    linkType: string;
+    linkUrl: string;
+    description: string;
+    descriptions: Array<{
+      content: string;
+      textOutputType: string;
+      textInputType: string;
+    }>;
+  }>({
     name: "",
     parentId: "",
     linkType: "EXTERNAL-WEB",
@@ -354,15 +364,15 @@ const EditLink = () => {
     // console.log(`My link object for id : ${id} : ${JSON.stringify(link)}`);
   }, [dispatch, id]);
 
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -386,20 +396,20 @@ const EditLink = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSmartEditorChange = (smartContent) => {
+  const handleSmartEditorChange = (smartContent: any) => {
     setFormData((prev) => ({ ...prev, descriptions: [smartContent] }));
   };
 
-  const handleSmartEditorError = (error) => {
+  const handleSmartEditorError = (error: string | null) => {
     setSmartEditorError(error);
   };
 
-  const handleSaveTag = (e) => {
-    e.preventDefault();
-
+  const handleSaveTag = () => {
     if (validateForm()) {
       // If creating a new tag, dispatch the createTag action
-      dispatch(updateLink(formData));
+      if (formData.uniqueId) {
+        dispatch(updateLink({ ...formData, uniqueId: formData.uniqueId }) as any);
+      }
       navigate(-1);
     }
   };
@@ -464,7 +474,7 @@ const EditLink = () => {
             />
           </div>
         </div>
-        <CustomButton onClick={(e) => handleSaveTag(e)}>Save Changes</CustomButton>
+        <CustomButton onClick={handleSaveTag}>Save Changes</CustomButton>
         <JSONDataViewer metadata={{ formData }} title="X-Ray" />
       </div>
     </>
@@ -509,11 +519,11 @@ const LinksBase = () => {
     );
   };
 
-  if (status === "pending" || status === "loading") {
+  if (status === "pending") {
     return <div>Loading...</div>;
   }
 
-  if (status === "rejected" || status === "failed" || error) {
+  if (status === "rejected" || error) {
     return <div>Error: {error}</div>;
   }
 
@@ -539,8 +549,19 @@ const LinksBase = () => {
   );
 };
 
-const Breadcrumbs = ({ parentId = "", ancestors: providedAncestors = [] }) => {
-  const [ancestors, setAncestors] = useState([]);
+interface Ancestor {
+  name: string;
+  uniqueId?: string;
+  [key: string]: any;
+}
+
+interface BreadcrumbsProps {
+  parentId?: string;
+  ancestors?: Ancestor[];
+}
+
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ parentId = "", ancestors: providedAncestors = [] }) => {
+  const [ancestors, setAncestors] = useState<Ancestor[]>([]);
 
   useEffect(() => {
     setAncestors((prev) => [...providedAncestors]);

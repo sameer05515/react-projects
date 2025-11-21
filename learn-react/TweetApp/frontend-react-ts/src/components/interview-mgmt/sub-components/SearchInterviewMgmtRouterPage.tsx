@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import type { AppDispatch, RootState } from "../../../redux/store";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
 import {
@@ -11,22 +12,26 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
 const SearchInterviewMgmtRouterPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     title: "",
   });
-  const data = useSelector((state) => state.interviewMgmt.searchedData);
-  const searchString = useSelector((state) => state.interviewMgmt.searchString);
+  const data = useSelector((state: RootState) => (state.interviewMgmt as any).searchedData);
+  const searchString = useSelector((state: RootState) => (state.interviewMgmt as any).searchString);
   // const flatData = useSelector(selectAllFlatTopics);
-  const { flatData } = useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    flatData?: any[];
+    [key: string]: any;
+  };
+  const { flatData } = interviewMgmtContext;
 
   const [criteriaList, setCriteriaList] = useState({
     name: { value: 1, editable: false },
     description: { value: 0, editable: true },
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     setCriteriaList((prevFruits) => ({
       ...prevFruits,
@@ -40,7 +45,7 @@ const SearchInterviewMgmtRouterPage = () => {
     }
   }, [searchString]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -59,11 +64,11 @@ const SearchInterviewMgmtRouterPage = () => {
       searchOptions: searchOptions,
     };
 
-    dispatch(setSearchString(formData.title));
-    dispatch(searchTopic(raw));
+    dispatch(setSearchString(formData.title) as any);
+    dispatch(searchTopic(raw as any) as any);
   };
 
-  const onChildTopicClick = (selectedTopic) => {
+  const onChildTopicClick = (selectedTopic: any) => {
     navigate(`/interview-mgmt/questions/${selectedTopic?.uniqueId}`);
   };
 

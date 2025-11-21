@@ -175,7 +175,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     // Remove dragged node from its current parent
     const updatedTreeWithoutDraggedNode = removeNodeById(resultData, nodeToBeMoved.uniqueId);
 
-    let updatedTreeWithDraggedNode = [];
+    let updatedTreeWithDraggedNode: TreeNode[] = [];
 
     if (!parentID || parentID.trim().length === 0) {
       updatedTreeWithDraggedNode = [...(updatedTreeWithoutDraggedNode || []), nodeToBeMoved];
@@ -262,7 +262,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
       updatedResultData = [...updatedResultData, ...data.children];
     } else {
       // Update existing tree by adding children
-      updatedResultData = processTreeNodes(resultData, (node) => {
+      updatedResultData = (processTreeNodes as any)(resultData, (node: TreeNode) => {
         if (node.uniqueId === data.uniqueId) {
           return {
             ...node,
@@ -270,7 +270,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
           };
         }
         return node; // Return unchanged node
-      });
+      }) as TreeNode[];
     }
 
     // Update state
@@ -287,10 +287,10 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     if (!data) return;
     console.log("Edited data", JSON.stringify(data));
 
-    const updatedResultData = processTreeNodes(resultData, (node) => ({
+    const updatedResultData = (processTreeNodes as any)(resultData, (node: TreeNode) => ({
       ...node,
       name: node.uniqueId === data.uniqueId ? data.name : node.name,
-    }));
+    })) as TreeNode[];
     setResultData([...updatedResultData]);
     refreshSkeleton(updatedResultData);
     setShowEditTreeNodePopup(false);
@@ -347,7 +347,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
             <button
               className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer mt-2.5 transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => {
-                setSelectedTreeNode({ uniqueId: "", children: [] });
+                setSelectedTreeNode({ uniqueId: "", name: "", children: [] });
                 setChildrenMode(false);
                 setShowAddChildrenOrSiblingsNodesPopup(true);
               }}

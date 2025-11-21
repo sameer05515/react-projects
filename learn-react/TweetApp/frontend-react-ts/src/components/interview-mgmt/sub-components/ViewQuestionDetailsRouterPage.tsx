@@ -11,6 +11,19 @@ import {
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import QuestionCard from "./QuestionCard";
 
+interface Question {
+  uniqueId: string;
+  name?: string;
+  heading?: string;
+  [key: string]: any;
+}
+
+interface TreeNode {
+  id?: string;
+  name?: string;
+  [key: string]: any;
+}
+
 const ViewQuestionDetailsRouterPage = () => {
   const { partialUpdateQuestionByUniqueId } = useInterviewManagementAPIs();
   const navigate = useNavigate();
@@ -26,7 +39,12 @@ const ViewQuestionDetailsRouterPage = () => {
     }
   }, [qid, refetch, dispatch]);
 
-  const { prevTreeNode, nextTreeNode } = useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    prevTreeNode?: TreeNode;
+    nextTreeNode?: TreeNode;
+    [key: string]: any;
+  };
+  const { prevTreeNode, nextTreeNode } = interviewMgmtContext;
 
   const handleBaseSpanClick = () => {
     dispatch(setSelectedQuestionUID(null));
@@ -34,14 +52,14 @@ const ViewQuestionDetailsRouterPage = () => {
     navigate(`/interview-mgmt`);
   };
 
-  const handleAncestorClick = (ancestor) => {
+  const handleAncestorClick = (ancestor: any) => {
     if (!ancestor) {
       return;
     }
     navigate(`/interview-mgmt/questions/${ancestor.uniqueId}`);
   };
 
-  const handleLinkedTagSelection = (linkedTagUID) => {
+  const handleLinkedTagSelection = (linkedTagUID: any) => {
     navigate(`/tags/${linkedTagUID}`);
   };
 
@@ -105,19 +123,19 @@ const ViewQuestionDetailsRouterPage = () => {
 
       {data && (
         <QuestionCard
-          question={data}
+          question={data as Question}
           categoryId={id}
           onCreateAnswerClick={() =>
             navigate(`/interview-mgmt/questions/${qid}/answers/create`, {
               state: {
                 data: { linkedQuestionsId: qid },
-                questionName: data?.name || "",
+                questionName: (data as Question)?.name || (data as Question)?.heading || "",
               },
             })
           }
-          onUpdateAnswerClick={(answer) =>
+          onUpdateAnswerClick={(answer: any) =>
             navigate(`/interview-mgmt/questions/${qid}/answers/create`, {
-              state: { data: { ...answer }, questionName: data?.name || "" },
+              state: { data: { ...answer }, questionName: (data as Question)?.name || (data as Question)?.heading || "" },
             })
           }
           onBaseSpanClick={handleBaseSpanClick}

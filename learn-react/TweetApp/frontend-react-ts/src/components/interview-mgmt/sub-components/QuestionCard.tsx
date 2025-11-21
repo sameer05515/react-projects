@@ -15,7 +15,7 @@ import { getTagsForGivenIds } from "../../../redux/slices/tagsSlice";
 import AnswerCard from "./AnswerCard";
 
 // Utility function to format date
-const formatDate = (dateString) => {
+const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -53,10 +53,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const filteredTags = useSelector(getTagsForGivenIds(question?.tags || []));
 
-  const handleAncestorClick = (ancestor) => {
+  const handleAncestorClick = (ancestor: any) => {
     onAncestorClick(ancestor);
   };
-  const handleLinkedTagSelection = (linkedTagUID) => {
+  const handleLinkedTagSelection = (linkedTagUID: any) => {
     onLinkedTagSelection(linkedTagUID);
   };
 
@@ -91,6 +91,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               data={{
                 content: question.heading || "**tree node name is missing!**",
                 textOutputType: SupportedTextFormats.MARKDOWN,
+                textInputType: "TextArea",
               }}
               markdownStyles={{ fontSize: "20px" }}
             />

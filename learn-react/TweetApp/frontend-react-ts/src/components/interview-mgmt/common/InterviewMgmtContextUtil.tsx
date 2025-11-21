@@ -1,15 +1,30 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../redux/store";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
 import useDataFetching from "../../../common/hooks/useDataFetching/v2";
 import { fetchAllQuestions } from "../../../redux/slices/interviewMgmtSlice";
 import { fetchTags } from "../../../redux/slices/tagsSlice";
 
-const buildCategoryTree = (treeArr = []) => {
+interface TreeNode {
+  id: string;
+  name: string;
+  type: string;
+  children: TreeNode[];
+}
+
+interface QuestionNode {
+  uniqueId: string;
+  heading: string;
+  children?: QuestionNode[];
+  [key: string]: any;
+}
+
+const buildCategoryTree = (treeArr: QuestionNode[] = []): TreeNode[] => {
   if (!treeArr?.length) return [];
 
-  return treeArr.reduce((acc, question) => {
-    const questionNode = {
+  return treeArr.reduce((acc: TreeNode[], question: QuestionNode) => {
+    const questionNode: TreeNode = {
       id: question.uniqueId,
       name: question.heading,
       type: "question",
@@ -39,17 +54,35 @@ const buildCategoryTree = (treeArr = []) => {
   }, []);
 };
 
-const InterviewMgmtContext = createContext();
+interface InterviewMgmtContextValue {
+  categoryTree?: TreeNode[];
+  data?: any[];
+  flatCategoryItemData?: any[];
+  flatData?: any[];
+  selectedTreeNodeUID?: string;
+  prevTreeNode?: any;
+  nextTreeNode?: any;
+  refreshCategoryTree?: () => void;
+  showOnlyLeafQuestions?: boolean;
+  setShowOnlyLeafQuestions?: (updater: (prev: boolean) => boolean) => void;
+  [key: string]: any;
+}
 
-export const InterviewMgmtProvider = ({ children }) => {
-  const dispatch = useDispatch();
+const InterviewMgmtContext = createContext<InterviewMgmtContextValue | undefined>(undefined);
+
+interface InterviewMgmtProviderProps {
+  children: React.ReactNode;
+}
+
+export const InterviewMgmtProvider: React.FC<InterviewMgmtProviderProps> = ({ children }) => {
+  const dispatch: AppDispatch = useDispatch();
   const [showOnlyLeafQuestions, setShowOnlyLeafQuestions] = useState(false);
   const selectedTreeNodeUID = useSelector(
-    (state) => state.interviewMgmt.selectedTreeNodeUID
+    (state: RootState) => (state.interviewMgmt as any).selectedTreeNodeUID
   );
 
-  const data = useSelector((state) => state.interviewMgmt.data);
-  const { flatData: flatCategoryItemData } = useFlatTreeData(data);
+  const data = useSelector((state: RootState) => (state.interviewMgmt as any).data);
+  const { flatData: flatCategoryItemData } = useFlatTreeData(data || [], undefined, "uniqueId");
 
   // const buildQuestionIdMap = (treeArr = []) => {
   //   if (!treeArr?.length) return [];
@@ -80,11 +113,11 @@ export const InterviewMgmtProvider = ({ children }) => {
   );
 
   const refreshCategoryTree = () => {
-    dispatch(fetchAllQuestions());
-    dispatch(fetchTags());
+    dispatch(fetchAllQuestions() as any);
+    dispatch(fetchTags() as any);
   };
 
-  const categoryTree = useMemo(() => buildCategoryTree(data), [data]);
+  const categoryTree = useMemo(() => buildCategoryTree(data || []), [data]);
 
   const {
     flatData,

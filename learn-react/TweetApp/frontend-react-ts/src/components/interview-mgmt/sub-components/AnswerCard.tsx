@@ -4,7 +4,14 @@ import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import ToggleablePanel from "../../../common/components/toggleable-panel/ToggleablePanel";
 
-const AnswerCard = ({ answer: ansObj, className = "", onUpdateAnswerClick = () => { }, showContent }) => {
+interface AnswerCardProps {
+  answer: any;
+  className?: string;
+  onUpdateAnswerClick?: (answer: any) => void;
+  showContent?: boolean;
+}
+
+const AnswerCard: React.FC<AnswerCardProps> = ({ answer: ansObj, className = "", onUpdateAnswerClick = () => { }, showContent }) => {
   const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded";
 
   return (

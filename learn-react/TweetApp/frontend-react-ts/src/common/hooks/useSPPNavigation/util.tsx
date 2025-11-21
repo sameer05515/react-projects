@@ -1,10 +1,10 @@
 import { createSearchParams } from "react-router-dom";
 
-const createSearchParamsString = (params) => {
+const createSearchParamsString = (params: any) => {
   return createSearchParams(params).toString();
 };
 
-const prepareObject = (pathname = "", state, search = {}, hash) => ({
+const prepareObject = (pathname = "", state?: any, search: any = {}, hash?: string) => ({
   to: {
     pathname: pathname,
     search: search ? createSearchParamsString(search) : "",

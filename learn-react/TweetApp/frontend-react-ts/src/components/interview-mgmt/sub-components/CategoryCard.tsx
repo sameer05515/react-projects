@@ -1,10 +1,16 @@
 import React from "react";
-import HoverableSpan from "../../../common/components/HoverableSpan";
-import HtmlTextRendrer from "../../../common/components/HtmlTextRenderer";
-import RatingComponent from "../../../common/components/RatingComponent";
-import { SmartPreviewer } from "../../../common/components/SmartEditor";
+import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
+import HtmlTextRendrer from "../../../common/components/html-text-renderer/HtmlTextRenderer";
+import RatingComponent from "../../../common/components/rating-component/RatingComponent";
+import { SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
 
-const CategoryCard = ({
+interface CategoryCardProps {
+  category: any;
+  onQuestionSelection?: (question: any) => void;
+  onCreateQuestionClick?: () => void;
+}
+
+const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
   onQuestionSelection = () => { },
   onCreateQuestionClick = () => { },
@@ -51,7 +57,7 @@ const CategoryCard = ({
                   className="border border-black p-2.5 m-1.5"
                   key={q.uniqueId}
                 >
-                  <HoverableSpan onClick={() => onQuestionSelection(q)}>
+                  <HoverableSpan onClick={() => { onQuestionSelection(q); }}>
                     {q.heading || q.name}
                   </HoverableSpan>
                 </div>

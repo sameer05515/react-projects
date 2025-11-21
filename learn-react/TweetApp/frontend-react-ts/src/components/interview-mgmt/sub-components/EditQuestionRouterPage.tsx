@@ -8,9 +8,9 @@ const EditQuestionRouterPage = () => {
   const { qid } = useParams();
   const url = `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`;
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchDetailsForId = useCallback(() => {
     setLoading(true);
@@ -24,7 +24,7 @@ const EditQuestionRouterPage = () => {
         }
       })
       .catch((err) => console.error("Some unexpected error occurred", err))
-      .finally(setLoading(false));
+      .finally(() => setLoading(false));
   }, [url]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const EditQuestionRouterPage = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   return (

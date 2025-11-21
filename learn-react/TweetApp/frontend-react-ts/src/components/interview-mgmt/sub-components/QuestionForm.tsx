@@ -9,10 +9,20 @@ import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtAp
 import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
-const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
+interface QuestionFormProps {
+  initialFormData?: any;
+  onSave?: () => void;
+  onCancelEdit?: () => void;
+}
+
+const QuestionForm: React.FC<QuestionFormProps> = ({ initialFormData, onSave, onCancelEdit }) => {
   const { createQuestion, updateQuestion } = useInterviewManagementAPIs();
   const tagOptions = useSelector(getTagsForComboOptions);
-  const { refreshCategoryTree } = useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    refreshCategoryTree?: () => void;
+    [key: string]: any;
+  };
+  const { refreshCategoryTree } = interviewMgmtContext;
 
   const [formData, setFormData] = useState({
     uniqueId: initialFormData?.uniqueId || "",
@@ -29,11 +39,11 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     tags: initialFormData?.tags || [],
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -55,20 +65,19 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     return errors.length === 0;
   };
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleTagSelect = useCallback((selectedTags) => {
+  const handleTagSelect = useCallback((selectedTags: any) => {
     setFormData((prev) => ({
       ...prev,
-      tags: selectedTags.map((tag) => tag.value),
+      tags: selectedTags.map((tag: any) => tag.value),
     }));
   }, []);
 
-  const handleSaveCategory = (event) => {
-    event.preventDefault();
+  const handleSaveCategory = () => {
     if (!validateForm()) {
       return;
     }
@@ -77,7 +86,7 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
       ? updateQuestion({ ...formData, uniqueId: initialFormData.uniqueId })
       : createQuestion(formData);
 
-    action.then((response) => {
+    action.then((response: any) => {
       // if (formData.uniqueId) setFormData(selectedNode);
       // else
       // refreshNodes();
@@ -86,8 +95,8 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
         setFormErrors([response.message || "Some API related error occurred!"]);
         return;
       }
-      refreshCategoryTree();
-      onSave();
+      refreshCategoryTree?.();
+      onSave?.();
     });
 
     // if (onSave) {
@@ -95,11 +104,11 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
     // }
   };
 
-  const handleSmartEditorChange = useCallback((smartContent) => {
+  const handleSmartEditorChange = useCallback((smartContent: any) => {
     setFormData((prev) => ({ ...prev, smartContent }));
   }, []);
 
-  const handleSmartEditorError = useCallback((error) => {
+  const handleSmartEditorError = useCallback((error: string | null) => {
     setSmartEditorError(error);
   }, []);
 
@@ -143,7 +152,6 @@ const QuestionForm = ({ initialFormData, onSave, onCancelEdit }) => {
           Rating:
         </label>
         <RatingComponent
-          id="rating"
           rating={formData.rating}
           editable={true}
           onEdit={(editedValue) => {

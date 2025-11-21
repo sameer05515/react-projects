@@ -11,21 +11,25 @@ const MoveQuestionToAnotherParentQuestionRouterPage = () => {
   // const dispatch = useDispatch();
   const { qid } = useParams();
 
-  const { flatCategoryItemData: flatData, refreshCategoryTree } =
-    useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    flatCategoryItemData?: any[];
+    refreshCategoryTree?: () => void;
+    [key: string]: any;
+  };
+  const { flatCategoryItemData: flatData, refreshCategoryTree } = interviewMgmtContext;
 
   const topic = flatData?.find((t) => t.uniqueId === qid) || null;
 
-  const topicOptions = flatData
-    ?.filter((t) => t.uniqueId !== topic.uniqueId) // Exclude the current topic
-    .filter((t) => !t.ancestors.map((a) => a.uniqueId).includes(topic.uniqueId)) // Exclude ancestors of the topic
-    .filter((t) => !topic.children?.map((c) => c.uniqueId).includes(t.uniqueId)) // Exclude child categories of the topic
+  const topicOptions: Array<{ value: string; label: string }> = (flatData
+    ?.filter((t) => t.uniqueId !== topic?.uniqueId) // Exclude the current topic
+    .filter((t) => !t.ancestors?.map((a: any) => a.uniqueId).includes(topic?.uniqueId)) // Exclude ancestors of the topic
+    .filter((t) => !topic?.children?.map((c: any) => c.uniqueId).includes(t.uniqueId)) // Exclude child categories of the topic
     .map((t) => ({
-      value: t.uniqueId, // Assuming topic have unique IDs
-      label: t.title, // Display tag title in the dropdown
-    }));
+      value: t.uniqueId || "", // Assuming topic have unique IDs
+      label: t.title || "", // Display tag title in the dropdown
+    })) || []) as Array<{ value: string; label: string }>;
 
-  const handleTaskSelect = (selectedTags) => {
+  const handleTaskSelect = (selectedTags: any) => {
     setFormData({ ...formData, parentId: selectedTags.value });
   };
 
@@ -39,12 +43,12 @@ const MoveQuestionToAnotherParentQuestionRouterPage = () => {
       updateQuestion({
         ...{ parentId: formData.parentId },
         uniqueId: qid,
-      }).then(() => refreshCategoryTree());
+      }).then(() => refreshCategoryTree?.());
     }
     navigate(`/interview-mgmt/questions/${qid}`);
   };
 
-  const [selectedOption] = useState("");
+  const [selectedOption] = useState<{ value: string; label: string } | null>(null);
 
   return (
     <>
@@ -55,7 +59,7 @@ const MoveQuestionToAnotherParentQuestionRouterPage = () => {
           <Select
             name="topics"
             options={topicOptions}
-            defaultValue={selectedOption}
+            defaultValue={selectedOption || undefined}
             onChange={handleTaskSelect}
           />
         </div>

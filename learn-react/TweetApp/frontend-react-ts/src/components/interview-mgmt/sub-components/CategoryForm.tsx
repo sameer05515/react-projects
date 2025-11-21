@@ -12,7 +12,14 @@ import {
 import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 import type { AppDispatch, RootState } from "../../../redux/store";
 
-const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
+interface CategoryFormProps {
+  parentId?: string;
+  category?: any;
+  onSave?: () => void;
+  onCancelEdit?: () => void;
+}
+
+const CategoryForm: React.FC<CategoryFormProps> = ({ parentId, category, onSave, onCancelEdit }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const tagOptions = useSelector(getTagsForComboOptions);
@@ -35,8 +42,8 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
     tags: category?.tags || [],
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   useEffect(() => {
     if (createCategoryResponse?.error || updateCategoryResponse?.error) {
@@ -49,7 +56,7 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
   }, [createCategoryResponse, updateCategoryResponse]);
 
   const validateForm = useCallback(() => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -71,42 +78,38 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
     return errors.length === 0;
   }, [formData.heading, formData.name, formData.rating, smartEditorError]);
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleTagSelect = useCallback((selectedTags) => {
+  const handleTagSelect = useCallback((selectedTags: any) => {
     setFormData((prev) => ({
       ...prev,
-      tags: selectedTags.map((tag) => tag.value),
+      tags: selectedTags.map((tag: any) => tag.value),
     }));
   }, []);
 
-  const handleSaveCategory = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (!validateForm()) {
-        return;
-      }
-      if (category?.uniqueId) {
-        dispatch(updateCategory({ ...formData, uniqueId: category.uniqueId }));
-      } else {
-        dispatch(createCategory(formData));
-      }
+  const handleSaveCategory = useCallback(() => {
+    if (!validateForm()) {
+      return;
+    }
+    if (category?.uniqueId) {
+      dispatch(updateCategory({ ...formData, uniqueId: category.uniqueId }) as any);
+    } else {
+      dispatch((createCategory as any)(formData) as any);
+    }
 
-      if (onSave) {
-        onSave();
-      }
-    },
-    [formData, validateForm, category, dispatch, onSave]
-  );
+    if (onSave) {
+      onSave();
+    }
+  }, [formData, validateForm, category, dispatch, onSave]);
 
-  const handleSmartEditorChange = useCallback((smartContent) => {
+  const handleSmartEditorChange = useCallback((smartContent: any) => {
     setFormData((prev) => ({ ...prev, smartContent }));
   }, []);
 
-  const handleSmartEditorError = useCallback((error) => {
+  const handleSmartEditorError = useCallback((error: string | null) => {
     setSmartEditorError(error);
   }, []);
 
@@ -146,7 +149,6 @@ const CategoryForm = ({ parentId, category, onSave, onCancelEdit }) => {
           Rating:
         </label>
         <RatingComponent
-          id="rating"
           rating={formData.rating}
           editable={true}
           onEdit={(editedValue) => {

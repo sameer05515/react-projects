@@ -1,10 +1,10 @@
-export const formatDateToDDMMMYYYY = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
+export const formatDateToDDMMMYYYY = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-export const formatDateToDDMMMYYYYWithTime = (dateString) => {
-    const options = {
+export const formatDateToDDMMMYYYYWithTime = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
         month: "short",
         day: "numeric",
@@ -16,13 +16,13 @@ export const formatDateToDDMMMYYYYWithTime = (dateString) => {
 
 export const getDateAsMillisecondsString = () => Date.now().toString();
 
-export const capitalizeFirstLetter=(str)=> {
+export const capitalizeFirstLetter = (str: string) => {
     if (!str) return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // questions preparation start
-function replaceTopic(input, replacement) {
+function replaceTopic(input: string, replacement: string): string | null {
     if (input === null || replacement === null) {
         return null;
     }
@@ -127,12 +127,17 @@ function prepareWhs() {
     ];
 }
 
-export function prepareQuestions(t) {
+interface QuestionGroup {
+    name: string;
+    questions: (string | null)[];
+}
+
+export function prepareQuestions(t: string): QuestionGroup[] {
     const groupQList = prepareWhs();
     // console.log("========================== " + t + " =======");
-    const gqArr = [];
+    const gqArr: QuestionGroup[] = [];
     groupQList.forEach((group) => {
-        const gq = { name: "", questions: [] };
+        const gq: QuestionGroup = { name: "", questions: [] };
         gq.name = group.name;
         // console.log(group.name);
         group.questions.forEach((question) => {

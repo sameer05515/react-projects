@@ -159,20 +159,25 @@ const adjustLevels = (lines, initialIndentationLevel, initialDifference) => {
   }));
 };
 
+interface TreeNode {
+  name: string;
+  children: TreeNode[];
+}
+
 /**
  * Build the tree data from the input string
  */
-const buildTree = (input) => {
+const buildTree = (input: any) => {
   const { data: lines, isValid, message } = validateAndParseLines(input);
   if (!isValid) {
     return { data: [], isValid, message };
   }
 
-  const rootNodes = [];
-  const nodeStack = [];
+  const rootNodes: TreeNode[] = [];
+  const nodeStack: TreeNode[] = [];
 
-  lines.forEach((line) => {
-    const node = { name: line.name, children: [] };
+  lines.forEach((line: any) => {
+    const node: TreeNode = { name: line.name, children: [] };
 
     while (nodeStack.length > line.level) {
       nodeStack.pop();

@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
 // import Select from "react-select";
 import CustomButton from "../../../common/components/custom-button/CustomButton";
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
@@ -11,15 +12,26 @@ import {
 import JSONDataViewer from "../../../common/components/json-data-viewer/JSONDataViewer";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
-const AnswerForm = ({
+interface AnswerFormProps {
+  questionName?: string;
+  initialFormData?: any;
+  onSave?: () => void;
+  onCancelEdit?: () => void;
+}
+
+const AnswerForm: React.FC<AnswerFormProps> = ({
   questionName,
   initialFormData,
   onSave,
   onCancelEdit,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const { refreshCategoryTree } = useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    refreshCategoryTree?: () => void;
+    [key: string]: any;
+  };
+  const { refreshCategoryTree } = interviewMgmtContext;
 
   const [formData, setFormData] = useState({
     uniqueId: initialFormData?.uniqueId || "",
@@ -35,11 +47,11 @@ const AnswerForm = ({
     tags: initialFormData?.tags || [],
   });
 
-  const [formErrors, setFormErrors] = useState([]);
-  const [smartEditorError, setSmartEditorError] = useState(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
 
   const validateForm = useCallback(() => {
-    const errors = [];
+    const errors: string[] = [];
 
     if (!formData.name.trim()) {
       errors.push("Name is required");
@@ -61,7 +73,7 @@ const AnswerForm = ({
     return errors.length === 0;
   }, [formData.heading, formData.name, formData.rating, smartEditorError]);
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
@@ -78,56 +90,52 @@ const AnswerForm = ({
   //   label: tag.title,
   // }));
 
-  const handleSaveCategory = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (!validateForm()) {
-        return;
-      }
+  const handleSaveCategory = useCallback(() => {
+    if (!validateForm()) {
+      return;
+    }
 
-      const action = initialFormData?.uniqueId
-        ? dispatch(
-            updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId })
-          )
-        : dispatch(createAnswer(formData));
+    const action = initialFormData?.uniqueId
+      ? dispatch(
+          updateAnswer({ ...formData, uniqueId: initialFormData.uniqueId }) as any
+        )
+      : dispatch((createAnswer as any)(formData) as any);
 
-      // if (initialFormData?.uniqueId) {
-      //   // dispatch(
-      //   //   updateCategory({ ...formData, uniqueId: initialFormData.uniqueId })
-      //   // );
-      //   console.log('Update facility will be available soon!!')
-      // } else {
-      //   dispatch(createAnswer(formData));
-      // }
+    // if (initialFormData?.uniqueId) {
+    //   // dispatch(
+    //   //   updateCategory({ ...formData, uniqueId: initialFormData.uniqueId })
+    //   // );
+    //   console.log('Update facility will be available soon!!')
+    // } else {
+    //   dispatch(createAnswer(formData));
+    // }
 
-      action.then(() => {
-        // if (formData.uniqueId) setFormData(selectedNode);
-        // else
-        // refreshNodes();
-        // dispatch(fetchCategoryTree());
-        refreshCategoryTree();
-        onSave();
-      });
+    action.then(() => {
+      // if (formData.uniqueId) setFormData(selectedNode);
+      // else
+      // refreshNodes();
+      // dispatch(fetchCategoryTree());
+      refreshCategoryTree?.();
+      onSave?.();
+    });
 
-      if (onSave) {
-        // onSave();
-      }
-    },
-    [
-      validateForm,
-      initialFormData.uniqueId,
-      dispatch,
-      formData,
-      onSave,
-      refreshCategoryTree,
-    ]
-  );
+    if (onSave) {
+      // onSave();
+    }
+  }, [
+    validateForm,
+    initialFormData?.uniqueId,
+    dispatch,
+    formData,
+    onSave,
+    refreshCategoryTree,
+  ]);
 
-  const handleSmartEditorChange = useCallback((smartContent) => {
+  const handleSmartEditorChange = useCallback((smartContent: any) => {
     setFormData((prev) => ({ ...prev, smartContent }));
   }, []);
 
-  const handleSmartEditorError = useCallback((error) => {
+  const handleSmartEditorError = useCallback((error: string | null) => {
     setSmartEditorError(error);
   }, []);
 
@@ -168,7 +176,6 @@ const AnswerForm = ({
           Rating:
         </label>
         <RatingComponent
-          id="rating"
           rating={formData.rating}
           editable={true}
           onEdit={(editedValue) => {

@@ -65,7 +65,7 @@ const SearchInterviewMgmtRouterPage = () => {
     };
 
     dispatch(setSearchString(formData.title) as any);
-    dispatch(searchTopic(raw as any) as any);
+    dispatch((searchTopic as any)(raw) as any);
   };
 
   const onChildTopicClick = (selectedTopic: any) => {

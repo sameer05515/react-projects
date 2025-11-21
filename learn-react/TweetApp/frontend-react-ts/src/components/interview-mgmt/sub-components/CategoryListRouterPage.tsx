@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 import {
     useNavigate
 } from "react-router-dom";
@@ -11,21 +12,28 @@ import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 const CategoryListRouterPage = () => {
     const navigate = useNavigate();
     const selectedCategoryUID = useSelector(
-      (state) => state.interviewMgmt.selectedCategoryUID
+      (state: RootState) => (state.interviewMgmt as any).selectedCategoryUID
     );
   
+    const interviewMgmtContext = useInterviewMgmt() as {
+      data?: any[];
+      showOnlyLeafQuestions?: boolean;
+      setShowOnlyLeafQuestions?: (updater: (prev: boolean) => boolean) => void;
+      selectedTreeNodeUID?: string;
+      [key: string]: any;
+    };
     const {
       data,
       showOnlyLeafQuestions,
       setShowOnlyLeafQuestions,
       selectedTreeNodeUID,
-    } = useInterviewMgmt();
+    } = interviewMgmtContext;
   
-    const handleLinkSelection = (uniqueId) =>
+    const handleLinkSelection = (uniqueId: string) =>
       navigate(`/interview-mgmt/questions/${uniqueId}`);
   
     // Function to determine if a node is a leaf node
-    const isLeafNode = (node) => !node.children || node.children.length === 0;
+    const isLeafNode = (node: any) => !node.children || node.children.length === 0;
   
     // Filter function to apply based on `showOnlyLeafQuestions`
     // const filteredData = showOnlyLeafQuestions
@@ -59,7 +67,7 @@ const CategoryListRouterPage = () => {
   
     return (
       <>
-        <CustomButton onClick={() => setShowOnlyLeafQuestions((prev) => !prev)}>
+        <CustomButton onClick={() => setShowOnlyLeafQuestions?.((prev) => !prev)}>
           {showOnlyLeafQuestions ? "Show All" : "Show Leafs"}
         </CustomButton>
         <Tree

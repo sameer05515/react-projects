@@ -8,7 +8,13 @@ import {
   useInterviewMgmt,
 } from "./common/InterviewMgmtContextUtil";
 
-const NodeRenderer = ({ node, onSelectNode, selectedNodeId }) => {
+interface NodeRendererProps {
+  node: any;
+  onSelectNode: (node: any) => void;
+  selectedNodeId?: string;
+}
+
+const NodeRenderer: React.FC<NodeRendererProps> = ({ node, onSelectNode, selectedNodeId }) => {
   if (!node?.id) return null;
 
   const handleClick = () => onSelectNode(node);
@@ -27,10 +33,15 @@ const NodeRenderer = ({ node, onSelectNode, selectedNodeId }) => {
 
 const InterviewMgmtBase = () => {
   const navigate = useNavigate();
-  const { categoryTree, selectedTreeNodeUID, refreshCategoryTree } =
-    useInterviewMgmt();
+  const interviewMgmtContext = useInterviewMgmt() as {
+    categoryTree?: any[];
+    selectedTreeNodeUID?: string;
+    refreshCategoryTree?: () => void;
+    [key: string]: any;
+  };
+  const { categoryTree, selectedTreeNodeUID, refreshCategoryTree } = interviewMgmtContext;
 
-  const selectedElementRef = useRef(null);
+  const selectedElementRef = useRef<HTMLSpanElement | null>(null);
   useEffect(() => {
     if (selectedElementRef.current) {
       selectedElementRef.current.scrollIntoView({
@@ -43,7 +54,7 @@ const InterviewMgmtBase = () => {
 
   // const handleButtonClick = (path) => navigate(path);
 
-  const handleNodeSelection = (node) => {
+  const handleNodeSelection = (node: any) => {
     if (!node?.id) return;
 
     if (node.type === "category") {
@@ -90,7 +101,7 @@ const InterviewMgmtBase = () => {
           ]}
         />
         <Tree
-          data={categoryTree}
+          data={categoryTree || []}
           uniqueIdFieldName="id"
           selectedNodeId={selectedTreeNodeUID}
           renderNode={(node) => (

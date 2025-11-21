@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../redux/store";
 import { fetchMemoryMaps, updateMemoryMapForGivenSkeleton } from "../../redux/slices/memoryMapSlice";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
 import { buildTree } from "../../common/util/indentation-based-string-parser-to-tree-data";
@@ -17,26 +18,62 @@ import { toast } from "react-toastify";
 import { SkeletonTextType } from "./util/constants";
 import { SmartPreviewer, availableOutputTypes as SupportedTextFormats } from "../../common/components/Smart/Editor/v3";
 
+interface TreeNode {
+    uniqueId: string;
+    name: string;
+    children?: TreeNode[];
+    [key: string]: any;
+}
+
+interface FormData {
+    uniqueId: string;
+    name: string;
+    skeleton: string;
+    skeletonTextType: string;
+}
+
+interface PopupOption {
+    title: string;
+    action: () => void;
+}
+
 // Styles moved to Tailwind CSS classes
 
 export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: initialFormData } = location.state || {};
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const [isValidSkeleton, setIsValidSkeleton] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [resultData, setResultData] = useState([]);
+  const [resultData, setResultData] = useState<TreeNode[]>([]);
 
-  const [draggedNode, setDraggedNode] = useState(null);
+  const [draggedNode, setDraggedNode] = useState<TreeNode | null>(null);
 
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
-  const popupOptions = [
+  
+  const [selectedTreeNode, setSelectedTreeNode] = useState<TreeNode | null>(null);
+  const [childrenMode, setChildrenMode] = useState(false);
+  const [showAddChildrenOrSiblingsNodesPopup, setShowAddChildrenOrSiblingsNodesPopup] = useState(false);
+  const [showEditTreeNodePopup, setShowEditTreeNodePopup] = useState(false);
+
+  const [formData, setFormData] = useState<FormData>({
+    uniqueId: (initialFormData as any)?.uniqueId || "",
+    name: (initialFormData as any)?.name || "",
+    skeleton: (initialFormData as any)?.skeleton || "",
+    skeletonTextType: (initialFormData as any)?.skeletonTextType || SkeletonTextType.IndentedString,
+  });
+
+  const popupOptions: PopupOption[] = [
     {
       title: "Make a Root node",
-      action: () => moveNodeToAnotherParentId(selectedTreeNode, ""),
+      action: () => {
+        if (selectedTreeNode) {
+          moveNodeToAnotherParentId(selectedTreeNode, "");
+        }
+      },
     },
     {
       title: "Add Children",
@@ -55,20 +92,6 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     { title: "Edit", action: () => setShowEditTreeNodePopup(true) },
   ];
 
-  const [selectedTreeNode, setSelectedTreeNode] = useState(null);
-
-  const [childrenMode, setChildrenMode] = useState(false);
-
-  const [showAddChildrenOrSiblingsNodesPopup, setShowAddChildrenOrSiblingsNodesPopup] = useState(false);
-  const [showEditTreeNodePopup, setShowEditTreeNodePopup] = useState(false);
-
-  const [formData, setFormData] = useState({
-    uniqueId: initialFormData?.uniqueId || "",
-    name: initialFormData?.name || "",
-    skeleton: initialFormData?.skeleton || "",
-    skeletonTextType: initialFormData?.skeletonTextType || SkeletonTextType.IndentedString,
-  });
-
   const previewSkeleton = useCallback(() => {
     if (!formData.skeleton?.trim()) {
       //setErrorMessage("Please provide some valid skeleton text!!");
@@ -85,10 +108,10 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     }
   }, [formData.skeleton]);
 
-  const handleRightClick = (event, selectedMap) => {
+  const handleRightClick = (event: React.MouseEvent, selectedMap: TreeNode) => {
     event.preventDefault();
     if (!selectedMap) return;
-    setSelectedTreeNode(() => ({ ...selectedMap }));
+    setSelectedTreeNode({ ...selectedMap });
     setPopupPosition({ x: event.pageX, y: event.pageY });
     setPopupVisible(true);
   };
@@ -112,7 +135,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
   // };
 
   // Remove a node by uniqueId
-  const removeNodeById = (nodes, id) => {
+  const removeNodeById = (nodes: TreeNode[], id: string): TreeNode[] => {
     return nodes.filter((node) => {
       if (node.uniqueId === id) return false;
       if (node.children) {
@@ -123,7 +146,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
   };
 
   // Add node to target's children
-  const addNodeToParent = (nodes, parentId, newNode) => {
+  const addNodeToParent = (nodes: TreeNode[], parentId: string, newNode: TreeNode): TreeNode[] => {
     return nodes.map((node) => {
       if (node.uniqueId === parentId) {
         node.children = [...(node.children || []), newNode];
@@ -134,7 +157,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     });
   };
 
-  const isDescendant = (parentNode, targetNodeId) => {
+  const isDescendant = (parentNode: TreeNode, targetNodeId: string): boolean => {
     // Recursively check if the targetNodeId is a child or descendant of parentNode
     if (!parentNode.children || parentNode.children.length === 0) return false;
 
@@ -146,7 +169,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     return false;
   };
 
-  const moveNodeToAnotherParentId = (nodeToBeMoved, parentID = "") => {
+  const moveNodeToAnotherParentId = (nodeToBeMoved: TreeNode, parentID: string = "") => {
     if (!nodeToBeMoved) return;
 
     // Remove dragged node from its current parent
@@ -162,11 +185,11 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     }
 
     // Update treeData with new structure
-    setResultData(() => [...updatedTreeWithDraggedNode]);
+    setResultData([...updatedTreeWithDraggedNode]);
     refreshSkeleton(updatedTreeWithDraggedNode); // Refresh the skeleton
   };
 
-  const handleDrop = (targetNode) => {
+  const handleDrop = (targetNode: TreeNode) => {
     if (!draggedNode) return;
 
     // 1. Validation: A node cannot be dropped onto itself
@@ -201,7 +224,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     // refreshSkeleton(updatedTreeWithDraggedNode); // Refresh the skeleton
   };
 
-  const handlePopupOption = (option) => {
+  const handlePopupOption = (option: PopupOption) => {
     setPopupVisible(false);
     option.action();
   };
@@ -214,22 +237,21 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     return true;
   };
 
-  const upsertSkeleton = (event) => {
-    event.preventDefault();
+  const upsertSkeleton = () => {
     if (validate()) {
       dispatch(
         updateMemoryMapForGivenSkeleton({
           ...formData,
           uniqueId: formData.uniqueId,
-        })
+        }) as any
       );
     }
-    dispatch(fetchMemoryMaps());
+    dispatch(fetchMemoryMaps() as any);
     toast.success("MemoryMap's skeleton upserted successfully");
     // navigate(-1);
   };
 
-  const handleAddChildrenOrSiblingsNodesSubmit = (data) => {
+  const handleAddChildrenOrSiblingsNodesSubmit = (data: any) => {
     if (!data) return;
 
     console.log("[handleAddChildrenOrSiblingsNodesSubmit]: Edited data", JSON.stringify(data));
@@ -252,7 +274,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     }
 
     // Update state
-    setResultData(() => addUniqueIdsToTree(updatedResultData, "", false));
+    setResultData(addUniqueIdsToTree(updatedResultData, "", false) as TreeNode[]);
     refreshSkeleton(updatedResultData); // Refresh the skeleton
     setShowAddChildrenOrSiblingsNodesPopup(false); // Close the popup
     // if(!selectedTreeNode?.uniqueId || selectedTreeNode.uniqueId===''){
@@ -261,7 +283,7 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
     setIsValidSkeleton(true);
   };
 
-  const handleEditTreeNodeSubmit = (data) => {
+  const handleEditTreeNodeSubmit = (data: any) => {
     if (!data) return;
     console.log("Edited data", JSON.stringify(data));
 
@@ -269,17 +291,17 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
       ...node,
       name: node.uniqueId === data.uniqueId ? data.name : node.name,
     }));
-    setResultData(() => [...updatedResultData]);
+    setResultData([...updatedResultData]);
     refreshSkeleton(updatedResultData);
     setShowEditTreeNodePopup(false);
   };
 
-  const refreshSkeleton = (treeData = []) => {
+  const refreshSkeleton = (treeData: TreeNode[] = []) => {
     if (!treeData || !Array.isArray(treeData) || treeData.length === 0) {
       return;
     }
 
-    const generateResultText = (nodes = [], depth = 0) => {
+    const generateResultText = (nodes: TreeNode[] = [], depth: number = 0): string => {
       let result = "";
       nodes.forEach((node) => {
         // Add tabs based on depth and then add the node's name
@@ -325,8 +347,8 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
             <button
               className="px-5 py-2.5 text-base rounded border-none bg-blue-600 text-white cursor-pointer mt-2.5 transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => {
-                setSelectedTreeNode(() => ({ uniqueId: "", children: [] }));
-                setChildrenMode(() => false);
+                setSelectedTreeNode({ uniqueId: "", children: [] });
+                setChildrenMode(false);
                 setShowAddChildrenOrSiblingsNodesPopup(true);
               }}
             >
@@ -408,13 +430,20 @@ export const AddUpdateSkeletonUsingTreeEditorForMemoryMapItem = () => {
           </div>
         </div>
 
-        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionStyle={{ fontSize: "12px" }} />}
+        {popupVisible && <PopupMenuV3 position={popupPosition} popupOptions={popupOptions} onOptionSelect={handlePopupOption} popupOptionClassName="text-xs" />}
       </div>
     </div>
   );
 };
 
-const TreeNodeItem = ({ node: treeNode, isSelected, onTreeNodeSelection, onItemRightClick }) => (
+interface TreeNodeItemProps {
+  node: TreeNode;
+  isSelected: boolean;
+  onTreeNodeSelection: (node: TreeNode) => void;
+  onItemRightClick: (event: React.MouseEvent, node: TreeNode) => void;
+}
+
+const TreeNodeItem: React.FC<TreeNodeItemProps> = ({ node: treeNode, isSelected, onTreeNodeSelection, onItemRightClick }) => (
   <div className="text-[10px] my-0.5 flex cursor-pointer hover:bg-gray-50 rounded px-1 py-0.5 transition-colors">
     <span
       className={`break-words ${isSelected ? "font-bold text-blue-700" : "font-normal"}`}
@@ -425,6 +454,7 @@ const TreeNodeItem = ({ node: treeNode, isSelected, onTreeNodeSelection, onItemR
         data={{
           content: treeNode?.name || "**tree node name is missing!**",
           textOutputType: SupportedTextFormats.MARKDOWN,
+          textInputType: "TextArea",
         }}
         markdownStyles={{ fontSize: "12px" }}
       />
@@ -432,18 +462,30 @@ const TreeNodeItem = ({ node: treeNode, isSelected, onTreeNodeSelection, onItemR
   </div>
 );
 
-const AddChildrenOrSiblingsNodesPopup = ({ onClose = () => {}, initialFormData = {}, addAsChildren = false, onSubmit = () => {} }) => {
+interface AddChildrenOrSiblingsNodesPopupProps {
+  onClose?: () => void;
+  initialFormData?: Partial<TreeNode>;
+  addAsChildren?: boolean;
+  onSubmit?: (data: any) => void;
+}
+
+const AddChildrenOrSiblingsNodesPopup: React.FC<AddChildrenOrSiblingsNodesPopupProps> = ({ 
+  onClose = () => {}, 
+  initialFormData = {}, 
+  addAsChildren = false, 
+  onSubmit = () => {} 
+}) => {
   const [formData, setFormData] = useState({
-    uniqueId: (addAsChildren ? initialFormData?.uniqueId : initialFormData?.parentId) || "",
+    uniqueId: (addAsChildren ? (initialFormData as any)?.uniqueId : (initialFormData as any)?.parentId) || "",
     addAsChildren: addAsChildren || false,
     text: "",
-    children: [],
+    children: [] as Array<{ name: string }>,
   });
 
-  const [formErrors, setFormErrors] = useState([]);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
     if (!formData.text || formData.text.trim().length === 0) {
       errors.push("Text should not be empty");
     }
@@ -451,20 +493,17 @@ const AddChildrenOrSiblingsNodesPopup = ({ onClose = () => {}, initialFormData =
     return errors.length === 0;
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (!validateForm()) return;
     const dataToBeSubmitted = {
       uniqueId: formData.uniqueId,
       children: formData.children,
     };
-    // if (!initialFormData?.uniqueId) {
-    //     dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_DETAIL_ID_PREFIX + getDateAsMillisecondsString()}`;
-    // }
     onSubmit(dataToBeSubmitted);
   };
 
-  const handleInputChange = ({ target: { name, value } }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     const children = value
       ? value
           .trim()
@@ -492,7 +531,7 @@ const AddChildrenOrSiblingsNodesPopup = ({ onClose = () => {}, initialFormData =
           <label className="w-[9%] font-bold text-gray-700 inline-block mb-2" htmlFor="text">
             name:
           </label>
-          <textarea type="text" id="text" name="text" placeholder="Enter children names" value={formData.text} onChange={handleInputChange} rows={10} className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <textarea id="text" name="text" placeholder="Enter children names" value={formData.text} onChange={handleInputChange} rows={10} className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div className="block p-2.5 mb-4">
@@ -516,19 +555,26 @@ const AddChildrenOrSiblingsNodesPopup = ({ onClose = () => {}, initialFormData =
   );
 };
 
-const EditTreeNodePopup = ({ onSubmit = () => {}, onClose = () => {}, initialFormData = {} }) => {
+interface EditTreeNodePopupProps {
+  onSubmit?: (data: any) => void;
+  onClose?: () => void;
+  initialFormData?: Partial<TreeNode>;
+}
+
+const EditTreeNodePopup: React.FC<EditTreeNodePopupProps> = ({ 
+  onSubmit = () => {}, 
+  onClose = () => {}, 
+  initialFormData = {} 
+}) => {
   const [formData, setFormData] = useState({
-    uniqueId: initialFormData?.uniqueId || "",
-    name: initialFormData?.name || "",
-    //children: initialFormData?.children || [],
-    //parentId: initialFormData?.parentId || ""
+    uniqueId: (initialFormData as any)?.uniqueId || "",
+    name: (initialFormData as any)?.name || "",
   });
 
-  // const [formErrors, setFormErrors] = useState([]);
-  const [, setFormErrors] = useState([]);
+  const [, setFormErrors] = useState<string[]>([]);
 
   const validateForm = () => {
-    const errors = [];
+    const errors: string[] = [];
     if (!formData.name || formData.name.trim().length === 0) {
       errors.push("Name should not be empty");
     }
@@ -536,17 +582,14 @@ const EditTreeNodePopup = ({ onSubmit = () => {}, onClose = () => {}, initialFor
     return errors.length === 0;
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (!validateForm()) return;
     const dataToBeSubmitted = { ...initialFormData, ...formData };
-    // if (!initialFormData?.uniqueId) {
-    //     dataToBeSubmitted.uniqueId = `${CONSTANTS.DRAFT_DETAIL_ID_PREFIX + getDateAsMillisecondsString()}`;
-    // }
     onSubmit(dataToBeSubmitted);
   };
 
-  const handleInputChange = ({ target: { name, value } }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 

@@ -530,14 +530,6 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
     );
 };
 
-const ITEM_TYPES = {
-    TOPIC: "topic",
-    SECTION: "section",
-    LINK: "link",
-    INTERVIEW_QUESTION: "interview-question",
-    INTERVIEW_CATEGORY: "interview-category",
-};
-
 interface ReferencePopupProps {
     initialFormData?: Partial<ReferenceFormData>;
     topicOptions?: SelectOption[];

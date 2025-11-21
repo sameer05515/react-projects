@@ -6,7 +6,7 @@ import {
   sortTodosByStatus,
   sortTodosByUrgencyAndImportance,
   Status,
-} from "./Todo.dto";
+} from "./Item.dto";
 import { myTodos } from "./data";
 import pipe from "../../../common/service/pipe-util";
 import { availableOutputTypes, SmartPreviewer } from "../../../common/components/Smart/Editor/v3";
@@ -88,7 +88,7 @@ const ListItem = ({ name, createdDate, status, closedOn, isUrgent, isImportant }
     <div className={`shadow rounded p-3 mb-5 mt-2 border ${statusBgColor[statusClassName] || "bg-gray-50 border-gray-200"}`}>
       <span className="whitespace-pre-wrap block mb-2">
         {/* {name} */}
-        <SmartPreviewer data={{ content: name, textOutputType: availableOutputTypes.HTML }} />
+        <SmartPreviewer data={{ content: name, textOutputType: availableOutputTypes.HTML, textInputType: "TextArea" }} />
       </span>
       <div className="flex flex-wrap gap-2 font-bold">
         {statusStr} {urgentStr} {importantStr} {createdDateStr} {closedOnStr}
@@ -98,10 +98,10 @@ const ListItem = ({ name, createdDate, status, closedOn, isUrgent, isImportant }
 };
 
 // Component for the Todo List
-const List = ({ todos = [] }) => (
+const List = ({ todos = [] }: { todos?: any[] }) => (
   <ul className="space-y-4 w-full max-w-4xl">
-    {todos.map((todo, idx) => (
-      <ListItem key={`todo_${idx}`} {...todo} />
+    {todos.map((todo: any, idx: number) => (
+      <ListItem key={`todo_${idx}`} {...(todo as any)} />
     ))}
   </ul>
 );

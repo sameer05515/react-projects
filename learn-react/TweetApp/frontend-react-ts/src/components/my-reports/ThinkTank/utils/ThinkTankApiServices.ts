@@ -9,7 +9,7 @@ const ENDPOINTS = {
   WITH_THINK_TANK_UID: (uniqueId = "") => `/${uniqueId}`,
 };
 
-const prepareErrorResponse = (error = "", defaultMessage = "") => {
+const prepareErrorResponse = (error: any = "", defaultMessage = "") => {
   const errorMessage = prepareErrorMessage(error, defaultMessage || "Unexpected Error occurred!");
   //   console.error(errorMessage, error);
   return { data: null, isError: true, message: errorMessage };

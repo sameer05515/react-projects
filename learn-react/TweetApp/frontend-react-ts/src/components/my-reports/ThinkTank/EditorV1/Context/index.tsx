@@ -21,15 +21,40 @@ import {
   ValidationStrategies,
 } from "./utils";
 import StatisticsDashboardV1 from "../StatisticsDashboard/v1";
+import { ThinkTankItem } from "../../Item.dto";
 
-const ThinkTankEditorV1Context = createContext();
+type FormMessage = { type: string; message: string };
 
-export const ThinkTankEditorV1ContextProvider = ({ children }) => {
-  const [myTodos, setMyTodos] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTTItem, setSelectedTTItem] = useState(null);
-  const [selectedPurpose, setSelectedPurpose] = useState("");
-  const [selectedShowFilterAction, setSelectedShowFilterAction] = useState(FilterActionTypes.SHOW_OPEN_ONLY);
+interface SmartContent {
+  content: string;
+  textOutputType: string;
+  textInputType: string;
+}
+
+interface ThinkTankEditorV1ContextValue {
+  refreshList: () => void;
+  myTodos: ThinkTankItem[];
+  showModal: boolean;
+  filteredTodos: ThinkTankItem[];
+  setShowModal: (show: boolean) => void;
+  handleGroupBtnClick: (actionType: string) => void;
+  ModalChildrenComponent: React.ReactNode;
+  openModalForPurpose: (purpose?: string, thinkTankItem?: any) => void;
+  modalTitle: string;
+}
+
+interface ThinkTankEditorV1ContextProviderProps {
+  children: React.ReactNode;
+}
+
+const ThinkTankEditorV1Context = createContext<ThinkTankEditorV1ContextValue | undefined>(undefined);
+
+export const ThinkTankEditorV1ContextProvider: React.FC<ThinkTankEditorV1ContextProviderProps> = ({ children }) => {
+  const [myTodos, setMyTodos] = useState<ThinkTankItem[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedTTItem, setSelectedTTItem] = useState<any>(null);
+  const [selectedPurpose, setSelectedPurpose] = useState<string>("");
+  const [selectedShowFilterAction, setSelectedShowFilterAction] = useState<string>(FilterActionTypes.SHOW_OPEN_ONLY);
 
   const openModalForPurpose = useCallback((purpose = "", thinkTankItem = {}) => {
     try {
@@ -79,7 +104,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   }, []);
 
   const handleUpdateThinkTankItemWithReason = useCallback(
-    async (data, purpose, uniqueId) => {
+    async (data: SmartContent, purpose: string, uniqueId?: string): Promise<{ isError: boolean; messages: FormMessage[] }> => {
       try {
         validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
 
@@ -114,7 +139,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   );
 
   const handleUpdateThinkTankItemDescription = useCallback(
-    async (data, purpose, uniqueId) => {
+    async (data: SmartContent, purpose: string, uniqueId?: string): Promise<{ isError: boolean; messages: FormMessage[] }> => {
       try {
         validatePurposeWithStrategy(purpose, ValidationStrategies.THROW_ERROR);
 
@@ -156,7 +181,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
   );
 
   const handleSaveThinkTankItem = useCallback(
-    async (data) => {
+    async (data: SmartContent): Promise<{ isError: boolean; messages: FormMessage[] }> => {
       try {
         if (data.content.trim().length < 10) {
           throw new Error("Content is too short. Minimum 10 characters required.");
@@ -187,10 +212,10 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
     [refreshList]
   );
 
-  const handleSampleEditorSubmitJustToTest = useCallback(async (data) => {
+  const handleSampleEditorSubmitJustToTest = useCallback(async (data: SmartContent): Promise<{ isError: boolean; messages: FormMessage[] }> => {
     console.log("Submitting data:", data);
 
-    return new Promise((resolve) => {
+    return new Promise<{ isError: boolean; messages: FormMessage[] }>((resolve) => {
       setTimeout(() => {
         // Mock validation
         if (data.content.trim().length < 10) {
@@ -250,7 +275,12 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
       case PurposeToOpenModal.UPDATE_GROOMING_NOTGrooming_OF_EXISTING_TTITEM_WITH_REASON:
         //handleUpdateThinkTankItemWithReason
         return {
-          ModalChildrenComponent: <SmartEditorV4 initialValue={{}} onSubmit={handleUpdateThinkTankItemWithReason} />,
+          ModalChildrenComponent: (
+            <SmartEditorV4
+              initialValue={{}}
+              onSubmit={(data: SmartContent) => handleUpdateThinkTankItemWithReason(data, selectedPurpose, selectedTTItem?.uniqueId)}
+            />
+          ),
           modalTitle: "Please specify why this TT Item should be considered groomed or not-groomed?",
         };
 
@@ -287,7 +317,7 @@ export const ThinkTankEditorV1ContextProvider = ({ children }) => {
 };
 
 // Hook to use the context
-export const useThinkTankEditorV1Context = () => {
+export const useThinkTankEditorV1Context = (): ThinkTankEditorV1ContextValue => {
   const context = useContext(ThinkTankEditorV1Context);
   if (!context) {
     throw new Error("useThinkTankEditorV1Context must be used within a ThinkTankEditorV1ContextProvider");

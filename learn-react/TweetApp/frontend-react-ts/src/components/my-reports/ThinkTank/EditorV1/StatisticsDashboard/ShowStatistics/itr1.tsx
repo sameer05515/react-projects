@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-// interface StatisticsData {
-//   totalCount: number;
-//   createdToday: number;
-//   closedToday: number;
-//   groomedToday: number;
-//   currentlyWorkingOn: number;
-//   onHold: number;
-// }
+interface StatisticsData {
+  totalCount: number;
+  createdToday: number;
+  closedToday: number;
+  groomedToday: number;
+  currentlyWorkingOn: number;
+  onHold: number;
+}
 
-const ShowStatisticsItr1/**: React.FC<{ iteration: string }>*/ = ({ iteration }) => {
-  const [statistics, setStatistics] = useState/**<StatisticsData | null>*/(null);
-  const [loading, setLoading] = useState/**<boolean>*/(true);
-  const [error, setError] = useState/**<string | null>*/(null);
+interface ShowStatisticsItr1Props {
+  iteration: string;
+}
+
+const ShowStatisticsItr1: React.FC<ShowStatisticsItr1Props> = ({ iteration }) => {
+  const [statistics, setStatistics] = useState<StatisticsData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);

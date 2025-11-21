@@ -74,10 +74,10 @@ const ThinkTankEditorV1 = () => {
 
       <ButtonGroup />
       {/* <div id="to-do-list-div"></div> */}
-      <List todos={filteredTodos} />
+      <List />
 
       {showModal && (
-        <ModalV3 title={modalTitle} isOpen={showModal} onClose={() => setShowModal(false)} showCloseButton={true}>
+        <ModalV3 title={modalTitle} isOpen={showModal} onClose={() => setShowModal(false)}>
           {ModalChildrenComponent}
         </ModalV3>
       )}

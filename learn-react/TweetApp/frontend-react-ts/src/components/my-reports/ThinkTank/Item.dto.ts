@@ -39,6 +39,16 @@ export const getHeaderForThinkTankItemType = (itemType = "") => {
 };
 
 export class ThinkTankItem {
+  uniqueId?: string;
+  smartContent: any;
+  createdDate: string;
+  closedOn?: string;
+  status: string;
+  isUrgent: boolean;
+  isImportant: boolean;
+  hasGroomed?: boolean;
+  itemType: string;
+
   constructor(
     smartContent = { content: "Missing Content!!!", textOutputType: availableOutputTypes.HTML },
     createdDate,
@@ -69,7 +79,16 @@ export class ThinkTankItem {
    *
    * We are also finding ways in javascript or typescript to restrict user to use direct new operator use , as current constructor itself relies on order of values.
    * */
-  static fromData(smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType) {
+  static fromData(
+    smartContent: any,
+    createdDate: string,
+    status: string,
+    closedOn: string,
+    isUrgent: boolean,
+    isImportant: boolean,
+    hasGroomed: boolean,
+    itemType: string
+  ) {
     return new ThinkTankItem(smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType);
   }
 
@@ -115,11 +134,11 @@ export function sortTodosByKey(todos, key, ascending = true) {
  * @param {boolean} [ascending=true] - Whether to sort in ascending order.
  * @returns {ThinkTankItem[]} - Sorted array of Todo objects.
  */
-export function sortTodosByCreatedDate(todos, ascending = true) {
+export function sortTodosByCreatedDate(todos: any[], ascending = true) {
   return todos.slice().sort((a, b) => {
     const dateA = new Date(a.createdDate);
     const dateB = new Date(b.createdDate);
-    return ascending ? dateA - dateB : dateB - dateA;
+    return ascending ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
   });
 }
 
@@ -129,11 +148,11 @@ export function sortTodosByCreatedDate(todos, ascending = true) {
  * @param {boolean} [ascending=true] - Whether to sort in ascending order.
  * @returns {ThinkTankItem[]} - Sorted array of Todo objects.
  */
-export function sortTodosByClosedOnDate(todos, ascending = true) {
+export function sortTodosByClosedOnDate(todos: any[], ascending = true) {
   return todos.slice().sort((a, b) => {
     const dateA = a.closedOn ? new Date(a.closedOn) : new Date(0);
     const dateB = b.closedOn ? new Date(b.closedOn) : new Date(0);
-    return ascending ? dateA - dateB : dateB - dateA;
+    return ascending ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
   });
 }
 

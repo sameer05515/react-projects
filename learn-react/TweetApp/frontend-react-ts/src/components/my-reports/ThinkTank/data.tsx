@@ -14,6 +14,7 @@ const internalTodoDataArr = [
     closedOn: "25/Jan/2025",
     isUrgent: true,
     isImportant: true,
+    hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
   }),
 
@@ -64,6 +65,7 @@ const internalTodoDataArr = [
     closedOn: "",
     isImportant: true,
     isUrgent: true,
+    hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
   }),
 
@@ -93,6 +95,7 @@ const internalTodoDataArr = [
     },
     createdDate: "25/Jan/2025",
     status: Status.OPEN,
+    closedOn: "",
     isUrgent: false,
     isImportant: true,
     hasGroomed: false,
@@ -129,6 +132,8 @@ const internalTodoDataArr = [
     `,
     },
     createdDate: "26/Jan/2025",
+    status: Status.OPEN,
+    closedOn: "",
     isUrgent: true,
     isImportant: true,
     hasGroomed: false,
@@ -154,6 +159,7 @@ const internalTodoDataArr = [
     isImportant: false,
     hasGroomed: false,
     closedOn: "26/Jan/2025",
+    status: Status.OPEN,
     itemType: ThinkTankItemType.ToDo,
   }),
 
@@ -172,6 +178,8 @@ const internalTodoDataArr = [
     isUrgent: false,
     isImportant: true,
     hasGroomed: false,
+    status: Status.OPEN,
+    closedOn: "",
     itemType: ThinkTankItemType.ToDo,
   }),
 
@@ -192,6 +200,8 @@ const internalTodoDataArr = [
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -229,6 +239,8 @@ const internalTodoDataArr = [
     isImportant: true,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -247,6 +259,8 @@ Hence todo's visibility should be in controlled manner.
     isImportant: true,
     hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -267,6 +281,8 @@ Why this is important?
     isImportant: true,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -292,6 +308,8 @@ Why this is not urgent?
     isImportant: true,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -319,6 +337,8 @@ Suggestions:
     isImportant: true,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -342,6 +362,8 @@ Why	this todo?
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -365,6 +387,8 @@ Why urgent and important?
     isImportant: true,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -381,6 +405,8 @@ Later we can move the setting in some common page or modal and connect it with r
     isImportant: false,
     hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -397,6 +423,8 @@ Later we can move the setting in some common page or modal and connect it with r
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -424,6 +452,8 @@ Note:
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -440,6 +470,8 @@ due to lack of time, we have just created them on raw notepad and placed in db (
     isImportant: true,
     hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -457,6 +489,8 @@ Practice and revise Spring boot security with
     isImportant: true,
     hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -476,6 +510,8 @@ Then move data to backend, but in same hardcoded json format. It can be managed 
     isImportant: true,
     hasGroomed: true,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -571,6 +607,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -587,6 +625,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -611,6 +651,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -626,6 +668,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -641,6 +685,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -655,6 +701,8 @@ Move all todos mentioned here to google doc, for better maintainability and reli
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -672,6 +720,8 @@ Will resume reaWill resume reading further by tomorrow morning.
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -820,6 +870,8 @@ This plan ensures **scalability, flexibility, and a smooth user experience**. ðŸ
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -835,6 +887,8 @@ This plan ensures **scalability, flexibility, and a smooth user experience**. ðŸ
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -850,6 +904,8 @@ This plan ensures **scalability, flexibility, and a smooth user experience**. ðŸ
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -864,6 +920,8 @@ This plan ensures **scalability, flexibility, and a smooth user experience**. ðŸ
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -924,6 +982,8 @@ Would you like any modifications to fit your project better? ðŸ˜Š
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -984,6 +1044,8 @@ Same answer in some formatted way.
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1036,6 +1098,8 @@ As a user, I should focus on three types of topics for interview preparation:
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1064,6 +1128,8 @@ As a user, I should focus on three types of topics for interview preparation:
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1080,6 +1146,8 @@ As a user, I should focus on three types of topics for interview preparation:
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.RawQuestion,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1207,6 +1275,8 @@ Would you like help creating a personalized stress-management routine based on y
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1292,6 +1362,8 @@ Restarting your career while managing time for revision requires a structured ap
     isImportant: false,
     hasGroomed: false,
     itemType: ThinkTankItemType.ToDo,
+    status: Status.OPEN,
+    closedOn: "",
   }),
 
   ThinkTankItem.fromObject({
@@ -1326,6 +1398,8 @@ Links with summary of learning
     `,
     },
     createdDate: "01/Feb/2025",
+    status: Status.OPEN,
+    closedOn: "",
     isUrgent: false,
     isImportant: false,
     hasGroomed: false,

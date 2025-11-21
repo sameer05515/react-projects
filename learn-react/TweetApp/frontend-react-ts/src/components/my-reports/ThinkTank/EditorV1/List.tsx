@@ -1,5 +1,5 @@
 import React from "react";
-import { ClassSuffixForStatus, getHeaderForThinkTankItemType, Status } from "../Item.dto";
+import { ClassSuffixForStatus, getHeaderForThinkTankItemType, Status, ThinkTankItem } from "../Item.dto";
 // import { myTodos } from "./data";
 // import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
 import { useThinkTankEditorV1Context } from "./Context";
@@ -8,9 +8,16 @@ import SmartPreviewer from "../../../../common/components/Smart/Previewer/v4";
 import WithEditIcon from "../../../../common/components/WithEditIcon/v2";
 import Badge from "../../../../common/components/badge/Badge";
 
-const ListItem = ({ todo }) => {
-  const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } =
-    todo || {};
+interface ListItemProps {
+  todo: ThinkTankItem | null | undefined;
+}
+
+const ListItem: React.FC<ListItemProps> = ({ todo }) => {
+  if (!todo) {
+    return null;
+  }
+
+  const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } = todo;
   const { openModalForPurpose } = useThinkTankEditorV1Context();
 
   const createdDateStr = (
@@ -22,7 +29,7 @@ const ListItem = ({ todo }) => {
   const closedOnStr = closedOn ? (
     <Badge color="secondary">Closed On: {closedOn} </Badge>
   ) : null;
-  const statusClassName = ClassSuffixForStatus[status];
+  const statusClassName = status ? ClassSuffixForStatus[status] : ClassSuffixForStatus[Status.UNKNOWN];
 
   const urgentStr = (
     <Badge color={isUrgent ? "danger" : "warning"}>

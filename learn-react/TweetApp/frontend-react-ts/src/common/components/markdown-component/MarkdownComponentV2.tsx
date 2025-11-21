@@ -41,7 +41,7 @@ const MarkdownComponentV2 = ({ markdownText = "", className = "" }) => {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}  // Use rehype-highlight for block code syntax highlighting
                 components={{
-                    code({ node, inline, className, children, ...props }) {
+                    code({ node, inline, className, children, ...props }: any) {
                         if (inline) {
                             // Return inline code without syntax highlighting
                             return <code className={className} {...props}>{children}</code>;

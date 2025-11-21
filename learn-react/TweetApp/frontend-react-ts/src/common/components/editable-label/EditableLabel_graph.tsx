@@ -3,7 +3,23 @@ import { Editor, EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
 import CustomButton from "../custom-button/CustomButton";
 
-const EditableLabelGraph = ({
+interface EditableLabelGraphProps {
+  text?: string;
+  postUpdateClick?: (value: string) => void;
+  placeholder?: string;
+  editMode?: boolean;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+  flushSavedText?: boolean;
+  editable?: boolean;
+  containerClassName?: string;
+  displayClassName?: string;
+  editorClassName?: string;
+  labelStyle?: React.CSSProperties;
+  textAreaStyle?: React.CSSProperties;
+}
+
+const EditableLabelGraph: React.FC<EditableLabelGraphProps> = ({
   text = "",
   postUpdateClick = () => {},
   placeholder = "No placeholder given",
@@ -35,7 +51,7 @@ const EditableLabelGraph = ({
     if (editable) setEditing(true);
   };
 
-  const handleEditorChange = (newEditorState) => {
+  const handleEditorChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);
   };
 

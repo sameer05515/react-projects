@@ -127,7 +127,7 @@ const SmartEditor: React.FC<SmartEditorProps> = ({
                 error = `Error parsing YAML: ${String(err?.message || e)}`;
             }
             setYamlProcessedData(metadata);
-            setErrorMessage(error);
+            setErrorMessage(error || "");
         }
 
         if (!formData.content || formData.content.trim().length === 0) {
@@ -280,7 +280,7 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue }> = ({ data: initialVal
                 error = `Error parsing YAML: ${String(err?.message || e)}`;
             }
             setYamlProcessedData(metadata);
-            setErrorMessage(error);
+            setErrorMessage(error || "");
         }
     }, [formData.content]);
 

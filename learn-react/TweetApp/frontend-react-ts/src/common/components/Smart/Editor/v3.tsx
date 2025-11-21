@@ -218,7 +218,7 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue; markdownStyles?: { font
       {textOutputType === availableOutputTypes.TEXT && <pre>{content}</pre>}
       {textOutputType === availableOutputTypes.HTML && <div dangerouslySetInnerHTML={{ __html: content }} />}
       {textOutputType === availableOutputTypes.MARKDOWN && (
-        <MarkdownComponent markdownText={content} className={FONT_SIZE_CLASS_MAP[fontSize] || ""} />
+        <MarkdownComponent markdownText={content} className={fontSize ? (FONT_SIZE_CLASS_MAP[fontSize] || "") : ""} />
       )}
       {textOutputType === availableOutputTypes.YAML && (
         <div>

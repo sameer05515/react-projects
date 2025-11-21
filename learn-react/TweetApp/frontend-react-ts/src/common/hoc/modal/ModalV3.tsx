@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const ModalV3 = ({ isOpen, onClose, closeOnEscKey = false, title = "Modal Title", children }) => {
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 1200, height: 500 }); // Initial modal size
   const [isResizing, setIsResizing] = useState(false);
 
@@ -21,10 +21,11 @@ const ModalV3 = ({ isOpen, onClose, closeOnEscKey = false, title = "Modal Title"
   };
 
   const resize = (e) => {
-    if (!isResizing) return;
+    if (!isResizing || !modalRef.current) return;
+    const modalElement = modalRef.current;
     setSize((prevSize) => ({
-      width: Math.max(300, e.clientX - modalRef.current.offsetLeft), // Min width 300px
-      height: Math.max(200, e.clientY - modalRef.current.offsetTop), // Min height 200px
+      width: Math.max(300, e.clientX - modalElement.offsetLeft), // Min width 300px
+      height: Math.max(200, e.clientY - modalElement.offsetTop), // Min height 200px
     }));
   };
 

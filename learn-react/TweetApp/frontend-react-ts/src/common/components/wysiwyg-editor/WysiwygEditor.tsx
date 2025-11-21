@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 const WysiwygEditor = () => {
   const [content, setContent] = useState('');
 
-  const editorStyles = {
+  const editorStyles: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
   };
 
-  const textareaStyles = {
+  const textareaStyles: React.CSSProperties = {
     flex: 1,
     minHeight: '200px',
     padding: '8px',
@@ -18,7 +18,7 @@ const WysiwygEditor = () => {
     fontSize: '16px',
   };
 
-  const previewStyles = {
+  const previewStyles: React.CSSProperties = {
     marginTop: '10px',
     padding: '8px',
     border: '1px solid #ccc',

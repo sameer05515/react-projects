@@ -21,7 +21,7 @@ const ModalV4 = ({ isOpen, onClose, showCloseButton = false, title = "Modal Titl
   }
 
   return (
-    <div className={`modal ${isOpen ? "show d-block" : "fade"}`} tabIndex="-1" role="dialog">
+    <div className={`modal ${isOpen ? "show d-block" : "fade"}`} tabIndex={-1} role="dialog">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

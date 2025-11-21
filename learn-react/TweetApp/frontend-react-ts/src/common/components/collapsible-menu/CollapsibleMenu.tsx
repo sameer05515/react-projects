@@ -1,16 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 // import PropTypes from 'prop-types'; // Import PropTypes
 
-const CollapsibleMenu = ({ isCollapsed: isCollapsedInitialValue = true, children }) => {
+interface CollapsibleMenuProps {
+    isCollapsed?: boolean;
+    children?: React.ReactNode;
+}
+
+const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({ isCollapsed: isCollapsedInitialValue = true, children }) => {
     const [isCollapsed, setIsCollapsed] = useState(isCollapsedInitialValue);
-    const menuRef = useRef(null);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const toggleMenu = () => {
         setIsCollapsed(prevState => !prevState);
     };
 
-    const handleClickOutside = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (menuRef.current && event.target && !menuRef.current.contains(event.target as Node)) {
             setIsCollapsed(true);
         }
     };

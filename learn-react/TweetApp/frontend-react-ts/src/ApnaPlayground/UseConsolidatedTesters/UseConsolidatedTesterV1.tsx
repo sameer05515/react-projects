@@ -50,7 +50,8 @@ const UseConsolidatedTesterV1 = () => {
     console.log("Starting fetch: " + new Date());
     showBackdrop();
     getRandomNumber()
-      .then(({ randomNumber: number }) => {
+      .then((result: any) => {
+        const { randomNumber: number } = result;
         console.log("Recieved result at : " + new Date());
         console.log(`Random number: ${number}`);
         return doubleTheNumber(number);

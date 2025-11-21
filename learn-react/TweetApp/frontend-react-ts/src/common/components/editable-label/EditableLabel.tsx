@@ -94,7 +94,7 @@ function EditableLabel({
           style={labelStyle}
         >
           <SmartPreviewer
-            data={{ content: text || placeholder, textOutputType: "html" }}
+            data={{ content: text || placeholder, textOutputType: "html", textInputType: "TextArea" }}
           />
         </div>
       )}

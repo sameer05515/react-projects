@@ -54,7 +54,7 @@ class FormMessageBuilder {
    */
   static #InternalBuilder = class {
     /** @type {Array<{type: "error" | "warning" | "info", message: string}>} */
-    #messages = [];
+    #messages: Array<{type: "error" | "warning" | "info", message: string}> = [];
 
     /**
      * Appends an error message to the message list.

@@ -141,7 +141,7 @@ const SmartEditor: React.FC<SmartEditorProps> = ({
         // console.log("formData.content changed:", formData.content);
         // Add your logic here that should run when formData.content changes
         let metadata = {};
-        let error = null;
+        let error: string | null = null;
         if (
             formData?.content &&
             formData?.textOutputType === availableOutputTypes.YAML
@@ -158,7 +158,7 @@ const SmartEditor: React.FC<SmartEditorProps> = ({
                 }
             }
             setYamlProcessedData(metadata);
-            setErrorMessage(error);
+            setErrorMessage(error || "");
         }
 
         if (!formData.content || formData.content.trim().length === 0) {
@@ -234,8 +234,8 @@ const SmartEditor: React.FC<SmartEditorProps> = ({
                     Text Input Type:
                 </label>
                 <div className="flex flex-wrap gap-2">
-                    {selectedOutputType?.linkedInputTypes?.length > 0 &&
-                        selectedOutputType.linkedInputTypes.map((lit) => (
+                    {(selectedOutputType?.linkedInputTypes?.length ?? 0) > 0 &&
+                        selectedOutputType?.linkedInputTypes?.map((lit) => (
                             <label key={lit} className="p-1.5 cursor-pointer">
                                 <input
                                     type="radio"
@@ -352,7 +352,7 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue }> = ({ data: initialVal
                 }
             }
             setYamlProcessedData(metadata);
-            setErrorMessage(error);
+            setErrorMessage(error || "");
         }
     }, [formData.content]);
 

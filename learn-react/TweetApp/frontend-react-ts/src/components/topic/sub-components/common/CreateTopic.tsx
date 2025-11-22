@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select"; // Import the Select component from react-select
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { SmartEditor, SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
-import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import {
   createTopic,
   fetchTopics,
   updateTopic,
 } from "../../../../redux/slices/topicSlice";
-import type { AppDispatch, RootState } from "../../../../redux/store";
+import type { AppDispatch } from "../../../../redux/store"; // ✅ Removed unused RootState
 
 function CreateTopic({ parentId, topic, onSave, onCancelEdit }: { parentId?: string | null; topic?: any; onSave?: () => void; onCancelEdit?: () => void }) {
   const dispatch: AppDispatch = useDispatch();
 
-  const tagOptions = useSelector((state: RootState) => getTagsForComboOptions(state));
+  const tagOptions = useSelector(selectTagsForComboOptions);
 
   const [showDescr, setShowDescr] = useState(false);
 

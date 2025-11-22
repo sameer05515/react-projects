@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
-import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
+import { selectAllFlatTopics, selectTopicsStateCombined } from "../../../../redux/slices/topicSlice";
 import CreateTopic from "../common/CreateTopic";
 import TopicCard from "../common/TopicCard";
 
 function ListTopicsByCreatedDate() {
+  // ✅ Optimized: Use combined selector for status and error, separate for flatTopics
   const topics = useSelector(selectAllFlatTopics);
-  const loading = useSelector((state: RootState) => state.topics.loading);
-  const error = useSelector((state: RootState) => state.topics.error as string | null);
+  const { status, error } = useSelector((state: RootState) => selectTopicsStateCombined(state)); // ✅ Standardized: loading -> status
   const [showForm, setShowForm] = useState(false);
 
   const [editTopic, setEditTopic] = useState(null);
@@ -71,10 +71,10 @@ function ListTopicsByCreatedDate() {
 
 
   return (
-    <div>
-      <h2>Topics List Grouped by Occurrence Date</h2>
-      {loading === "pending" && <p>Loading topics...</p>}
-      {error && <p>Error: {error}</p>}
+    <div className="text-gray-900 dark:text-gray-100">
+      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Topics List Grouped by Occurrence Date</h2>
+      {status === "loading" && <p className="text-gray-700 dark:text-gray-300">Loading topics...</p>} {/* ✅ Standardized: use status */}
+      {error && <p className="text-red-600 dark:text-red-400">Error: {error}</p>}
 
       {!showForm && (
         <CustomButton onClick={() => setShowForm(true)}>Add</CustomButton>
@@ -88,34 +88,34 @@ function ListTopicsByCreatedDate() {
         />
       )}
 
-      {loading === "fulfilled" && (
+      {status === "succeeded" && ( // ✅ Standardized: use status
         <div className="flex flex-col">
           <div className="mb-4 flex gap-4 items-center">
             {/* Date range filter */}
-            <label htmlFor="startDate" className="font-semibold">Start Date: </label>
+            <label htmlFor="startDate" className="font-semibold text-gray-900 dark:text-gray-100">Start Date: </label>
             <input
               type="date"
               id="startDate"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
-            <label htmlFor="endDate" className="font-semibold">End Date: </label>
+            <label htmlFor="endDate" className="font-semibold text-gray-900 dark:text-gray-100">End Date: </label>
             <input
               type="date"
               id="endDate"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
           {Object.keys(groupedTopics).map((occurenceDate) => (
-            <div key={occurenceDate} className="border border-gray-300 m-2.5 p-2.5 rounded">
-              <h3 className="text-lg font-bold mb-2">{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
+            <div key={occurenceDate} className="border border-gray-300 dark:border-gray-600 m-2.5 p-2.5 rounded bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-gray-100">{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
               {groupedTopics[occurenceDate].map((topic: any) => (
                 <div
                   key={topic.uniqueId}
-                  className="border border-gray-300 p-2.5 rounded-[10px] bg-gray-100 mb-1.5 cursor-pointer hover:bg-gray-200 transition-colors"
+                  className="border border-gray-300 dark:border-gray-600 p-2.5 rounded-[10px] bg-gray-100 dark:bg-gray-700 mb-1.5 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                   onDoubleClick={() => handleEditTopic(topic)}
                 >
                   <TopicCard topic={topic} />

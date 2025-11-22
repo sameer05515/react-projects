@@ -1,43 +1,38 @@
-import React /*useEffect*/ from "react";
+import React from "react";
 import AutoCompleteDropdown from "../../../../common/components/auto-complete/AutoCompleteDropdown";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import TaskCard from "./TaskCard";
 
-const TaskList = ({
-  tasks,
-  itemsPerRow = 3,
-  onEditTask,
-  onViewTask,  
-}) => {
-  const rows = [];
-  for (let i = 0; i < tasks.length; i += itemsPerRow) {
-    const rowTasks = tasks.slice(i, i + itemsPerRow);
-    rows.push(
-      <div className="flex flex-wrap justify-between gap-2.5 mb-2.5" key={i}>
-        {rowTasks.map((task) => (
-          <div 
+const TaskList = ({ tasks, onEditTask, onViewTask }) => {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-semibold text-teal-900">Task List</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tasks.map((task) => (
+          <div
             key={task.uniqueId}
-            className="flex-[0_0_calc(33.33%-10px)] m-1.5 p-2.5 border border-gray-300 box-border bg-green-50 rounded-[10px]"
+            className="rounded-lg border border-teal-200 bg-teal-50/40 p-4 hover:border-teal-300 transition-colors"
           >
             <TaskCard task={task} />
-            <div className="mt-2.5 flex gap-2">
-              <CustomButton onClick={() => onEditTask(task)}>
+            <div className="mt-3 flex gap-2">
+              <CustomButton
+                className="bg-teal-100 hover:bg-teal-200 text-teal-800 text-xs px-2 py-1 rounded border border-teal-200"
+                onClick={() => onEditTask(task)}
+              >
                 Edit
               </CustomButton>
-              <CustomButton onClick={() => onViewTask(task)}>View</CustomButton>
+              <CustomButton
+                className="bg-teal-100 hover:bg-teal-200 text-teal-800 text-xs px-2 py-1 rounded border border-teal-200"
+                onClick={() => onViewTask(task)}
+              >
+                View
+              </CustomButton>
             </div>
           </div>
         ))}
       </div>
-    );
-  }
-
-  return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Task List</h2>
-      {rows}
-      <div className="mt-6">
-        <AutoCompleteDropdown names={tasks.map((t) => t.title)} />
+      <div className="pt-4">
+        <AutoCompleteDropdown names={tasks.map((t) => t.name || t.title || "")} />
       </div>
     </div>
   );

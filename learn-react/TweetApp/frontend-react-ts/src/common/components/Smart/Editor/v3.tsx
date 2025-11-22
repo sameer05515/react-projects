@@ -215,15 +215,15 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue; markdownStyles?: { font
 
   return (
     <>
-      {textOutputType === availableOutputTypes.TEXT && <pre>{content}</pre>}
-      {textOutputType === availableOutputTypes.HTML && <div dangerouslySetInnerHTML={{ __html: content }} />}
+      {textOutputType === availableOutputTypes.TEXT && <pre className="text-gray-900 dark:text-gray-100">{content}</pre>}
+      {textOutputType === availableOutputTypes.HTML && <div className="text-gray-900 dark:text-gray-100" dangerouslySetInnerHTML={{ __html: content }} />}
       {textOutputType === availableOutputTypes.MARKDOWN && (
         <MarkdownComponent markdownText={content} className={fontSize ? (FONT_SIZE_CLASS_MAP[fontSize] || "") : ""} />
       )}
       {textOutputType === availableOutputTypes.YAML && (
         <div>
-          <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-          {errorMessage && <span className="text-red-600">{errorMessage}</span>}
+          <pre className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
+          {errorMessage && <span className="text-red-600 dark:text-red-400">{errorMessage}</span>}
         </div>
       )}
       {textOutputType === availableOutputTypes.SKELETON && resultData && resultData.length > 0 && (
@@ -233,11 +233,11 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue; markdownStyles?: { font
             expandAll={true}
             renderNode={(node) => <MarkdownComponent markdownText={node.name || "**tree node name is missing!**"} />}
           />
-          {errorMessage && <span className="text-red-600">{errorMessage}</span>}
+          {errorMessage && <span className="text-red-600 dark:text-red-400">{errorMessage}</span>}
         </>
       )}
 
-      {(!textOutputType || !Object.values(availableOutputTypes).includes(textOutputType)) && <div className="whitespace-pre-wrap">{content}</div>}
+      {(!textOutputType || !Object.values(availableOutputTypes).includes(textOutputType)) && <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100">{content}</div>}
       {/* <JSONDataViewer metadata={{data,resultData,errorMessage  }} title="X-Ray"/> */}
     </>
   );

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Topic,TopicSection } = require('../../routes/Topic.model'); // Adjust the path as needed
+const { Topic, TopicSection } = require('../../routes/topic/Topic.model');
 
 const metadata={
     dateOfExecution:'14-Oct-2023',
@@ -153,23 +153,25 @@ async function addSoftDeleteField(batchSize = 10){
 
 
 // Connect to MongoDB and execute the utility
-(async () => {
-  try {
-    await mongoose.connect('mongodb://localhost:27017/mongodb_test', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+if (require.main === module) {
+  (async () => {
+    try {
+      await mongoose.connect('mongodb://localhost:27017/mongodb_test', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
 
-    console.log('Connected to MongoDB.');
+      console.log('Connected to MongoDB.');
 
-    // Execute the function
-    // await updateSmartContentForTopics();
-    // await deleteDescriptionField();
-    await addSoftDeleteField();
+      // await updateSmartContentForTopics();
+      // await deleteDescriptionField();
+      await addSoftDeleteField();
 
+      mongoose.disconnect();
+    } catch (err) {
+      console.error('Error connecting to MongoDB:', err);
+    }
+  })();
+}
 
-    mongoose.disconnect();
-  } catch (err) {
-    console.error('Error connecting to MongoDB:', err);
-  }
-})();
+module.exports = { updateSmartContentForTopics, deleteDescriptionField, addSoftDeleteField };

@@ -26,6 +26,47 @@ async function getLinks(parentId, selectFields) {
     }
 }
 
+/**
+ * Flatten tree of links into a single array (for export).
+ * Each item has uniqueId, name, parentId, linkType, linkUrl, description, descriptions, ancestors.
+ */
+function flattenLinks(tree, ancestors = []) {
+    if (!tree || !Array.isArray(tree)) return [];
+    const list = [];
+    for (const node of tree) {
+        const item = {
+            uniqueId: node.uniqueId,
+            name: node.name,
+            parentId: node.parentId || null,
+            linkType: node.linkType != null ? node.linkType : '',
+            linkUrl: node.linkUrl != null ? node.linkUrl : '',
+            description: node.description != null ? node.description : '',
+            descriptions: node.descriptions || [],
+            ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+        };
+        list.push(item);
+        if (node.children && node.children.length > 0) {
+            const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+            list.push(...flattenLinks(node.children, nextAncestors));
+        }
+    }
+    return list;
+}
+
+async function getAllLinksFlat() {
+    const exportSelectFields = {
+        uniqueId: 1,
+        name: 1,
+        parentId: 1,
+        linkType: 1,
+        linkUrl: 1,
+        description: 1,
+        descriptions: 1,
+    };
+    const tree = await getLinks(null, exportSelectFields);
+    return flattenLinks(tree);
+}
+
 // Function to get a link by uniqueId
 async function getLinkByUniqueId(uniqueId) {
     try {
@@ -93,6 +134,7 @@ async function deleteLinkByUniqueId(uniqueId) {
 module.exports = {
     createLink,
     getLinks,
+    getAllLinksFlat,
     getLinkByUniqueId,
     getLinkChildren,
     getAllAncestors,

@@ -23,7 +23,7 @@ const TagForm = ({
 
     setFormErrors(errors);
 
-    return Object.keys(errors).length === 0;
+    return errors.length === 0;
   };
 
   const [formData, setFormData] = useState({
@@ -59,52 +59,62 @@ const TagForm = ({
     }
   };
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-4">
-        <h2 className="text-2xl font-bold text-gray-800">
-          {formData.uniqueId ? "Update Tag" : "Save Tag"}
-        </h2>
-      </div>
-      <div className="flex items-center mb-4">
-        <label htmlFor="name" className="w-[15%] font-bold text-gray-700">
-          Name:
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          className="w-[85%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-      </div>
-
-      <div className="border border-gray-300 p-1.5 m-1.5 rounded">
-        <SmartEditor
-          initialValue={formData.smartContent}
-          onChange={handleSmartEditorChange}
-          onError={handleSmartEditorError}
-        />
-      </div>
+    <div className="max-w-2xl space-y-6">
+      <h2 className="text-xl font-semibold text-gray-900">
+        {formData.uniqueId ? "Update Tag" : "Create Tag"}
+      </h2>
 
       {formErrors.length > 0 && (
-        <div className="mt-4">
+        <ul
+          className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 text-sm list-disc list-inside space-y-1"
+          role="alert"
+        >
           {formErrors.map((error, index) => (
-            <span key={index} className="block text-red-600 text-sm mt-1.5">
-              {error}
-            </span>
+            <li key={index}>{error}</li>
           ))}
-        </div>
+        </ul>
       )}
-      <div className="mt-4 flex gap-2">
-        <CustomButton onClick={(e) => handleSubmit(e)}>
-          {formData.uniqueId ? "Update " : "Save "}Changes
-        </CustomButton>
-        <CustomButton onClick={handleCancel}>Cancel</CustomButton>
-      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label htmlFor="name" className="block font-semibold text-gray-700 mb-1.5 text-sm">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-transparent"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="tag-description" className="block font-semibold text-gray-700 mb-1.5 text-sm">
+            Description
+          </label>
+          <div className="rounded-lg border border-gray-300 bg-white p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 focus-within:border-transparent">
+            <SmartEditor
+              initialValue={formData.smartContent}
+              onChange={handleSmartEditorChange}
+              onError={handleSmartEditorError}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 pt-2">
+          <CustomButton type="submit">
+            {formData.uniqueId ? "Update" : "Save"} changes
+          </CustomButton>
+          <CustomButton type="button" onClick={handleCancel}>
+            Cancel
+          </CustomButton>
+        </div>
+      </form>
     </div>
-  )
+  );
 };
 
 export default TagForm;

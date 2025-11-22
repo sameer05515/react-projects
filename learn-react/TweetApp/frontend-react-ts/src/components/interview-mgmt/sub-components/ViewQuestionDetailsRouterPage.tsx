@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
@@ -29,7 +29,11 @@ const ViewQuestionDetailsRouterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, qid } = useParams();
-  const url = `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`;
+  // ✅ Memoize URL to prevent infinite loops
+  const url = useMemo(
+    () => `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`,
+    [qid]
+  );
   const { data, refetch } = useDataFetching({ url });
   useEffect(() => {
     if (qid) {
@@ -37,7 +41,8 @@ const ViewQuestionDetailsRouterPage = () => {
       dispatch(setSelectedTreeNodeUID(qid));
       dispatch(setSelectedQuestionUID(qid));
     }
-  }, [qid, refetch, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qid, dispatch]); // Removed refetch from dependencies to prevent infinite loop
 
   const interviewMgmtContext = useInterviewMgmt() as {
     prevTreeNode?: TreeNode;

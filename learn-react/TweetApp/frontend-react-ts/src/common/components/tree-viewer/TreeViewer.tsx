@@ -83,10 +83,10 @@ function TreeNode<T extends GenericNode>({
         onDrop && onDrop(node);
       }}
       onDragOver={(e) => e.preventDefault()} // Needed to allow drop
-      className="pl-5 my-1.5 border-l border-gray-300"
+      className="pl-5 my-1.5 border-l border-gray-300 dark:border-gray-600"
     >
       <div className="flex items-center mb-1.5">
-        <span className="cursor-pointer mr-2.5 font-bold text-green-600" onClick={toggleExpand}>
+        <span className="cursor-pointer mr-2.5 font-bold text-green-600 dark:text-green-400" onClick={toggleExpand}>
           {hasChildren ? (expanded ? "v" : ">") : "*"}
         </span>
         {renderNode ? (
@@ -120,7 +120,7 @@ function TreeNode<T extends GenericNode>({
 }
 
 const DefaultNodeComponent: React.FC<{ node: GenericNode; uniqueIdFieldName: string }> = ({ node, uniqueIdFieldName }) => (
-  <span className="text-sm text-gray-800">
+  <span className="text-sm text-gray-800 dark:text-gray-200">
     {node.name || node[uniqueIdFieldName]}
   </span>
 );
@@ -153,7 +153,7 @@ function Tree<T extends GenericNode>({
           />
         ))
       ) : (
-        <span className="text-red-600">
+        <span className="text-red-600 dark:text-red-400">
           {errorMessageOnNoData || "No Data to render tree!!"}
         </span>
       )}

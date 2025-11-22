@@ -1,7 +1,8 @@
 // myResumeSlice.js
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 import axios from 'axios';
+import type { RootState } from '../store';
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
 // Replace 'YOUR_API_ENDPOINT' with the actual endpoint for fetching MyResumeModel data
 const API_ENDPOINT = BACKEND_APPLICATION_BASE_URL;
@@ -50,3 +51,31 @@ const myResumeSlice = createSlice({
 
 export default myResumeSlice.reducer;
 // export { fetchMyResumeData };
+
+/* ============== Selectors ======================*/
+const selectMyResumeState = (state: RootState) => state.myResume;
+
+export const selectMyResumeData = createSelector(
+  selectMyResumeState,
+  (myResumeState) => myResumeState.data
+);
+
+export const selectMyResumeStatus = createSelector(
+  selectMyResumeState,
+  (myResumeState) => myResumeState.status
+);
+
+export const selectMyResumeError = createSelector(
+  selectMyResumeState,
+  (myResumeState) => myResumeState.error
+);
+
+// Combined selector for common myResume state properties (optimizes multiple useSelector calls)
+export const selectMyResumeStateCombined = createSelector(
+  [selectMyResumeState],
+  (myResumeState) => ({
+    data: myResumeState.data,
+    status: myResumeState.status,
+    error: myResumeState.error,
+  })
+);

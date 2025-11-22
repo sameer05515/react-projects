@@ -1,15 +1,15 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux"; // ✅ Removed unused useSelector
 import {
   hideBackdrop,
   showBackdrop,
 } from "../../redux/slices/backdropSlice";
 import CustomBackdrop from "../../common/components/CustomBackdrop/v2";
 import useConsolidated from "../../common/hooks/useConsolidated/archieved/v2";
-import type { RootState, AppDispatch } from "../../redux/store";
+import type { AppDispatch } from "../../redux/store"; // ✅ Removed unused RootState
 
 const UseConsolidatedTesterV2 = () => {
-  const isBackdropActive = useSelector((state: RootState) => state.backdrop.active);
+  // ✅ Removed unused isBackdropActive
   const dispatch: AppDispatch = useDispatch();
   const {
     fetchTaskDetailsForGivenId,

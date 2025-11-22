@@ -5,7 +5,7 @@ import CustomButton from "../../../../common/components/custom-button/CustomButt
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 import { SmartEditor } from "../../../../common/components/Smart/Editor/v3";
 import { taskStatusList } from "../../../../common/constants/globalConstants";
-import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import {
   saveTask,
   selectAllFlatTasks,
@@ -21,7 +21,7 @@ interface TaskFormProps {
 
 const TaskForm: React.FC<TaskFormProps> = ({ task, onSave, onCancelEdit }) => {
   const dispatch: AppDispatch = useDispatch();
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
   const tasks = useSelector(selectAllFlatTasks);
   const [formData, setFormData] = useState({
     _id: task && task._id ? task._id : "",

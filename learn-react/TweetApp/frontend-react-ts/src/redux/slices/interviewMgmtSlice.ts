@@ -148,7 +148,7 @@ export const updateAnswer = createAsyncThunk(
 );
 
 type ApiSubState = {
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
 };
 
@@ -171,15 +171,15 @@ const interviewMgmtSlice = createSlice({
     data: [],
     refetchCategoryTree: false,
     fetchCategoryTreeResponse: {
-      loading: "idle",
+      status: "idle", // ✅ Standardized: loading -> status
       error: null,
     },
     createCategoryResponse: {
-      loading: "idle",
+      status: "idle", // ✅ Standardized: loading -> status
       error: null,
     },
     updateCategoryResponse: {
-      loading: "idle",
+      status: "idle", // ✅ Standardized: loading -> status
       error: null,
     },
     selectedTreeNodeUID: null,
@@ -205,45 +205,45 @@ const interviewMgmtSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllQuestions.pending, (state) => {
-        state.fetchCategoryTreeResponse.loading = "pending";
+        state.fetchCategoryTreeResponse.status = "loading"; // ✅ Standardized: pending -> loading
         state.fetchCategoryTreeResponse.error = null;
       })
       .addCase(fetchAllQuestions.fulfilled, (state, action) => {
-        state.fetchCategoryTreeResponse.loading = "fulfilled";
+        state.fetchCategoryTreeResponse.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload;
         state.refetchCategoryTree = false;
         state.fetchCategoryTreeResponse.error = null;
       })
       .addCase(fetchAllQuestions.rejected, (state, action) => {
-        state.fetchCategoryTreeResponse.loading = "rejected";
+        state.fetchCategoryTreeResponse.status = "failed"; // ✅ Standardized: rejected -> failed
         state.fetchCategoryTreeResponse.error = action.error.message ?? null;
       })
 
       .addCase(createCategory.pending, (state) => {
-        state.createCategoryResponse.loading = "pending";
+        state.createCategoryResponse.status = "loading"; // ✅ Standardized: pending -> loading
         state.createCategoryResponse.error = null;
       })
       .addCase(createCategory.fulfilled, (state, action) => {
-        state.createCategoryResponse.loading = "fulfilled";
+        state.createCategoryResponse.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.refetchCategoryTree = true;
         state.createCategoryResponse.error = null;
       })
       .addCase(createCategory.rejected, (state, action) => {
-        state.fetchCategoryTreeResponse.loading = "rejected";
+        state.createCategoryResponse.status = "failed"; // ✅ Standardized: rejected -> failed (also fixed bug: was using fetchCategoryTreeResponse)
         state.createCategoryResponse.error = action.error.message ?? null;
       })
 
       .addCase(updateCategory.pending, (state) => {
-        state.updateCategoryResponse.loading = "pending";
+        state.updateCategoryResponse.status = "loading"; // ✅ Standardized: pending -> loading
         state.updateCategoryResponse.error = null;
       })
       .addCase(updateCategory.fulfilled, (state, action) => {
-        state.updateCategoryResponse.loading = "fulfilled";
+        state.updateCategoryResponse.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.refetchCategoryTree = true;
         state.updateCategoryResponse.error = null;
       })
       .addCase(updateCategory.rejected, (state, action) => {
-        state.fetchCategoryTreeResponse.loading = "rejected";
+        state.updateCategoryResponse.status = "failed"; // ✅ Standardized: rejected -> failed (also fixed bug: was using fetchCategoryTreeResponse)
         state.updateCategoryResponse.error = action.error.message ?? null;
       })
       .addCase(searchTopic.fulfilled, (state, action) => {

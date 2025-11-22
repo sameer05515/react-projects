@@ -64,15 +64,22 @@ const TopicSectionCard = ({
             title=""
             errorMessage=""
             items={buttonActions}
-            renderItem={({ id, title, action }) => (
-              <CustomButton
-                key={id}
-                className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
-                onClick={action}
-              >
-                {title}
-              </CustomButton>
-            )}
+            renderItem={({ id, title, action }) => {
+              // Primary actions use blue, secondary actions use gray
+              const isPrimaryAction = title === "Edit";
+              const buttonClass = isPrimaryAction
+                ? "bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 text-xs rounded mr-2.5"
+                : "bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400 px-1.5 py-0.5 text-xs rounded mr-2.5";
+              return (
+                <CustomButton
+                  key={id}
+                  className={buttonClass}
+                  onClick={action}
+                >
+                  {title}
+                </CustomButton>
+              );
+            }}
           />
         </div>
 

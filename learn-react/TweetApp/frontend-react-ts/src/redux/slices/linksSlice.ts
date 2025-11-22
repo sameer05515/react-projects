@@ -133,7 +133,7 @@ type LinksState = {
   linkDetails: any;
   searchedData: any[];
   searchString: string;
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
 };
 
@@ -145,7 +145,7 @@ const linksSlice = createSlice({
     linkDetails: {},
     searchedData:[],
     searchString:'',
-    loading: "idle",
+    status: "idle", // ✅ Standardized: changed from loading to status
     error: null,
   } as LinksState,
   reducers: {
@@ -154,20 +154,41 @@ const linksSlice = createSlice({
     },
     setSearchString:(state, action)=>{
       state.searchString = action.payload;
-    }
+    },
+    // ✅ Phase 3: State cleanup actions
+    clearLinks: (state) => {
+      state.data = [];
+      state.status = "idle";
+      state.error = null;
+      state.linkDetails = {};
+      state.searchedData = [];
+      state.searchString = "";
+      state.selectedLinkUniqueId = null;
+    },
+    resetLinksState: (state) => {
+      return {
+        selectedLinkUniqueId: null,
+        data: [],
+        linkDetails: {},
+        searchedData: [],
+        searchString: "",
+        status: "idle",
+        error: null,
+      } as LinksState;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchLinks.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload as LinkNode[];
         // flatData now computed via memoized selector
       })
       .addCase(fetchLinks.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null; 
       })
       .addCase(createLink.fulfilled, (state, action) => {
@@ -182,14 +203,14 @@ const linksSlice = createSlice({
         }
       })
       .addCase(fetchLinksByUniqueId.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchLinksByUniqueId.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.linkDetails = action.payload;
       })
       .addCase(fetchLinksByUniqueId.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null;
       });
   },
@@ -198,7 +219,7 @@ const linksSlice = createSlice({
 export default linksSlice.reducer;
 
 // Export the reducer and actions
-export const { setSelectedLinkUniqueId,setSearchString } = linksSlice.actions;
+export const { setSelectedLinkUniqueId, setSearchString, clearLinks, resetLinksState } = linksSlice.actions;
 
 
 /* ============== Selectors ======================*/
@@ -256,7 +277,7 @@ export const selectLinksStateCombined = createSelector(
   ],
   (links: LinkNode[], selectedId: string | null, linksState: LinksState) => ({
     links,
-    loading: linksState.loading,
+    status: linksState.status, // ✅ Standardized: loading -> status
     error: linksState.error,
     selectedId,
     linkDetails: linksState.linkDetails,

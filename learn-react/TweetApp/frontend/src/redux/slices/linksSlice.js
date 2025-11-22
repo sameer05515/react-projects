@@ -1,10 +1,11 @@
 // linksSlice.js
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Create an async thunk to fetch links
 export const fetchLinks = createAsyncThunk("links/fetchLinks", async () => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/links`); // Replace with your API endpoint
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/links`); // Replace with your API endpoint
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
@@ -13,7 +14,7 @@ export const fetchLinks = createAsyncThunk("links/fetchLinks", async () => {
 });
 
 export const fetchLinksByUniqueId = createAsyncThunk("links/fetchLinksByUniqueId", async (uniqueId) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/links/${uniqueId}`); // Replace with your API endpoint
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/links/${uniqueId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
@@ -22,7 +23,7 @@ export const fetchLinksByUniqueId = createAsyncThunk("links/fetchLinksByUniqueId
 });
 
 export const createLink = createAsyncThunk("links/createLink", async (tagData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/links`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/links`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +44,7 @@ export const updateLink = createAsyncThunk(
   "links/updateLink",
   async (updatedLink) => {
     // console.log(`slice: ${JSON.stringify(updatedLink)}`);
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/links/${updatedLink.uniqueId}`,
       {
         method: "PUT",
@@ -115,6 +116,8 @@ const linksSlice = createSlice({
     selectedLinkUniqueId: null,
     data: [], // Only store tree structure - flatData computed via selector
     linkDetails: {},
+    linkDetailsLoading: "idle",
+    linkDetailsError: null,
     searchedData:[],
     searchString:'',
     loading: "idle",
@@ -140,7 +143,7 @@ const linksSlice = createSlice({
       })
       .addCase(fetchLinks.rejected, (state, action) => {
         state.loading = "rejected";
-        state.error = action.error.message; 
+        state.error = action.error.message;
       })
       .addCase(createLink.fulfilled, (state, action) => {
         if(!action.payload?.parentId)
@@ -154,15 +157,16 @@ const linksSlice = createSlice({
         }
       })
       .addCase(fetchLinksByUniqueId.pending, (state) => {
-        state.loading = "pending";
+        state.linkDetailsLoading = "pending";
+        state.linkDetailsError = null;
       })
       .addCase(fetchLinksByUniqueId.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.linkDetailsLoading = "fulfilled";
         state.linkDetails = action.payload;
       })
       .addCase(fetchLinksByUniqueId.rejected, (state, action) => {
-        state.loading = "rejected";
-        state.error = action.error.message;
+        state.linkDetailsLoading = "rejected";
+        state.linkDetailsError = action.error.message;
       });
   },
 });
@@ -229,6 +233,8 @@ export const selectLinksStateCombined = createSelector(
   (links, selectedId, linksState) => ({
     links,
     loading: linksState.loading,
+    linkDetailsLoading: linksState.linkDetailsLoading,
+    linkDetailsError: linksState.linkDetailsError,
     error: linksState.error,
     selectedId,
     linkDetails: linksState.linkDetails,

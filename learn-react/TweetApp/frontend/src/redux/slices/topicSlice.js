@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Define an async thunk to fetch all topics
 export const fetchTopics = createAsyncThunk("topics/fetchTopics", async () => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics`); // Replace with your API endpoint
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/topics`); // Replace with your API endpoint
   return response.json();
 });
 
@@ -11,7 +12,7 @@ export const fetchTopics = createAsyncThunk("topics/fetchTopics", async () => {
 export const createTopic = createAsyncThunk(
   "topics/createTopic",
   async (topicData) => {
-    const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics`, {
+    const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/topics`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,10 +23,29 @@ export const createTopic = createAsyncThunk(
   }
 );
 
+// Create multiple topics in one request
+export const createTopicsBulk = createAsyncThunk(
+  "topics/createTopicsBulk",
+  async (topicPayloads) => {
+    const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/topics/bulk`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ topics: topicPayloads }),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || response.statusText);
+    }
+    return response.json();
+  }
+);
+
 export const searchTopic = createAsyncThunk(
   "topics/searchTopic",
   async (topicData) => {
-    const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/topics/search`, {
+    const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/topics/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +65,7 @@ export const createTopicSection = createAsyncThunk(
         sectionData
       )}`
     );
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/section`,
       {
         method: "POST",
@@ -68,7 +88,7 @@ export const updateTopicSectionsById = createAsyncThunk(
         sectionData
       )}`
     );
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/${sectionData.linkedTopicUniqueId}/sections/${sectionData.uniqueId}`,
       {
         method: "PUT",
@@ -86,7 +106,7 @@ export const updateTopicSectionsById = createAsyncThunk(
 export const updateTopic = createAsyncThunk(
   "topics/updateTopic",
   async (topicData) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/${topicData.uniqueId}`,
       {
         method: "PUT",
@@ -182,7 +202,13 @@ const topicSlice = createSlice({
         state.searchedData = action.payload;
       })
       .addCase(createTopic.fulfilled, (state, action) => {
-        // state.data.push(action.payload);
+        const newTopic = action.payload;
+        if (newTopic?.uniqueId) {
+          state.data.push(newTopic);
+        }
+      })
+      .addCase(createTopicsBulk.fulfilled, (state) => {
+        // Tree is refetched by the UI after bulk create
       })
       .addCase(updateTopic.fulfilled, (state, action) => {
         const updatedTopic = action.payload;
@@ -190,7 +216,12 @@ const topicSlice = createSlice({
           (topic) => topic.uniqueId === updatedTopic.uniqueId
         );
         if (index !== -1) {
-          state.data[index] = updatedTopic;
+          const existing = state.data[index];
+          state.data[index] = {
+            ...existing,
+            ...updatedTopic,
+            children: updatedTopic.children ?? existing?.children,
+          };
         }
       });
   },

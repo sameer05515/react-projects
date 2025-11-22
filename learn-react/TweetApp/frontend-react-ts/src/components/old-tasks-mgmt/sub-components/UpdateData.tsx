@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../../redux/store";
-import { updateData } from "../../../redux/slices/dataSlice1";
+import { updateData } from "../../../redux/slices/dataSlice"; // ✅ Consolidated: dataSlice1 -> dataSlice
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 

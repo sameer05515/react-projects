@@ -9,7 +9,9 @@ const breadcrumbSlice = createSlice({
 
     reducers: {
         setSelectedModuleName: (state, action) => {
-            console.log(`action.payload : ${action.payload}`)
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`action.payload : ${action.payload}`);
+            }
             state.selectedModuleName = action.payload;
         }
     }

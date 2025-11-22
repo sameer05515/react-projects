@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import ButtonGroup from "../../../common/components/button-group/ButtonGroup";
-import useDataFetching from "../../../common/hooks/useDataFetching/v1";
+import { useFetchByUrl } from "../../../common/hooks/useDataFetching";
 import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
 import {
   setSelectedQuestionUID,
@@ -17,7 +17,7 @@ const ViewQuestionDetailsRouterPage = () => {
   const dispatch = useDispatch();
   const { id, qid } = useParams();
   const url = `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`;
-  const { data, refetch } = useDataFetching({ url });
+  const { data, refetch } = useFetchByUrl({ url });
   useEffect(() => {
     if (qid) {
       refetch();
@@ -46,7 +46,8 @@ const ViewQuestionDetailsRouterPage = () => {
   };
 
   const handlePatch = async () => {
-    await partialUpdateQuestionByUniqueId(qid);
+    const { isError } = await partialUpdateQuestionByUniqueId(qid);
+    if (!isError) refetch();
   };
 
   return (

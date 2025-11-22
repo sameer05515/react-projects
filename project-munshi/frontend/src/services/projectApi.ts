@@ -89,5 +89,21 @@ export const projectApi = {
     }
     return response.json();
   },
+
+  // Create multiple projects (bulk import)
+  createProjectsBulk: async (projects: ProjectRequest[]): Promise<ProjectResponse[]> => {
+    const response = await fetch(`${API_BASE_URL}/projects/bulk`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(projects),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to create projects');
+    }
+    return response.json();
+  },
 };
 

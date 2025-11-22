@@ -66,10 +66,44 @@
   color: #666;
   margin: 0;
   line-height: 1.5;
+  overflow: hidden;
+  max-height: 4.5em;
+  position: relative;
+}
+
+.project-description-markdown {
+  font-size: 0.9rem;
+}
+
+.project-description-markdown h1,
+.project-description-markdown h2,
+.project-description-markdown h3,
+.project-description-markdown h4,
+.project-description-markdown h5,
+.project-description-markdown h6 {
+  margin-top: 0.5em;
+  margin-bottom: 0.25em;
+  font-size: 1em;
+  line-height: 1.3;
+}
+
+.project-description-markdown p {
+  margin-bottom: 0.5em;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.project-description-markdown pre,
+.project-description-markdown code {
+  font-size: 0.85em;
+}
+
+.project-description-markdown ul,
+.project-description-markdown ol {
+  margin-bottom: 0.5em;
+  padding-left: 1.5em;
 }
 
 .project-card-details {

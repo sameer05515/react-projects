@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uuid = require('uuid');
+const { transformCategoriesToCamelCase } = require('./transformToCamelCaseUtil');
 
 // MongoDB connection configuration
 mongoose.connect('mongodb://127.0.0.1:27017/test_intvw_mgmt_db', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -44,33 +45,7 @@ async function transformData() {
         const oldData = await Category.find({});
 
         // Transform and save data into the new schema
-        const transformedData = oldData.map(category => {
-            return {
-                uniqueId: category.uniqueId || uuid.v4(),
-                catId: category.cat_id,
-                catName: category.cat_name,
-                rating: category.rating,
-                sourceDB: 'interview_mgmt',
-                questions: category.questions.map(question => {
-                    return {
-                        uniqueId: question.uniqueId || uuid.v4(),
-                        quesId: question.ques_id,
-                        linkedCatId: question.linked_cat_id,
-                        ques: question.ques,
-                        rating: question.rating,
-                        hidden: question.hidden,
-                        answers: question.answers.map(answer => {
-                            return {
-                                uniqueId: answer.uniqueId || uuid.v4(),
-                                ansId: answer.ans_id,
-                                answer: answer.answer,
-                                rating: answer.rating
-                            };
-                        })
-                    };
-                })
-            };
-        });
+        const transformedData = transformCategoriesToCamelCase(oldData, uuid.v4);
 
         // Save transformed data into the new schema
         await Category.deleteMany({}); // Clear existing data

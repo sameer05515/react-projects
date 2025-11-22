@@ -6,7 +6,7 @@ import JSONDataViewer from "../../../common/components/json-data-viewer/JSONData
 import RatingComponent from "../../../common/components/rating-component/RatingComponent";
 import { SmartEditor } from "../../../common/components/Smart/Editor/v3";
 import useInterviewManagementAPIs from "../../../common/hooks/useInterviewMgmtApis/v1";
-import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 
 interface QuestionFormProps {
@@ -17,7 +17,7 @@ interface QuestionFormProps {
 
 const QuestionForm: React.FC<QuestionFormProps> = ({ initialFormData, onSave, onCancelEdit }) => {
   const { createQuestion, updateQuestion } = useInterviewManagementAPIs();
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
   const interviewMgmtContext = useInterviewMgmt() as {
     refreshCategoryTree?: () => void;
     [key: string]: any;

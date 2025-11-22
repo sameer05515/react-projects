@@ -18,6 +18,45 @@ async function getAllTasks() {
     }
 }
 
+/**
+ * Flatten tree of tasks into a single array (for export).
+ * Each item has uniqueId, name, parentId, taskStatus, descriptions, tags, ancestors.
+ */
+function flattenTasks(tree, ancestors = []) {
+    if (!tree || !Array.isArray(tree)) return [];
+    const list = [];
+    for (const node of tree) {
+        const item = {
+            uniqueId: node.uniqueId,
+            name: node.name,
+            parentId: node.parentId || null,
+            taskStatus: node.taskStatus != null ? node.taskStatus : null,
+            descriptions: node.descriptions || [],
+            tags: node.tags || [],
+            ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+        };
+        list.push(item);
+        if (node.children && node.children.length > 0) {
+            const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+            list.push(...flattenTasks(node.children, nextAncestors));
+        }
+    }
+    return list;
+}
+
+async function getAllTasksFlat() {
+    const exportSelectFields = {
+        uniqueId: 1,
+        name: 1,
+        parentId: 1,
+        taskStatus: 1,
+        descriptions: 1,
+        tags: 1,
+    };
+    const tree = await getTasks(null, exportSelectFields);
+    return flattenTasks(tree);
+}
+
 async function getTasks(parentId, selectFields) {
     try {
         const criteria = parentId ? { parentId } : { parentId: { $in: [null, undefined, ""] } };
@@ -194,6 +233,7 @@ const getTasksByTagId = async (tagId) => {
 
 module.exports = {
     getAllTasks,
+    getAllTasksFlat,
     getTaskById,
     createTask,
     updateTask,

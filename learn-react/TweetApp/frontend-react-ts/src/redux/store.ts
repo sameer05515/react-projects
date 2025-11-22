@@ -1,6 +1,6 @@
 // redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import dataReducer from "./slices/dataSlice1";
+import dataReducer from "./slices/dataSlice"; // ✅ Consolidated: renamed dataSlice1 to dataSlice
 import taskReducer from "./slices/taskSlice";
 import tagsReducer from "./slices/tagsSlice";
 import topicReducer from "./slices/topicSlice";
@@ -13,6 +13,7 @@ import interviewMgmtReducer from "./slices/interviewMgmtSlice";
 import memoryMapReducer from "./slices/memoryMapSlice";
 import breadcrumbReducer from "./slices/breadcrumbSlice";
 import backdropReducer from "./slices/backdropSlice";
+import themeReducer from "./slices/themeSlice";
 
 const store = configureStore({
   reducer: {
@@ -29,6 +30,7 @@ const store = configureStore({
     memoryMaps: memoryMapReducer,
     breadcrumbItems: breadcrumbReducer,
     backdrop: backdropReducer,
+    theme: themeReducer,
   },
 });
 

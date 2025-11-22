@@ -39,7 +39,7 @@ const TopicTreeViewDashboard: React.FC<TopicTreeViewProps> = () => {
     );
 
     // Use combined selector to optimize multiple useSelector calls
-    const { topics, loading: status, error, selectedId: selectedTopicUniqueId } = useSelector(selectTopicsStateCombined);
+    const { topics, status, error, selectedId: selectedTopicUniqueId } = useSelector(selectTopicsStateCombined); // ✅ Standardized: removed loading alias, use status directly
     
   
     useEffect(() => {
@@ -62,39 +62,43 @@ const TopicTreeViewDashboard: React.FC<TopicTreeViewProps> = () => {
       navigate(`${selectedItem.uniqueId}`);
     };
       
-    if (status === "pending") {
-      return <div>Loading...</div>;
+    if (status === "loading") { // ✅ Standardized: pending -> loading
+      return <div className="text-gray-900 dark:text-gray-100">Loading...</div>;
     }
   
-    if (status === "rejected" || error) {
-      return <div>Error: {String(error)}</div>;
+    if (status === "failed" || error) { // ✅ Standardized: rejected -> failed
+      return <div className="text-red-600 dark:text-red-400">Error: {String(error)}</div>;
     }
   
     return (
-      <div className="flex max-h-[95vh] max-w-[95vw] pl-6">
+      <div className="flex max-h-[95vh] max-w-[95vw] pl-6 text-gray-900 dark:text-gray-100">
         <div className="flex-1 overflow-auto">
           {/* <pre>{links && JSON.stringify(links)}</pre> */}
           <div className="my-2.5">
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              variant="secondary"
+              className="px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => handleButtonClick("create")}
             >
               Create Topic
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              variant="secondary"
+              className="px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => dispatch(fetchTopics())}
             >
               Refresh
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              variant="secondary"
+              className="px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate(`/topic-mgmt/search`)}
             >
               Search
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              variant="secondary"
+              className="px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate("/topic-mgmt/two-nodes")}
             >
               two-nodes
@@ -115,8 +119,8 @@ const TopicTreeViewDashboard: React.FC<TopicTreeViewProps> = () => {
                     }
                     className={`text-xs cursor-pointer ${
                       selectedTopicUniqueId && selectedTopicUniqueId === topic.uniqueId
-                        ? "font-bold text-red-600 text-sm"
-                        : ""
+                        ? "font-bold text-red-600 dark:text-red-400 text-sm"
+                        : "text-gray-900 dark:text-gray-100"
                     }`}
                     onClick={() => handleLinkSelection(topic)}
                   >

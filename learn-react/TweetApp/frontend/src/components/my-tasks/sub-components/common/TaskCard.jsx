@@ -22,6 +22,9 @@ import { updateTask } from "../../../../redux/slices/taskSlice";
 import { prepareTaskTitle } from "./taskUtils";
 import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
 
+const TASK_BTN_CLASS =
+  "bg-teal-50 border border-teal-300 text-teal-800 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer hover:bg-teal-100 transition-colors";
+
 const TaskCard = ({
   task,
   showDescription = false,
@@ -60,7 +63,7 @@ const TaskCard = ({
 
       <TaskDetails task={task} />
 
-      <CustomButton className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer" onClick={() => onAddSubTask(task)}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={() => onAddSubTask(task)}>
         Add Sub Task
       </CustomButton>
 
@@ -85,7 +88,7 @@ const TaskCard = ({
   );
 };
 
-// Extracted components
+// Sub-components
 const TaskButtons = ({
   onEdit,
   showDescr,
@@ -96,29 +99,27 @@ const TaskButtons = ({
   pinnedTasks,
   onChildTaskClick,
 }) => {
-  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
-  
   return (
     <div className="mb-4 flex flex-wrap gap-2">
-      <CustomButton className={tagButtonClass} onClick={() => handleTraverse(-1)}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={() => handleTraverse(-1)}>
         Previous
       </CustomButton>
-      <CustomButton className={tagButtonClass} onClick={onEdit}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={onEdit}>
         Edit
       </CustomButton>
-      <CustomButton className={tagButtonClass} onClick={handleDescriptionToggle}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={handleDescriptionToggle}>
         {showDescr ? "Hide Description" : "Show Description"}
       </CustomButton>
-      <CustomButton className={tagButtonClass} onClick={() => handleTraverse(1)}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={() => handleTraverse(1)}>
         Next
       </CustomButton>
-      <CustomButton className={tagButtonClass} onClick={handlePinTask}>
+      <CustomButton className={TASK_BTN_CLASS} onClick={handlePinTask}>
         {isPinned ? "Un-Pin" : "Pin"} Task
       </CustomButton>
 
       <FloatingButton
-        buttonClassName="mr-2.5 bg-gray-200 border border-gray-400 text-xs rounded px-2 py-1"
-        buttonText={"Show Pinned Tasks"}
+        buttonClassName="mr-2.5 bg-teal-100 border border-teal-300 text-teal-800 text-xs rounded px-2 py-1 hover:bg-teal-200"
+        buttonText="Show Pinned Tasks"
       >
         <div className="p-2.5">
           <b>List of All Pinned Tasks:</b>
@@ -127,9 +128,7 @@ const TaskButtons = ({
           <ul className="list-none pl-0">
             {pinnedTasks.map((t) => (
               <li className="ml-4 pb-1" key={t.uniqueId}>
-                <HoverableSpan
-                  onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}
-                >
+                <HoverableSpan onClick={() => onChildTaskClick({ uniqueId: t.linkedUniqueId })}>
                   {t.title}
                 </HoverableSpan>
               </li>
@@ -144,7 +143,7 @@ const TaskButtons = ({
 };
 
 const TaskDetails = ({ task }) => (
-  <div className="mb-4">
+  <div className="mb-4 text-teal-800">
     <SmartPreviewer
       data={{
         content: prepareTaskTitle(task, "TaskCard"),
@@ -176,7 +175,7 @@ const TaskDetails = ({ task }) => (
 );
 
 const TaskDescription = ({ task }) => (
-  <div className="bg-amber-50 border border-gray-600 p-1.5 rounded mb-2.5">
+  <div className="bg-emerald-50 border border-teal-200 p-1.5 rounded-lg mb-2.5">
     <ToggleablePanel showContent={true} title={"Descriptions:"}>
       {task.descriptions?.map((descr, idx) => (
         <ToggleablePanel
@@ -191,30 +190,26 @@ const TaskDescription = ({ task }) => (
   </div>
 );
 
-const TaskTags = ({ tags, handleLinkedTagSelection }) => {
-  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
-  
-  return (
-    <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
-      <b>Tags:</b>
-      {tags.map(
-        (tag) =>
-          tag && (
-            <HoverableSpan
-              className={`${tagButtonClass} inline-block`}
-              key={tag._id}
-              onClick={() => handleLinkedTagSelection(tag.uniqueId)}
-            >
-              {tag.title}
-            </HoverableSpan>
-          )
-      )}
-    </div>
-  );
-};
+const TaskTags = ({ tags, handleLinkedTagSelection }) => (
+  <div className="bg-teal-50 border border-teal-200 p-1.5 rounded-lg mb-2.5">
+    <b>Tags:</b>
+    {tags.map(
+      (tag) =>
+        tag && (
+          <HoverableSpan
+            className={`${TASK_BTN_CLASS} inline-block`}
+            key={tag._id}
+            onClick={() => handleLinkedTagSelection(tag.uniqueId)}
+          >
+            {tag.title}
+          </HoverableSpan>
+        )
+    )}
+  </div>
+);
 
 const TaskChildren = ({ children, onChildTaskClick }) => (
-  <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
+  <div className="bg-emerald-50/80 border border-teal-200 p-1.5 rounded-lg mb-2.5">
     <b>Child Tasks:</b>
     <ul className="list-disc list-inside">
       {children.map((t) => (
@@ -319,7 +314,7 @@ const ActivityComp = ({ task }) => {
 
   const renderActivities = () =>
     tActivities.map((activity, idx) => (
-      <div key={activity.uniqueId} className="bg-yellow-100 border border-gray-600 p-1.5 rounded mb-2.5">
+      <div key={activity.uniqueId} className="bg-teal-50 border border-teal-200 p-1.5 rounded-lg mb-2.5">
         <div className="text-xs rounded flex flex-wrap gap-2.5 mb-1.5">
           <strong className="text-sm mr-2.5">{activity.userDetails.name}</strong>
           <span className="mr-2.5">
@@ -336,7 +331,7 @@ const ActivityComp = ({ task }) => {
         </ToggleablePanel>
         {activity.userDetails.id === getUserIdFromToken() && (
           <CustomButton
-            className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer"
+            className={TASK_BTN_CLASS}
             onClick={() => handleEditActivity(activity)}
           >
             Edit
@@ -353,7 +348,7 @@ const ActivityComp = ({ task }) => {
         <>
           {!showForm && (
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer"
+              className={TASK_BTN_CLASS}
               onClick={() => setShowForm(true)}
             >
               Add New Comment
@@ -383,15 +378,15 @@ const ActivityComp = ({ task }) => {
   };
 
   return (
-    <div className="bg-yellow-50 border border-gray-600 p-1.5 rounded mb-2.5">
-      <b>Activity</b>
+    <div className="bg-teal-50/80 border border-teal-200 p-1.5 rounded-lg mb-2.5">
+      <b className="text-teal-900">Activity</b>
       <div className="mt-2">
         Show
         {activityList.map((a) => (
           <HoverableSpan
             key={a.id}
             className={`px-1.5 py-0.5 text-xs rounded mr-2.5 ml-2.5 cursor-pointer ${
-              selectedActivity.id === a.id ? "bg-blue-200" : ""
+              selectedActivity.id === a.id ? "bg-teal-200 text-teal-900" : "text-teal-700"
             }`}
             isSelected={selectedActivity.id === a.id}
             isHoverable={a.active}
@@ -414,54 +409,45 @@ const CommentForm = ({
   handleSmartEditorError,
   saveComment,
   setShowForm,
-}) => {
-  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5 cursor-pointer";
-  
-  return (
-    <div className="mt-4">
-      <label htmlFor="description" className="block font-semibold mb-2">
-        {formData.uniqueId ? "Edit" : "New"} Comment
-      </label>
-      <SmartEditor
-        preview={false}
-        initialValue={formData.description}
-        onChange={handleSmartEditorChange}
-        onError={handleSmartEditorError}
-      />
-
-      {formErrors.length > 0 && (
-        <div className="mt-2">
-          {formErrors.map((error, index) => (
-            <span key={index} className="block text-red-600 text-sm mt-1.5">
-              {error}
-            </span>
-          ))}
-        </div>
-      )}
-      <div className="mt-4 flex gap-2">
-        <CustomButton className={tagButtonClass} onClick={saveComment}>
-          {formData.uniqueId ? "Update" : "Save"}
-        </CustomButton>
-        <CustomButton
-          className={tagButtonClass}
-          onClick={() => {
-            setShowForm(false);
-            setFormData({
-              uniqueId: "",
-              type: "comment",
-              description: {
-                content: "",
-                textOutputType: "",
-                textInputType: "",
-              },
-            });
-          }}
-        >
-          Cancel
-        </CustomButton>
+}) => (
+  <div className="mt-4">
+    <label htmlFor="description" className="block font-semibold mb-2 text-teal-900">
+      {formData.uniqueId ? "Edit" : "New"} Comment
+    </label>
+    <SmartEditor
+      preview={false}
+      initialValue={formData.description}
+      onChange={handleSmartEditorChange}
+      onError={handleSmartEditorError}
+    />
+    {formErrors.length > 0 && (
+      <div className="mt-2">
+        {formErrors.map((error, index) => (
+          <span key={index} className="block text-red-600 text-sm mt-1.5">
+            {error}
+          </span>
+        ))}
       </div>
+    )}
+    <div className="mt-4 flex gap-2">
+      <CustomButton className={TASK_BTN_CLASS} onClick={saveComment}>
+        {formData.uniqueId ? "Update" : "Save"}
+      </CustomButton>
+      <CustomButton
+        className={TASK_BTN_CLASS}
+        onClick={() => {
+          setShowForm(false);
+          setFormData({
+            uniqueId: "",
+            type: "comment",
+            description: { content: "", textOutputType: "", textInputType: "" },
+          });
+        }}
+      >
+        Cancel
+      </CustomButton>
     </div>
-  );
-};
+  </div>
+);
 
 export default TaskCard;

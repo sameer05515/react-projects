@@ -374,7 +374,7 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue }> = ({ data: initialVal
         <>
             {formData?.textOutputType &&
                 formData.textOutputType === availableOutputTypes.HTML && (
-                    <div dangerouslySetInnerHTML={{ __html: formData.content || "" }} />
+                    <div className="text-gray-900 dark:text-gray-100" dangerouslySetInnerHTML={{ __html: formData.content || "" }} />
                 )}
             {formData?.textOutputType &&
                 formData.textOutputType === availableOutputTypes.MARKDOWN && (
@@ -383,14 +383,14 @@ const SmartPreviewer: React.FC<{ data: SmartEditorValue }> = ({ data: initialVal
             {formData?.textOutputType &&
                 formData.textOutputType === availableOutputTypes.TEXT && (
                     <div>
-                        <pre>{formData.content || ""}</pre>
+                        <pre className="text-gray-900 dark:text-gray-100">{formData.content || ""}</pre>
                     </div>
                 )}
             {formData?.textOutputType &&
                 formData.textOutputType === availableOutputTypes.YAML && (
                     <div>
-                        <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2) || ""}</pre>
-                        {errorMessage && <span className="text-red-600">{errorMessage}</span>}
+                        <pre className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2) || ""}</pre>
+                        {errorMessage && <span className="text-red-600 dark:text-red-400">{errorMessage}</span>}
                     </div>
                 )}
         </>

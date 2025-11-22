@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid'); // Import the v4 function from the uuid library
+const { rowToTopicDoc } = require('./topicMgmtUtil');
 
 // MySQL connection configuration
 const mysqlConnection = mysql.createConnection({
@@ -42,16 +43,9 @@ mysqlConnection.connect((err) => {
             if (err) throw err;
 
             result.forEach(row => {
-                const newTopic = new Topic({
-                    oldRdbmsId: row.ID,
-                    createdDate: row.creation_date,
-                    updatedDate: row.last_updation_date,
-                    occurenceDate: row.creation_date,
-                    description: row.description,
-                    isPrivate: row.isPrivate,
-                    rating:row.rating,
-                    name: row.title
-                });
+                const doc = rowToTopicDoc(row);
+                if (!doc) return;
+                const newTopic = new Topic(doc);
                 newTopic.save()
                     .then((result) => {
                         console.log("Document inserted into MongoDB:", result);

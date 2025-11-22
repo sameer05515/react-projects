@@ -39,6 +39,43 @@ const getAllTags = async () => {
   // return await Tag.find();
 };
 
+/**
+ * Flatten tree of tags into a single array (for export).
+ * Each item has uniqueId, name, parentId, description, smartContent, ancestors.
+ */
+function flattenTagsForExport(tree, ancestors = []) {
+  if (!tree || !Array.isArray(tree)) return [];
+  const list = [];
+  for (const node of tree) {
+    const item = {
+      uniqueId: node.uniqueId,
+      name: node.name,
+      parentId: node.parentId || null,
+      description: node.description != null ? node.description : "",
+      smartContent: node.smartContent != null ? node.smartContent : null,
+      ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+    };
+    list.push(item);
+    if (node.children && node.children.length > 0) {
+      const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+      list.push(...flattenTagsForExport(node.children, nextAncestors));
+    }
+  }
+  return list;
+}
+
+const getAllTagsFlat = async () => {
+  const exportSelectFields = {
+    uniqueId: 1,
+    name: 1,
+    parentId: 1,
+    description: 1,
+    smartContent: 1,
+  };
+  const tree = await getTags(null, exportSelectFields);
+  return flattenTagsForExport(tree);
+};
+
 // Recursive function to get all ancestors of a tag
 async function getAllAncestors(parentId, ancestors = []) {
   // console.log(`start: parentId: ${parentId} :   function getAllAncestors : ${JSON.stringify(ancestors)}`);
@@ -230,6 +267,7 @@ const deleteTagById = async (uniqueId) => {
 module.exports = {
   createTag,
   getAllTags,
+  getAllTagsFlat,
   getTagById,
   updateTagById,
   deleteTagById,

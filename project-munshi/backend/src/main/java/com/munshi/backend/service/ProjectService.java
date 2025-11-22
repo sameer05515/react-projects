@@ -28,27 +28,45 @@ public class ProjectService {
         project.setTags(request.getTags());
         project.setCreatedAt(LocalDateTime.now());
         project.setUpdatedAt(LocalDateTime.now());
+        project.setDeleted(false);
         
         Project savedProject = projectRepository.save(project);
         return mapToResponse(savedProject);
     }
     
     public List<ProjectResponse> getAllProjects() {
-        return projectRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        return getAllProjects(false);
+    }
+    
+    public List<ProjectResponse> getAllProjects(Boolean includeDeleted) {
+        if (Boolean.TRUE.equals(includeDeleted)) {
+            return projectRepository.findAll()
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        } else {
+            return projectRepository.findByDeletedFalse()
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        }
     }
     
     public ProjectResponse getProjectById(String id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+        if (Boolean.TRUE.equals(project.getDeleted())) {
+            throw new RuntimeException("Project not found with id: " + id);
+        }
         return mapToResponse(project);
     }
     
     public ProjectResponse updateProject(String id, ProjectRequest request) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+        if (Boolean.TRUE.equals(project.getDeleted())) {
+            throw new RuntimeException("Project not found with id: " + id);
+        }
         
         project.setName(request.getName());
         project.setDescription(request.getDescription());
@@ -64,29 +82,57 @@ public class ProjectService {
     }
     
     public void deleteProject(String id) {
-        if (!projectRepository.existsById(id)) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+        if (Boolean.TRUE.equals(project.getDeleted())) {
             throw new RuntimeException("Project not found with id: " + id);
         }
-        projectRepository.deleteById(id);
+        project.setDeleted(true);
+        project.setUpdatedAt(LocalDateTime.now());
+        projectRepository.save(project);
     }
     
     public List<ProjectResponse> searchProjectsByName(String name) {
-        return projectRepository.findByNameContainingIgnoreCase(name)
+        return projectRepository.findByNameContainingIgnoreCaseAndDeletedFalse(name)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
     
     public List<ProjectResponse> getProjectsByStatus(String status) {
-        return projectRepository.findByStatus(status)
+        return projectRepository.findByStatusAndDeletedFalse(status)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
     
     public List<ProjectResponse> getProjectsByOwner(String owner) {
-        return projectRepository.findByOwner(owner)
+        return projectRepository.findByOwnerAndDeletedFalse(owner)
                 .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+    
+    public List<ProjectResponse> createProjectsBulk(List<ProjectRequest> requests) {
+        List<Project> projects = requests.stream()
+                .map(request -> {
+                    Project project = new Project();
+                    project.setName(request.getName());
+                    project.setDescription(request.getDescription());
+                    project.setStatus(request.getStatus());
+                    project.setStartDate(request.getStartDate());
+                    project.setEndDate(request.getEndDate());
+                    project.setOwner(request.getOwner());
+                    project.setTags(request.getTags());
+                    project.setCreatedAt(LocalDateTime.now());
+                    project.setUpdatedAt(LocalDateTime.now());
+                    project.setDeleted(false);
+                    return project;
+                })
+                .collect(Collectors.toList());
+        
+        List<Project> savedProjects = projectRepository.saveAll(projects);
+        return savedProjects.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }

@@ -9,14 +9,12 @@ const ActionableContainer = () => {
   const [activities, setActivities] = React.useState([]);
   const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
   const addActivity = async (newActivity) => {
-
     try {
       const response = await axios.post(`${BASE_URL}/activities`, newActivity);
-      setActivities([...activities, response.data]);
+      setActivities((prev) => [...prev, response.data]);
     } catch (error) {
       console.error('Error creating activity:', error);
     }
-   
   };
 
   const fetchData = useCallback(async () => {

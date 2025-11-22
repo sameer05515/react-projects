@@ -8,7 +8,7 @@ const {
   getAllResumes,
   getResumeById,
   updateProjectById,
-} = require('../services/Resume.service');
+} = require('./Resume.service');
 
 /**
  * @swagger

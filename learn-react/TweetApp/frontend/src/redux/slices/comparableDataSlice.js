@@ -1,7 +1,7 @@
 // comparableDataSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Define the initial state
 const initialState = {
@@ -14,14 +14,11 @@ const initialState = {
 export const fetchData = createAsyncThunk(
   "comparableData/fetchData",
   async () => {
-    try {
-      const response = await axios.get(
-        `${BACKEND_APPLICATION_BASE_URL}/c-objects`
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await authenticatedFetch(
+      `${BACKEND_APPLICATION_BASE_URL}/c-objects`
+    );
+    if (!response.ok) throw new Error(response.statusText);
+    return response.json();
   }
 );
 
@@ -29,15 +26,16 @@ export const fetchData = createAsyncThunk(
 export const saveData = createAsyncThunk(
   "comparableData/saveData",
   async (dataToSave) => {
-    try {
-      const response = await axios.post(
-        `${BACKEND_APPLICATION_BASE_URL}/c-objects`,
-        dataToSave
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await authenticatedFetch(
+      `${BACKEND_APPLICATION_BASE_URL}/c-objects`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSave),
+      }
+    );
+    if (!response.ok) throw new Error(response.statusText);
+    return response.json();
   }
 );
 
@@ -45,22 +43,18 @@ export const saveData = createAsyncThunk(
 export const updateData = createAsyncThunk(
   "comparableData/updateData",
   async (updatedData) => {
-    try {
-      // console.log(JSON.stringify(updatedData));
-      const response = await fetch(
-        `${BACKEND_APPLICATION_BASE_URL}/c-objects/${updatedData.uniqueId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await authenticatedFetch(
+      `${BACKEND_APPLICATION_BASE_URL}/c-objects/${updatedData.uniqueId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      }
+    );
+    if (!response.ok) throw new Error(response.statusText);
+    return response.json();
   }
 );
 

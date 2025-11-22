@@ -34,7 +34,7 @@ const registerUser = async (userData) => {
             console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable for production.');
         }
         const token = jwt.sign({ userId: newUser._id }, jwtSecret, {
-            expiresIn: '1h',
+            expiresIn: '72h',
         });
 
         return { message: 'User registered successfully', token };
@@ -64,7 +64,7 @@ const loginUser = async (username, password) => {
         if (!process.env.JWT_SECRET) {
             console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable for production.');
         }
-        const token = jwt.sign({ userId: user._id, userName: user.name }, jwtSecret, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id, userName: user.name }, jwtSecret, { expiresIn: '72h' });
 
         return token;
     } catch (error) {

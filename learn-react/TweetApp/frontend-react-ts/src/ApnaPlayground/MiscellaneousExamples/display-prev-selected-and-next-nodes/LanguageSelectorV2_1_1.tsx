@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArcherContainer, ArcherElement } from "react-archer";
-import type { ArcherNode, RelationType } from "./common/utils";
+import type { ArcherNode } from "./common/utils"; // ✅ Removed unused RelationType
 
 const boxStyle = { margin: "5px", padding: "10px", border: "1px solid black", borderRadius: "4px", backgroundColor: "#f9f9f9" };
 const strokeStyle = {

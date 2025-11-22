@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ProjectResponse } from '../types/project';
+import MarkdownRenderer from './MarkdownRenderer';
 import './ProjectCard.css';
 
 interface ProjectCardProps {
@@ -34,7 +35,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => {
       </div>
 
       {project.description && (
-        <p className="project-description">{project.description}</p>
+        <div className="project-description">
+          <MarkdownRenderer content={project.description} className="project-description-markdown" />
+        </div>
       )}
 
       <div className="project-card-details">

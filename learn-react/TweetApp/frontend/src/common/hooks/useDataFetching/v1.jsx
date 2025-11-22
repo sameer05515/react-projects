@@ -1,20 +1,24 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { fetchFnWrapper, prepareErrorMessage } from "./utils";
 
 const useDataFetching = ({ url, options = {}, source = "" }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);  
+  const [error, setError] = useState(null);
+
+  const optionsRef = useRef(options);
+  useEffect(() => {
+    optionsRef.current = options;
+  });
 
   const fetchData = useCallback(async () => {
-    console.trace("Trace: From fetchData callback");
     try {
       setLoading(true);
       setData(null);
       setError(null);
       const { data, message } = await fetchFnWrapper({
         url,
-        options,
+        options: optionsRef.current,
       });
       setData(data);
       setError(message);
@@ -25,15 +29,14 @@ const useDataFetching = ({ url, options = {}, source = "" }) => {
       );
       // console.error(errorMessage);
       setError(errorMessage);
-      console.trace(
-        errorMessage,
-        source ? "Source could be: " + source : "",
-        error
-      );
+      if (process.env.NODE_ENV === "development") {
+        // eslint-disable-next-line no-console
+        console.warn("[useFetchByUrl]", source || "fetch", errorMessage, error);
+      }
     } finally {
       setLoading(false);
     }
-  }, [options, source, url]);
+  }, [url, source]);
 
   const refetch = useCallback(() => {
     setLoading(true);

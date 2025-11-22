@@ -60,6 +60,35 @@ router.get("/", async (req, res, next) => {
 
 /**
  * @swagger
+ * /tweets-v2/export/flat:
+ *   get:
+ *     summary: Export all tweets as a flat list (JSON)
+ *     tags: [TweetV2]
+ *     responses:
+ *       200:
+ *         description: Tweets export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get tweets
+ */
+router.get("/export/flat", async (req, res, next) => {
+  try {
+    const tweets = await getAllTweets();
+    res.setHeader("Content-Disposition", 'attachment; filename="tweets-export-flat.json"');
+    res.setHeader("Content-Type", "application/json");
+    res.json(tweets);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
  * /tweets-v2/{id}:
  *   get:
  *     summary: Get a tweet by ID

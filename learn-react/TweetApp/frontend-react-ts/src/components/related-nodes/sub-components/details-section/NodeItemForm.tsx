@@ -21,7 +21,7 @@ export const NodeItemForm = ({
 }) => {
     const {
         SharedService: { refreshNodes, createNode, updateNodeByUniqueId },
-        sharedData: { selectedNode, allNodes },
+        sharedData: { selectedNode }, // ✅ Removed unused allNodes
     } = useSharedConfigurations();
 
     const [formErrors, setFormErrors] = useState<string[]>([]);
@@ -71,7 +71,8 @@ export const NodeItemForm = ({
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const mergeRelation = (detailData: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _mergeRelation = (detailData: any) => { // ✅ Reserved for future use
         setFormData((prevData) => ({
             ...prevData,
             relations: updateOrAdd(prevData.relations, detailData),

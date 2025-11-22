@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 // import ReactHtmlParser from "react-html-parser";
 import { useSelector } from "react-redux";
 import ButtonGroup from "../../../../common/components/button-group/ButtonGroup";
@@ -13,7 +13,7 @@ import ToggleablePanel from "../../../../common/components/toggleable-panel/Togg
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../../../common/hooks/useGlobalServiceProvider";
 import { formatDateToDDMMMYYYYWithTime, prepareQuestions } from "../../../../common/service/commonService";
-import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
+import { selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
 import TopicSectionCard from "./TopicSectionCard";
 
 type TopicNode = {
@@ -79,7 +79,12 @@ const TopicCard: React.FC<TopicCardProps> = ({
   const { BreadcrumbItemType } = useGlobalServiceProvider();
   const [showDescr, setShowDescr] = useState(showDescription);
 
-  const filteredTags = useSelector(getTagsForGivenIds(topic?.tags || []));
+  // ✅ Optimized: Use useMemo instead of factory selector
+  const allTags = useSelector(selectAllFlatTags);
+  const filteredTags = useMemo(
+    () => allTags.filter((t) => (topic?.tags || []).includes(t.uniqueId)),
+    [allTags, topic?.tags]
+  );
 
   const selectedElementRef = useRef<HTMLDivElement | null>(null);
 
@@ -153,7 +158,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
             items={filteredTags}
             errorMessage={"No tags added yet!"}
             renderItem={(tag, idx) => (
-              <HoverableSpan className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded m-1.5 inline-block cursor-pointer hover:bg-gray-400 transition-colors" key={tag._id || `tag_${idx + 1}`} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
+              <HoverableSpan className="bg-gray-300 dark:bg-gray-700 border border-gray-600 dark:border-gray-500 px-1.5 py-0.5 text-xs rounded m-1.5 inline-block cursor-pointer hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors text-gray-900 dark:text-gray-100" key={tag._id || `tag_${idx + 1}`} onClick={() => handleLinkedTagSelection(tag.uniqueId)}>
                 {tag.title}
               </HoverableSpan>
             )}
@@ -216,7 +221,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
             },
           ]}
           renderItem={({ title, action }, idx) => (
-            <CustomButton key={`action_buttons_${idx + 1}`} className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5" onClick={action}>
+            <CustomButton key={`action_buttons_${idx + 1}`} variant="secondary" className="px-1.5 py-0.5 text-xs rounded mr-2.5" onClick={action}>
               {title}
             </CustomButton>
           )}
@@ -253,7 +258,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
       </div>
 
       <ToggleablePanel
-        className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
+        className="mb-2.5 rounded border border-gray-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-1 text-gray-900 dark:text-amber-100"
         showContent={(topic?.sections?.length ?? 0) > 0}
         title={`Sections [${topic?.sections?.length || 0}]:-`}
       >
@@ -270,7 +275,7 @@ const TopicCard: React.FC<TopicCardProps> = ({
       </ToggleablePanel>
 
       <ToggleablePanel
-        className="mb-2.5 rounded border border-gray-300 bg-amber-50 px-1.5 py-1"
+        className="mb-2.5 rounded border border-gray-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-1 text-gray-900 dark:text-amber-100"
         showContent={(topic?.children?.length ?? 0) > 0}
         title={`Child Topics [${topic?.children?.length || 0}]:-`}
       >
@@ -344,4 +349,5 @@ const TopicCard: React.FC<TopicCardProps> = ({
   );
 };
 
-export default TopicCard;
+// ✅ Phase 3: Memoize component to prevent unnecessary re-renders
+export default React.memo(TopicCard);

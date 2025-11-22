@@ -9,10 +9,12 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends MongoRepository<Project, String> {
     
-    List<Project> findByNameContainingIgnoreCase(String name);
+    List<Project> findByDeletedFalse();
     
-    List<Project> findByStatus(String status);
+    List<Project> findByNameContainingIgnoreCaseAndDeletedFalse(String name);
     
-    List<Project> findByOwner(String owner);
+    List<Project> findByStatusAndDeletedFalse(String status);
+    
+    List<Project> findByOwnerAndDeletedFalse(String owner);
 }
 

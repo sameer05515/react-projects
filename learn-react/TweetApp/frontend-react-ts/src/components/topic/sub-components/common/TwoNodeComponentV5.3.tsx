@@ -107,7 +107,8 @@ const TwoNodeComponentV5_3: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const topics = useSelector((state: RootState) => selectAllTreeTopics(state)) as any[];
     const flatTopics = useSelector((state: RootState) => selectAllFlatTopics(state)) as FlatTopic[];
-    const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_selectedTopicId, setSelectedTopicId] = useState<string | null>(null); // ✅ Reserved for future use
     const [selectedTopic, setSelectedTopic] = useState<FlatTopic | null>(null);
 
     const getTopicForUniqueId = (id: string) =>

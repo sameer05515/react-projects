@@ -41,7 +41,9 @@ const backdropSlice = createSlice({
         };
       }
 
-      console.log("state.customBackdrop.v3: ", state.customBackdrop.v3);
+      if (process.env.NODE_ENV === 'development') {
+        console.log("state.customBackdrop.v3: ", state.customBackdrop.v3);
+      }
     },
   },
 });

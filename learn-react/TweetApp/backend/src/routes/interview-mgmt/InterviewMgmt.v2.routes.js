@@ -190,6 +190,35 @@ router.post("/questions", async (req, res) => {
 
 /**
  * @swagger
+ * /intvw-mgmt/v2/export/questions/flat:
+ *   get:
+ *     summary: Export all interview questions as a flat list (JSON)
+ *     tags: [InterviewMgmtV2]
+ *     responses:
+ *       200:
+ *         description: Interview questions export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get questions
+ */
+router.get("/export/questions/flat", async (req, res) => {
+  try {
+    const questions = await interviewMgmtV2Service.getAllQuestionsFlat();
+    res.setHeader("Content-Disposition", 'attachment; filename="interview-questions-export-flat.json"');
+    res.setHeader("Content-Type", "application/json");
+    res.json(questions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
  * /intvw-mgmt/v2/questions:
  *   get:
  *     summary: Get all questions

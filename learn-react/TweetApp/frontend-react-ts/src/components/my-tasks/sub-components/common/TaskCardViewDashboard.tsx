@@ -1,5 +1,5 @@
 // TaskCardViewDashboard.js
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react"; // ✅ Added useCallback for Phase 3
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import UnderConstruction from "../../../../common/components/UnderConstruction";
@@ -32,6 +32,36 @@ const TaskCardViewDashboard: React.FC<TaskCardViewDashboardProps> = ({ underCont
   const { status, error } = useSelector(selectTasksStateCombined);
   const tasks = useSelector(selectAllFlatTasks);
 
+  // ✅ Phase 3: Memoize callbacks to prevent unnecessary re-renders
+  // ✅ Fix: Hooks must be called before any conditional returns
+  const openAddTaskModal = useCallback(() => {
+    setIsAddTaskModalOpen(true);
+    setIsEditTaskModalOpen(false);
+    setIsViewTaskModalOpen(false);
+    setSelectedTask(null);
+  }, []);
+
+  const openEditTaskModal = useCallback((task) => {
+    setIsAddTaskModalOpen(false);
+    setIsEditTaskModalOpen(true);
+    setIsViewTaskModalOpen(false);
+    setSelectedTask(task);
+  }, []);
+
+  const openViewTaskModal = useCallback((task) => {
+    setIsAddTaskModalOpen(false);
+    setIsEditTaskModalOpen(false);
+    setIsViewTaskModalOpen(true);
+    setSelectedTask(task);
+  }, []);
+
+  const closeTaskModal = useCallback(() => {
+    setIsAddTaskModalOpen(false);
+    setIsEditTaskModalOpen(false);
+    setIsViewTaskModalOpen(false);
+    setSelectedTask(null);
+  }, []);
+
   if (status === "loading") {
     return <div>Loading...</div>;
   }
@@ -39,34 +69,6 @@ const TaskCardViewDashboard: React.FC<TaskCardViewDashboardProps> = ({ underCont
   if (status === "failed") {
     return <div>Error: {error}</div>;
   }
-
-  const openAddTaskModal = () => {
-    setIsAddTaskModalOpen(true);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(null);
-  };
-
-  const openEditTaskModal = (task) => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(true);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(task);
-  };
-
-  const openViewTaskModal = (task) => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(true);
-    setSelectedTask(task);
-  };
-
-  const closeTaskModal = () => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(null);
-  };
 
   const handleSaveTask = async (newTask) => {
     if (selectedTask) {

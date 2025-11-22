@@ -43,6 +43,10 @@ export const useDataFetching = <SliceState extends Record<string, any>>(
     ((state as any)?.fetchCategoryTreeResponse &&
       (state as any)?.fetchCategoryTreeResponse.loading === 'fulfilled');
 
+  // ✅ Extract complex expressions to variables for dependency array
+  const stateStatus = (state as any)?.status;
+  const stateLoading = (state as any)?.loading;
+
   useEffect(() => {
     // Fetch if:
     // 1. Force fetch is requested, OR
@@ -52,13 +56,14 @@ export const useDataFetching = <SliceState extends Record<string, any>>(
       forceFetch ||
       (!hasData &&
         !loading &&
-        (state as any)?.status !== "loading" &&
-        (state as any)?.loading !== "pending") ||
+        stateStatus !== "loading" &&
+        stateLoading !== "pending") ||
       (error && !loading);
 
     if (shouldFetch) {
       dispatch(fetchAction() as any);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     fetchAction,
@@ -66,9 +71,9 @@ export const useDataFetching = <SliceState extends Record<string, any>>(
     loading,
     forceFetch,
     error,
-    (state as any)?.status,
-    (state as any)?.loading,
-    dependencies,
+    stateStatus,
+    stateLoading,
+    // Note: dependencies array is intentionally not spread to avoid unnecessary re-renders
   ]);
 
   const refetch = () => {

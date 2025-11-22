@@ -26,8 +26,8 @@ export const EditRelatedNodeItem = () => {
 };
 
 export const CreateRelation = () => {
-  const { state: { data: { nodeInfo, initialFormData, allNodes } } = {} } =
-    useLocation();
+  const { state: { data: { initialFormData } } = {} } =
+    useLocation(); // ✅ Removed unused nodeInfo and allNodes
   const navigate = useNavigate();
   return (
     <RelationForm

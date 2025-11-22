@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
-import useDataFetching from "../../../common/hooks/useDataFetching/v2";
+import { useReduxDataFetching } from "../../../common/hooks/useDataFetching";
 import { fetchAllQuestions } from "../../../redux/slices/interviewMgmtSlice";
 import { fetchTags } from "../../../redux/slices/tagsSlice";
 
@@ -70,11 +70,11 @@ export const InterviewMgmtProvider = ({ children }) => {
   // };
 
   // Fetch data on initial mount (with smart caching)
-  useDataFetching(
+  useReduxDataFetching(
     fetchAllQuestions,
     (state) => state.interviewMgmt || { data: [], loading: 'idle', error: null }
   );
-  useDataFetching(
+  useReduxDataFetching(
     fetchTags,
     (state) => state.tags
   );

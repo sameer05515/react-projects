@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CustomButton from '../common/CustomButton';
+import CustomButton from "../../common/components/custom-button/CustomButton";
 
 const Login = () => {
   const [formData, setFormData] = useState({

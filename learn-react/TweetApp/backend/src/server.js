@@ -9,6 +9,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 
 const swaggerUi = require("swagger-ui-express");
 const redoc = require("redoc-express");
@@ -19,6 +20,10 @@ const app = express();
 const PORT = process.env.PORT || 3003;
 const REACT_PORT = process.env.REACT_PORT || 3002;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mongodb_test";
+
+// Configure EJS as view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // Routers map for maintainability and easy extension
 const routers = [
@@ -37,6 +42,7 @@ const routers = [
   { path: "/pinned-items", handler: "./routes/pinned-item/PinnedItem.routes" },
   { path: "/intvw-mgmt/v2", handler: "./routes/interview-mgmt/InterviewMgmt.v2.routes" },
   { path: "/memory-maps", handler: "./routes/memory-map/MemoryMap.routes" },
+  { path: "/export", handler: "./routes/export/Export.routes" },
   { path: "/node-story", handler: "./routes/related-node/RelatedNode.routes" },
   { path: "/consolidated-reporting", handler: "./routes/consolidated-reporting/ConsolidatedReporting.routes" },
   { path: "/cgpt", handler: "./routes/chatgpt/ChatGPTConversation.routes" },
@@ -78,9 +84,26 @@ const bodyParserLimit = process.env.BODY_PARSER_LIMIT || "10mb";
 app.use(bodyParser.json({ limit: bodyParserLimit }));
 app.use(bodyParser.urlencoded({ limit: bodyParserLimit, extended: true }));
 
+// Require Bearer JWT for all API routes except public paths (login, register, docs, health)
+const { requireAuth } = require("./middleware/requireAuth");
+const { isPublicPath } = require("./middleware/publicPaths");
+app.use((req, res, next) => {
+  if (isPublicPath(req)) return next();
+  return requireAuth(req, res, next);
+});
+
 // Register all routers dynamically
 routers.forEach(({ path, handler }) => {
   app.use(path, require(handler));
+});
+
+// Welcome route - render welcome.ejs
+app.get("/", (req, res) => {
+  res.render("welcome", {
+    title: "TweetApp API Server",
+    port: PORT,
+    baseUrl: `http://localhost:${PORT}`,
+  });
 });
 
 // Register general documentation routes
@@ -155,7 +178,7 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   const baseUrl = `http://localhost:${PORT}`;
-  console.log(`[${new Date().toISOString()}] Server running at ${baseUrl}`);
-  console.log(`[${new Date().toISOString()}] Swagger UI docs: ${baseUrl}/api-docs`);
-  console.log(`[${new Date().toISOString()}] Redoc docs: ${baseUrl}/redoc`);
+  console.log(`[${new Date().toISOString()}] 🚀 Server running at ${baseUrl}`);
+  console.log(`[${new Date().toISOString()}] 📄 Swagger UI docs: ${baseUrl}/api-docs`);
+  console.log(`[${new Date().toISOString()}] 🔁 Redoc docs: ${baseUrl}/redoc`);
 });

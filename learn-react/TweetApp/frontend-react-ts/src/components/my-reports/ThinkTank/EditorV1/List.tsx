@@ -13,12 +13,14 @@ interface ListItemProps {
 }
 
 const ListItem: React.FC<ListItemProps> = ({ todo }) => {
+  // ✅ Fix: Hooks must be called before any conditional returns
+  const { openModalForPurpose } = useThinkTankEditorV1Context();
+
   if (!todo) {
     return null;
   }
 
   const { uniqueId, smartContent, createdDate, status, closedOn, isUrgent, isImportant, hasGroomed, itemType } = todo;
-  const { openModalForPurpose } = useThinkTankEditorV1Context();
 
   const createdDateStr = (
     <Badge color={createdDate ? "secondary" : "danger"}>

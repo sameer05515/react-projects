@@ -143,6 +143,16 @@ const taskSlice = createSlice({
     setSelectedTaskUniqueId: (state, action) => {
       state.selectedTaskUniqueId = action.payload;
     },
+    // ✅ Phase 3: State cleanup actions
+    clearTasks: (state) => {
+      state.data = [];
+      state.status = "idle";
+      state.error = null;
+      state.selectedTaskUniqueId = null;
+    },
+    resetTasksState: (state) => {
+      return initialState; // Full reset
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -164,7 +174,7 @@ const taskSlice = createSlice({
 // Export the reducer
 export default taskSlice.reducer;
 // Export the reducer and actions
-export const { setSelectedTaskUniqueId } = taskSlice.actions;
+export const { setSelectedTaskUniqueId, clearTasks, resetTasksState } = taskSlice.actions;
 
 /* ============== Selectors ======================*/
 const selectTasksStateBase = (state: RootState) => state.tasks;

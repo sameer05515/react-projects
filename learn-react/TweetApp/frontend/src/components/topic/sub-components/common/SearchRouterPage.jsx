@@ -124,7 +124,7 @@ const SearchRouterPage = () => {
   
         <div className="flex gap-2.5 mb-4">
           <CustomButton onClick={() => handleSearch()}>Search</CustomButton>
-          <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+          <CustomButton className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400" onClick={() => navigate(-1)}>Back</CustomButton>
         </div>
   
         <div>

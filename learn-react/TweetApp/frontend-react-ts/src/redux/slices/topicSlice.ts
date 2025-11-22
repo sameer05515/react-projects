@@ -41,11 +41,13 @@ export const searchTopic = createAsyncThunk(
 export const createTopicSection = createAsyncThunk(
   "topics/createTopic/Section",
   async (sectionData: { linkedTopicUniqueId: string; uniqueId?: string } & Record<string, any>) => {
-    console.log(
-      `[topicSlice]: [createTopicSection]: sectionData: ${JSON.stringify(
-        sectionData
-      )}`
-    );
+    if (process.env.NODE_ENV === 'development') {
+      console.log(
+        `[topicSlice]: [createTopicSection]: sectionData: ${JSON.stringify(
+          sectionData
+        )}`
+      );
+    }
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/section`,
       {
@@ -64,11 +66,13 @@ export const createTopicSection = createAsyncThunk(
 export const updateTopicSectionsById = createAsyncThunk(
   "topics/updateTopicSectionsById",
   async (sectionData: { linkedTopicUniqueId: string; uniqueId: string } & Record<string, any>) => {
-    console.log(
-      `[topicSlice]: [updateTopicSectionsById]: sectionData: ${JSON.stringify(
-        sectionData
-      )}`
-    );
+    if (process.env.NODE_ENV === 'development') {
+      console.log(
+        `[topicSlice]: [updateTopicSectionsById]: sectionData: ${JSON.stringify(
+          sectionData
+        )}`
+      );
+    }
     const response = await fetch(
       `${BACKEND_APPLICATION_BASE_URL}/topics/${sectionData.linkedTopicUniqueId}/sections/${sectionData.uniqueId}`,
       {
@@ -168,7 +172,7 @@ type TopicsState = {
   data: TopicNode[];
   searchedData: any[];
   searchString: string;
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
 };
 
@@ -179,7 +183,7 @@ const topicSlice = createSlice({
     data: [], // Only store tree structure - flatData computed via selector
     searchedData:[],
     searchString:'',
-    loading: "idle",
+    status: "idle", // ✅ Standardized: changed from loading to status
     error: null,
   } as TopicsState,
   reducers: {
@@ -188,20 +192,39 @@ const topicSlice = createSlice({
     },
     setSearchString:(state, action)=>{
       state.searchString = action.payload;
-    }
+    },
+    // ✅ Phase 3: State cleanup actions
+    clearTopics: (state) => {
+      state.data = [];
+      state.status = "idle";
+      state.error = null;
+      state.searchedData = [];
+      state.searchString = "";
+      state.selectedTopicUniqueId = null;
+    },
+    resetTopicsState: (state) => {
+      return {
+        selectedTopicUniqueId: null,
+        data: [],
+        searchedData: [],
+        searchString: "",
+        status: "idle",
+        error: null,
+      } as TopicsState;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopics.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchTopics.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload;
         // flatData now computed via memoized selector
       })
       .addCase(fetchTopics.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null;
       })
       .addCase(searchTopic.fulfilled, (state, action) => {
@@ -244,7 +267,7 @@ const topicSlice = createSlice({
 
 export default topicSlice.reducer;
 // Export the reducer and actions
-export const { setSelectedTopicUniqueId,setSearchString } = topicSlice.actions;
+export const { setSelectedTopicUniqueId, setSearchString, clearTopics, resetTopicsState } = topicSlice.actions;
 
 
 /* ============== Selectors ======================*/
@@ -302,7 +325,7 @@ export const selectTopicsStateCombined = createSelector(
   ],
   (topics, selectedId, topicsState) => ({
     topics,
-    loading: topicsState.loading,
+    status: topicsState.status, // ✅ Standardized: loading -> status
     error: topicsState.error,
     selectedId,
   })

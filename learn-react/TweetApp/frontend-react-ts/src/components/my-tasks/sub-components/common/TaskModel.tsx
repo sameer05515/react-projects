@@ -3,11 +3,11 @@ import CustomButton from "../../../../common/components/custom-button/CustomButt
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from "react-select"; // Import the Select component from react-select
-import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import { useSelector } from "react-redux";
 
 const TaskModel = ({ task, onSave, onCancel, tasks }) => {
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
   const [formData, setFormData] = useState({
     _id: task ? task._id : "",
     uniqueId: task ? task.uniqueId : "",
@@ -86,7 +86,6 @@ const TaskModel = ({ task, onSave, onCancel, tasks }) => {
         /> */}
         <CKEditor
           id="description"
-          name="description"
           editor={ClassicEditor as any}
           data={formData.description}
           onChange={handleEditorChange}

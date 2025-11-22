@@ -43,8 +43,10 @@ public class ProjectController {
     @Operation(summary = "Get all projects", description = "Retrieves a list of all projects")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of projects",
             content = @Content(schema = @Schema(implementation = ProjectResponse.class)))
-    public ResponseEntity<List<ProjectResponse>> getAllProjects() {
-        List<ProjectResponse> projects = projectService.getAllProjects();
+    public ResponseEntity<List<ProjectResponse>> getAllProjects(
+            @Parameter(description = "Include deleted projects", required = false) 
+            @RequestParam(defaultValue = "false") Boolean status) {
+        List<ProjectResponse> projects = projectService.getAllProjects(status);
         return ResponseEntity.ok(projects);
     }
     
@@ -116,6 +118,19 @@ public class ProjectController {
             @Parameter(description = "Project owner", required = true) @PathVariable String owner) {
         List<ProjectResponse> projects = projectService.getProjectsByOwner(owner);
         return ResponseEntity.ok(projects);
+    }
+    
+    @PostMapping("/bulk")
+    @Operation(summary = "Create multiple projects", description = "Creates multiple projects from a list of project requests")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Projects created successfully",
+                    content = @Content(schema = @Schema(implementation = ProjectResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
+    })
+    public ResponseEntity<List<ProjectResponse>> createProjectsBulk(
+            @Valid @RequestBody List<ProjectRequest> requests) {
+        List<ProjectResponse> responses = projectService.createProjectsBulk(requests);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responses);
     }
 }
 

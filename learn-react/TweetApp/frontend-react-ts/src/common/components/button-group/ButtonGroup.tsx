@@ -8,6 +8,7 @@ type ButtonOption = {
     title?: string;
     children?: React.ReactNode;
     className?: string;
+    variant?: "primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark";
 };
 
 interface ButtonGroupProps {
@@ -15,6 +16,7 @@ interface ButtonGroupProps {
     className?: string;
     buttonClassName?: string;
     orientation?: "row" | "column";
+    defaultVariant?: "primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark";
 }
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({
@@ -22,6 +24,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
     className = "",
     buttonClassName = "",
     orientation = "row",
+    defaultVariant = "primary",
 }) => {
     const containerClasses =
         orientation === "column"
@@ -39,12 +42,14 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
                         title,
                         children,
                         className: optionClassName = "",
+                        variant: optionVariant,
                     },
                     idx
                 ) => (
                     <CustomButton
                         key={id || `BTN_${idx}`}
-                        className={`bg-slate-100 border border-slate-300 px-2 py-1 text-xs font-semibold text-gray-800 transition hover:bg-slate-200 ${buttonClassName} ${optionClassName}`}
+                        variant={optionVariant || defaultVariant}
+                        className={`px-2 py-1 text-xs ${buttonClassName} ${optionClassName}`}
                         onClick={onClick}
                         iconName={iconName}
                         title={title}

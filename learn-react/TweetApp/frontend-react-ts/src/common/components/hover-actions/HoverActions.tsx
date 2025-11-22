@@ -27,7 +27,7 @@ const HoverActions: React.FC<HoverActionsProps> = ({ actions = [], title }) => {
     <div
       onMouseEnter={() => setIsHovered(true)}
       // onMouseLeave={() => setIsHovered(false)}
-      className="relative inline-block w-56 cursor-pointer rounded-lg border border-gray-400 bg-white p-2 text-center text-gray-800 shadow-sm transition-all hover:border-blue-200 hover:shadow-lg"
+      className="relative inline-block w-56 cursor-pointer rounded-lg border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 text-center text-gray-800 dark:text-gray-200 shadow-sm transition-all hover:border-blue-200 dark:hover:border-blue-500 hover:shadow-lg"
     >
       <span
         className="block font-medium"
@@ -36,11 +36,11 @@ const HoverActions: React.FC<HoverActionsProps> = ({ actions = [], title }) => {
         {calculatedTitle}
       </span>
       {isHovered && (
-        <div className="absolute left-1/2 top-full z-10 mt-2 max-h-44 w-full -translate-x-1/2 overflow-y-auto rounded-lg border border-gray-300 bg-white p-1 shadow-xl">
+        <div className="absolute left-1/2 top-full z-10 mt-2 max-h-44 w-full -translate-x-1/2 overflow-y-auto rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-1 shadow-xl">
           {calculatedActions.map((action, index) => (
             <span
               key={index}
-              className="block cursor-pointer rounded-md px-3 py-2 text-sm text-gray-800 transition-colors hover:bg-blue-50 hover:text-blue-700"
+              className="block cursor-pointer rounded-md px-3 py-2 text-sm text-gray-800 dark:text-gray-200 transition-colors hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400"
             >
               {action}
             </span>

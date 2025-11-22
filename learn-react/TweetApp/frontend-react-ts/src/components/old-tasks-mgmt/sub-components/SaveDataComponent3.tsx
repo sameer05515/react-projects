@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../../redux/store";
-import { saveData } from "../../../redux/slices/dataSlice1";
+import { saveData } from "../../../redux/slices/dataSlice"; // ✅ Consolidated: dataSlice1 -> dataSlice
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 

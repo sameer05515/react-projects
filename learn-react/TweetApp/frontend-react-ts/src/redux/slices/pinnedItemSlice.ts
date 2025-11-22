@@ -30,7 +30,7 @@ type PinnedItem = {
 
 type PinnedItemsState = {
   data: PinnedItem[];
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
 };
 
@@ -38,21 +38,21 @@ const pinnedItemSlice = createSlice({
   name: "pinnedItems",
   initialState: {
     data: [],
-    loading: "idle",
+    status: "idle", // ✅ Standardized: changed from loading to status
     error: null,
   } as PinnedItemsState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPinnedItems.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchPinnedItems.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload as PinnedItem[];
       })
       .addCase(fetchPinnedItems.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null;
       }).addCase(upsertPinnedItem.fulfilled, (state, action) => {
         const updatedTopic = action.payload as PinnedItem;

@@ -1,0 +1,296 @@
+[
+    {
+      "name": "Creational Patterns",
+      "purpose": "Object creation mechanisms that increase flexibility and reuse of existing code",
+      "patterns": [
+        {
+          "name": "Singleton",
+          "description": "Ensures a class has only one instance and provides a global point of access to it.\nPrevents multiple instances of a class from being created, which is useful for managing shared resources.\nCommonly used for database connections, logging, configuration management, and caching mechanisms.\nProvides lazy initialization and thread-safe implementations for concurrent environments.\nShould be used sparingly as it can make code harder to test and can hide dependencies."
+        },
+        {
+          "name": "Factory Method",
+          "description": "Provides an interface for creating objects without specifying their exact classes.\nAllows subclasses to decide which class to instantiate, promoting loose coupling between creator and product.\nIdeal for scenarios where you need to create objects based on runtime conditions or configuration.\nEnables easy extension of the system with new product types without modifying existing code.\nCommonly used in frameworks where framework classes need to create application-specific objects."
+        },
+        {
+          "name": "Abstract Factory",
+          "description": "Provides an interface for creating families of related or dependent objects without specifying their concrete classes.\nGroups related factory methods together to create objects that work together as a cohesive unit.\nUseful when you need to ensure that created objects are compatible with each other.\nEnables switching between entire families of products at runtime or configuration time.\nCommonly used in UI frameworks, database drivers, and cross-platform development."
+        },
+        {
+          "name": "Builder",
+          "description": "Constructs complex objects step by step, allowing different representations using the same construction code.\nSeparates the construction of a complex object from its representation.\nEnables building objects with many optional parameters in a readable and maintainable way.\nPrevents telescoping constructor anti-pattern and provides fluent interface for object creation.\nIdeal for creating objects with many configuration options, such as query builders or configuration objects."
+        },
+        {
+          "name": "Prototype",
+          "description": "Creates new objects by copying existing instances rather than creating new ones from scratch.\nAllows adding and removing objects at runtime by cloning prototype instances.\nReduces the cost of creating objects, especially when object creation is expensive.\nEnables dynamic configuration of objects by cloning and modifying prototype instances.\nCommonly used when object creation is more expensive than copying, such as database queries or complex calculations."
+        },
+        {
+          "name": "Object Pool",
+          "description": "Maintains a pool of reusable objects to avoid expensive acquisition and release of resources.\nImproves performance by reusing objects instead of creating and destroying them repeatedly.\nManages object lifecycle and ensures objects are properly initialized before reuse.\nUseful for expensive-to-create objects like database connections, threads, or network connections.\nRequires careful management to prevent resource leaks and ensure thread safety in concurrent environments."
+        }
+      ]
+    },
+    {
+      "name": "Structural Patterns",
+      "purpose": "Ways to compose objects and classes into larger structures while keeping them flexible and efficient",
+      "patterns": [
+        {
+          "name": "Adapter",
+          "description": "Allows incompatible interfaces to work together by wrapping an object with an adapter class.\nActs as a bridge between two incompatible interfaces, enabling them to collaborate.\nEnables integration of third-party libraries or legacy code without modifying existing code.\nCan be implemented as class adapter (using inheritance) or object adapter (using composition).\nCommonly used when integrating new components into existing systems or working with external APIs."
+        },
+        {
+          "name": "Bridge",
+          "description": "Separates an object's abstraction from its implementation, allowing them to vary independently.\nPrevents the exponential growth of classes when combining multiple dimensions of variation.\nEnables runtime binding of implementations and promotes code organization through separation of concerns.\nUseful when you need to avoid permanent binding between abstraction and implementation.\nCommonly used in GUI frameworks, device drivers, and when supporting multiple platforms."
+        },
+        {
+          "name": "Composite",
+          "description": "Composes objects into tree structures to represent part-whole hierarchies.\nAllows clients to treat individual objects and compositions of objects uniformly.\nEnables recursive composition and simplifies client code that works with complex tree structures.\nIdeal for representing hierarchical structures like file systems, UI components, or organizational structures.\nProvides a way to build complex objects from simpler ones while maintaining a consistent interface."
+        },
+        {
+          "name": "Decorator",
+          "description": "Attaches additional responsibilities to objects dynamically without altering their structure.\nProvides a flexible alternative to subclassing for extending functionality.\nAllows behavior to be added to individual objects without affecting other objects of the same class.\nEnables composition of behaviors at runtime, providing more flexibility than static inheritance.\nCommonly used for adding features like logging, caching, validation, or encryption to objects."
+        },
+        {
+          "name": "Facade",
+          "description": "Provides a simplified interface to a complex subsystem, hiding its complexity.\nActs as a single entry point to a set of interfaces in a subsystem.\nReduces coupling between clients and subsystem components, making the system easier to use.\nDoes not prevent access to subsystem classes but provides a convenient higher-level interface.\nCommonly used to simplify complex APIs, libraries, or frameworks for client applications."
+        },
+        {
+          "name": "Flyweight",
+          "description": "Minimizes memory usage by sharing intrinsic state among multiple objects.\nSeparates intrinsic (shared) state from extrinsic (context-specific) state.\nReduces memory footprint when dealing with large numbers of similar objects.\nUseful when an application uses a large number of objects with shared characteristics.\nCommonly used in text editors, game development, and applications with many similar objects."
+        },
+        {
+          "name": "Proxy",
+          "description": "Provides a placeholder or surrogate object that controls access to another object.\nActs as an intermediary between client and target object, adding an extra level of indirection.\nCan provide lazy loading, access control, logging, or caching without changing the target object.\nEnables adding cross-cutting concerns like security, performance, or monitoring transparently.\nCommonly used for virtual proxies, protection proxies, remote proxies, and smart references."
+        }
+      ]
+    },
+    {
+      "name": "Behavioral Patterns",
+      "purpose": "Communication patterns between objects and assignment of responsibilities",
+      "patterns": [
+        {
+          "name": "Chain of Responsibility",
+          "description": "Passes requests along a chain of handlers until one handles the request.\nDecouples the sender of a request from its receiver by giving multiple objects a chance to handle it.\nAllows you to add or remove handlers dynamically without modifying the client code.\nUseful for processing requests that can be handled by multiple objects in a specific order.\nCommonly used in event handling systems, middleware, and validation pipelines."
+        },
+        {
+          "name": "Command",
+          "description": "Encapsulates a request as an object, allowing parameterization and queuing of requests.\nTurns requests into objects, enabling undo/redo functionality and request queuing.\nDecouples the object that invokes the operation from the object that performs it.\nEnables logging, queuing, and scheduling of operations, as well as supporting transactions.\nCommonly used in GUI applications, macro recording, and implementing undo/redo functionality."
+        },
+        {
+          "name": "Iterator",
+          "description": "Provides a way to access elements of an aggregate object sequentially without exposing its underlying representation.\nEncapsulates the traversal logic and provides a uniform interface for iterating over different collections.\nEnables multiple traversals of the same collection simultaneously and supports different iteration algorithms.\nSimplifies collection interfaces by removing traversal methods from collection classes.\nCommonly used in collection frameworks, database result sets, and tree traversal algorithms."
+        },
+        {
+          "name": "Mediator",
+          "description": "Defines an object that encapsulates how a set of objects interact, promoting loose coupling.\nCentralizes complex communications and control logic between objects.\nReduces dependencies between communicating objects, making the system easier to understand and maintain.\nPrevents objects from referring to each other explicitly, reducing coupling.\nCommonly used in GUI frameworks, chat applications, and systems with many interacting components."
+        },
+        {
+          "name": "Memento",
+          "description": "Captures and externalizes an object's internal state so it can be restored later.\nEnables saving and restoring object state without violating encapsulation.\nAllows objects to return to previous states without exposing implementation details.\nUseful for implementing undo/redo functionality, checkpoints, and state snapshots.\nCommonly used in text editors, games, and applications requiring state management."
+        },
+        {
+          "name": "Observer",
+          "description": "Defines a one-to-many dependency between objects so that when one object changes state, all dependents are notified.\nEnables loose coupling between subject and observers, allowing dynamic subscription and unsubscription.\nSupports broadcast communication and enables objects to be notified of changes without tight coupling.\nIdeal for implementing event-driven architectures and model-view separation.\nCommonly used in MVC architectures, event handling systems, and publish-subscribe mechanisms."
+        },
+        {
+          "name": "State",
+          "description": "Allows an object to alter its behavior when its internal state changes, appearing to change its class.\nEncapsulates state-specific behavior and transitions between states in separate classes.\nEliminates large conditional statements and makes state transitions explicit and manageable.\nEnables adding new states and transitions without modifying existing code.\nCommonly used in state machines, workflow engines, and objects with complex state-dependent behavior."
+        },
+        {
+          "name": "Strategy",
+          "description": "Defines a family of algorithms, encapsulates each one, and makes them interchangeable.\nEnables selecting algorithms at runtime and makes algorithms independent of the clients that use them.\nAllows algorithms to vary independently from clients that use them, promoting the Open/Closed Principle.\nEliminates conditional statements for algorithm selection and enables easy extension with new algorithms.\nCommonly used for sorting algorithms, compression algorithms, and payment processing systems."
+        },
+        {
+          "name": "Template Method",
+          "description": "Defines the skeleton of an algorithm in a base class, letting subclasses override specific steps.\nEnables code reuse by defining invariant parts of an algorithm once in a base class.\nAllows subclasses to customize specific steps while maintaining the overall algorithm structure.\nPromotes the Hollywood Principle: 'Don't call us, we'll call you'.\nCommonly used in frameworks, where framework classes define the algorithm structure and application classes provide specific implementations."
+        },
+        {
+          "name": "Visitor",
+          "description": "Separates algorithms from the objects on which they operate.\nAllows adding new operations to object structures without modifying the classes of the objects.\nEnables operations to be defined externally and applied to different object types.\nUseful when you have many unrelated operations to perform on object structures.\nCommonly used in compiler design, abstract syntax trees, and when operations need to be added to stable class hierarchies."
+        }
+      ]
+    },
+    {
+      "name": "Concurrency Patterns",
+      "purpose": "Patterns for managing concurrent execution and thread safety",
+      "patterns": [
+        {
+          "name": "Active Object",
+          "description": "Decouples method execution from method invocation for objects that each reside in their own thread of control.\nEncapsulates requests as objects and executes them asynchronously in a separate thread.\nEnables method calls to return immediately while operations execute in the background.\nProvides thread-safe access to objects and prevents blocking of calling threads.\nCommonly used in GUI applications, network servers, and systems requiring responsive user interfaces."
+        },
+        {
+          "name": "Balking",
+          "description": "Prevents an object from executing an action if it is in an inappropriate state.\nAllows an object to refuse to execute an operation if certain conditions are not met.\nPrevents unnecessary work and potential errors by checking preconditions before execution.\nUseful for operations that should only execute under specific conditions.\nCommonly used in initialization patterns, resource management, and state-dependent operations."
+        },
+        {
+          "name": "Barrier",
+          "description": "Synchronizes a group of threads, forcing them to wait until all threads reach a certain point.\nEnsures that all participating threads have completed a phase before proceeding to the next phase.\nUseful for parallel algorithms that require synchronization at specific points.\nEnables coordination of multiple threads working on different parts of a problem.\nCommonly used in parallel processing, divide-and-conquer algorithms, and multi-phase computations."
+        },
+        {
+          "name": "Double-Checked Locking",
+          "description": "Reduces the overhead of acquiring a lock by first testing the locking criterion without actually acquiring the lock.\nOptimizes performance by avoiding synchronization when it's not needed.\nRequires careful implementation to ensure thread safety and prevent race conditions.\nUseful for lazy initialization in multi-threaded environments where initialization is expensive.\nMust be implemented correctly to avoid subtle bugs related to memory visibility and instruction reordering."
+        },
+        {
+          "name": "Guarded Suspension",
+          "description": "Manages operations that require both a lock to be acquired and a precondition to be satisfied.\nSuspends thread execution until the precondition becomes true, then proceeds with the operation.\nPrevents busy waiting and ensures threads only proceed when conditions are met.\nUseful for producer-consumer scenarios and operations that depend on resource availability.\nCommonly used in bounded buffers, thread pools, and resource management systems."
+        },
+        {
+          "name": "Lock",
+          "description": "Synchronizes access to shared resources by acquiring and releasing locks.\nPrevents multiple threads from accessing critical sections simultaneously.\nEnsures mutual exclusion and prevents race conditions in concurrent programs.\nCan be implemented as mutexes, read-write locks, or semaphores depending on requirements.\nEssential for thread-safe programming but requires careful use to avoid deadlocks and performance issues."
+        },
+        {
+          "name": "Monitor Object",
+          "description": "Synchronizes concurrent method execution to ensure only one method runs within an object at a time.\nEncapsulates synchronization logic within the object itself.\nProvides a structured approach to thread-safe object design.\nEnables safe concurrent access to object state through synchronized methods.\nCommonly used in concurrent data structures and thread-safe collections."
+        },
+        {
+          "name": "Producer-Consumer",
+          "description": "Separates the identification of work to be done from the execution of that work.\nUses a shared buffer or queue to decouple producers and consumers.\nEnables asynchronous processing and load balancing between producers and consumers.\nAllows producers and consumers to operate at different rates without blocking each other.\nCommonly used in message queues, event-driven systems, and parallel processing pipelines."
+        },
+        {
+          "name": "Read-Write Lock",
+          "description": "Allows multiple readers or a single writer to access a shared resource.\nOptimizes performance for read-heavy workloads by allowing concurrent reads.\nEnsures exclusive access for write operations while enabling concurrent read operations.\nImproves throughput in scenarios where reads are more frequent than writes.\nCommonly used in database systems, caching mechanisms, and shared data structures."
+        },
+        {
+          "name": "Thread Pool",
+          "description": "Maintains a group of worker threads that execute tasks from a queue.\nReuses threads to avoid the overhead of thread creation and destruction.\nLimits the number of concurrent threads and manages resource consumption.\nEnables efficient task execution and provides better control over system resources.\nCommonly used in web servers, application servers, and systems requiring efficient task processing."
+        }
+      ]
+    },
+    {
+      "name": "Architectural Patterns",
+      "purpose": "High-level patterns for structuring applications and systems",
+      "patterns": [
+        {
+          "name": "Model-View-Controller (MVC)",
+          "description": "Separates application logic into three interconnected components: Model, View, and Controller.\nModel manages data and business logic, View handles presentation, and Controller processes user input.\nPromotes separation of concerns and enables independent development and testing of components.\nAllows multiple views of the same data and supports change propagation through the Observer pattern.\nCommonly used in web frameworks, desktop applications, and mobile app development."
+        },
+        {
+          "name": "Model-View-Presenter (MVP)",
+          "description": "Variation of MVC where the Presenter handles all user input and updates the View.\nView is passive and delegates all user interactions to the Presenter.\nImproves testability by making the View easily mockable and moving logic to the Presenter.\nEnables better separation between presentation logic and view implementation.\nCommonly used in desktop applications, Android development, and when testability is a priority."
+        },
+        {
+          "name": "Model-View-ViewModel (MVVM)",
+          "description": "Separates the development of graphical user interface from business logic through data binding.\nViewModel exposes data and commands that the View can bind to, enabling two-way data binding.\nReduces code-behind in views and promotes testable, maintainable code.\nEnables declarative UI development and automatic synchronization between View and ViewModel.\nCommonly used in WPF, Angular, Vue.js, and modern frontend frameworks."
+        },
+        {
+          "name": "Layered Architecture",
+          "description": "Organizes application into horizontal layers, each with a specific responsibility.\nTypically includes presentation, business logic, data access, and database layers.\nEnables separation of concerns and provides clear boundaries between different aspects of the application.\nAllows layers to be developed, tested, and maintained independently.\nCommonly used in enterprise applications, web applications, and systems requiring clear separation of concerns."
+        },
+        {
+          "name": "Microservices",
+          "description": "Structures an application as a collection of loosely coupled, independently deployable services.\nEach service is responsible for a specific business capability and communicates via well-defined APIs.\nEnables independent scaling, deployment, and technology choices for each service.\nImproves fault isolation and allows teams to work independently on different services.\nCommonly used in cloud-native applications, large-scale systems, and when services need independent evolution."
+        },
+        {
+          "name": "Event-Driven Architecture",
+          "description": "Uses events to trigger and communicate between decoupled services.\nServices produce and consume events asynchronously, enabling loose coupling.\nAllows services to react to events without direct dependencies on event producers.\nEnables scalable, responsive systems and supports real-time processing.\nCommonly used in distributed systems, IoT applications, and systems requiring high responsiveness."
+        },
+        {
+          "name": "Service-Oriented Architecture (SOA)",
+          "description": "Structures applications as a collection of services that communicate over a network.\nServices are self-contained, reusable, and expose well-defined interfaces.\nEnables integration of disparate systems and promotes service reuse across applications.\nSupports loose coupling and enables services to be developed and deployed independently.\nCommonly used in enterprise integration, legacy system modernization, and distributed systems."
+        },
+        {
+          "name": "Repository",
+          "description": "Mediates between the domain and data mapping layers, acting like an in-memory domain object collection.\nEncapsulates the logic needed to access data sources and provides a more object-oriented view.\nEnables separation of business logic from data access logic and improves testability.\nAllows switching between different data sources without changing business logic.\nCommonly used in domain-driven design, data access layers, and when abstracting persistence mechanisms."
+        },
+        {
+          "name": "Unit of Work",
+          "description": "Maintains a list of objects affected by a business transaction and coordinates writing out changes.\nTracks changes to objects and ensures consistency when committing transactions.\nPrevents duplicate updates and manages the lifecycle of objects within a transaction.\nEnables atomic operations and provides a clean way to manage database transactions.\nCommonly used with the Repository pattern in data access layers and ORM frameworks."
+        },
+        {
+          "name": "CQRS (Command Query Responsibility Segregation)",
+          "description": "Separates read and write operations into different models and potentially different data stores.\nCommands modify state while queries return data, enabling independent optimization.\nAllows scaling read and write operations independently and using different technologies.\nEnables event sourcing and provides better performance for read-heavy or write-heavy workloads.\nCommonly used in complex domain models, high-performance systems, and when read and write patterns differ significantly."
+        }
+      ]
+    },
+    {
+      "name": "Design Principles",
+      "purpose": "Fundamental principles that guide good software design",
+      "patterns": [
+        {
+          "name": "SOLID Principles",
+          "description": "Five object-oriented design principles that make software designs more understandable, flexible, and maintainable.\nSingle Responsibility: A class should have only one reason to change.\nOpen/Closed: Software entities should be open for extension but closed for modification.\nLiskov Substitution: Objects should be replaceable with instances of their subtypes.\nInterface Segregation: Clients should not depend on interfaces they don't use.\nDependency Inversion: Depend on abstractions, not concretions."
+        },
+        {
+          "name": "DRY (Don't Repeat Yourself)",
+          "description": "Every piece of knowledge must have a single, unambiguous representation within a system.\nEliminates code duplication and reduces maintenance burden.\nPromotes code reuse and ensures consistency across the codebase.\nWhen information needs to change, it only needs to be updated in one place.\nApplied at multiple levels: functions, classes, modules, and even documentation."
+        },
+        {
+          "name": "KISS (Keep It Simple, Stupid)",
+          "description": "Simplicity should be a key goal in design, and unnecessary complexity should be avoided.\nEncourages straightforward solutions over complex ones when both achieve the same goal.\nReduces the likelihood of bugs and makes code easier to understand and maintain.\nPromotes clarity and readability, which are essential for long-term project success.\nReminds developers that the simplest solution that works is often the best solution."
+        },
+        {
+          "name": "YAGNI (You Aren't Gonna Need It)",
+          "description": "Don't add functionality until it is actually necessary.\nPrevents over-engineering and unnecessary complexity.\nFocuses development effort on current requirements rather than speculative features.\nReduces code bloat and maintenance burden by avoiding premature optimization.\nEncourages iterative development and adding features only when they provide immediate value."
+        },
+        {
+          "name": "Separation of Concerns",
+          "description": "Divides a computer program into distinct sections that address separate concerns.\nEach section addresses a separate aspect of the program's functionality.\nEnables independent development, testing, and maintenance of different parts.\nReduces coupling between components and improves code organization.\nApplied at multiple levels: functions, classes, modules, layers, and architectural boundaries."
+        },
+        {
+          "name": "Composition Over Inheritance",
+          "description": "Favors object composition over class inheritance for code reuse.\nComposition provides more flexibility and avoids the limitations of inheritance hierarchies.\nEnables runtime behavior modification and avoids the fragile base class problem.\nPromotes loose coupling and follows the 'has-a' relationship instead of 'is-a'.\nCommonly used to achieve polymorphism and code reuse without inheritance constraints."
+        },
+        {
+          "name": "Program to Interfaces, Not Implementations",
+          "description": "Depend on abstractions rather than concrete implementations.\nEnables flexibility and makes code easier to modify and extend.\nAllows swapping implementations without changing dependent code.\nPromotes loose coupling and supports the Dependency Inversion Principle.\nEssential for creating testable, maintainable, and extensible software systems."
+        },
+        {
+          "name": "Favor Immutability",
+          "description": "Prefer immutable objects that cannot be modified after creation.\nEliminates many concurrency issues by preventing state changes.\nMakes code easier to reason about and reduces bugs related to state mutation.\nEnables safe sharing of objects and simplifies parallel programming.\nCommonly used in functional programming and when thread safety is important."
+        },
+        {
+          "name": "Fail Fast",
+          "description": "Detect and report errors as early as possible, preferably at compile time.\nPrevents errors from propagating through the system and becoming harder to diagnose.\nEnables immediate feedback and makes debugging easier.\nEncourages strong typing, validation, and explicit error handling.\nImproves system reliability by catching problems before they cause larger issues."
+        },
+        {
+          "name": "Principle of Least Surprise",
+          "description": "Design systems to behave in ways that users expect, based on their prior experience.\nMakes software more intuitive and easier to learn.\nReduces cognitive load and improves user experience.\nApplies to API design, user interfaces, and system behavior.\nEncourages consistency and following established conventions and patterns."
+        }
+      ]
+    },
+    {
+      "name": "Anti-Patterns",
+      "purpose": "Common solutions that are counterproductive and should be avoided",
+      "patterns": [
+        {
+          "name": "God Object",
+          "description": "An object that knows too much or does too much, violating the Single Responsibility Principle.\nCentralizes too much functionality in a single class, making it difficult to understand and maintain.\nCreates tight coupling and makes the system brittle to changes.\nMakes testing difficult and reduces code reusability.\nSolution: Break down into smaller, focused classes with single responsibilities."
+        },
+        {
+          "name": "Spaghetti Code",
+          "description": "Code with a complex and tangled control structure, making it difficult to follow the program flow.\nLacks clear structure and organization, making maintenance extremely difficult.\nOften results from quick fixes and lack of refactoring over time.\nMakes debugging challenging and increases the likelihood of introducing bugs.\nSolution: Refactor into well-structured code with clear separation of concerns."
+        },
+        {
+          "name": "Copy-Paste Programming",
+          "description": "Copying existing code and modifying it instead of creating reusable components.\nViolates the DRY principle and leads to code duplication.\nIncreases maintenance burden as bugs must be fixed in multiple places.\nMakes it difficult to ensure consistency across duplicated code.\nSolution: Extract common functionality into reusable functions, classes, or modules."
+        },
+        {
+          "name": "Golden Hammer",
+          "description": "Over-reliance on a familiar tool or technology, applying it to every problem.\nForces solutions into patterns that may not be appropriate for the problem.\nPrevents exploring better alternatives and can lead to over-engineering.\nLimits the developer's ability to choose the right tool for each situation.\nSolution: Evaluate each problem independently and choose appropriate tools and patterns."
+        },
+        {
+          "name": "Premature Optimization",
+          "description": "Optimizing code before identifying actual performance bottlenecks.\nWastes development time on optimizations that may not be needed.\nOften makes code more complex and harder to maintain without significant benefit.\nCan introduce bugs and make the codebase more difficult to understand.\nSolution: Measure first, optimize only when necessary, and focus on clear, maintainable code."
+        },
+        {
+          "name": "Cargo Cult Programming",
+          "description": "Using patterns and practices without understanding why they are used.\nApplies solutions blindly without considering if they fit the problem.\nLeads to unnecessary complexity and can introduce problems rather than solve them.\nPrevents learning and understanding of underlying principles.\nSolution: Understand the reasoning behind patterns and practices before applying them."
+        },
+        {
+          "name": "Magic Numbers",
+          "description": "Using unexplained numeric or string literals directly in code.\nMakes code difficult to understand and maintain.\nHides the meaning and purpose of values, making debugging harder.\nMakes it difficult to change values consistently across the codebase.\nSolution: Use named constants or configuration values with clear, descriptive names."
+        },
+        {
+          "name": "Hard Coding",
+          "description": "Embedding configuration data or business logic directly in source code.\nMakes it difficult to change behavior without modifying and recompiling code.\nReduces flexibility and makes the system less adaptable to different environments.\nViolates separation of concerns by mixing configuration with implementation.\nSolution: Externalize configuration to files, environment variables, or configuration systems."
+        },
+        {
+          "name": "Feature Envy",
+          "description": "A method that is more interested in another class's data than its own.\nIndicates that the method might belong in the other class.\nCreates unnecessary coupling and violates encapsulation.\nMakes code organization unclear and can lead to maintenance issues.\nSolution: Move the method to the class whose data it primarily uses, or refactor to reduce coupling."
+        },
+        {
+          "name": "Lava Flow",
+          "description": "Dead code and forgotten design decisions that remain in the codebase.\nAccumulates over time as features are added and removed without cleanup.\nMakes the codebase larger and more confusing than necessary.\nHides important code and makes maintenance more difficult.\nSolution: Regularly refactor and remove unused code, keeping the codebase clean and maintainable."
+        }
+      ]
+    }
+  ]

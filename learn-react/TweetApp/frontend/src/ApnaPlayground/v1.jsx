@@ -1,7 +1,7 @@
 // This file defines a React page used as a playground for testing custom components independently.
 // Below is an explanation of the structure and logic implemented in the code.
 
-import React, { useMemo } from "react";
+import React, { Suspense, useMemo } from "react";
 // Importing navigation icons from react-icons
 import {
   AiFillForward as NextIcon,
@@ -87,8 +87,8 @@ const PlaygroundHeader = ({ param, next, prev }) => {
 /**
  * Main base component for the playground.
  * - Reads the "tester" query param to determine which component to show
- * - Use getComponentDetails() to obtain the selected component, along with previous and next for navigation
- * - Renders the PlaygroundHeader and the test component, if any
+ * - Use getComponentDetails() for the lazy demo + prev/next navigation
+ * - Renders the PlaygroundHeader and the lazy demo inside Suspense when selected
  */
 const ApnaPlaygroundBaseV1 = () => {
   // Access router query parameters
@@ -97,7 +97,7 @@ const ApnaPlaygroundBaseV1 = () => {
   const param = searchParams.get("tester") || "";
 
   // Memoize the logic to fetch the actual tester component plus prev/next info
-  const { Component, next, prev } = useMemo(() => {
+  const { LazyComponent, next, prev } = useMemo(() => {
     return getComponentDetails(param);
   }, [param]);
 
@@ -107,8 +107,15 @@ const ApnaPlaygroundBaseV1 = () => {
         {/* Navigation header */}
         <PlaygroundHeader param={param} next={next} prev={prev} />
 
-        {/* Render the chosen tester component if one is selected */}
-        {Component && <Component />}
+        {LazyComponent && (
+          <Suspense
+            fallback={
+              <div className="py-6 text-slate-600 text-sm">Loading demo…</div>
+            }
+          >
+            <LazyComponent />
+          </Suspense>
+        )}
       </div>
     </div>
   );

@@ -110,4 +110,4 @@ const fetchJsonData = async (selectedFile) => {
     }
 };
 
-module.exports = { fetchJsonData };
+module.exports = { fetchJsonData, formatUnixTimestamp, getConversationMessages };

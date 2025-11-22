@@ -15,7 +15,10 @@ const API_ENDPOINTS = {
 
 const getUrl = (endpoint) => {
   if (!endpoint) {
-    console.trace(`endpoint: '${endpoint}'`);
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.warn(`[useTopicManagementApis] invalid endpoint: '${endpoint}'`);
+    }
     return null;
   }
   return `${TOPIC_MGMT_BASE_URL}${endpoint}`;

@@ -9,8 +9,8 @@ import List from "./List";
 const debug = true;
 
 const ThinkTankEditorV1 = () => {
-  const { myTodos, filteredTodos, showModal, setShowModal, ModalChildrenComponent, openModalForPurpose, modalTitle } =
-    useThinkTankEditorV1Context();
+  const { myTodos, showModal, setShowModal, ModalChildrenComponent, openModalForPurpose, modalTitle } =
+    useThinkTankEditorV1Context(); // ✅ Removed unused filteredTodos
 
   return (
     <div className="w-full min-h-screen bg-green-600 p-2 bg-opacity-75">

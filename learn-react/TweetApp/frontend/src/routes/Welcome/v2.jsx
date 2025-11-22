@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./styles.v2.module.css";
 import { availableOutputTypes, SmartPreviewer } from "../../common/components/Smart/Editor/v3";
-import MetaLearningCycleV3 from "../../ApnaPlayground/MetaLearningCycle/v3";
+import MetaLearningCycle from "../../ApnaPlayground/MetaLearningCycle";
 
 /**
  * WelcomeV2 component serves as a styled welcome/info page.
@@ -13,7 +13,7 @@ import MetaLearningCycleV3 from "../../ApnaPlayground/MetaLearningCycle/v3";
  * - It uses SmartPreviewer to render a brief overview explaining
  *   the purpose and key features/goals of TweetApp, highlighting
  *   interview preparation, memory maps, and more.
- * - It also shows a <MetaLearningCycleV3 /> widget/diagram 
+ * - It also shows a <MetaLearningCycle /> widget/diagram 
  *   (likely a visual/interactive cycle of meta-learning step).
  * 
  * Note: Circle animation styles are kept in CSS module due to complex keyframe animations.
@@ -79,7 +79,7 @@ Main aim of TweetApp is to help users to
 
       {/* Meta-learning cycle: likely a visual component */}
       <div className="my-6">
-        <MetaLearningCycleV3/>
+        <MetaLearningCycle />
       </div>
     </div>
   );

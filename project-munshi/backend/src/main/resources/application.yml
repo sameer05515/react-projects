@@ -24,4 +24,7 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha
+  redoc:
+    path: /redoc.html
+    enabled: true
 

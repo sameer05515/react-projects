@@ -5,7 +5,7 @@ import HoverableSpan from "../../../../common/components/hoverable-span/Hoverabl
 import ListSection from "../../../../common/components/list-section/ListSection";
 import { SmartPreviewer } from "../../../../common/components/Smart/Editor/v3";
 import ToggleablePanel from "../../../../common/components/toggleable-panel/ToggleablePanel";
-import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
+import { selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
 
 const TopicSectionCard = ({
   data: ts,
@@ -22,8 +22,12 @@ const TopicSectionCard = ({
     [onLinkedTagSelection]
   );
 
-  // Filter tags based on unique IDs
-  const filteredTags = useSelector(getTagsForGivenIds(ts?.tags || []));
+  // ✅ Optimized: Use useMemo instead of factory selector
+  const allTags = useSelector(selectAllFlatTags);
+  const filteredTags = useMemo(
+    () => allTags.filter((t) => (ts?.tags || []).includes(t.uniqueId)),
+    [allTags, ts?.tags]
+  );
 
   // Define button actions
   const buttonActions = useMemo(

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
 import TopicCardViewDashboard from "./sub-components/card-view/TopicCardViewDashboard";
 import HoverActions from "../../common/components/hover-actions/HoverActions";
 import TopicTreeViewDashboard from "./sub-components/tree-view/TopicTreeViewDashboard";
+import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 const VIEW_OPTIONS = [
   { label: "List View", value: "tree" },
@@ -10,17 +13,47 @@ const VIEW_OPTIONS = [
 
 const TopicBase = () => {
   const [selectedView, setSelectedView] = useState("tree");
+  const [exporting, setExporting] = useState(false);
 
-  // Ensure subcomponents receive Tailwind styling props if needed
-  // We'll pass additional Tailwind classNames to subcomponents
+  const handleExportTopics = async () => {
+    setExporting(true);
+    try {
+      const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/topics/export`);
+      if (!response.ok) throw new Error("Export failed");
+      const data = await response.json();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `topics-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Error exporting topics:", err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gradient-to-tr from-blue-50 to-slate-50 min-h-screen">
+    <div className="max-w mx-auto p-6 bg-gradient-to-tr from-blue-50 to-slate-50 min-h-screen">
       <div className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
         <h2 className="text-3xl font-extrabold text-blue-900 tracking-tight drop-shadow-lg">
           Topic Dashboard
         </h2>
         <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleExportTopics}
+            disabled={exporting}
+            className="px-5 py-2 rounded-full transition-all duration-200 font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 disabled:opacity-60 disabled:cursor-not-allowed outline-none focus:ring-2 focus:ring-slate-400"
+          >
+            {exporting ? "Exporting…" : "Export topics"}
+          </button>
           {VIEW_OPTIONS.map((option) => (
             <button
               key={option.value}
@@ -80,6 +113,7 @@ const TopicBase = () => {
             descClassName="text-blue-700 text-sm mb-3"
           />
         )}
+        <Outlet />
       </div>
     </div>
   );

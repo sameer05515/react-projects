@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
-import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
+import { selectAllFlatTopics, selectTopicsStateCombined } from "../../../../redux/slices/topicSlice";
 import CreateTopic from "../common/CreateTopic"; // Import the CreateTopic component
 import TopicCard from "../common/TopicCard";
 
 function ListTopic() {
+  // ✅ Optimized: Use combined selector for status and error, separate for flatTopics
   const topics = useSelector(selectAllFlatTopics);
-  const loading = useSelector((state: RootState) => state.topics.loading);
-  const error = useSelector((state: RootState) => state.topics.error as string | null);
+  const { status, error } = useSelector((state: RootState) => selectTopicsStateCombined(state)); // ✅ Standardized: loading -> status
   const [showForm, setShowForm] = useState(false);
 
   // State to manage editing
@@ -36,7 +36,7 @@ function ListTopic() {
 
   return (
     <div>
-      {loading === "pending" && <p>Loading topics...</p>}
+      {status === "loading" && <p>Loading topics...</p>} {/* ✅ Standardized: use status */}
       {error && <p>Error: {error}</p>}
       {/* CreateTopic component for creating and editing topics */}
       {!showForm && (
@@ -56,7 +56,7 @@ function ListTopic() {
         />
       )}
 
-      {loading === "fulfilled" && (
+      {status === "succeeded" && ( // ✅ Standardized: use status
         <div className="grid grid-cols-5 gap-5">
           {topics.map((topic) => (
             <div

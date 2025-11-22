@@ -118,7 +118,7 @@ type MemoryMapsState = {
   data: MemoryMapNode[];
   searchedData: any[];
   searchString: string;
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
 };
 
@@ -129,7 +129,7 @@ const memoryMapSlice = createSlice({
     data: [], // Only store tree structure - flatData computed via selector
     searchedData:[],
     searchString:'',
-    loading: "idle",
+    status: "idle", // ✅ Standardized: changed from loading to status
     error: null,
   } as MemoryMapsState,
   reducers: {
@@ -138,20 +138,39 @@ const memoryMapSlice = createSlice({
     },
     setSearchString:(state, action)=>{
       state.searchString = action.payload;
-    }
+    },
+    // ✅ Phase 3: State cleanup actions
+    clearMemoryMaps: (state) => {
+      state.data = [];
+      state.status = "idle";
+      state.error = null;
+      state.searchedData = [];
+      state.searchString = "";
+      state.selectedMemoryMapUniqueId = null;
+    },
+    resetMemoryMapsState: (state) => {
+      return {
+        selectedMemoryMapUniqueId: null,
+        data: [],
+        searchedData: [],
+        searchString: "",
+        status: "idle",
+        error: null,
+      } as MemoryMapsState;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMemoryMaps.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchMemoryMaps.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload as MemoryMapNode[];
         // flatData now computed via memoized selector
       })
       .addCase(fetchMemoryMaps.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null;
       })
       .addCase(fetchMemoryMapByUniqueId.fulfilled, (state, action) => {
@@ -175,7 +194,7 @@ const memoryMapSlice = createSlice({
 });
 
 export default memoryMapSlice.reducer;
-export const { setSelectedMemoryMapUniqueId } = memoryMapSlice.actions;
+export const { setSelectedMemoryMapUniqueId, setSearchString, clearMemoryMaps, resetMemoryMapsState } = memoryMapSlice.actions;
 
 /* ============== Selectors ======================*/
 const selectMemoryMapsState = (state: RootState) => state.memoryMaps;
@@ -232,7 +251,7 @@ export const selectMemoryMapsStateCombined = createSelector(
   ],
   (memoryMaps, selectedId, memoryMapsState) => ({
     memoryMaps,
-    loading: memoryMapsState.loading,
+    status: memoryMapsState.status, // ✅ Standardized: loading -> status
     error: memoryMapsState.error,
     selectedId,
   })

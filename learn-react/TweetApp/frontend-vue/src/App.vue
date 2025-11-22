@@ -1,9 +1,12 @@
 <template>
 	<div class="container">
 		<nav class="nav">
-			<h1 class="brand">TweetApp</h1>
+			<router-link to="/" class="brand-link">
+				<h1 class="brand">TweetApp</h1>
+			</router-link>
 			<div class="spacer"></div>
 			<template v-if="isAuthenticated">
+				<router-link to="/dashboard" class="nav-link">Dashboard</router-link>
 				<span class="user">{{ userDisplay }}</span>
 				<button class="link" @click="logout">Logout</button>
 			</template>
@@ -68,6 +71,22 @@ html, body, #app {
 	background: #132031;
 }
 .user { opacity: 0.8; }
+.brand-link {
+	text-decoration: none;
+	color: inherit;
+}
+.nav-link {
+	padding: 6px 10px;
+	color: #8fbaff;
+	text-decoration: none;
+	border: 1px solid #274060;
+	border-radius: 6px;
+	transition: all 0.2s;
+}
+.nav-link:hover {
+	background: #132031;
+	border-color: #8fbaff;
+}
 </style>
 
 

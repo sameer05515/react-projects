@@ -15,7 +15,9 @@ const prepareErrorMessage = (error, defaultMessage) => {
 };
 
 const fetchFnWrapper = async ({ url, options }) => {
-  console.log(`url: ${url}, ${new Date()}`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`url: ${url}, ${new Date()}`);
+  }
 
   try {
     if (!url) {

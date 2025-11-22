@@ -1,7 +1,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import yaml from "js-yaml";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { addUniqueIdsToTree } from "../../../util/id-adder-util";
 import { buildTree } from "../../../util/indentation-based-string-parser-to-tree-data";
 import CustomButton from "../../custom-button/CustomButton";
@@ -177,25 +177,40 @@ const FONT_SIZE_CLASS_MAP = {
 const SmartPreviewer = ({ data, markdownStyles: { fontSize } = { fontSize: "" } }) => {
   const { content, textOutputType } = data;
 
-  const [yamlProcessedData, setYamlProcessedData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [resultData, setResultData] = useState([]);
-
-  useEffect(() => {
+  const { yamlProcessedData, errorMessage, resultData } = useMemo(() => {
+    const empty = {
+      yamlProcessedData: null,
+      errorMessage: "",
+      resultData: [],
+    };
     if (textOutputType === availableOutputTypes.YAML && content) {
       try {
-        setYamlProcessedData(yaml.load(content));
-        setErrorMessage("");
+        return {
+          ...empty,
+          yamlProcessedData: yaml.load(content),
+          errorMessage: "",
+        };
       } catch (e) {
-        const error = e.mark ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}` : `Error parsing YAML: ${e.message}`;
-        setErrorMessage(error);
+        const errMsg = e.mark
+          ? `Error parsing YAML at line ${e.mark.line + 1}: ${e.message}`
+          : `Error parsing YAML: ${e.message}`;
+        return { ...empty, errorMessage: errMsg };
       }
     }
     if (textOutputType === availableOutputTypes.SKELETON && content) {
       const { data: skeletonData, isValid, message } = buildTree(content);
-      if (!isValid) setErrorMessage(message || "Missing error message");
-      else setResultData([...addUniqueIdsToTree(skeletonData)]);
+      if (!isValid) {
+        return {
+          ...empty,
+          errorMessage: message || "Missing error message",
+        };
+      }
+      return {
+        ...empty,
+        resultData: [...addUniqueIdsToTree(skeletonData)],
+      };
     }
+    return empty;
   }, [content, textOutputType]);
 
   return (

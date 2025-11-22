@@ -91,7 +91,7 @@ const MoveToAnotherTopicParentRouterPage = () => {
 
         <div className="flex gap-2.5">
           <CustomButton onClick={() => handleSaveTask()}>Save</CustomButton>
-          <CustomButton onClick={() => navigate(-1)}>Back</CustomButton>
+          <CustomButton className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400" onClick={() => navigate(-1)}>Back</CustomButton>
         </div>
       </>
     );

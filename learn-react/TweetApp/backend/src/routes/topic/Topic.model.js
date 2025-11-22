@@ -73,7 +73,11 @@ const topicSchema = new mongoose.Schema({
   updatedDate: {
     type: Date,
     default: Date.now,
-  }
+  },
+  published: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 

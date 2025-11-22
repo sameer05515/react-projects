@@ -6,7 +6,7 @@ import {
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import TooltipSpan from "../../../../common/components/tooltip-span/TooltipSpan";
 import Tree from "../../../../common/components/tree-viewer/TreeViewer";
-import useDataFetching from "../../../../common/hooks/useDataFetching/v2";
+import { useReduxDataFetching } from "../../../../common/hooks/useDataFetching";
 import {
   fetchTopics,
   selectTopicsStateCombined
@@ -20,13 +20,13 @@ const TopicTreeViewDashboard = () => {
 
     // Fetch topics and tags data only when component mounts (with smart caching)
     // Tags are needed for CreateTopic component
-    useDataFetching(
+    useReduxDataFetching(
       fetchTopics,
       (state) => state.topics
     );
     
     // Also fetch tags since they're needed for topic creation/editing
-    useDataFetching(
+    useReduxDataFetching(
       fetchTags,
       (state) => state.tags
     );
@@ -69,25 +69,37 @@ const TopicTreeViewDashboard = () => {
           {/* <pre>{links && JSON.stringify(links)}</pre> */}
           <div className="my-2.5">
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => handleButtonClick("create")}
             >
               Create Topic
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              onClick={() => handleButtonClick("create-bulk")}
+            >
+              Create in bulk
+            </CustomButton>
+            <CustomButton
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => dispatch(fetchTopics())}
             >
               Refresh
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate(`/topic-mgmt/search`)}
             >
               Search
             </CustomButton>
             <CustomButton
-              className="bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              className="bg-green-100 hover:bg-green-200 text-green-800 border border-green-300 px-1.5 py-0.5 text-xs rounded mr-2.5"
+              onClick={() => navigate("/topic-mgmt/published")}
+            >
+              Published
+            </CustomButton>
+            <CustomButton
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400 px-1.5 py-0.5 text-xs rounded mr-2.5"
               onClick={() => navigate("/topic-mgmt/two-nodes")}
             >
               two-nodes

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../../../common/components/Smart/Editor/v3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { useFetchByUrl } from "../../../../common/hooks/useDataFetching";
 import { useSelector } from "react-redux";
 import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import Select from "react-select";
@@ -32,7 +32,7 @@ const TopicSectionForm = ({
   });
 
   const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${initialValue?.linkedTopicUniqueId}/sections/${initialValue?.uniqueId}`;
-  const { data: sectionsData, refetch: sectionsRefetch } = useDataFetching({
+  const { data: sectionsData, refetch: sectionsRefetch } = useFetchByUrl({
     url: sectionFetchUrl,
     source: "TopicSectionForm",
     fetchInitially: false,
@@ -47,9 +47,7 @@ const TopicSectionForm = ({
   useEffect(() => {
     setLoading(false);
     if (sectionsData) {
-      console.trace("sectionsData: ", sectionsData);
       setFormData((prev) => ({ ...sectionsData }));
-      // setLoading(false);
     }
   }, [sectionsData]);
 
@@ -152,7 +150,7 @@ const TopicSectionForm = ({
         <CustomButton onClick={handleSubmit}>
           {formData.uniqueId ? "Update" : "Save"} Changes
         </CustomButton>
-        <CustomButton onClick={onCancel}>Cancel</CustomButton>
+        <CustomButton className="bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-400" onClick={onCancel}>Cancel</CustomButton>
       </div>
 
       <JSONDataViewer metadata={{ formData }} />

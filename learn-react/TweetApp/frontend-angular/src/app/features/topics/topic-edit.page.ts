@@ -60,8 +60,9 @@ export class TopicEditPage {
 	save() {
 		if (this.form.invalid) return;
 		const value = this.form.value;
-		this.service.update({ uniqueId: value.uniqueId!, name: value.name! }).subscribe({
-			next: () => { this.router.navigate(['/topics', value.uniqueId]); },
+		const uniqueId = value.uniqueId!;
+		this.service.update(uniqueId, { name: value.name! }).subscribe({
+			next: () => { this.router.navigate(['/topics', uniqueId]); },
 			error: () => { this.error = 'Failed to save topic.'; }
 		});
 	}

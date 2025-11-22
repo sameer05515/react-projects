@@ -19,6 +19,17 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `npm run test:coverage`
+
+Runs tests once and writes coverage under `coverage/`.
+
+**HTML report (browse in a browser):** open `coverage/lcov-report/index.html` after the run.
+
+- **`npm run coverage:open`** — opens that HTML file with your default app (uses `npx open-cli`).
+- **`npm run coverage:serve`** — serves the report at [http://localhost:9777](http://localhost:9777) (uses `npx http-server`).
+
+`lcov.info` is also generated for CI tools; the `coverage/` folder is gitignored.
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\

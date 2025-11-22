@@ -32,19 +32,20 @@ api.interceptors.response.use(
 	}
 );
 
-export type LoginRequest = { username: string; password: string };
-export type RegisterRequest = { username: string; password: string; email?: string };
-export type LoginResponse = { token: string };
+// Re-export types and functions from usersApi for backward compatibility
+export type { LoginRequest, RegisterRequest, LoginResponse } from './api/types';
+export { usersApi } from './api/usersApi';
 
-export async function login(request: LoginRequest): Promise<LoginResponse> {
-	const { data } = await api.post<LoginResponse>('/users/login', request);
-	return data;
+// Legacy functions - kept for backward compatibility
+// Use usersApi.login() and usersApi.register() instead
+export async function login(request: { username: string; password: string }): Promise<{ token: string }> {
+	const { usersApi } = await import('./api/usersApi');
+	return usersApi.login(request);
 }
 
-export async function register(request: RegisterRequest): Promise<void> {
-	await api.post('/users/register', request);
+export async function register(request: { username: string; password: string; email?: string }): Promise<void> {
+	const { usersApi } = await import('./api/usersApi');
+	await usersApi.register(request);
 }
-
-// No /me endpoint in docs; user info is not returned by login/register
 
 

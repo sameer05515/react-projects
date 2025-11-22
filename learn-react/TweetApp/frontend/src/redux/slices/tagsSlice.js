@@ -5,10 +5,11 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Create an async thunk to fetch tags
 export const fetchTags = createAsyncThunk("tags/fetchTags", async () => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tags`); // Replace with your API endpoint
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/tags`); // Replace with your API endpoint
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
@@ -17,7 +18,7 @@ export const fetchTags = createAsyncThunk("tags/fetchTags", async () => {
 });
 
 export const createTag = createAsyncThunk("tags/createTag", async (tagData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tags`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/tags`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export const updateTag = createAsyncThunk(
   "tags/updateTag",
   async (updatedTag) => {
     // console.log(`slice: ${JSON.stringify(updateTag)}`);
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/tags/${updatedTag.uniqueId}`,
       {
         method: "PUT",
@@ -199,7 +200,10 @@ export const selectPrevTagUniqueId = createSelector(
 
 export const getTagsForGivenIds = (ids = []) =>
   createSelector([selectAllFlatTags], (flatTagList) => {
-    console.trace("IDs aaya... ", ids);
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.debug("[getTagsForGivenIds]", ids);
+    }
     if (!ids || !Array.isArray(ids)) {
       return [];
     }
@@ -209,7 +213,10 @@ export const getTagsForGivenIds = (ids = []) =>
 export const getTagsForComboOptions = createSelector(
   [selectAllFlatTags],
   (flatTagList) => {
-    console.trace("Tag options ka request aaya");
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.debug("[getTagsForComboOptions] recomputing options");
+    }
     return (
       flatTagList.map((tag) => ({
         value: tag.uniqueId,
@@ -221,7 +228,10 @@ export const getTagsForComboOptions = createSelector(
 
 export const getTagForUniqueId = (uniqueId = "") =>
   createSelector([selectAllFlatTags], (flatTagList) => {
-    console.trace("Tag options ka request aaya");
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.debug("[getTagForUniqueId]", uniqueId);
+    }
     return flatTagList.find((t) => t.uniqueId === uniqueId) || null;
   });
 

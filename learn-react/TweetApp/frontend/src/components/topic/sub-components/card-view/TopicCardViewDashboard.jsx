@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/commonService";
 import { selectAllFlatTopics } from "../../../../redux/slices/topicSlice";
@@ -7,6 +8,7 @@ import CreateTopic from "../common/CreateTopic";
 import TopicCard from "../common/TopicCard";
 
 function ListTopicsByCreatedDate() {
+  const navigate = useNavigate();
   const topics = useSelector(selectAllFlatTopics);
   const loading = useSelector((state) => state.topics.loading);
   const error = useSelector((state) => state.topics.error);
@@ -70,12 +72,17 @@ function ListTopicsByCreatedDate() {
 
   return (
     <div>
-      <h2>Topics List Grouped by Occurrence Date</h2>
-      {loading === "pending" && <p>Loading topics...</p>}
-      {error && <p>Error: {error}</p>}
+      <h2 className="text-xl font-semibold text-slate-800 mb-4">Topics List Grouped by Occurrence Date</h2>
+      {loading === "pending" && <p className="text-slate-600">Loading topics...</p>}
+      {error && <p className="text-red-600">Error: {error}</p>}
 
       {!showForm && (
-        <CustomButton onClick={() => setShowForm(true)}>Add</CustomButton>
+        <CustomButton
+          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 text-sm rounded"
+          onClick={() => setShowForm(true)}
+        >
+          Add
+        </CustomButton>
       )}
 
       {showForm && (
@@ -108,15 +115,19 @@ function ListTopicsByCreatedDate() {
             />
           </div>
           {Object.keys(groupedTopics).map((occurenceDate) => (
-            <div key={occurenceDate} className="border border-gray-300 m-2.5 p-2.5 rounded">
-              <h3 className="text-lg font-bold mb-2">{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
+            <div key={occurenceDate} className="border border-slate-200 rounded-lg m-2.5 p-2.5 bg-slate-50/50">
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">{formatDateToDDMMMYYYYWithTime(occurenceDate)}</h3>
               {groupedTopics[occurenceDate].map((topic) => (
                 <div
-                  key={topic.topicId}
-                  className="border border-gray-300 p-2.5 rounded-[10px] bg-gray-100 mb-1.5 cursor-pointer hover:bg-gray-200 transition-colors"
+                  key={topic.uniqueId}
+                  className="mb-2"
                   onDoubleClick={() => handleEditTopic(topic)}
                 >
-                  <TopicCard topic={topic} />
+                  <TopicCard
+                    topic={topic}
+                    variant="compact"
+                    onTopicClick={(t) => navigate(`/topic-mgmt/${t.uniqueId}`)}
+                  />
                 </div>
               ))}
             </div>

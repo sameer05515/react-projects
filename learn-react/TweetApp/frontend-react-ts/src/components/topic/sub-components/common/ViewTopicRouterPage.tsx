@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../../redux/store";
 import {
@@ -24,9 +24,18 @@ const ViewTopic = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get("sectionId");
-  const url = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`;
+  
+  // ✅ Memoize URLs to prevent infinite loops
+  const url = useMemo(
+    () => `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`,
+    [id]
+  );
+  const sectionFetchUrl = useMemo(
+    () => `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/sections`,
+    [id]
+  );
+  
   const { data, loading, error, refetch } = useDataFetching({ url });
-  const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/sections`;
   const { data: sectionsData, refetch: sectionsRefetch } = useDataFetching({
     url: sectionFetchUrl,
   });
@@ -46,7 +55,8 @@ const ViewTopic = () => {
       refetch();
       dispatch(setSelectedTopicUniqueId(id));
     }
-  }, [id, dispatch, refetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, dispatch]); // Removed refetch from dependencies to prevent infinite loop
 
   useEffect(() => {
     if (
@@ -77,7 +87,8 @@ const ViewTopic = () => {
 
   useEffect(() => {
     sectionsRefetch();
-  }, [id, sectionId, sectionsRefetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, sectionId]); // Removed sectionsRefetch from dependencies to prevent infinite loop
 
   const handleEdit = (_item: any) => {
     navigate(`/topic-mgmt/${id}/edit`);

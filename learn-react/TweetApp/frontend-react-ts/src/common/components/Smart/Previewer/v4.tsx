@@ -20,10 +20,10 @@ const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
   const renderContent = () => {
     switch (textOutputType) {
       case SupportedOutFormats.TEXT:
-        return <pre>{content}</pre>;
+        return <pre className="text-gray-900 dark:text-gray-100">{content}</pre>;
 
       case SupportedOutFormats.HTML:
-        return <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: content }} />;
+        return <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100" dangerouslySetInnerHTML={{ __html: content }} />;
 
       case SupportedOutFormats.MARKDOWN:
         return <MarkdownComponent className="bg-transparent p-0" markdownText={content} />;
@@ -31,8 +31,8 @@ const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
       case SupportedOutFormats.YAML:
         return (
           <>
-            <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
-            {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
+            <pre className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded overflow-auto">{JSON.stringify(yamlProcessedData, null, 2)}</pre>
+            {!!errorMessage && <span className="text-red-600 dark:text-red-400">{errorMessage}</span>}
           </>
         );
 
@@ -46,13 +46,13 @@ const SmartPreviewerV4: React.FC<SmartPreviewerV4Props> = ({ data }) => {
                 <MarkdownComponent className="bg-transparent p-1" markdownText={node.name || "**tree node name is missing!**"} />
               )}
             />
-            {!!errorMessage && <span className="text-red-600">{errorMessage}</span>}
+            {!!errorMessage && <span className="text-red-600 dark:text-red-400">{errorMessage}</span>}
             {debug && <JSONDataViewer metadata={resultData as any} title="Skeleton Raw Data Preview" />}
           </>
         ) : null;
 
       default:
-        return <div className="whitespace-pre-wrap">{content}</div>;
+        return <div className="whitespace-pre-wrap text-gray-900 dark:text-gray-100">{content}</div>;
     }
   };
 

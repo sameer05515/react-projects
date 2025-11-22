@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { TasksService, Task } from './tasks.service';
+import { TasksService } from './tasks.service';
+import { Task } from '../../core/models/api.models';
 import { UiCardComponent } from '../../shared/ui/ui-card.component';
 import { UiBreadcrumbsComponent } from '../../shared/ui/ui-breadcrumbs.component';
 

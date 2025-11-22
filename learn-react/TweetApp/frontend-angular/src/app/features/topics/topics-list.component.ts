@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TopicsService, Topic } from './topics.service';
+import { TopicsService } from './topics.service';
+import { Topic } from '../../core/models/api.models';
 import { UiCardComponent } from '../../shared/ui/ui-card.component';
 import { UiButtonComponent } from '../../shared/ui/ui-button.component';
 import { UiTableComponent } from '../../shared/ui/ui-table.component';
@@ -27,7 +28,7 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 				<tr *ngFor="let t of topics" role="row">
 					<td><a [routerLink]="['/topics', t.uniqueId]">{{ t.uniqueId }}</a></td>
 					<td><a [routerLink]="['/topics', t.uniqueId]">{{ t.name }}</a></td>
-					<td>{{ t.parentId || '-' }}</td>
+					<td>{{ t['parentId'] || '-' }}</td>
 				</tr>
 			</ui-table>
 			<div *ngIf="!loading && (!topics || topics.length === 0)" style="margin-top:8px;">No topics found.</div>

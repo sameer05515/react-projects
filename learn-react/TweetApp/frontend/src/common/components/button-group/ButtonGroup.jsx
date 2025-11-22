@@ -28,7 +28,7 @@ const ButtonGroup = ({
                 ) => (
                     <CustomButton
                         key={id || `BTN_${idx}`}
-                        className={`bg-slate-100 border border-slate-300 px-2 py-1 text-xs font-semibold text-gray-800 transition hover:bg-slate-200 ${buttonClassName} ${optionClassName}`}
+                        className={`bg-blue-600 border border-blue-700 px-2 py-1 text-xs font-semibold text-white transition hover:bg-blue-700 ${buttonClassName} ${optionClassName}`}
                         onClick={onClick}
                         iconName={iconName}
                         title={title}

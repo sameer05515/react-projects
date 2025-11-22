@@ -1,6 +1,6 @@
 // Resume.service.js
 
-const Resume = require('../models/Resume.model');
+const Resume = require('./Resume.model');
 
 const createResume = async (resumeData) => {
   const newResume = new Resume(resumeData);

@@ -17,7 +17,7 @@ const ViewLink = () => {
   const { id } = useParams();
 
   // Use combined selector to optimize multiple useSelector calls
-  const { linkDetails, loading, error } = useSelector((state: RootState) => selectLinksStateCombined(state));
+  const { linkDetails, status, error } = useSelector((state: RootState) => selectLinksStateCombined(state)); // ✅ Standardized: loading -> status
 
   const handleLinkSelection = (selectedItem) => {
     navigate(`/links-mgmt/${selectedItem.uniqueId}`);
@@ -27,7 +27,7 @@ const ViewLink = () => {
     dispatch(fetchLinksByUniqueId(id as any) as any);
   }, [dispatch, id]);
 
-  if (loading === "pending") {
+  if (status === "loading") { // ✅ Standardized: pending -> loading
     return <div>Loading...</div>;
   }
 
@@ -491,7 +491,7 @@ const LinksBase = () => {
   );
 
   // Use combined selector to optimize multiple useSelector calls
-  const { links, loading: status, error } = useSelector(selectLinksStateCombined);
+  const { links, status, error } = useSelector(selectLinksStateCombined); // ✅ Standardized: removed loading alias, use status directly
 
   const handleButtonClick = (path) => {
     navigate(path);
@@ -519,11 +519,11 @@ const LinksBase = () => {
     );
   };
 
-  if (status === "pending") {
+  if (status === "loading") { // ✅ Standardized: pending -> loading
     return <div>Loading...</div>;
   }
 
-  if (status === "rejected" || error) {
+  if (status === "failed" || error) { // ✅ Standardized: rejected -> failed
     return <div>Error: {error}</div>;
   }
 

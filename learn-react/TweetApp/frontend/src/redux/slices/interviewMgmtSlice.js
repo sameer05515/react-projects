@@ -2,12 +2,13 @@ import {
   createAsyncThunk, createSlice
 } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Define an async thunk to fetch all Category
 export const fetchCategoryTree = createAsyncThunk(
   "categories/fetchCategoryTree",
   async () => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/categories`
     ); // Replace with your API endpoint
     return response.json();
@@ -18,7 +19,7 @@ export const fetchCategoryTree = createAsyncThunk(
 export const createCategory = createAsyncThunk(
   "categories/createCategory",
   async (categoryData) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/categories`,
       {
         method: "POST",
@@ -36,7 +37,7 @@ export const createCategory = createAsyncThunk(
 export const updateCategory = createAsyncThunk(
   "categories/updateCategory",
   async (categoryData) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/categories/${categoryData.uniqueId}`,
       {
         method: "PUT",
@@ -71,7 +72,7 @@ export const updateCategory = createAsyncThunk(
 export const searchTopic = createAsyncThunk(
   "topics/searchTopic",
   async (topicData) => {
-    const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/search`, {
+    const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +87,7 @@ export const searchTopic = createAsyncThunk(
 export const fetchAllQuestions = createAsyncThunk(
   "categories/fetchAllQuestions",
   async () => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions`
     ); // Replace with your API endpoint
     return response.json();
@@ -115,7 +116,7 @@ export const fetchAllQuestions = createAsyncThunk(
 export const createAnswer = createAsyncThunk(
   "categories/createAnswer",
   async (answerData) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/answers`,
       {
         method: "POST",
@@ -133,7 +134,7 @@ export const createAnswer = createAsyncThunk(
 export const updateAnswer = createAsyncThunk(
   "categories/updateAnswer",
   async (answerData) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/answers/${answerData.uniqueId}`,
       {
         method: "PUT",

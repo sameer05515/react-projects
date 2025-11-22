@@ -8,7 +8,7 @@ import {
   FormGroup,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { updateData } from "../../../redux/slices/dataSlice1"; 
+import { updateData } from "../../../redux/slices/dataSlice"; // ✅ Consolidated: dataSlice1 -> dataSlice 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { format } from "date-fns";

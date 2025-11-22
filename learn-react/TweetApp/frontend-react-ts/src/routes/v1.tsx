@@ -1,11 +1,11 @@
-import React, { useCallback, lazy, Suspense, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, lazy, Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../redux/store";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import GlobalBreadcrumbV2 from "../common/components/global-breadcrumbs/GlobalBreadcrumbV2";
-import ToggleableIcon from "../common/components/toggleable-icon/ToggleableIcon";
 import LoadingSpinner from "../common/components/LoadingSpinner";
 import { fetchPinnedItems } from "../redux/slices/pinnedItemSlice";
+import { selectIsDarkMode } from "../redux/slices/themeSlice";
 
 // Critical components loaded synchronously (needed immediately)
 import Welcome from "./Welcome/v2";
@@ -298,11 +298,7 @@ const NotFound = () => {
 const Layout = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleMode = useCallback(() => {
-    setIsDarkMode((prevMode) => !prevMode);
-  }, []);
+  const isDarkMode = useSelector(selectIsDarkMode);
 
   // Load pinned items only on home page (used globally across routes)
   useEffect(() => {
@@ -310,29 +306,14 @@ const Layout = () => {
       dispatch(fetchPinnedItems());
     }
   }, [dispatch, location.pathname]);
+  
   return (
-    <>
-      <div
-        className={`relative pl-6 pt-1 min-h-screen transition-colors duration-300 ${isDarkMode ? "bg-black text-white" : "bg-white text-black"}`}
-      >
-        {/* Breadcrumb component at the top */}
-        <div className="absolute top-2.5 right-2.5 cursor-pointer">
-          <ToggleableIcon
-            label={"Dark Mode"}
-            isContentVisible={isDarkMode}
-            toggleSymbols={{
-              showSymbol: "Lite Mode",
-              hideSymbol: "Dark mode",
-            }}
-            onToggle={() => toggleMode()}
-          />
-        </div>
-        <GlobalBreadcrumbV2 />
-        <div>
-          <Outlet /> {/* Render the child routes */}
-        </div>
+    <div className="relative pl-6 pt-1 min-h-screen transition-colors duration-200 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <GlobalBreadcrumbV2 />
+      <div>
+        <Outlet /> {/* Render the child routes */}
       </div>
-    </>
+    </div>
   );
 };
 

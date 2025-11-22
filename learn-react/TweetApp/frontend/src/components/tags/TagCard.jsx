@@ -6,7 +6,6 @@ import HoverableSpan from "../../common/components/hoverable-span/HoverableSpan"
 import Breadcrumbs from "../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import { SmartPreviewer } from "../../common/components/Smart/Editor/v3";
 import JSONDataViewer from "../../common/components/json-data-viewer/JSONDataViewer";
-import Tree from "../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../common/hooks/useGlobalServiceProvider";
 
 const TagCard = ({
@@ -48,10 +47,15 @@ const TagCard = ({
     return (
       <>
         {childTagList && childTagList.length > 0 && (
-          <ul className="list-none pl-0">
+          <ul className="list-none pl-0 space-y-1">
             {childTagList.map((t) => (
-              <li className="ml-4 pb-1" key={t.uniqueId}>
-                <HoverableSpan onClick={() => onChildTagClick(t)}>{t.name}</HoverableSpan>
+              <li key={t.uniqueId} className="pl-2">
+                <HoverableSpan
+                  onClick={() => onChildTagClick(t)}
+                  className="text-sm text-gray-700 hover:text-gray-900"
+                >
+                  {t.name}
+                </HoverableSpan>
                 {populateChildren(t.children)}
               </li>
             ))}
@@ -65,19 +69,23 @@ const TagCard = ({
     return (
       <>
         {sectionsList && sectionsList.length > 0 && (
-          <ul className="list-none pl-0">
+          <ul className="list-none pl-0 space-y-1">
             {sectionsList.map((t) => (
-              <li className="ml-4 pb-1" key={t.uniqueId}>
-                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type || TagLinkedItemType.question === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
-
+              <li key={t.uniqueId} className="pl-2">
+                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type || TagLinkedItemType.question === type) && (
+                  <HoverableSpan
+                    className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+                    onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}
+                  >
+                    {t.name}
+                  </HoverableSpan>
+                )}
                 {TagLinkedItemType.topicSection === type && (
                   <HoverableSpan
+                    className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
                     onClick={() =>
                       onLinkedItemClick(
-                        {
-                          linkedTopicUniqueId: t.linkedTopicUniqueId,
-                          uniqueId: t.uniqueId,
-                        },
+                        { linkedTopicUniqueId: t.linkedTopicUniqueId, uniqueId: t.uniqueId },
                         type
                       )
                     }
@@ -93,51 +101,14 @@ const TagCard = ({
     );
   };
 
-  const populateLinkedItemsV1 = (sectionsList, type = "") => {
-    return (
-      <>
-        {sectionsList && sectionsList.length > 0 && (
-          <Tree
-            data={sectionsList}
-            renderNode={(t) => (
-              <>
-                {(TagLinkedItemType.topic === type || TagLinkedItemType.task === type) && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
-
-                {// TagLinkedItemType.topic === type ||
-                // TagLinkedItemType.task === type ||
-                TagLinkedItemType.question === type && <HoverableSpan onClick={() => onLinkedItemClick({ uniqueId: t.uniqueId }, type)}>{t.name}</HoverableSpan>}
-
-                {TagLinkedItemType.topicSection === type && (
-                  <HoverableSpan
-                    onClick={() =>
-                      onLinkedItemClick(
-                        {
-                          linkedTopicUniqueId: t.linkedTopicUniqueId,
-                          uniqueId: t.uniqueId,
-                        },
-                        type
-                      )
-                    }
-                  >
-                    {t.name}
-                  </HoverableSpan>
-                )}
-              </>
-            )}
-          />
-        )}
-        <JSONDataViewer metadata={{ sectionsList, type }} title="sectionsList" />
-      </>
-    );
-  };
-
   // Tailwind classes for tag buttons
-  const tagButtonClass = "bg-gray-300 border border-gray-600 px-1.5 py-0.5 text-xs rounded";
+  const tagButtonClass =
+    "px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2";
 
   return (
     <>
-      <div className="mb-2.5">
-        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => traverseTag(-1)}>
+      <div className="mb-2.5 flex flex-wrap gap-2">
+        <CustomButton className={tagButtonClass} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
         <CustomButton className={tagButtonClass} onClick={() => traverseTag(1)}>
@@ -159,79 +130,78 @@ const TagCard = ({
       </div>
 
       <div className="my-2.5 flex flex-wrap gap-2">
-        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={handleEdit}>
+        <CustomButton className={tagButtonClass} onClick={handleEdit}>
           Edit
         </CustomButton>
         {!showDescr && (
-          <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => setShowDescr(true)}>
+          <CustomButton className={tagButtonClass} onClick={() => setShowDescr(true)}>
             Show Description
           </CustomButton>
         )}
         {showDescr && (
-          <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => setShowDescr(false)}>
+          <CustomButton className={tagButtonClass} onClick={() => setShowDescr(false)}>
             Hide Description
           </CustomButton>
         )}
-        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => handleAddSubTag()}>
+        <CustomButton className={tagButtonClass} onClick={() => handleAddSubTag()}>
           Add Sub-Tag
         </CustomButton>
-
-        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => handleMoveAnotherParent()}>
+        <CustomButton className={tagButtonClass} onClick={() => handleMoveAnotherParent()}>
           Move to another parent
         </CustomButton>
       </div>
 
       {tag.children && tag.children.length > 0 && (
-        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
-          <b>Child Tags:-</b> <br />
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">Child Tags</h3>
           {populateChildren(tag.children)}
-        </div>
+        </section>
       )}
 
       {tag.linkedTopics && tag.linkedTopics.length > 0 && (
-        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
-          <b>Linked Topics:-</b> <br />
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">Linked Topics</h3>
           {populateLinkedItems(tag.linkedTopics, TagLinkedItemType.topic)}
-        </div>
+        </section>
       )}
 
       {tag.linkedTopicSections && tag.linkedTopicSections.length > 0 && (
-        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
-          <b>Linked Topic Sections:-</b> <br />
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">Linked Topic Sections</h3>
           {populateLinkedItems(tag.linkedTopicSections, TagLinkedItemType.topicSection)}
-        </div>
+        </section>
       )}
 
       {tag.linkedTasks && tag.linkedTasks.length > 0 && (
-        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
-          <b>Linked Tasks:-</b> <br />
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">Linked Tasks</h3>
           {populateLinkedItems(tag.linkedTasks, TagLinkedItemType.task)}
-        </div>
+        </section>
       )}
 
       {tag.linkedQuestions && tag.linkedQuestions.length > 0 && (
-        <div className="bg-yellow-50 border border-gray-600 px-1.5 py-0.5 rounded mb-2.5">
-          <b>Linked Questions:-</b> <br />
-          {populateLinkedItemsV1(tag.linkedQuestions, TagLinkedItemType.question)}
-        </div>
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">Linked Questions</h3>
+          {populateLinkedItems(tag.linkedQuestions, TagLinkedItemType.question)}
+        </section>
       )}
 
       {showDescr && (
-        <div className="border border-gray-600 px-1.5 py-0.5 rounded mb-2.5 w-[67vw] overflow-auto">
-          <b>{tag.smartContent ? "Smart" : "Raw"} Description:-</b> <br />
-          {
-            tag.description && !tag.smartContent && <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html" }} />
-
-            // ReactHtmlParser(tag.description || "")
-          }
+        <section className="rounded-lg border border-gray-200 bg-gray-50/80 p-4 w-full max-w-4xl overflow-auto mb-4">
+          <h3 className="font-semibold text-gray-800 mb-2">
+            {tag.smartContent ? "Smart" : "Raw"} Description
+          </h3>
+          {tag.description && !tag.smartContent && (
+            <SmartPreviewer data={{ content: tag.description || "", textOutputType: "html" }} />
+          )}
           {tag.smartContent && <SmartPreviewer data={tag.smartContent} />}
-        </div>
+        </section>
       )}
 
       <JSONDataViewer metadata={{ tag }} title="Tag Data" />
 
-      <div className="mt-4">
-        <CustomButton className={`${tagButtonClass} mr-2.5`} onClick={() => traverseTag(-1)}>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <CustomButton className={tagButtonClass} onClick={() => traverseTag(-1)}>
           Previous
         </CustomButton>
         <CustomButton className={tagButtonClass} onClick={() => traverseTag(1)}>

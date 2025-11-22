@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
@@ -17,7 +17,13 @@ const ViewTaskRouterPage = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
-  const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
+  
+  // ✅ Memoize URL to prevent infinite loops
+  const url = useMemo(
+    () => `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`,
+    [id]
+  );
+  
   const { data, loading, error, refetch } = useDataFetching({ url });
   const pinnedItems = useSelector((state: RootState) => (state.pinnedItems as any).data);
 
@@ -32,7 +38,8 @@ const ViewTaskRouterPage = () => {
       refetch();
       dispatch(setSelectedTaskUniqueId(id));
     }
-  }, [id, dispatch, refetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, dispatch]); // Removed refetch from dependencies to prevent infinite loop
 
   useEffect(() => {
     if (

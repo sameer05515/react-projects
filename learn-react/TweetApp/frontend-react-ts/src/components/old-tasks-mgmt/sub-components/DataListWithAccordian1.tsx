@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../../redux/store";
-import { fetchData } from "../../../redux/slices/dataSlice1";
+import { fetchData } from "../../../redux/slices/dataSlice"; // ✅ Consolidated: dataSlice1 -> dataSlice
 import type { RootState } from "../../../redux/store";
 
 const DataList = ({ itemSelectionHandler = () => {} }) => {

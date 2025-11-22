@@ -5,6 +5,7 @@ const {
     updateMemoryMap,
     updateMemoryMapForGivenSkeleton,
     fetchAllMemoryMaps,
+    getAllMemoryMapsFlat,
     fetchMemoryMapByUniqueId
 } = require('./MemoryMap.service');
 
@@ -146,6 +147,35 @@ router.put('/:uniqueId/append-skeleton', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const memoryMaps = await fetchAllMemoryMaps();
+        res.status(200).json(memoryMaps);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+/**
+ * @swagger
+ * /memory-maps/export/flat:
+ *   get:
+ *     summary: Export all memory maps as a flat list (JSON)
+ *     tags: [MemoryMap]
+ *     responses:
+ *       200:
+ *         description: Memory maps export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get memory maps
+ */
+router.get('/export/flat', async (req, res) => {
+    try {
+        const memoryMaps = await getAllMemoryMapsFlat();
+        res.setHeader('Content-Disposition', 'attachment; filename="memory-maps-export-flat.json"');
+        res.setHeader('Content-Type', 'application/json');
         res.status(200).json(memoryMaps);
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -1,20 +1,32 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react"; // ✅ Removed unused useMemo
 import { fetchFnWrapper, prepareErrorMessage } from "./utils";
 
 const useDataFetching = ({ url, options = {}, source = "" }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);  
+  const [error, setError] = useState(null);
+  
+  // ✅ Use ref to store latest options to avoid recreating fetchData
+  const optionsRef = useRef(options);
+  const sourceRef = useRef(source);
+  const urlRef = useRef(url);
+  
+  // Update refs when values change
+  optionsRef.current = options;
+  sourceRef.current = source;
+  urlRef.current = url;
 
   const fetchData = useCallback(async () => {
-    console.trace("Trace: From fetchData callback");
+    if (process.env.NODE_ENV === 'development') {
+      console.trace("Trace: From fetchData callback");
+    }
     try {
       setLoading(true);
       setData(null);
       setError(null);
       const { data, message } = await fetchFnWrapper({
-        url,
-        options,
+        url: urlRef.current,
+        options: optionsRef.current,
       });
       setData(data);
       setError(message);
@@ -25,15 +37,17 @@ const useDataFetching = ({ url, options = {}, source = "" }) => {
       );
       // console.error(errorMessage);
       setError(errorMessage);
-      console.trace(
-        errorMessage,
-        source ? "Source could be: " + source : "",
-        error
-      );
+      if (process.env.NODE_ENV === 'development') {
+        console.trace(
+          errorMessage,
+          sourceRef.current ? "Source could be: " + sourceRef.current : "",
+          error
+        );
+      }
     } finally {
       setLoading(false);
     }
-  }, [options, source, url]);
+  }, []); // ✅ Empty dependency array - use refs for latest values
 
   const refetch = useCallback(() => {
     setLoading(true);

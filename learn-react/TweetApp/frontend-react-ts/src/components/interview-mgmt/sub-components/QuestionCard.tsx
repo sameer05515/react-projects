@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import Breadcrumbs from "../../../common/components/global-breadcrumbs/GlobalBreadcrumb";
 import HoverableSpan from "../../../common/components/hoverable-span/HoverableSpan";
@@ -11,7 +11,7 @@ import ToggleablePanel from "../../../common/components/toggleable-panel/Togglea
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useGlobalServiceProvider from "../../../common/hooks/useGlobalServiceProvider";
 import { formatDateToDDMMMYYYYWithTime } from "../../../common/service/commonService";
-import { getTagsForGivenIds } from "../../../redux/slices/tagsSlice";
+import { selectAllFlatTags } from "../../../redux/slices/tagsSlice";
 import AnswerCard from "./AnswerCard";
 
 // Utility function to format date
@@ -51,7 +51,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const { BreadcrumbItemType } = useGlobalServiceProvider();
 
-  const filteredTags = useSelector(getTagsForGivenIds(question?.tags || []));
+  // ✅ Optimized: Use useMemo instead of factory selector
+  const allTags = useSelector(selectAllFlatTags);
+  const filteredTags = useMemo(
+    () => allTags.filter((t) => (question?.tags || []).includes(t.uniqueId)),
+    [allTags, question?.tags]
+  );
 
   const handleAncestorClick = (ancestor: any) => {
     onAncestorClick(ancestor);

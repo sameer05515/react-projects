@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
-const { Category, Question } = require('../../routes/InterviewMgmt.v2.model'); // Adjust the path as necessary
-const Tag = require('../../routes/Tag.model'); // Adjust the path as necessary
+const { Category, Question } = require('../../routes/interview-mgmt/InterviewMgmt.v2.model');
+const Tag = require('../../routes/tag/Tag.model');
 
 // 1. Create a tag for each category
 async function createTagsForCategories() {
@@ -86,4 +86,8 @@ async function main() {
     }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { createTagsForCategories, mapTagsToCategories, updateTagsInQuestions, verifyTagUpdates };

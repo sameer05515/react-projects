@@ -1,7 +1,8 @@
 <template>
 	<div class="wrap">
 		<h2>Welcome, {{ username }}!</h2>
-		<p>You are authenticated. This is a placeholder Home page.</p>
+		<p>You are authenticated. Navigate to the API Dashboard to explore available APIs.</p>
+		<router-link to="/dashboard" class="btn-link">Go to API Dashboard</router-link>
 		<div class="panel">
 			<p><strong>Token (stored in localStorage):</strong></p>
 			<code class="code">{{ tokenPreview }}</code>
@@ -32,6 +33,19 @@ const tokenPreview = computed(() => (token.value ? token.value : '(none)'));
 	background: #0b0f14;
 	padding: 8px;
 	border-radius: 6px;
+}
+.btn-link {
+	display: inline-block;
+	margin: 16px 0;
+	padding: 10px 20px;
+	background: #238636;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 6px;
+	transition: background 0.2s;
+}
+.btn-link:hover {
+	background: #2ea043;
 }
 </style>
 

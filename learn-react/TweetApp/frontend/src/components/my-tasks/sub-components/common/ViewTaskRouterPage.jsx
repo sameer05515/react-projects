@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { useFetchByUrl } from "../../../../common/hooks/useDataFetching";
 import { upsertPinnedItem } from "../../../../redux/slices/pinnedItemSlice";
 import {
   selectAllFlatTasks,
@@ -17,14 +17,27 @@ const ViewTaskRouterPage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const url = `${BACKEND_APPLICATION_BASE_URL}/tasks/${id}`;
-  const { data, loading, error, refetch } = useDataFetching({ url });
+  const { data, loading, error, refetch } = useFetchByUrl({ url });
   const pinnedItems = useSelector((state) => state.pinnedItems.data);
-
   const tasks = useSelector(selectAllFlatTasks);
-  const [pinnedTasks, setPinnedTasks] = useState([]);
-  const [isPinned, setIsPinned] = useState(false);
   const nextTaskUniqueId = useSelector(selectNextTaskUniqueId);
   const prevTaskUniqueId = useSelector(selectPrevTaskUniqueId);
+
+  const pinnedTasks = useMemo(() => {
+    if (!pinnedItems?.length || !tasks?.length) return [];
+    const list = pinnedItems.filter(
+      (pi) => pi.linkedItemType === "task" && pi.softDelete === false
+    );
+    return list.map((pit) => ({
+      ...pit,
+      title: tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
+    }));
+  }, [pinnedItems, tasks]);
+
+  const isPinned = useMemo(
+    () => pinnedTasks.some((pit) => pit.linkedUniqueId === id),
+    [id, pinnedTasks]
+  );
 
   useEffect(() => {
     if (id) {
@@ -33,40 +46,13 @@ const ViewTaskRouterPage = () => {
     }
   }, [id, dispatch, refetch]);
 
-  useEffect(() => {
-    if (
-      id &&
-      pinnedItems &&
-      tasks &&
-      pinnedItems.length > 0 &&
-      tasks.length > 0
-    ) {
-      let pinnedTasksList = pinnedItems.filter(
-        (pi) => pi.linkedItemType === "task" && pi.softDelete === false
-      );
-      pinnedTasksList = pinnedTasksList
-        ? pinnedTasksList.map((pit) => ({
-            ...pit,
-            title:
-              tasks.find((t) => t.uniqueId === pit.linkedUniqueId)?.title || "",
-          }))
-        : [];
-      setPinnedTasks((prev) => [...pinnedTasksList]);
-      setIsPinned(
-        () => pinnedTasksList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
-      );
-    }
-  }, [id, tasks, pinnedItems]);
-
   const handleEdit = (item) => {
     navigate(`/task-mgmt/${id}/edit`);
   };
   const handleAddSubTask = (item) => {
-    console.log(`Subtask will be added soon for id : ${id}`);
     navigate(`/task-mgmt/${id}/add-sub-task`);
   };
   const handleChildTaskClick = (item) => {
-    console.log(`moving to subtask having : ${JSON.stringify(item)}`);
     navigate(`/task-mgmt/${item?.uniqueId}`);
   };
   const handleTaskTraversal = (increment) => {

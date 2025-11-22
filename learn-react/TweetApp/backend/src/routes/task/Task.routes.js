@@ -204,6 +204,35 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /tasks/export/flat:
+ *   get:
+ *     summary: Export all tasks as a flat list (JSON)
+ *     tags: [Task]
+ *     responses:
+ *       200:
+ *         description: Tasks export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get tasks
+ */
+router.get("/export/flat", async (req, res) => {
+  try {
+    const tasks = await TaskService.getAllTasksFlat();
+    res.setHeader("Content-Disposition", 'attachment; filename="tasks-export-flat.json"');
+    res.setHeader("Content-Type", "application/json");
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Route to get a specific task by ID
 router.get("/:id", async (req, res) => {
   const uniqueId = req.params.id;

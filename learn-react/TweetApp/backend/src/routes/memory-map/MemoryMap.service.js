@@ -115,6 +115,45 @@ async function fetchAllMemoryMaps() {
     }
 }
 
+/**
+ * Flatten tree of memory maps into a single array (for export).
+ * Each item has uniqueId, name, parentId, skeleton, details, references, ancestors.
+ */
+function flattenMemoryMaps(tree, ancestors = []) {
+    if (!tree || !Array.isArray(tree)) return [];
+    const list = [];
+    for (const node of tree) {
+        const item = {
+            uniqueId: node.uniqueId,
+            name: node.name,
+            parentId: node.parentId || null,
+            skeleton: node.skeleton != null ? node.skeleton : "",
+            details: node.details || [],
+            references: node.references || [],
+            ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+        };
+        list.push(item);
+        if (node.children && node.children.length > 0) {
+            const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+            list.push(...flattenMemoryMaps(node.children, nextAncestors));
+        }
+    }
+    return list;
+}
+
+async function getAllMemoryMapsFlat() {
+    const exportSelectFields = {
+        uniqueId: 1,
+        name: 1,
+        parentId: 1,
+        skeleton: 1,
+        details: 1,
+        references: 1,
+    };
+    const tree = await getMemoryMaps(null, exportSelectFields);
+    return flattenMemoryMaps(tree);
+}
+
 async function getMemoryMaps(parentId, selectFields) {
     try {
         const criteria = parentId
@@ -215,6 +254,7 @@ module.exports = {
     updateMemoryMap,
     updateMemoryMapForGivenSkeleton,
     fetchAllMemoryMaps,
+    getAllMemoryMapsFlat,
     fetchMemoryMapByUniqueId,
     searchMemoryMaps,
     getMemoryMapsByTagId,

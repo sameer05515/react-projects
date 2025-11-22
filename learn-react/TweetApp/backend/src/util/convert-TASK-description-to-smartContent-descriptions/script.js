@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Task = require('../../routes/Task.model'); // Adjust the path as necessary
+const Task = require('../../routes/task/Task.model');
 
 const metadata = {
     dateOfExecution:'14-Oct-2023',
@@ -141,4 +141,8 @@ async function main() {
     }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { updateDescriptionInTasks, verify };

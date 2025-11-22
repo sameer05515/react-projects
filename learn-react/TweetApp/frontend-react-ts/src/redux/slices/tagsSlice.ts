@@ -124,7 +124,7 @@ export const prepareTagsQueue = (list: TagNode[] = [], prevQueue: FlatTag[] = []
 
 type TagsState = {
   data: TagNode[];
-  loading: "idle" | "pending" | "fulfilled" | "rejected";
+  status: "idle" | "loading" | "succeeded" | "failed"; // ✅ Standardized: changed from loading to status
   error: string | null;
   searchedData: any[];
   searchString: string;
@@ -135,7 +135,7 @@ const tagsSlice = createSlice({
   name: "tags",
   initialState: {
     data: [], // Only store tree structure - flatData computed via selector
-    loading: "idle",
+    status: "idle", // ✅ Standardized: changed from loading to status
     error: null,
     searchedData: [],
     searchString: "",
@@ -148,19 +148,38 @@ const tagsSlice = createSlice({
     setSearchString: (state, action) => {
       state.searchString = action.payload;
     },
+    // ✅ Phase 3: State cleanup actions
+    clearTags: (state) => {
+      state.data = [];
+      state.status = "idle";
+      state.error = null;
+      state.searchedData = [];
+      state.searchString = "";
+      state.selectedTagUniqueId = null;
+    },
+    resetTagsState: (state) => {
+      return {
+        data: [],
+        status: "idle",
+        error: null,
+        searchedData: [],
+        searchString: "",
+        selectedTagUniqueId: null,
+      } as TagsState;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTags.pending, (state) => {
-        state.loading = "pending";
+        state.status = "loading"; // ✅ Standardized: pending -> loading
       })
       .addCase(fetchTags.fulfilled, (state, action) => {
-        state.loading = "fulfilled";
+        state.status = "succeeded"; // ✅ Standardized: fulfilled -> succeeded
         state.data = action.payload;
         // flatData now computed via memoized selector
       })
       .addCase(fetchTags.rejected, (state, action) => {
-        state.loading = "rejected";
+        state.status = "failed"; // ✅ Standardized: rejected -> failed
         state.error = action.error.message ?? null;
       });
   },
@@ -168,7 +187,7 @@ const tagsSlice = createSlice({
 
 export default tagsSlice.reducer;
 // Export the reducer and actions
-export const { setSelectedTagUniqueId, setSearchString } = tagsSlice.actions;
+export const { setSelectedTagUniqueId, setSearchString, clearTags, resetTagsState } = tagsSlice.actions;
 
 /* ============== Selectors ======================*/
 const selectTagsState = (state: RootState) => state.tags;
@@ -220,23 +239,17 @@ export const selectPrevTagUniqueId = createSelector(
 );
 
 /**
- * New selectors being created to solve optimization and performance improvement
- *
+ * Optimized selectors - Removed factory pattern that created new selectors on every call
+ * Components should use useMemo with selectAllFlatTags instead
  */
 
-export const getTagsForGivenIds = (ids: string[] = []) =>
-  createSelector([selectAllFlatTags], (flatTagList: FlatTag[]) => {
-    console.trace("IDs aaya... ", ids);
-    if (!ids || !Array.isArray(ids)) {
-      return [];
-    }
-    return flatTagList.filter((t) => ids.includes(t.uniqueId)) || [];
-  });
-
-export const getTagsForComboOptions = createSelector(
+// ✅ Stable selector - no factory pattern
+export const selectTagsForComboOptions = createSelector(
   [selectAllFlatTags],
   (flatTagList: FlatTag[]) => {
-    console.trace("Tag options ka request aaya");
+    if (process.env.NODE_ENV === 'development') {
+      console.trace("Tag options ka request aaya");
+    }
     return (
       flatTagList.map((tag) => ({
         value: tag.uniqueId,
@@ -245,12 +258,6 @@ export const getTagsForComboOptions = createSelector(
     );
   }
 );
-
-export const getTagForUniqueId = (uniqueId = "") =>
-  createSelector([selectAllFlatTags], (flatTagList: FlatTag[]) => {
-    console.trace("Tag options ka request aaya");
-    return flatTagList.find((t) => t.uniqueId === uniqueId) || null;
-  });
 
 // Combined selector for common tag state properties (optimizes multiple useSelector calls)
 // Use this instead of multiple useSelector calls for tags, loading, error, and selectedId
@@ -262,7 +269,7 @@ export const selectTagsStateCombined = createSelector(
   ],
   (tags, selectedId, tagsState) => ({
     tags,
-    loading: tagsState.loading,
+    status: tagsState.status, // ✅ Standardized: loading -> status
     error: tagsState.error,
     selectedId,
   })

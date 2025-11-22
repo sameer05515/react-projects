@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyResumeData } from '../../redux/slices/myResumeSlice';
+import { fetchMyResumeData, selectMyResumeStateCombined } from '../../redux/slices/myResumeSlice';
 import type { AppDispatch, RootState } from '../../redux/store';
 
 interface MyResumeComponentProps {
@@ -11,9 +11,8 @@ interface MyResumeComponentProps {
 
 const MyResumeComponent: React.FC<MyResumeComponentProps> = ({ uniqueId }) => {
   const dispatch: AppDispatch = useDispatch();
-  const myResumeData = useSelector((state: RootState) => (state.myResume as any).data);
-  const status = useSelector((state: RootState) => (state.myResume as any).status);
-  const error = useSelector((state: RootState) => (state.myResume as any).error);
+  // ✅ Optimized: Use combined selector instead of multiple useSelector calls
+  const { data: myResumeData, status, error } = useSelector((state: RootState) => selectMyResumeStateCombined(state));
 
   useEffect(() => {
     if (uniqueId) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -7,7 +7,7 @@ import {
 } from "../../../common/components/Smart/Editor/v3";
 import Tree from "../../../common/components/tree-viewer/TreeViewer";
 import useFlatTreeData from "../../../common/hooks/useFlatTreeData";
-import useDataFetching from "../../../common/hooks/useDataFetching/v2";
+import { useReduxDataFetching } from "../../../common/hooks/useDataFetching";
 import { addUniqueIdsToTree } from "../../../common/util/id-adder-util";
 import { buildTree } from "../../../common/util/indentation-based-string-parser-to-tree-data";
 import { fetchMemoryMaps, selectAllTreeMemoryMaps } from "../../../redux/slices/memoryMapSlice";
@@ -22,19 +22,23 @@ const MemoryMapList = () => {
   const location = useLocation();
 
   // Fetch memory maps data only when component mounts (with smart caching)
-  useDataFetching(
+  useReduxDataFetching(
     fetchMemoryMaps,
     (state) => state.memoryMaps
   );
 
   const memoryMaps = useSelector(selectAllTreeMemoryMaps);
-  const [selectedMemoryMap, setSelectedMemoryMap] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [copied, setCopied] = useState(false);
   const selectedElementRef = useRef(null);
   const [searchString, setSearchString] = useState(null);
   const { data: memoryMapDataToBeViewed } = location.state || {};
+
+  const selectedMemoryMap = useMemo(() => {
+    if (!memoryMapDataToBeViewed) return null;
+    return { ...memoryMapDataToBeViewed };
+  }, [memoryMapDataToBeViewed]);
 
   const { prevItem: prevTreeNode, nextItem: nextTreeNode } = useFlatTreeData(
     memoryMaps,
@@ -47,12 +51,6 @@ const MemoryMapList = () => {
       setCopied(false);
     }, 5000);
   };
-
-  useEffect(() => {
-    if (memoryMapDataToBeViewed) {
-      setSelectedMemoryMap(() => ({ ...memoryMapDataToBeViewed }));
-    }
-  }, [memoryMapDataToBeViewed]);
 
   useEffect(() => {
     if (selectedElementRef.current) {

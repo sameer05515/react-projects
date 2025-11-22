@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import { SmartEditor } from "../../../../common/components/Smart/Editor/v3";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
 import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
 import { useSelector } from "react-redux";
-import { getTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../../redux/slices/tagsSlice";
 import Select from "react-select";
 import JSONDataViewer from "../../../../common/components/json-data-viewer/JSONDataViewer";
 
@@ -21,7 +21,7 @@ const TopicSectionForm: React.FC<TopicSectionFormProps> = ({
   onSubmit = () => {},
   onCancel = () => {},
 }) => {
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [smartEditorError, setSmartEditorError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,11 @@ const TopicSectionForm: React.FC<TopicSectionFormProps> = ({
     tags: initialValue?.tags || [],
   });
 
-  const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${initialValue?.linkedTopicUniqueId}/sections/${initialValue?.uniqueId}`;
+  // ✅ Memoize URL to prevent infinite loops
+  const sectionFetchUrl = useMemo(
+    () => `${BACKEND_APPLICATION_BASE_URL}/topics/${initialValue?.linkedTopicUniqueId}/sections/${initialValue?.uniqueId}`,
+    [initialValue?.linkedTopicUniqueId, initialValue?.uniqueId]
+  );
   const { data: sectionsData, refetch: sectionsRefetch } = useDataFetching({
     url: sectionFetchUrl,
     source: "TopicSectionForm",
@@ -48,7 +52,8 @@ const TopicSectionForm: React.FC<TopicSectionFormProps> = ({
     if (initialValue?.linkedTopicUniqueId && initialValue?.uniqueId) {
       sectionsRefetch();
     }
-  }, [initialValue?.linkedTopicUniqueId, initialValue?.uniqueId, sectionsRefetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValue?.linkedTopicUniqueId, initialValue?.uniqueId]); // Removed sectionsRefetch from dependencies to prevent infinite loop
 
   useEffect(() => {
     setLoading(false);

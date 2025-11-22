@@ -9,7 +9,7 @@ import {
   createCategory,
   updateCategory,
 } from "../../../redux/slices/interviewMgmtSlice";
-import { getTagsForComboOptions } from "../../../redux/slices/tagsSlice";
+import { selectTagsForComboOptions } from "../../../redux/slices/tagsSlice";
 import type { AppDispatch, RootState } from "../../../redux/store";
 
 interface CategoryFormProps {
@@ -22,7 +22,7 @@ interface CategoryFormProps {
 const CategoryForm: React.FC<CategoryFormProps> = ({ parentId, category, onSave, onCancelEdit }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
 
   const { createCategoryResponse, updateCategoryResponse } = useSelector(
     (state: RootState) => state.interviewMgmt

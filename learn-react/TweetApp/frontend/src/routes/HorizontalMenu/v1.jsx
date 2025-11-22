@@ -8,11 +8,6 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
   const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const isPathActive = (path) => {
-    const currentPath = window.location.pathname;
-    return currentPath === path || currentPath.startsWith(path);
-  };
-
   const links = [
     { linkHeader: "Home", linkPath: () => "/", isModule: true },
     { linkHeader: "My Reports", linkPath: () => "/my-reports", isModule: true },
@@ -63,7 +58,7 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
       linkPath: () => "/node_story_v1",
       isModule: true,
     },
-    // { linkHeader: "Settings", linkPath: () => "/settings", isModule: true },
+    { linkHeader: "Settings", linkPath: () => "/settings", isModule: true },
   ];
 
   const handleLinkClick = useCallback(
@@ -78,42 +73,36 @@ const HorizontalMenu = ({ isAuthenticated, handleLogout }) => {
   return (
     <div className="mb-5">
       <CollapsibleMenu isCollapsed={isCollapsed}>
-        <ul className="flex flex-wrap items-center gap-2 rounded-lg bg-menu-dark text-white px-0 py-2 shadow-lg">
+        <ul className="flex flex-wrap items-center gap-1 rounded-lg bg-menu-dark px-3 py-2 shadow-lg text-white max-h-[70vh] overflow-y-auto">
           {links
             .filter((l) => l.isModule)
             .map(({ linkPath, linkHeader }, idx) => (
-              <li
-                key={`linkPath_${idx + 100}`}
-                className={
-                  "px-4 py-2 text-xs rounded transition-colors duration-300" +
-                  (isPathActive(linkPath())
-                    ? " bg-menu-darker"
-                    : " hover:bg-menu-darker") +
-                  (isPathActive(linkPath())
-                    ? " text-menu-yellow font-bold text-sm"
-                    : " text-menu-light")
-                }
-              >
-                <NavLink
-                  to={linkPath()}
-                  className={
-                    "no-underline" +
-                    (isPathActive(linkPath())
-                      ? " text-menu-yellow font-bold text-sm"
-                      : " text-menu-light")
-                  }
-                  onClick={() => handleLinkClick(linkHeader)}
-                >
-                  {linkHeader}
-                </NavLink>
-              </li>
-            ))}
+                <li key={`linkPath_${idx + 100}`}>
+                  <NavLink
+                    to={linkPath()}
+                    end={linkPath() === "/"}
+                    onClick={() => handleLinkClick(linkHeader)}
+                    className={({ isActive }) =>
+                      [
+                        "block px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200",
+                        "no-underline focus:outline-none focus:ring-2 focus:ring-menu-yellow focus:ring-offset-2 focus:ring-offset-menu-dark",
+                        isActive
+                          ? "bg-menu-darker text-menu-yellow"
+                          : "text-menu-light hover:bg-menu-darker hover:text-white",
+                      ].join(" ")
+                    }
+                  >
+                    {linkHeader}
+                  </NavLink>
+                </li>
+              ))}
 
           {isAuthenticated && (
-            <li className="px-4 py-2 text-xs ml-auto">
+            <li className="ml-auto pl-2">
               <button
+                type="button"
                 onClick={handleLogout}
-                className="bg-menu-red text-white border-none px-4 py-2 rounded transition-colors duration-300 font-bold cursor-pointer hover:bg-menu-red-dark"
+                className="rounded-md bg-menu-red px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-menu-yellow focus:ring-offset-2 focus:ring-offset-menu-dark hover:bg-menu-red-dark cursor-pointer border-0"
               >
                 Logout
               </button>

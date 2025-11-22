@@ -5,10 +5,11 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Create an async thunk to fetch tasks from the API
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tasks`); // Replace with your API endpoint
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/tasks`); // Replace with your API endpoint
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
@@ -18,7 +19,7 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
 
 // Create an async thunk to save a task to the API
 export const saveTask = createAsyncThunk("tasks/saveTask", async (taskData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/tasks`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/tasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export const saveTask = createAsyncThunk("tasks/saveTask", async (taskData) => {
 export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async ({ taskId, taskData }) => {
-    const response = await fetch(
+    const response = await authenticatedFetch(
       `${BACKEND_APPLICATION_BASE_URL}/tasks/${taskId}`,
       {
         method: "PUT",

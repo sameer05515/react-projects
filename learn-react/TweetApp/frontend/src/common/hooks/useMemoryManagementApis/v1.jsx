@@ -14,7 +14,10 @@ const API_ENDPOINTS = {
 
 const getUrl = (endpoint) => {
   if (!endpoint) {
-    console.trace(`endpoint: '${endpoint}'`);
+    if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
+      console.warn(`[useMemoryManagementApis] invalid endpoint: '${endpoint}'`);
+    }
     return null;
   }
   return `${MEMORY_MAPS_MGMT_BASE_URL}${endpoint}`;

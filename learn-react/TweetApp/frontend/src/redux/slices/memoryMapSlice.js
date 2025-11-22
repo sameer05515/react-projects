@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { BACKEND_APPLICATION_BASE_URL } from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 // Define an async thunk to fetch all memory maps
 export const fetchMemoryMaps = createAsyncThunk("memoryMaps/fetchMemoryMaps", async () => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps`);
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps`);
   return response.json();
 });
 
 // Define an async thunk to create a new memory map
 export const createMemoryMap = createAsyncThunk("memoryMaps/createMemoryMap", async (memoryMapData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +22,7 @@ export const createMemoryMap = createAsyncThunk("memoryMaps/createMemoryMap", as
 
 // Define an async thunk to update a memory map by uniqueId
 export const updateMemoryMap = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +34,7 @@ export const updateMemoryMap = createAsyncThunk("memoryMaps/updateMemoryMap", as
 
 // Define an async thunk to update a memory map by uniqueId, for given skeleton
 export const updateMemoryMapForGivenSkeleton = createAsyncThunk("memoryMaps/updateMemoryMap", async (memoryMapData) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}/append-skeleton`, {
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${memoryMapData.uniqueId}/append-skeleton`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +46,7 @@ export const updateMemoryMapForGivenSkeleton = createAsyncThunk("memoryMaps/upda
 
 // Define an async thunk to fetch a memory map by uniqueId
 export const fetchMemoryMapByUniqueId = createAsyncThunk("memoryMaps/fetchMemoryMapByUniqueId", async (uniqueId) => {
-  const response = await fetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${uniqueId}`);
+  const response = await authenticatedFetch(`${BACKEND_APPLICATION_BASE_URL}/memory-maps/${uniqueId}`);
   return response.json();
 });
 

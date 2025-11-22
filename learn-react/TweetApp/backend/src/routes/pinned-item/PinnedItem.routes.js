@@ -5,6 +5,7 @@ const {
   upsertPinnedItem,
   getAllPinnedItemsByType,
   getAllPinnedItems,
+  getAllPinnedItemsFlat,
 } = require('./PinnedItem.service');
 const router = express.Router();
 
@@ -71,6 +72,35 @@ router.get('/', async (req, res) => {
     if (!pinnedItems) {
       return res.status(404).json({ message: 'Topic not found' });
     }
+    res.json(pinnedItems);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
+ * /pinned-items/export/flat:
+ *   get:
+ *     summary: Export all pinned items as a flat list (JSON)
+ *     tags: [PinnedItem]
+ *     responses:
+ *       200:
+ *         description: Pinned items export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get pinned items
+ */
+router.get('/export/flat', async (req, res) => {
+  try {
+    const pinnedItems = await getAllPinnedItemsFlat();
+    res.setHeader('Content-Disposition', 'attachment; filename="pinned-items-export-flat.json"');
+    res.setHeader('Content-Type', 'application/json');
     res.json(pinnedItems);
   } catch (error) {
     res.status(500).json({ error: error.message });

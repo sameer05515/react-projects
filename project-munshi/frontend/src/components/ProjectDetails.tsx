@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { projectApi } from '../services/projectApi';
 import { ProjectResponse } from '../types/project';
+import MarkdownRenderer from './MarkdownRenderer';
+import ConfirmationModal from './ConfirmationModal';
 import './ProjectDetails.css';
 
 const ProjectDetails: React.FC = () => {
@@ -10,6 +12,7 @@ const ProjectDetails: React.FC = () => {
   const [project, setProject] = useState<ProjectResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
@@ -30,16 +33,24 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!project?.id || !window.confirm('Are you sure you want to delete this project?')) {
-      return;
-    }
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!project?.id) return;
+
     try {
       await projectApi.deleteProject(project.id);
       navigate('/projects');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete project');
+      setShowDeleteConfirm(false);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
   };
 
   const formatDate = (dateString?: string) => {
@@ -96,7 +107,7 @@ const ProjectDetails: React.FC = () => {
         {project.description && (
           <div className="detail-section">
             <h3>Description</h3>
-            <p>{project.description}</p>
+            <MarkdownRenderer content={project.description} />
           </div>
         )}
 
@@ -153,13 +164,24 @@ const ProjectDetails: React.FC = () => {
         >
           Edit Project
         </button>
-        <button onClick={handleDelete} className="btn btn-danger">
+        <button onClick={handleDeleteClick} className="btn btn-danger">
           Delete Project
         </button>
         <button onClick={() => navigate('/projects')} className="btn btn-secondary">
           Back to Projects
         </button>
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        title="Delete Project"
+        message={`Are you sure you want to delete "${project.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        variant="danger"
+      />
     </div>
   );
 };

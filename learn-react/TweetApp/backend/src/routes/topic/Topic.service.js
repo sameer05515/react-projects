@@ -7,6 +7,47 @@ const createTopic = async (topicData) => {
   return await Topic.create(topicData);
 };
 
+/**
+ * Create multiple topics in one request.
+ * @param {Array<{ name: string, parentId?: string, description?: string, smartContent?: object, tags?: string[], occurenceDate?: string|Date }>} topicPayloads
+ * @returns {{ created: Array, errors: Array<{ index: number, message: string }> }}
+ */
+const createTopicsBulk = async (topicPayloads) => {
+  if (!Array.isArray(topicPayloads) || topicPayloads.length === 0) {
+    return { created: [], errors: [] };
+  }
+  const created = [];
+  const errors = [];
+  for (let i = 0; i < topicPayloads.length; i++) {
+    const payload = topicPayloads[i];
+    try {
+      const doc = {
+        name: payload.name != null ? String(payload.name).trim() : "",
+        parentId: payload.parentId != null ? payload.parentId : "",
+        description: payload.description != null ? payload.description : undefined,
+        smartContent: payload.smartContent != null ? payload.smartContent : undefined,
+        tags: Array.isArray(payload.tags) ? payload.tags : [],
+        occurenceDate:
+          payload.occurenceDate != null
+            ? new Date(payload.occurenceDate)
+            : new Date(),
+      };
+      if (!doc.name) {
+        errors.push({ index: i, message: "Name is required" });
+        continue;
+      }
+      const topic = await Topic.create(doc);
+      created.push(topic.toObject ? topic.toObject() : topic);
+    } catch (err) {
+      errors.push({
+        index: i,
+        message: err.message || "Failed to create topic",
+      });
+    }
+  }
+  return { created, errors };
+};
+
 const updateTopicByUniqueId = async (uniqueId, topicData) => {
   try {
     let topic = await Topic.findOne({ uniqueId });
@@ -23,6 +64,12 @@ const updateTopicByUniqueId = async (uniqueId, topicData) => {
       occurenceDate,
       children,
     } = topicData;
+    if (topicData.published === true) {
+      throw new Error("Use PUT /:uniqueId/publish to publish a topic");
+    }
+    if (topicData.published === false) {
+      topic.published = false;
+    }
     topic.parentId = parentId || topic.parentId;
     topic.name = name || topic.name;
     topic.description = description || topic.description;
@@ -51,7 +98,10 @@ const getAllTopics = async () => {
       uniqueId: 1,
       name: 1,
       parentId: 1,
+      description: 1,
+      smartContent: 1,
       tags: 1,
+      published: 1,
     };
     // console.log(`[Topic.service]: [getAllTopics]: Going to fetch all topics`);
     const topics = await getTopics(null, { ...selectFields });
@@ -62,15 +112,100 @@ const getAllTopics = async () => {
   }
 };
 
-async function getTopics(parentId, selectFields) {
+/**
+ * Flatten tree of topics into a single array (for export).
+ * Each item has uniqueId, name, parentId, description, smartContent, tags, ancestors, sections.
+ */
+function flattenTopics(tree, ancestors = []) {
+  if (!tree || !Array.isArray(tree)) return [];
+  const list = [];
+  for (const node of tree) {
+    const item = {
+      uniqueId: node.uniqueId,
+      name: node.name,
+      parentId: node.parentId || null,
+      description: node.description != null ? node.description : "",
+      smartContent: node.smartContent != null ? node.smartContent : null,
+      tags: node.tags || [],
+      published: node.published === true,
+      ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+      sections: node.sections || [],
+    };
+    list.push(item);
+    if (node.children && node.children.length > 0) {
+      const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+      list.push(...flattenTopics(node.children, nextAncestors));
+    }
+  }
+  return list;
+}
+
+const getAllTopicsFlat = async () => {
+  const tree = await getAllTopics();
+  return flattenTopics(tree);
+};
+
+const sectionExportFields = {
+  uniqueId: 1,
+  linkedTopicUniqueId: 1,
+  name: 1,
+  smartContent: 1,
+  order: 1,
+  softDelete: 1,
+  tags: 1,
+  createdDate: 1,
+  updatedDate: 1,
+};
+
+/**
+ * Attach topic sections to each node in the tree (for export). Mutates nodes.
+ */
+async function enrichTreeWithSections(tree) {
+  if (!tree || !Array.isArray(tree)) return tree;
+  await Promise.all(
+    tree.map(async (node) => {
+      const sections = await TopicSection.find({
+        linkedTopicUniqueId: node.uniqueId,
+      })
+        .select(sectionExportFields)
+        .lean();
+      node.sections = sections || [];
+      if (node.children && node.children.length > 0) {
+        await enrichTreeWithSections(node.children);
+      }
+    })
+  );
+  return tree;
+}
+
+/**
+ * Topics tree with sections attached (for export).
+ */
+const getAllTopicsForExport = async () => {
+  const tree = await getAllTopics();
+  return enrichTreeWithSections(tree);
+};
+
+/**
+ * Flat list of topics with sections on each topic (for export).
+ */
+const getAllTopicsFlatForExport = async () => {
+  const tree = await getAllTopicsForExport();
+  return flattenTopics(tree);
+};
+
+async function getTopics(parentId, selectFields, options = {}) {
   try {
     const criteria = parentId
       ? { parentId }
       : { parentId: { $in: [null, undefined, ""] } };
+    if (options.publishedOnly) {
+      criteria.published = true;
+    }
     let topics = await Topic.find(criteria).select(selectFields);
     const topicsWithChildren = await Promise.all(
       topics.map(async (topic) => {
-        const children = await getTopics(topic.uniqueId, selectFields);
+        const children = await getTopics(topic.uniqueId, selectFields, options);
         const ancestors = await getAllAncestors(topic.parentId);
         return { ...topic.toObject(), children, ancestors };
         // return { ...topic.toObject(), children };
@@ -81,6 +216,48 @@ async function getTopics(parentId, selectFields) {
     console.error(error);
     return [];
   }
+}
+
+const getPublishedTopics = async () => {
+  try {
+    const selectFields = {
+      uniqueId: 1,
+      name: 1,
+      parentId: 1,
+      description: 1,
+      smartContent: 1,
+      tags: 1,
+      published: 1,
+    };
+    const flatList = await Topic.find({ published: true })
+      .select(selectFields)
+      .lean();
+    return buildTreeFromFlatPublished(flatList);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+/**
+ * Build a tree from a flat list of published topics.
+ * Topics whose parent is not in the list (or has no parent) appear as roots.
+ */
+function buildTreeFromFlatPublished(flatList) {
+  if (!flatList || flatList.length === 0) return [];
+  const byId = new Map(flatList.map((t) => [t.uniqueId, { ...t, children: [] }]));
+  const roots = [];
+  for (const t of flatList) {
+    const node = byId.get(t.uniqueId);
+    const parentId = t.parentId || null;
+    const parent = parentId ? byId.get(parentId) : null;
+    if (!parent) {
+      roots.push(node);
+    } else {
+      parent.children.push(node);
+    }
+  }
+  return roots;
 }
 
 const getTopicByUniqueId = async (uniqueId) => {
@@ -161,6 +338,39 @@ async function getAllAncestors(parentId, ancestors = []) {
   }); // Add the name of the current topic to ancestors array
   // console.log(`final: function getAllAncestors : ${JSON.stringify(ancestors)}`);
   return getAllAncestors(topic.parentId, ancestors); // Recursively call to get ancestors of the parent topic
+}
+
+/**
+ * Returns true only if the topic with given parentId and all its ancestors are published.
+ * Root (no parent) is considered "published" for the purpose of allowing root topics to be published.
+ */
+async function areAllAncestorsPublished(parentId) {
+  if (!parentId) return true;
+  const parent = await Topic.findOne({ uniqueId: parentId }).select({ published: 1, parentId: 1 });
+  if (!parent) return true;
+  if (!parent.published) return false;
+  return areAllAncestorsPublished(parent.parentId);
+}
+
+/**
+ * Publish a topic by uniqueId. Succeeds only if the topic's parent and all ancestors are already published.
+ */
+async function publishTopicByUniqueId(uniqueId) {
+  const topic = await Topic.findOne({ uniqueId });
+  if (!topic) {
+    throw new Error("Topic not found, uniqueId: " + uniqueId);
+  }
+  if (topic.published) {
+    return topic;
+  }
+  const canPublish = await areAllAncestorsPublished(topic.parentId);
+  if (!canPublish) {
+    throw new Error("Cannot publish: parent or an ancestor topic is not published");
+  }
+  topic.published = true;
+  topic.updatedDate = new Date();
+  await topic.save();
+  return topic;
 }
 
 const searchTopics = async (searchString, searchOptions) => {
@@ -301,8 +511,14 @@ const getTopicSectionsByTagId = async (tagId) => {
 
 module.exports = {
   createTopic,
+  createTopicsBulk,
   updateTopicByUniqueId,
+  publishTopicByUniqueId,
   getAllTopics,
+  getPublishedTopics,
+  getAllTopicsFlat,
+  getAllTopicsForExport,
+  getAllTopicsFlatForExport,
   getTopicByUniqueId,
   searchTopics,
   createTopicSection,

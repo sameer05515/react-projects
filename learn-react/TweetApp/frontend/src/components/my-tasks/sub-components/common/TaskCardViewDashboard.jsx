@@ -1,5 +1,5 @@
-// TaskCardViewDashboard.js
-import React, { useState } from "react";
+// TaskCardViewDashboard.jsx
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import UnderConstruction from "../../../../common/components/UnderConstruction";
@@ -15,138 +15,90 @@ import TaskModel from "./TaskModel";
 import TaskSearch from "./TaskSearch";
 import ViewTask from "./ViewTask";
 
-const TaskCardViewDashboard = ({ underContruction = true }) => {
+const TaskCardViewDashboard = ({ underConstruction = false }) => {
   const dispatch = useDispatch();
+  const [modal, setModal] = useState(null); // { type: 'add'|'edit'|'view', task: task|null }
 
-  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
-  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
-  const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
-
-  // Use combined selector for tasks, status, and error
   const { status, error } = useSelector(selectTasksStateCombined);
   const tasks = useSelector(selectAllFlatTasks);
 
+  const openModal = useCallback((type, task = null) => setModal({ type, task }), []);
+  const closeModal = useCallback(() => setModal(null), []);
+
+  const handleSaveTask = useCallback(
+    async (newTask) => {
+      try {
+        if (modal?.task) {
+          await dispatch(updateTask({ taskId: newTask._id, taskData: { ...newTask } }));
+        } else {
+          await dispatch(saveTask(newTask));
+        }
+        dispatch(fetchTasks());
+      } catch (err) {
+        console.error("Error saving task:", err);
+      }
+      closeModal();
+    },
+    [dispatch, modal?.task, closeModal]
+  );
+
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[320px] p-8 text-teal-700 font-medium">
+        Loading...
+      </div>
+    );
   }
 
   if (status === "failed") {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="rounded-xl border border-red-300 bg-red-50 p-6 text-red-700 font-medium">
+        Error: {error}
+      </div>
+    );
   }
 
-  const openAddTaskModal = () => {
-    setIsAddTaskModalOpen(true);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(null);
-  };
-
-  const openEditTaskModal = (task) => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(true);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(task);
-  };
-
-  const openViewTaskModal = (task) => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(true);
-    setSelectedTask(task);
-  };
-
-  const closeTaskModal = () => {
-    setIsAddTaskModalOpen(false);
-    setIsEditTaskModalOpen(false);
-    setIsViewTaskModalOpen(false);
-    setSelectedTask(null);
-  };
-
-  const handleSaveTask = async (newTask) => {
-    if (selectedTask) {
-      // Update the existing task
-      //   const updatedTasks = tasks.map((task) =>
-      //     task.id === selectedTask.id ? newTask : task
-      //   );
-      //   setTasks(updatedTasks);
-
-      try {
-        // Dispatch the updateTask async thunk to update the task
-        // console.log(`Update task ${JSON.stringify(newTask)}`);
-        // console.log(`selectedTask : ${JSON.stringify(selectedTask)}`);
-        await dispatch(
-          updateTask({ taskId: newTask._id, taskData: { ...newTask } })
-        );
-
-        dispatch(fetchTasks());
-
-        // After updating, exit the editing mode
-        // setIsEditing(false);
-      } catch (error) {
-        console.error("Error updating task:", error);
-      }
-    } else {
-      // Add a new task
-      //   setTasks([...tasks, newTask]);
-      try {
-        // Dispatch the saveTask async thunk to save the task
-        console.log(`Save task ${JSON.stringify(newTask)}`);
-        await dispatch(saveTask(newTask));
-
-        // After saving, refresh the task list by fetching tasks
-        dispatch(fetchTasks());
-      } catch (error) {
-        console.error("Error saving task:", error);
-      }
-    }
-    closeTaskModal();
-  };
-
-  if (underContruction) {
+  if (underConstruction) {
     return <UnderConstruction title="Card View of Task Management" />;
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+    <div className="flex flex-col gap-6 p-4">
+      <div className="rounded-xl border border-teal-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap gap-3">
-          <CustomButton onClick={openAddTaskModal}>Add Task</CustomButton>
-          <CustomButton onClick={() => dispatch(fetchTasks())}>Refresh Tasks</CustomButton>
+          <CustomButton
+            className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-lg text-sm font-medium"
+            onClick={() => openModal("add")}
+          >
+            Add Task
+          </CustomButton>
+          <CustomButton
+            className="bg-teal-50 text-teal-800 border border-teal-200 hover:bg-teal-100 px-4 py-2 rounded-lg text-sm font-medium"
+            onClick={() => dispatch(fetchTasks())}
+          >
+            Refresh Tasks
+          </CustomButton>
         </div>
-        <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50 p-4">
+        <div className="mt-4 rounded-lg border border-teal-100 bg-teal-50/50 p-4">
           <TaskSearch tasks={tasks} />
         </div>
         <div className="mt-6">
           <TaskList
             tasks={tasks}
-            onEditTask={openEditTaskModal}
-            onViewTask={openViewTaskModal}
+            onEditTask={(task) => openModal("edit", task)}
+            onViewTask={(task) => openModal("view", task)}
           />
         </div>
       </div>
 
-      {isAddTaskModalOpen && (
-        <TaskModel
-          onSave={handleSaveTask}
-          onCancel={closeTaskModal}
-          tasks={tasks}
-        />
+      {modal?.type === "add" && (
+        <TaskModel onSave={handleSaveTask} onCancel={closeModal} tasks={tasks} />
       )}
-      {isEditTaskModalOpen && (
-        <TaskModel
-          task={selectedTask}
-          onSave={handleSaveTask}
-          onCancel={closeTaskModal}
-          tasks={tasks}
-        />
+      {modal?.type === "edit" && (
+        <TaskModel task={modal.task} onSave={handleSaveTask} onCancel={closeModal} tasks={tasks} />
       )}
-      {isViewTaskModalOpen && (
-        <ViewTask
-          task={selectedTask}
-          onClose={closeTaskModal}
-          // tags={availableTags}
-        />
+      {modal?.type === "view" && (
+        <ViewTask task={modal.task} onClose={closeModal} />
       )}
     </div>
   );

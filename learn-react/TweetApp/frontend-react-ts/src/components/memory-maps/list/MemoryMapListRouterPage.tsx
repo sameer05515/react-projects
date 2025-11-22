@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"; // ✅ Added useCallback and useMemo for Phase 3
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { RootState } from "../../../redux/store";
@@ -74,26 +74,34 @@ const MemoryMapList = () => {
     }
   }, [selectedMemoryMap]);
 
-  const handleRightClick = (event, selectedMap) => {
+  // ✅ Phase 3: Memoize callbacks to prevent unnecessary re-renders
+  const handleMemoryMapSelection = useCallback((selectedMap: any) => {
+    if (!selectedMap) return;
+    navigate(`/memory-maps/${selectedMap.uniqueId}`, {
+      state: { data: selectedMap },
+    });
+  }, [navigate]);
+
+  const handleRightClick = useCallback((event: React.MouseEvent, selectedMap: any) => {
     event.preventDefault();
     handleMemoryMapSelection(selectedMap);
     setPopupPosition({ x: event.pageX, y: event.pageY });
     setPopupVisible(true);
-  };
+  }, [handleMemoryMapSelection]);
 
-  const handlePopupOption = (option) => {
+  const handlePopupOption = useCallback((option: any) => {
     setPopupVisible(false);
     option.action();
-  };
+  }, []);
 
-  const handleEditMemoryMap = () => {
+  const handleEditMemoryMap = useCallback(() => {
     if (!selectedMemoryMap) return;
     navigate(`/memory-maps/${selectedMemoryMap.uniqueId}/edit`, {
       state: { data: selectedMemoryMap },
     });
-  };
+  }, [navigate, selectedMemoryMap]);
 
-  const handleAddUpdateSkeleton = () => {
+  const handleAddUpdateSkeleton = useCallback(() => {
     if (!selectedMemoryMap) return;
     navigate(
       `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton`,
@@ -101,9 +109,9 @@ const MemoryMapList = () => {
         state: { data: selectedMemoryMap },
       }
     );
-  };
+  }, [navigate, selectedMemoryMap]);
 
-  const handleAddUpdateSkeletonUsingTreeEditor = () => {
+  const handleAddUpdateSkeletonUsingTreeEditor = useCallback(() => {
     if (!selectedMemoryMap) return;
     navigate(
       `/memory-maps/${selectedMemoryMap.uniqueId}/edit/append-skeleton-v2`,
@@ -111,23 +119,17 @@ const MemoryMapList = () => {
         state: { data: selectedMemoryMap },
       }
     );
-  };
+  }, [navigate, selectedMemoryMap]);
 
-  const handleMemoryMapSelection = (selectedMap) => {
-    if (!selectedMap) return;
-    // setSelectedMemoryMap(() => ({ ...selectedMap }));
-    navigate(`/memory-maps/${selectedMap.uniqueId}`, {
-      state: { data: selectedMap },
-    });
-  };
-
-  const getTreeDataFromSelectedSkeleton = () => {
+  // ✅ Phase 3: Memoize tree data calculation
+  const getTreeDataFromSelectedSkeleton = useMemo(() => {
     if (!selectedMemoryMap?.skeleton) return [];
     const { data: treeData } = buildTree(selectedMemoryMap.skeleton);
     return addUniqueIdsToTree(treeData, "", false);
-  };
+  }, [selectedMemoryMap?.skeleton]);
 
-  const popupOptions = [
+  // ✅ Phase 3: Memoize popup options
+  const popupOptions = useMemo(() => [
     {
       title: "Add Update Skeleton-Using Raw Text",
       action: handleAddUpdateSkeleton,
@@ -137,9 +139,10 @@ const MemoryMapList = () => {
       action: handleAddUpdateSkeletonUsingTreeEditor,
     },
     { title: "Edit", action: handleEditMemoryMap },
-  ];
+  ], [handleAddUpdateSkeleton, handleAddUpdateSkeletonUsingTreeEditor, handleEditMemoryMap]);
 
-  const filteredMemoryMaps = () => {
+  // ✅ Phase 3: Memoize filtered memory maps to avoid re-filtering on every render
+  const filteredMemoryMaps = useMemo(() => {
     const result = searchString
       ? memoryMaps?.filter(({ name }) =>
           name.toLowerCase().includes(searchString.toLowerCase())
@@ -147,9 +150,8 @@ const MemoryMapList = () => {
       : memoryMaps;
 
     const calculatedData = addUniqueIdsToTree(result, "", false);
-    // console.log('Filtered data calculated', JSON.stringify(calculatedData[0]));
     return calculatedData;
-  };
+  }, [memoryMaps, searchString]);
 
   return (
     <div className="flex flex-col max-h-[90vh] max-w-[95vw] pl-6 overflow-auto">
@@ -161,8 +163,9 @@ const MemoryMapList = () => {
       />
       <div className="flex flex-1 overflow-auto">
         <div className="flex-1 overflow-auto">
+          {/* ✅ Phase 3: Now a memoized value, not a function */}
           <Tree
-            data={filteredMemoryMaps()}
+            data={filteredMemoryMaps}
             renderNode={(node) => (
               <>
                 <MemoryMapItemV2
@@ -212,8 +215,9 @@ const MemoryMapList = () => {
                 />
                 {copied && <span className="text-green-600 mb-2.5 block ml-2">Copied!</span>}
               </div>
+              {/* ✅ Phase 3: Now a memoized value, not a function */}
               <Tree
-                data={getTreeDataFromSelectedSkeleton()}
+                data={getTreeDataFromSelectedSkeleton}
                 expandAll={true}
                 renderNode={(node) => (
                   <SmartPreviewer

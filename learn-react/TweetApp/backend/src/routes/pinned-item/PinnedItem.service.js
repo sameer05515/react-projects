@@ -4,8 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const upsertPinnedItem = async (pinnedItemData) => {
     const { uniqueId, linkedUniqueId, linkedItemType, softDelete } = pinnedItemData;
 
-
-    const pinnedItem = await PinnedItem.findOne({ linkedUniqueId });
+    const pinnedItem = await PinnedItem.findOne({ linkedUniqueId, linkedItemType });
     if (!pinnedItem) {
         // new insert ka case hai
         const pinnedItemToBeUpserted = {
@@ -37,8 +36,21 @@ const getAllPinnedItems= async ()=>{
     return await PinnedItem.find({softDelete: false});
 }
 
+const getAllPinnedItemsFlat = async () => {
+    const items = await PinnedItem.find({ softDelete: false }).lean();
+    return items.map((item) => ({
+        uniqueId: item.uniqueId,
+        linkedUniqueId: item.linkedUniqueId || '',
+        linkedItemType: item.linkedItemType || '',
+        softDelete: item.softDelete === true,
+        createdDate: item.createdDate,
+        updatedDate: item.updatedDate,
+    }));
+}
+
 module.exports = {
     upsertPinnedItem,
     getAllPinnedItemsByType,
-    getAllPinnedItems
+    getAllPinnedItems,
+    getAllPinnedItemsFlat
 };

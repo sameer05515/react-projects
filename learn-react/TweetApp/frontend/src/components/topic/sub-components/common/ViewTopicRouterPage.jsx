@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createSearchParams,
@@ -7,7 +7,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { BACKEND_APPLICATION_BASE_URL } from "../../../../common/constants/globalConstants";
-import useDataFetching from "../../../../common/hooks/useDataFetching/v1";
+import { useFetchByUrl } from "../../../../common/hooks/useDataFetching";
+import { authenticatedFetch } from "../../../../common/service/authenticatedFetch";
 import { upsertPinnedItem } from "../../../../redux/slices/pinnedItemSlice";
 import {
   selectAllFlatTopics,
@@ -23,22 +24,35 @@ const ViewTopic = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get("sectionId");
-  const url = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`;
-  const { data, loading, error, refetch } = useDataFetching({ url });
-  const sectionFetchUrl = `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/sections`;
-  const { data: sectionsData, refetch: sectionsRefetch } = useDataFetching({
+  const [publishing, setPublishing] = React.useState(false);
+  const [publishError, setPublishError] = React.useState(null);
+  const url = useMemo(() => `${BACKEND_APPLICATION_BASE_URL}/topics/${id}`, [id]);
+  const { data, loading, error, refetch } = useFetchByUrl({ url });
+  const sectionFetchUrl = useMemo(() => `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/sections`, [id]);
+  const { data: sectionsData, refetch: sectionsRefetch } = useFetchByUrl({
     url: sectionFetchUrl,
   });
 
   const pinnedItems = useSelector((state) => state.pinnedItems.data);
-
-  const [pinnedTopics, setPinnedTopics] = useState([]);
-  const [isPinned, setIsPinned] = useState(false);
-
   const topics = useSelector(selectAllFlatTopics);
-
   const nextTopicUniqueId = useSelector(selectNextTopicUniqueId);
   const prevTopicUniqueId = useSelector(selectPrevTopicUniqueId);
+
+  const pinnedTopics = useMemo(() => {
+    if (!pinnedItems?.length || !topics?.length) return [];
+    const list = pinnedItems.filter(
+      (pi) => pi.linkedItemType === "topic" && pi.softDelete === false
+    );
+    return list.map((pit) => ({
+      ...pit,
+      title: topics.find((t) => t.uniqueId === pit.linkedUniqueId)?.name || "",
+    }));
+  }, [pinnedItems, topics]);
+
+  const isPinned = useMemo(
+    () => pinnedTopics.some((pit) => pit.linkedUniqueId === id),
+    [id, pinnedTopics]
+  );
 
   useEffect(() => {
     if (id) {
@@ -48,34 +62,9 @@ const ViewTopic = () => {
   }, [id, dispatch, refetch]);
 
   useEffect(() => {
-    if (
-      id &&
-      pinnedItems &&
-      topics &&
-      pinnedItems.length > 0 &&
-      topics.length > 0
-    ) {
-      let pinnedTopicsList = pinnedItems.filter(
-        (pi) => pi.linkedItemType === "topic" && pi.softDelete === false
-      );
-      pinnedTopicsList = pinnedTopicsList
-        ? pinnedTopicsList.map((pit) => ({
-            ...pit,
-            title:
-              topics.find((t) => t.uniqueId === pit.linkedUniqueId)?.title ||
-              "",
-          }))
-        : [];
-      setPinnedTopics((prev) => [...pinnedTopicsList]);
-      setIsPinned(
-        (prev) =>
-          pinnedTopicsList.findIndex((pit) => pit.linkedUniqueId === id) >= 0
-      );
+    if (id) {
+      sectionsRefetch();
     }
-  }, [id, topics, pinnedItems]);
-
-  useEffect(() => {
-    sectionsRefetch();
   }, [id, sectionId, sectionsRefetch]);
 
   const handleEdit = (item) => {
@@ -89,7 +78,7 @@ const ViewTopic = () => {
     }
   };
   const handleAddSubTask = (item) => {
-    navigate(`/topic-mgmt/${id}/add-sub-topic`);
+    navigate(`/topic-mgmt/create-bulk?parent=${id}`);
   };
   const handleChildTaskClick = (item) => {
     navigate(`/topic-mgmt/${item?.uniqueId}`);
@@ -134,6 +123,29 @@ const ViewTopic = () => {
     navigate(`/tags/${linkedTagUID}`);
   };
 
+  const handlePublish = async () => {
+    if (!id || data?.published) return;
+    setPublishError(null);
+    setPublishing(true);
+    try {
+      const res = await authenticatedFetch(
+        `${BACKEND_APPLICATION_BASE_URL}/topics/${id}/publish`,
+        { method: "PUT" }
+      );
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        const message = errBody?.error || errBody?.message || "Publish failed";
+        setPublishError(message);
+        return;
+      }
+      await refetch();
+    } catch (err) {
+      setPublishError(err?.message || "Publish failed");
+    } finally {
+      setPublishing(false);
+    }
+  };
+
   const handleBaseSpanClick = () => {
     dispatch(setSelectedTopicUniqueId(null));
     navigate(`/topic-mgmt`);
@@ -149,7 +161,17 @@ const ViewTopic = () => {
   return (
     <>
       {data && (
-        <TopicCard
+        <>
+          <div className="mb-2">
+            <button
+              type="button"
+              className="text-blue-600 hover:underline text-sm"
+              onClick={() => navigate(`/topic-mgmt/wiki/${data.uniqueId}`)}
+            >
+              View as Wiki
+            </button>
+          </div>
+          <TopicCard
           topic={data}
           topicSections={sectionsData}
           pinnedTopics={pinnedTopics}
@@ -168,7 +190,11 @@ const ViewTopic = () => {
           onPinTopic={handlePinTopic}
           onLinkedTagSelection={handleLinkedTagSelection}
           onBaseSpanClick={handleBaseSpanClick}
+          onPublish={handlePublish}
+          publishing={publishing}
+          publishError={publishError}
         />
+        </>
       )}
     </>
   );

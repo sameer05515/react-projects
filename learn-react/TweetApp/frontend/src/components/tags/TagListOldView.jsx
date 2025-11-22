@@ -51,7 +51,7 @@ function TagList() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {tags.map((tag) => (
             <div
-              key={tag._id}
+              key={tag.uniqueId ?? tag._id}
               className="cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-gray-300"
               onDoubleClick={() => handleEditTag(tag)}
             >

@@ -31,17 +31,13 @@ const backdropSlice = createSlice({
       const { v3 } = state.customBackdrop;
       if (!v3.active) return;
 
-      if (v3.active) {
-        state.customBackdrop.v3 = {
-          ...v3,
-          title: getSanitizedString(action.payload?.title || ""),
-          subtitle: getSanitizedString(action.payload?.subtitle),
-          description: getSanitizedString(action.payload?.description),
-          active: true,
-        };
-      }
-
-      console.log("state.customBackdrop.v3: ", state.customBackdrop.v3);
+      state.customBackdrop.v3 = {
+        ...v3,
+        title: getSanitizedString(action.payload?.title || ""),
+        subtitle: getSanitizedString(action.payload?.subtitle),
+        description: getSanitizedString(action.payload?.description),
+        active: true,
+      };
     },
   },
 });

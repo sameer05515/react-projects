@@ -163,8 +163,11 @@ const TreeBase = ({
     }, [treeList]);
 
     useEffect(() => {
-        onNodeSelection(flattenedTree[selectedIndex]);
-    }, [selectedIndex]);
+        const selectedNode = flattenedTree[selectedIndex];
+        if (selectedNode && onNodeSelection) {
+            onNodeSelection(selectedNode);
+        }
+    }, [selectedIndex, flattenedTree, onNodeSelection]);
 
     useEffect(() => {
         if (selectedTreeNodeUID && flattenedTree && flattenedTree.length > 0) {

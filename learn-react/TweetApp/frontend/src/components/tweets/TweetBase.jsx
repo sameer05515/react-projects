@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ListTweets from "./ListTweetsUpdate4";
 import GlobalConstants from "../../common/constants/globalConstants";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 const BASE_URL = GlobalConstants.tweetsApplicationBaseURL;
 const TweetBase = () => {
   const [tweets, setTweets] = useState([]);
 
   const refreshTweets = useCallback(() => {
-    fetch(`${BASE_URL}/tweets/v1`)
+    authenticatedFetch(`${BASE_URL}/tweets/v1`)
       .then((response) => response.json())
-      .then((data) => setTweets(data))
-      .catch((error) => console.error("Error fetching tweets:", error));
+      .then((data) => setTweets(Array.isArray(data) ? data : []))
+      .catch((error) => {
+        console.error("Error fetching tweets:", error);
+        setTweets([]);
+      });
   }, []);
 
   useEffect(() => {

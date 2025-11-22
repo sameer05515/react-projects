@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { projectApi } from '../services/projectApi';
 import { ProjectResponse } from '../types/project';
 import ProjectCard from './ProjectCard';
+import ConfirmationModal from './ConfirmationModal';
+import CsvImport from './CsvImport';
 import './ProjectList.css';
 
 const ProjectList: React.FC = () => {
@@ -11,6 +13,12 @@ const ProjectList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; projectId: string | null; projectName: string }>({
+    isOpen: false,
+    projectId: null,
+    projectName: '',
+  });
+  const [showCsvImport, setShowCsvImport] = useState<boolean>(false);
 
   useEffect(() => {
     loadProjects();
@@ -73,25 +81,46 @@ const ProjectList: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this project?')) {
-      return;
-    }
+  const handleDeleteClick = (id: string, name: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      projectId: id,
+      projectName: name,
+    });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirm.projectId) return;
+
     try {
-      await projectApi.deleteProject(id);
-      setProjects(projects.filter((p) => p.id !== id));
+      await projectApi.deleteProject(deleteConfirm.projectId);
+      setProjects(projects.filter((p) => p.id !== deleteConfirm.projectId));
+      setDeleteConfirm({ isOpen: false, projectId: null, projectName: '' });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete project');
+      setDeleteConfirm({ isOpen: false, projectId: null, projectName: '' });
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirm({ isOpen: false, projectId: null, projectName: '' });
   };
 
   return (
     <div className="project-list-container">
       <div className="project-list-header">
         <h2>Projects</h2>
-        <Link to="/projects/new" className="btn btn-primary">
-          + New Project
-        </Link>
+        <div className="header-actions">
+          <button
+            onClick={() => setShowCsvImport(true)}
+            className="btn btn-secondary"
+          >
+            📥 Import CSV
+          </button>
+          <Link to="/projects/new" className="btn btn-primary">
+            + New Project
+          </Link>
+        </div>
       </div>
 
       <div className="project-list-filters">
@@ -149,10 +178,28 @@ const ProjectList: React.FC = () => {
             <ProjectCard
               key={project.id}
               project={project}
-              onDelete={handleDelete}
+              onDelete={() => handleDeleteClick(project.id!, project.name)}
             />
           ))}
         </div>
+      )}
+
+      <ConfirmationModal
+        isOpen={deleteConfirm.isOpen}
+        title="Delete Project"
+        message={`Are you sure you want to delete "${deleteConfirm.projectName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        variant="danger"
+      />
+
+      {showCsvImport && (
+        <CsvImport
+          onImportComplete={loadProjects}
+          onClose={() => setShowCsvImport(false)}
+        />
       )}
     </div>
   );

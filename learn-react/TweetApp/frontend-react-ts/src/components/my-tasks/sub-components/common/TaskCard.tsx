@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../../common/components/custom-button/CustomButton";
 import FloatingButton from "../../../../common/components/floating-button/FloatingButton";
@@ -21,7 +21,7 @@ import { formatDateToDDMMMYYYYWithTime } from "../../../../common/service/common
 import { updateTask } from "../../../../redux/slices/taskSlice";
 import type { AppDispatch } from "../../../../redux/store";
 import { prepareTaskTitle } from "./taskUtils";
-import { getTagsForGivenIds } from "../../../../redux/slices/tagsSlice";
+import { selectAllFlatTags } from "../../../../redux/slices/tagsSlice";
 
 interface TaskCardProps {
   task?: any;
@@ -50,8 +50,12 @@ const TaskCard: React.FC<TaskCardProps> = ({
 }) => {
   const [showDescr, setShowDescr] = useState(showDescription);
 
-
-  const filteredTags = useSelector(getTagsForGivenIds(task?.tags || []));
+  // ✅ Optimized: Use useMemo instead of factory selector
+  const allTags = useSelector(selectAllFlatTags);
+  const filteredTags = useMemo(
+    () => allTags.filter((t) => (task?.tags || []).includes(t.uniqueId)),
+    [allTags, task?.tags]
+  );
 
   const handleTraverse = (increment) => onTaskTraversal(increment);
   const handleDescriptionToggle = () => setShowDescr((prev) => !prev);
@@ -480,4 +484,5 @@ const CommentForm = ({
   );
 };
 
-export default TaskCard;
+// ✅ Phase 3: Memoize component to prevent unnecessary re-renders
+export default React.memo(TaskCard);

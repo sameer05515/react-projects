@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // const { v4: uuidv4 } = require('uuid');
-const { MemoryMap } = require('../../routes/MemoryMap.model'); // Adjust the path as necessary
+const { MemoryMap } = require('../../routes/memory-map/MemoryMap.model');
 
 
 // 1. Update skeletonTextType in MemoryMap
@@ -60,4 +60,8 @@ async function main() {
     }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { updateTagsInMemoryMaps, verifyTagUpdates };

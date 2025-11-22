@@ -3,6 +3,7 @@ import CreateTweet from "./CreateTweet";
 import Tweet from "./ViewTweet2";
 import GlobalConstants from "../../common/constants/globalConstants";
 import Accordion from "../../common/components/accordion/Accordion";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 function formatTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
@@ -18,7 +19,8 @@ function ListTweetsUpdate({
 
   const [sortAscending, setSortAscending] = useState(false); // Toggle to sort ascending or descending
 
-  const sortedTweets = [...tweets].sort((a, b) =>
+  const safeTweets = Array.isArray(tweets) ? tweets : [];
+  const sortedTweets = [...safeTweets].sort((a, b) =>
     sortAscending
       ? a.createdAt.localeCompare(b.createdAt)
       : b.createdAt.localeCompare(a.createdAt)
@@ -39,7 +41,7 @@ function ListTweetsUpdate({
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}`, {
+      const response = await authenticatedFetch(`${BASE_URL}/tweets/v1/${tweetId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +64,7 @@ function ListTweetsUpdate({
       return;
     }
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}`,
         {
           method: "PUT",
@@ -93,7 +95,7 @@ function ListTweetsUpdate({
       return;
     }
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested/${nestedCommentId}`,
         {
           method: "PUT",
@@ -122,7 +124,7 @@ function ListTweetsUpdate({
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/v1/${tweetId}/comments`, {
+      const response = await authenticatedFetch(`${BASE_URL}/tweets/v1/${tweetId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +153,7 @@ function ListTweetsUpdate({
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${BASE_URL}/tweets/v1/${tweetId}/comments/${commentId}/nested`,
         {
           method: "POST",

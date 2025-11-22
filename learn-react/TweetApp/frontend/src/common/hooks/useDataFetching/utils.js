@@ -1,3 +1,5 @@
+import { authenticatedFetch } from "../../service/authenticatedFetch";
+
 const prepareErrorMessage = (error, defaultMessage) => {
   if (!error) return defaultMessage;
   if (typeof error === "string" && error.trim()) return error;
@@ -15,8 +17,6 @@ const prepareErrorMessage = (error, defaultMessage) => {
 };
 
 const fetchFnWrapper = async ({ url, options }) => {
-  console.log(`url: ${url}, ${new Date()}`);
-
   try {
     if (!url) {
       return {
@@ -25,7 +25,7 @@ const fetchFnWrapper = async ({ url, options }) => {
         message: `Url should not be null or undefined. Provided url is: '${url}'`,
       };
     }
-    const response = await fetch(url, options);
+    const response = await authenticatedFetch(url, options);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch data : Response Status: ${response.status}`

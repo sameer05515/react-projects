@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react"; // ✅ Added useMemo for Phase 3
 import CreateTweet from "./CreateTweet";
-import Tweet from "./ViewTweet2";
+import TweetComponent from "./ViewTweet2"; // ✅ Renamed to avoid conflict with Tweet type
 import GlobalConstants from "../../common/constants/globalConstants";
 import Accordion from "../../common/components/accordion/Accordion";
 
@@ -27,10 +27,14 @@ function ListTweetsUpdate({
 
   const [sortAscending, setSortAscending] = useState(false); // Toggle to sort ascending or descending
 
-  const sortedTweets = [...tweets].sort((a, b) =>
-    sortAscending
-      ? a.createdAt.localeCompare(b.createdAt)
-      : b.createdAt.localeCompare(a.createdAt)
+  // ✅ Phase 3: Memoize sorted tweets to avoid re-sorting on every render
+  const sortedTweets = useMemo(
+    () => [...tweets].sort((a, b) =>
+      sortAscending
+        ? a.createdAt.localeCompare(b.createdAt)
+        : b.createdAt.localeCompare(a.createdAt)
+    ),
+    [tweets, sortAscending]
   );
 
   const toggleSort = () => {
@@ -205,7 +209,7 @@ function ListTweetsUpdate({
       <div className="space-y-4">
         {sortedTweets.map((tweet) => (
           <Accordion key={tweet._id} title={tweet.content} isExpanded={expandAll}>
-            <Tweet
+            <TweetComponent
               tweet={tweet}
               handleUpdateTweet={handleUpdateTweet}
               handleUpdateComment={handleUpdateComment}

@@ -97,10 +97,13 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
   };
 
   return (
-    <div>
-      <h3 className="text-xl font-bold mb-4">{topic && topic.uniqueId ? "Edit Topic" : "Add Topic"}</h3>
-      <div className="flex items-center p-2.5 mb-4">
-        <label htmlFor="name" className="w-[9%] font-bold">
+    <div className="space-y-5">
+      <h3 className="text-xl font-semibold text-slate-800 border-b border-slate-200 pb-2">
+        {topic?.uniqueId ? "Edit Topic" : "Add Topic"}
+      </h3>
+
+      <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
+        <label htmlFor="name" className="font-medium text-slate-700 sm:min-w-[7rem]">
           Name:
         </label>
         <input
@@ -109,37 +112,26 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
           name="name"
           value={topicData.name}
           onChange={handleInputChange}
-          className="w-[90%] px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
+
       <div>
-        <label htmlFor="description">Description:</label>
-        {/* <textarea
-            id="description"
-            name="description"
-            value={topicData.description}
-            onChange={handleInputChange}
-          /> */}
-        {/* <CKEditor
-          id="description"
-          name="description"
-          editor={ClassicEditor}
-          data={topicData.description}
-          onChange={handleEditorChange}
-        /> */}
-        <div>
-          <CustomButton onClick={() => setShowDescr((prev) => !prev)}>
-            {showDescr ? "Hide " : "Show "}Description
+        <div className="flex items-center gap-2 mb-2">
+          <label htmlFor="description" className="font-medium text-slate-700">Description:</label>
+          <CustomButton
+            className="text-sm"
+            onClick={() => setShowDescr((prev) => !prev)}
+          >
+            {showDescr ? "Hide" : "Show"} Description
           </CustomButton>
         </div>
         {showDescr && (
-          <div className="border border-gray-300 p-1.5 m-1.5 rounded">
-            {/* {ReactHtmlParser(topicData.description || "")} */}
-            <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html" }}/>
+          <div className="border border-slate-200 rounded-md p-3 mb-3 bg-slate-50 max-h-[40vh] overflow-y-auto">
+            <SmartPreviewer data={{ content: topicData.description || "", textOutputType: "html" }} />
           </div>
         )}
-
-        <div className="border border-gray-300 p-1.5 m-1.5 rounded">
+        <div className="border border-slate-200 rounded-md p-3 bg-white max-h-[50vh] overflow-y-auto">
           <SmartEditor
             preview={false}
             initialValue={topicData.smartContent}
@@ -149,44 +141,61 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         </div>
       </div>
 
-      <div className="flex items-center p-2.5 mb-4">
-        <label htmlFor="occurenceDate">Date:</label>
+      <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
+        <label htmlFor="occurenceDate" className="font-medium text-slate-700 sm:min-w-[7rem]">
+          Date:
+        </label>
         <input
           type="date"
           id="occurenceDate"
           name="occurenceDate"
           value={topicData.occurenceDate}
           onChange={handleInputChange}
+          className="w-full max-w-xs px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
-      <div>
-        <label htmlFor="tags">Add Tags:</label>
-        <Select
-          isMulti
-          name="tags"
-          options={tagOptions}
-          value={tagOptions.filter((tag) => topicData.tags.includes(tag.value))}
-          onChange={handleTagSelect}
-        />
+
+      <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-start">
+        <label htmlFor="tags" className="font-medium text-slate-700 sm:min-w-[7rem] pt-2">
+          Tags:
+        </label>
+        <div className="w-full min-w-0">
+          <Select
+            isMulti
+            name="tags"
+            id="tags"
+            options={tagOptions}
+            value={tagOptions.filter((tag) => topicData.tags.includes(tag.value))}
+            onChange={handleTagSelect}
+            classNamePrefix="react-select"
+          />
+        </div>
       </div>
-      <div className="mb-4">
-        {formErrors.length > 0 && (
-          <div>
-            {formErrors.map((error, index) => (
-              <span key={index} className="text-red-600 text-sm block mt-1.5">
-                {error}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="flex gap-2.5">
-        <CustomButton onClick={(event) => handleSaveTopic(event)}>
+
+      {formErrors.length > 0 && (
+        <div className="rounded-md bg-red-50 border border-red-200 p-3">
+          {formErrors.map((error, index) => (
+            <p key={index} className="text-red-700 text-sm">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
+
+      <div className="sticky bottom-0 left-0 right-0 z-10 flex flex-wrap gap-2 pt-4 pb-2 mt-6 border-t border-slate-200 bg-white shadow-[0_-4px_6px_-2px_rgba(0,0,0,0.05)]">
+        <CustomButton
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+          onClick={(event) => handleSaveTopic(event)}
+        >
           {topic ? "Save Changes" : "Create Topic"}
         </CustomButton>
-        <CustomButton onClick={() => onCancelEdit()}>Cancel</CustomButton>
+        <CustomButton
+          className="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-4 py-2 rounded-md text-sm font-medium"
+          onClick={() => onCancelEdit?.()}
+        >
+          Cancel
+        </CustomButton>
       </div>
-      {/* </form> */}
     </div>
   );
 }

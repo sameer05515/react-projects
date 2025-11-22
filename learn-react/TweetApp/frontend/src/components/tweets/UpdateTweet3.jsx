@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import GlobalConstants from "../../common/constants/globalConstants";
 import CustomButton from "../../common/components/custom-button/CustomButton";
+import { authenticatedFetch } from "../../common/service/authenticatedFetch";
 
 function UpdateTweet({ tweet, onUpdate }) {
   const [content, setContent] = useState(tweet.content);
@@ -10,7 +11,7 @@ function UpdateTweet({ tweet, onUpdate }) {
 
   const handleUpdateTweet = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/tweets/v1/${tweet._id}`, {
+      const response = await authenticatedFetch(`${BASE_URL}/tweets/v1/${tweet._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +30,7 @@ function UpdateTweet({ tweet, onUpdate }) {
 
   const handleUpdateComment = async (commentId, updatedText) => {
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${BASE_URL}/tweets/v1/${tweet._id}/comments/${commentId}`,
         {
           method: "PUT",
@@ -55,7 +56,7 @@ function UpdateTweet({ tweet, onUpdate }) {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/tweets/v1/${tweet._id}/comments`, {
+      const response = await authenticatedFetch(`${BASE_URL}/tweets/v1/${tweet._id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +80,7 @@ function UpdateTweet({ tweet, onUpdate }) {
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${BASE_URL}/tweets/v1/${tweet._id}/comments/${commentId}/nested`,
         {
           method: "POST",

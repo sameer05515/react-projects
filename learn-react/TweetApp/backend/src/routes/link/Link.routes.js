@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   createLink,
   getLinks,
+  getAllLinksFlat,
   getLinkByUniqueId,
   getLinkChildren,
   getAllAncestors,
@@ -87,6 +88,35 @@ router.get('', async (req, res) => {
       parentId: 1
     };
     const links = await getLinks(null, selectFields);
+    res.json(links);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
+ * /links/export/flat:
+ *   get:
+ *     summary: Export all links as a flat list (JSON)
+ *     tags: [Link]
+ *     responses:
+ *       200:
+ *         description: Links export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get links
+ */
+router.get('/export/flat', async (req, res) => {
+  try {
+    const links = await getAllLinksFlat();
+    res.setHeader('Content-Disposition', 'attachment; filename="links-export-flat.json"');
+    res.setHeader('Content-Type', 'application/json');
     res.json(links);
   } catch (error) {
     res.status(500).json({ error: error.message });

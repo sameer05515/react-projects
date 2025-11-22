@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Outlet,
@@ -17,18 +17,17 @@ import useDataFetching from "../../common/hooks/useDataFetching/v1";
 import {
   createTag,
   fetchTags,
-  getTagForUniqueId,
-  getTagsForComboOptions,
   selectAllFlatTags,
   selectNextTagUniqueId,
   selectPrevTagUniqueId,
+  selectTagsForComboOptions,
   selectTagsStateCombined,
   setSelectedTagUniqueId,
   updateTag,
 } from "../../redux/slices/tagsSlice";
 import TagCard, { TagLinkedItemType } from "./TagCard";
 import TagForm from "./TagForm";
-import type { AppDispatch, RootState } from "../../redux/store";
+import type { AppDispatch } from "../../redux/store"; // ✅ Removed unused RootState
 import TagListOldView from "./TagListOldView";
 
 const TagBase = () => {
@@ -67,7 +66,7 @@ const ListTags = () => {
   }, [dispatch]);
 
   // Use combined selector to optimize multiple useSelector calls
-  const { tags, loading: status, error, selectedId: selectedTagUniqueId } = useSelector(selectTagsStateCombined);
+  const { tags, status, error, selectedId: selectedTagUniqueId } = useSelector(selectTagsStateCombined); // ✅ Standardized: removed loading alias, use status directly
 
   useEffect(() => {
     if (selectedElementRef.current) {
@@ -89,11 +88,11 @@ const ListTags = () => {
     navigate(`${selectedItem.uniqueId}`);
   };
 
-  if (status === "pending") {
+  if (status === "loading") { // ✅ Standardized: pending -> loading
     return <div>Loading...</div>;
   }
 
-  if (status === "rejected" || error) {
+  if (status === "failed" || error) { // ✅ Standardized: rejected -> failed
     return <div>Error: {String(error)}</div>;
   }
 
@@ -145,7 +144,11 @@ const ViewTag = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
-  const url = `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`;
+  // ✅ Memoize URL to prevent infinite loops
+  const url = useMemo(
+    () => `${BACKEND_APPLICATION_BASE_URL}/tags/${id}`,
+    [id]
+  );
   const { data, refetch } = useDataFetching({ url });
   // const [searchParams] = useSearchParams();
   // const sectionId = searchParams.get("sectionId");
@@ -159,7 +162,8 @@ const ViewTag = () => {
       refetch();
       dispatch(setSelectedTagUniqueId(id));
     }
-  }, [id, dispatch, refetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, dispatch]); // Removed refetch from dependencies to prevent infinite loop
 
   const handleEdit = (_item: any) => {
     if (!id) return;
@@ -305,9 +309,14 @@ const AddSubTagComp = () => {
   // const treeStructuredTasks = useSelector((state) => state.tags.data);
   const { id } = useParams();
 
-  const tag = useSelector(getTagForUniqueId(id));
+  // ✅ Optimized: Use useMemo instead of factory selector
+  const allTags = useSelector(selectAllFlatTags);
+  const tag = useMemo(
+    () => allTags.find((t) => t.uniqueId === id) || null,
+    [allTags, id]
+  );
 
-  const tagOptions = useSelector(getTagsForComboOptions);
+  const tagOptions = useSelector(selectTagsForComboOptions);
 
   const handleTaskSelect = (selectedTags) => {
     // Extract the tag values and store them in the 'tags' property of the tag data
@@ -403,9 +412,12 @@ const MoveToAnotherTagParent = () => {
   // const treeStructuredTasks = useSelector((state) => state.tags.data);
   const { id } = useParams();
 
-  // const tags = prepareTasksQueue(treeStructuredTasks);
-  const tag = useSelector(getTagForUniqueId(id));
+  // ✅ Optimized: Use useMemo instead of factory selector
   const tags = useSelector(selectAllFlatTags);
+  const tag = useMemo(
+    () => tags.find((t) => t.uniqueId === id) || null,
+    [tags, id]
+  );
 
   //   const tag = tags?.find((t) => t.uniqueId === id);
 

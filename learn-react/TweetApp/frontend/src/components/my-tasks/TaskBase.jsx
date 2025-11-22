@@ -7,8 +7,7 @@ import {
   availableOutputTypes as SupportedTextFormats,
 } from "../../common/components/Smart/Editor/v3";
 import Tree from "../../common/components/tree-viewer/TreeViewer";
-import ViewSwitcher from "../../common/components/view-switcher/ViewSwitcher";
-import useDataFetching from "../../common/hooks/useDataFetching/v2";
+import { useReduxDataFetching } from "../../common/hooks/useDataFetching";
 import {
   fetchTasks,
   selectTasksStateCombined,
@@ -16,24 +15,41 @@ import {
 import TaskCardViewDashboard from "./sub-components/common/TaskCardViewDashboard";
 import { prepareTaskTitle } from "./sub-components/common/taskUtils";
 
+const VIEW_OPTIONS = [
+  { label: "Tree View", value: "tree" },
+  { label: "Card View", value: "card" },
+];
+
 const TaskBase = () => {
   const [selectedView, setSelectedView] = useState("tree");
-  const handleChangeView = (event) => {
-    setSelectedView(event.target.value);
-  };
 
   return (
-    <div>
-      <ViewSwitcher
-        viewList={[
-          { viewName: "tree", viewLabel: "Tree View" },
-          { viewName: "card", viewLabel: "Card View" },
-        ]}
-        onChange={handleChangeView}
-        selectedView={selectedView}
-      />
-      {selectedView === "tree" && <TaskTreeViewDashboard />}
-      {selectedView === "card" && <TaskCardViewDashboard />}
+    <div className="max-w-full mx-auto p-6 bg-gradient-to-br from-teal-50 via-white to-emerald-50/60 min-h-screen">
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <h2 className="text-3xl font-extrabold text-teal-900 tracking-tight drop-shadow-sm">
+          Task Dashboard
+        </h2>
+        <div className="flex gap-2">
+          {VIEW_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setSelectedView(opt.value)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedView === opt.value
+                  ? "bg-teal-600 text-white shadow-md ring-2 ring-teal-400/50"
+                  : "bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="bg-white/95 shadow-lg rounded-xl border border-teal-200/90 min-h-[500px] transition-shadow duration-300 overflow-hidden">
+        {selectedView === "tree" && <TaskTreeViewDashboard />}
+        {selectedView === "card" && <TaskCardViewDashboard />}
+      </div>
     </div>
   );
 };
@@ -42,54 +58,45 @@ const TaskTreeViewDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedElementRef = useRef(null);
-  const sidebarButtonClass =
-    "bg-gray-100 border border-gray-300 px-3 py-1 text-xs font-medium text-gray-800 rounded hover:bg-gray-200 transition";
 
-  // Fetch tasks data only when component mounts (with smart caching)
-  useDataFetching(
-    fetchTasks,
-    (state) => state.tasks
-  );
-
-  // Use combined selector to optimize multiple useSelector calls
+  useReduxDataFetching(fetchTasks, (state) => state.tasks);
   const { tasks, status, error, selectedId: selectedTaskUniqueId } = useSelector(selectTasksStateCombined);
 
   useEffect(() => {
-    if (selectedElementRef.current) {
-      // console.log(`selectedElementRef.current: ${selectedElementRef.current}`);
-      selectedElementRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "start",
-      });
-    }
+    selectedElementRef.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
   }, [selectedTaskUniqueId]);
 
-  const handleButtonClick = (path) => {
-    navigate(path);
-  };
-
-  const handleLinkSelection = (selectedItem) => {
-    navigate(`${selectedItem.uniqueId}`);
-  };
+  const goTo = (path) => navigate(path);
+  const selectTask = (item) => navigate(String(item.uniqueId));
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[320px] p-8 text-teal-700 font-medium">
+        Loading...
+      </div>
+    );
   }
 
   if (status === "failed") {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="rounded-xl border border-red-300 bg-red-50 p-6 text-red-700 font-medium">
+        Error: {error}
+      </div>
+    );
   }
 
+  const btnClass =
+    "bg-teal-50 border border-teal-300 px-3 py-1.5 text-xs font-medium text-teal-800 rounded-lg hover:bg-teal-100 focus:ring-2 focus:ring-teal-400 focus:ring-offset-1 transition-colors";
+
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <div className="lg:w-72 lg:flex-shrink-0">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+    <div className="flex flex-col gap-6 lg:flex-row p-4">
+      <aside className="lg:w-72 lg:flex-shrink-0">
+        <div className="rounded-xl border border-teal-200 bg-white p-4 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
           <div className="mb-4 flex flex-wrap gap-2">
-            <CustomButton className={sidebarButtonClass} onClick={() => handleButtonClick("create")}>
+            <CustomButton className={btnClass} onClick={() => goTo("create")}>
               Create Task
             </CustomButton>
-            <CustomButton className={sidebarButtonClass} onClick={() => dispatch(fetchTasks())}>
+            <CustomButton className={btnClass} onClick={() => dispatch(fetchTasks())}>
               Refresh
             </CustomButton>
           </div>
@@ -99,10 +106,13 @@ const TaskTreeViewDashboard = () => {
             renderNode={(t) => (
               <span
                 ref={selectedTaskUniqueId === t.uniqueId ? selectedElementRef : null}
-                className={`block cursor-pointer py-1 text-xs ${
-                  selectedTaskUniqueId && selectedTaskUniqueId === t.uniqueId ? "font-semibold text-red-600 text-sm" : "text-gray-700"
+                role="button"
+                tabIndex={0}
+                className={`block cursor-pointer rounded py-1.5 px-1 text-xs transition-colors hover:bg-teal-50 ${
+                  selectedTaskUniqueId === t.uniqueId ? "font-semibold text-teal-700 text-sm bg-teal-100" : "text-teal-800"
                 }`}
-                onClick={() => handleLinkSelection(t)}
+                onClick={() => selectTask(t)}
+                onKeyDown={(e) => e.key === "Enter" && selectTask(t)}
               >
                 <SmartPreviewer
                   data={{
@@ -115,33 +125,14 @@ const TaskTreeViewDashboard = () => {
             )}
           />
         </div>
-      </div>
-      <div className="flex-1">
-        <div className="min-h-[24rem] rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+      </aside>
+      <main className="flex-1 min-w-0">
+        <div className="min-h-[24rem] rounded-xl border border-teal-200 bg-white p-6 shadow-sm">
           <Outlet />
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-// const prepareTasksQueue = (list, prevQueue = []) => {
-//     let queue = [...prevQueue];
-//     if (list && list.length > 0) {
-//         list.forEach(t => {
-//             queue = [...queue, { uniqueId: t.uniqueId, title: t.title, children: t.children, _id: t._id }];
-//             const childQ = prepareTasksQueue(t.children, []);
-//             queue = [...queue, ...childQ];
-//         })
-//     }
-//     return queue;
-// };
-
-
 export default TaskBase;
-// export {
-//   // AddSubTaskRouterPage,
-//   // CreateTaskRouterPage,
-//   // EditTaskRouterPage,
-//   // ViewTaskRouterPage,
-// };

@@ -191,6 +191,81 @@ async function getAllQuestions() {
   }
 }
 
+/**
+ * Flatten tree of questions into a single array (for export).
+ * Each item has uniqueId, name, heading, parentId, linkedCategoryId, tags, rating, smartContent, order, ancestors, answers.
+ */
+function flattenQuestionsForExport(tree, ancestors = [], answersByQuestionId = {}) {
+  if (!tree || !Array.isArray(tree)) return [];
+  const list = [];
+  for (const node of tree) {
+    const item = {
+      uniqueId: node.uniqueId,
+      name: node.name,
+      heading: node.heading != null ? node.heading : "",
+      parentId: node.parentId || null,
+      linkedCategoryId: node.linkedCategoryId != null ? node.linkedCategoryId : "",
+      tags: node.tags || [],
+      rating: node.rating != null ? node.rating : null,
+      smartContent: node.smartContent != null ? node.smartContent : null,
+      order: node.order != null ? node.order : 0,
+      ancestors: ancestors.map((a) => ({ uniqueId: a.uniqueId, name: a.name })),
+      answers: answersByQuestionId[node.uniqueId] || [],
+    };
+    list.push(item);
+    if (node.children && node.children.length > 0) {
+      const nextAncestors = [...ancestors, { uniqueId: node.uniqueId, name: node.name }];
+      list.push(...flattenQuestionsForExport(node.children, nextAncestors, answersByQuestionId));
+    }
+  }
+  return list;
+}
+
+async function getAllQuestionsFlat() {
+  const exportSelectFields = {
+    uniqueId: 1,
+    name: 1,
+    heading: 1,
+    parentId: 1,
+    linkedCategoryId: 1,
+    tags: 1,
+    rating: 1,
+    smartContent: 1,
+    order: 1,
+  };
+  const tree = await getQuestionsForParentId(null, exportSelectFields);
+  const answersByQuestionId = await getAnswersGroupedByQuestionId();
+  return flattenQuestionsForExport(tree, [], answersByQuestionId);
+}
+
+async function getAnswersGroupedByQuestionId() {
+  const selectFields = {
+    uniqueId: 1,
+    name: 1,
+    heading: 1,
+    linkedQuestionsId: 1,
+    smartContent: 1,
+    order: 1,
+    rating: 1,
+  };
+  const answers = await Answer.find({}).select(selectFields).lean();
+  const map = {};
+  for (const a of answers) {
+    const qid = a.linkedQuestionsId || "";
+    if (!map[qid]) map[qid] = [];
+    map[qid].push({
+      uniqueId: a.uniqueId,
+      name: a.name != null ? a.name : "",
+      heading: a.heading != null ? a.heading : "",
+      linkedQuestionsId: a.linkedQuestionsId || "",
+      smartContent: a.smartContent != null ? a.smartContent : null,
+      order: a.order != null ? a.order : 0,
+      rating: a.rating != null ? a.rating : null,
+    });
+  }
+  return map;
+}
+
 // Recursive function to get all ancestors of a Question
 async function getAllAncestorQuestions(parentId, ancestors = []) {
   if (!parentId) {
@@ -293,11 +368,13 @@ const getQuestionByUniqueId = async (uniqueId) => {
 };
 
 const updateLastRevisedOfQuestionByUniqueId = async (uniqueId) => {
-  throw new Error("Mehod not implemented yet!!");
-  //   let question = await Question.findOne({ uniqueId });
-  //   if (!question) {
-  //     throw new Error(`Question not found for uniqueId: ${uniqueId}`);
-  //   }
+  const question = await Question.findOne({ uniqueId });
+  if (!question) {
+    throw new Error(`Question not found for uniqueId: ${uniqueId}`);
+  }
+  question.lastRevisedOn = new Date();
+  await question.save();
+  return question;
 };
 
 const updateQuestionByUniqueId = async (uniqueId, questionData) => {
@@ -474,6 +551,7 @@ module.exports = {
 
   createQuestion,
   getAllQuestions,
+  getAllQuestionsFlat,
   getQuestionByUniqueId,
   getQuestionByCategoryIdAndQuesId,
   updateQuestionByUniqueId,

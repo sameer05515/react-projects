@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   createTag,
   getAllTags,
+  getAllTagsFlat,
   getTagById,
   updateTagById,
   deleteTagById,
@@ -149,6 +150,35 @@ router.get('/aggregation-results', async (req, res)=>{
     res.status(500).json({ error: error.message });
   }
 })
+
+/**
+ * @swagger
+ * /tags/export/flat:
+ *   get:
+ *     summary: Export all tags as a flat list (JSON)
+ *     tags: [Tag]
+ *     responses:
+ *       200:
+ *         description: Tags export as flat array
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       500:
+ *         description: Failed to get tags
+ */
+router.get('/export/flat', async (req, res) => {
+  try {
+    const tags = await getAllTagsFlat();
+    res.setHeader('Content-Disposition', 'attachment; filename="tags-export-flat.json"');
+    res.setHeader('Content-Type', 'application/json');
+    res.json(tags);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * @swagger

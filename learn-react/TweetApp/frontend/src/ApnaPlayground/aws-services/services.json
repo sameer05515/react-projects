@@ -1,0 +1,1092 @@
+[
+    {
+      "name": "Compute",
+      "purpose": "Virtual machines, serverless compute, on-demand processing",
+      "services": [
+        {
+          "name": "Amazon EC2",
+          "description": "Elastic Compute Cloud provides resizable virtual servers in the cloud.\nLaunch instances with various operating systems and configure networking, storage, and security.\nChoose from a wide range of instance types optimized for different use cases including compute, memory, storage, and GPU workloads.\nScale capacity up or down automatically based on demand with built-in auto-scaling capabilities.\nBenefit from pay-as-you-go pricing with no upfront costs or long-term commitments required."
+        },
+        {
+          "name": "Amazon EC2 Auto Scaling",
+          "description": "Automatically adjusts EC2 capacity to maintain steady performance.\nEnsures applications have the right amount of compute resources at all times.\nResponds to changing application demand by automatically adding or removing EC2 instances.\nConfigure scaling policies based on metrics like CPU utilization, network traffic, or custom CloudWatch metrics.\nMaintains application availability during traffic spikes while minimizing costs during low-demand periods."
+        },
+        {
+          "name": "Amazon Lightsail",
+          "description": "Simplified virtual private server (VPS) service for developers.\nIncludes everything needed to launch applications quickly at a low price.\nProvides virtual servers, managed databases, load balancers, and static IP addresses in a single package.\nPerfect for simple web applications, development environments, and small business websites.\nIncludes pre-configured application stacks and one-click deployment options for popular platforms."
+        },
+        {
+          "name": "AWS Batch",
+          "description": "Fully managed batch processing service for running large-scale parallel jobs.\nDynamically provisions compute resources based on workload volume.\nEliminates the need to install and manage batch computing software or server clusters.\nAutomatically scales compute resources to match the volume and requirements of submitted jobs.\nOptimizes job distribution across EC2 instances and Spot Instances to reduce costs."
+        },
+        {
+          "name": "AWS Elastic Beanstalk",
+          "description": "Platform-as-a-Service for deploying and scaling web applications.\nHandles capacity provisioning, load balancing, and application health monitoring.\nSupports multiple programming languages and frameworks including Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker.\nAutomatically handles deployment details including capacity provisioning, load balancing, auto-scaling, and application health monitoring.\nMaintains full control over AWS resources while simplifying application deployment and management."
+        },
+        {
+          "name": "AWS Lambda",
+          "description": "Serverless compute service that runs code in response to events.\nPay only for compute time consumed with no server management required.\nAutomatically scales from a few requests per day to thousands per second with no configuration needed.\nSupports multiple programming languages including Node.js, Python, Java, C#, Go, PowerShell, and Ruby.\nIntegrates seamlessly with other AWS services to build serverless applications and microservices architectures."
+        },
+        {
+          "name": "AWS Outposts",
+          "description": "Fully managed service that extends AWS infrastructure to on-premises locations.\nRun AWS services locally while maintaining a consistent hybrid experience.\nDelivers AWS infrastructure and services to virtually any on-premises or edge location for a truly consistent hybrid experience.\nUse the same AWS APIs, tools, and services on-premises as in the cloud for seamless operations.\nIdeal for workloads that require low latency, local data processing, or data residency requirements."
+        },
+        {
+          "name": "AWS Serverless Application Repository",
+          "description": "Repository of serverless applications published by developers and organizations.\nDeploy pre-built applications or publish your own for others to use.\nDiscover and deploy serverless applications and components built by the AWS community.\nBrowse applications by category including data processing, web applications, and developer tools.\nShare your own serverless applications with the community or keep them private for your organization."
+        },
+        {
+          "name": "AWS Snow Family",
+          "description": "Physical devices for data migration and edge computing in offline environments.\nTransfer petabytes of data securely when network transfer is impractical."
+        },
+        {
+          "name": "AWS Wavelength",
+          "description": "Ultra-low latency compute and storage services embedded in 5G networks.\nEnables developers to build applications requiring single-digit millisecond latencies.\nBrings AWS services to the edge of 5G networks, minimizing latency for mobile and connected devices.\nIdeal for real-time gaming, interactive live video streaming, augmented and virtual reality applications.\nProvides the same AWS APIs and tools you're familiar with, deployed at the edge of the 5G network."
+        },
+        {
+          "name": "VMware Cloud on AWS",
+          "description": "Integrated cloud service that brings VMware's Software-Defined Data Center to AWS.\nRun VMware workloads natively on AWS infrastructure with consistent operations.\nDelivers a fully managed VMware Software-Defined Data Center running on dedicated, elastic, bare-metal AWS infrastructure.\nEnables seamless migration of VMware workloads to AWS without re-architecting applications or retraining staff.\nProvides consistent infrastructure and operations across on-premises and cloud environments using familiar VMware tools."
+        }
+      ]
+    },
+    {
+      "name": "Containers",
+      "purpose": "Run, orchestrate, and manage containerized workloads",
+      "services": [
+        {
+          "name": "Amazon ECR",
+          "description": "Fully managed Docker container registry for storing and managing container images.\nIntegrates with Docker CLI and provides secure, scalable image storage.\nAutomatically encrypts images at rest and scans them for vulnerabilities using Amazon ECR image scanning.\nProvides lifecycle policies to automate image cleanup and reduce storage costs.\nSeamlessly integrates with ECS, EKS, and other container services for streamlined deployment workflows."
+        },
+        {
+          "name": "Amazon ECS",
+          "description": "Fully managed container orchestration service for running Docker containers.\nHandles cluster management, scheduling, and service discovery automatically.\nSupports both EC2 and Fargate launch types for flexible compute options.\nProvides built-in integration with AWS services including Application Load Balancer, CloudWatch, and IAM.\nEnables you to run and scale containerized applications without managing the underlying infrastructure."
+        },
+        {
+          "name": "Amazon ECS Anywhere",
+          "description": "Run ECS tasks on customer-managed infrastructure outside of AWS.\nMaintain consistent container management across on-premises and cloud environments.\nExtends ECS control plane to manage container workloads on your own infrastructure.\nUse the same ECS APIs, CLI commands, and console to manage containers both in AWS and on-premises.\nIdeal for hybrid cloud deployments where you need consistent container orchestration across environments."
+        },
+        {
+          "name": "Amazon EKS",
+          "description": "Managed Kubernetes service for running containerized applications.\nProvides high availability, security, and scalability without managing control plane.\nAutomatically manages the Kubernetes control plane including API servers, etcd persistence layer, and scheduler.\nProvides automatic version upgrades and patching for the Kubernetes control plane.\nIntegrates with AWS IAM for authentication and authorization, and supports standard Kubernetes tooling."
+        },
+        {
+          "name": "Amazon EKS Anywhere",
+          "description": "Deployment option for running EKS clusters on your own infrastructure.\nCreate and operate Kubernetes clusters on-premises with consistent tooling."
+        },
+        {
+          "name": "Amazon EKS Distro",
+          "description": "Kubernetes distribution based on the same open-source code used in EKS.\nUse the same Kubernetes version and components that power Amazon EKS.\nProvides a Kubernetes distribution that you can use to create reliable and secure Kubernetes clusters.\nIncludes the same Kubernetes components, versions, and patches that power Amazon EKS.\nAvailable as open-source software that you can use to build and operate Kubernetes clusters anywhere."
+        },
+        {
+          "name": "AWS App2Container",
+          "description": "Command-line tool for modernizing .NET and Java applications into containers.\nAutomatically containerizes applications without code changes.\nAnalyzes your application and generates container artifacts including Dockerfiles and deployment configurations.\nHelps migrate monolithic applications to containerized microservices architectures.\nSupports both .NET Framework and .NET Core applications, as well as Java applications running on Tomcat."
+        },
+        {
+          "name": "AWS Fargate",
+          "description": "Serverless compute engine for containers that works with ECS and EKS.\nRun containers without managing servers or clusters."
+        },
+        {
+          "name": "Red Hat OpenShift Service on AWS",
+          "description": "Managed OpenShift service jointly operated by Red Hat and AWS.\nDeploy containerized applications using Kubernetes with enterprise-grade features.\nProvides a fully managed OpenShift service with automated operations, patching, and upgrades.\nIncludes enterprise Kubernetes features like operators, service mesh, and CI/CD pipelines.\nCombines Red Hat's enterprise Kubernetes platform with AWS's cloud infrastructure and services."
+        }
+      ]
+    },
+    {
+      "name": "Databases",
+      "purpose": "Managed relational, NoSQL, graph, time-series, and caching databases",
+      "services": [
+        {
+          "name": "Amazon Aurora",
+          "description": "MySQL and PostgreSQL-compatible relational database with cloud-native architecture.\nDelivers up to five times better performance than standard MySQL with automatic scaling.\nAutomatically scales storage from 10GB to 128TB with no downtime or performance impact.\nProvides up to 15 read replicas with sub-second replication lag for read scaling.\nIncludes built-in backup, point-in-time recovery, and continuous backup to S3 with no performance impact."
+        },
+        {
+          "name": "Amazon Aurora Serverless V2",
+          "description": "On-demand auto-scaling configuration for Aurora databases.\nAutomatically adjusts capacity based on application needs in seconds."
+        },
+        {
+          "name": "Amazon DocumentDB",
+          "description": "Fully managed MongoDB-compatible document database service.\nSupports MongoDB workloads with automatic backups and multi-AZ replication.\nProvides MongoDB 4.0 API compatibility, allowing you to use existing MongoDB drivers and tools.\nAutomatically scales storage from 10GB to 64TB with no downtime or performance impact.\nIncludes automatic backups, point-in-time recovery, and encryption at rest and in transit."
+        },
+        {
+          "name": "Amazon DynamoDB",
+          "description": "Fully managed NoSQL database service with single-digit millisecond latency.\nProvides built-in security, backup, restore, and in-memory caching capabilities."
+        },
+        {
+          "name": "Amazon ElastiCache",
+          "description": "Fully managed in-memory caching service supporting Redis and Memcached.\nImproves application performance by retrieving data from fast, managed memory stores."
+        },
+        {
+          "name": "Amazon Keyspaces",
+          "description": "Fully managed Apache Cassandra-compatible database service.\nBuild applications with the same Cassandra application code and tools you use today.\nProvides serverless, scalable, and highly available Apache Cassandra-compatible database.\nAutomatically scales tables up and down based on application traffic with no capacity planning required.\nIncludes built-in encryption, backup, and point-in-time recovery with no performance impact."
+        },
+        {
+          "name": "Amazon Neptune",
+          "description": "Fully managed graph database service optimized for storing and querying relationships.\nSupports property graph and RDF models with millisecond query performance.\nIdeal for applications that need to navigate complex relationships like social networks, recommendation engines, and fraud detection.\nSupports both Gremlin and SPARQL query languages for flexible graph querying.\nProvides automatic backups, point-in-time recovery, and encryption at rest with high availability across multiple Availability Zones."
+        },
+        {
+          "name": "Amazon QLDB",
+          "description": "Fully managed ledger database that provides transparent, immutable, and cryptographically verifiable transaction log.\nMaintains a complete and verifiable history of all changes made to your application data."
+        },
+        {
+          "name": "Amazon RDS",
+          "description": "Fully managed relational database service supporting multiple database engines.\nAutomates administrative tasks like hardware provisioning and database setup.\nSupports MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server database engines.\nAutomates time-consuming administration tasks including backups, software patching, monitoring, and scaling.\nProvides high availability with Multi-AZ deployments and read replicas for improved performance and durability."
+        },
+        {
+          "name": "Amazon RDS on VMware",
+          "description": "Managed database service for VMware environments.\nDeploy managed databases in your on-premises VMware vSphere clusters.\nBrings the same managed database experience you have in AWS to your on-premises VMware environment.\nAutomates database provisioning, patching, backup, recovery, and monitoring in your VMware infrastructure.\nSupports MySQL, PostgreSQL, and Oracle database engines with the same APIs and management console as RDS in AWS."
+        },
+        {
+          "name": "Amazon Redshift",
+          "description": "Fully managed petabyte-scale data warehouse service for analytics.\nQuery data across data warehouses, operational databases, and data lakes using SQL."
+        },
+        {
+          "name": "Amazon Timestream",
+          "description": "Fully managed time-series database service for IoT and operational applications.\nStores and analyzes trillions of time-series data points per day with built-in analytics.\nAutomatically scales to handle millions of writes per second and petabytes of data.\nProvides built-in time-series analytics functions for aggregation, interpolation, and smoothing.\nOffers cost-effective storage with automatic data lifecycle management that moves data to lower-cost storage tiers."
+        },
+        {
+          "name": "AWS Database Migration Service",
+          "description": "Service for migrating databases to AWS with minimal downtime.\nSupports homogeneous and heterogeneous migrations between database platforms."
+        },
+        {
+          "name": "AWS Glue",
+          "description": "Serverless ETL service for preparing and transforming data for analytics.\nDiscovers, catalogs, and transforms data from various sources automatically."
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "purpose": "Object, block, file storage and backup/archival solutions",
+      "services": [
+        {
+          "name": "Amazon S3",
+          "description": "Object storage service offering industry-leading scalability, data availability, and security.\nStore and retrieve any amount of data from anywhere on the web with 99.999999999% durability.\nProvides multiple storage classes designed for different use cases including Standard, Intelligent-Tiering, Glacier, and Deep Archive.\nIncludes features like versioning, lifecycle policies, cross-region replication, and server-side encryption.\nIntegrates seamlessly with other AWS services and supports REST APIs for easy integration with applications."
+        },
+        {
+          "name": "Amazon EBS",
+          "description": "High-performance block storage volumes for use with EC2 instances.\nProvides persistent storage that persists independently from instance lifecycle.\nSupports multiple volume types optimized for different workloads including General Purpose SSD, Provisioned IOPS SSD, and Throughput Optimized HDD.\nEnables you to create point-in-time snapshots for backup and disaster recovery purposes.\nProvides encryption at rest and in transit with automatic encryption for all new volumes and snapshots."
+        },
+        {
+          "name": "Amazon EFS",
+          "description": "Fully managed elastic file system that grows and shrinks automatically.\nProvides shared file storage for EC2 instances with standard file system semantics.\nScales automatically to petabytes without disrupting applications, growing and shrinking as you add and remove files.\nSupports the Network File System (NFS) protocol and works seamlessly with EC2 instances, containers, and serverless applications.\nProvides multiple performance modes and throughput modes to optimize for different use cases including general purpose and max I/O."
+        },
+        {
+          "name": "Amazon FSx for Lustre",
+          "description": "Fully managed high-performance file system optimized for compute-intensive workloads.\nDelivers sub-millisecond latencies and up to hundreds of GB/s of throughput.\nProvides a fully managed Lustre file system that integrates seamlessly with S3 for high-performance computing workloads.\nIdeal for machine learning, media processing, financial modeling, and other compute-intensive applications.\nAutomatically backs up file system data to S3 and provides encryption at rest and in transit."
+        },
+        {
+          "name": "Amazon FSx for Windows File Server",
+          "description": "Fully managed native Windows file system built on Windows Server.\nProvides shared file storage with native Windows file system features and compatibility.\nSupports the SMB protocol and Active Directory integration for seamless Windows application compatibility.\nProvides automatic daily backups and point-in-time restore capabilities with no performance impact.\nScales automatically to meet your storage needs from 32GB to 64TB with high availability across multiple Availability Zones."
+        },
+        {
+          "name": "Amazon S3 Glacier",
+          "description": "Secure, durable, and low-cost storage classes for data archiving.\nRetrieve data in minutes to hours with retrieval options ranging from minutes to days.\nProvides three retrieval options: Expedited (1-5 minutes), Standard (3-5 hours), and Bulk (5-12 hours).\nDesigned for long-term data archival with 99.999999999% durability and automatic encryption.\nIdeal for backup, disaster recovery, and compliance use cases where data is rarely accessed but must be retained."
+        },
+        {
+          "name": "AWS Backup",
+          "description": "Centralized backup service for protecting data across AWS services.\nAutomates backup scheduling, retention management, and backup lifecycle policies.\nProvides a unified backup solution for AWS services including EC2, EBS, RDS, DynamoDB, EFS, and Storage Gateway.\nEnables you to centrally manage backup policies and automate backup creation across your AWS environment.\nIncludes backup monitoring, compliance reporting, and cross-region backup capabilities for disaster recovery."
+        },
+        {
+          "name": "AWS Snow Family",
+          "description": "Physical devices for data migration and edge computing in offline environments.\nTransfer petabytes of data securely when network transfer is impractical.\nIncludes Snowball Edge for data transfer and edge computing, and Snowmobile for exabyte-scale data migration.\nProcess data locally at the edge with compute and storage capabilities before transferring to AWS.\nProvides tamper-resistant enclosures and end-to-end encryption to ensure data security during transport."
+        },
+        {
+          "name": "AWS Storage Gateway",
+          "description": "Hybrid cloud storage service connecting on-premises environments to AWS cloud storage.\nProvides seamless integration between on-premises IT environments and AWS storage infrastructure.\nSupports three gateway types: File Gateway for S3, Volume Gateway for block storage, and Tape Gateway for backup.\nEnables you to use AWS cloud storage while maintaining on-premises applications and workflows.\nProvides low-latency access to your data with automatic data encryption and compression during transfer."
+        },
+        {
+          "name": "CloudEndure Disaster Recovery",
+          "description": "Automated disaster recovery service for continuous backup and rapid recovery.\nMinimizes downtime and data loss by enabling fast recovery of physical, virtual, and cloud servers.\nProvides continuous replication of your servers to AWS with minimal impact on production workloads.\nEnables recovery point objectives (RPO) of seconds and recovery time objectives (RTO) of minutes.\nSupports recovery of physical, virtual, and cloud-based servers to AWS with automated failover and failback capabilities."
+        }
+      ]
+    },
+    {
+      "name": "Networking & Content Delivery",
+      "purpose": "Network isolation, DNS, CDN, load balancing, connectivity",
+      "services": [
+        {
+          "name": "Amazon VPC",
+          "description": "Isolated virtual network in the AWS cloud where you launch AWS resources.\nProvides complete control over virtual networking environment including IP address ranges and subnets.\nEnables you to create a logically isolated section of the AWS cloud where you can launch AWS resources in a virtual network.\nConfigure route tables, network gateways, and security settings to control network traffic.\nSupports both IPv4 and IPv6 addressing and provides multiple connectivity options including internet gateways, NAT gateways, and VPN connections."
+        },
+        {
+          "name": "Amazon API Gateway",
+          "description": "Fully managed service for creating, publishing, and managing REST and WebSocket APIs.\nHandles traffic management, authorization, monitoring, and API version management.\nSupports RESTful APIs and WebSocket APIs for real-time two-way communication applications.\nProvides built-in features including request throttling, caching, and API key management.\nIntegrates seamlessly with AWS Lambda, EC2, and other AWS services to build serverless and microservices architectures."
+        },
+        {
+          "name": "Amazon CloudFront",
+          "description": "Global content delivery network (CDN) service for fast content delivery.\nDelivers data, videos, applications, and APIs to viewers with low latency and high transfer speeds."
+        },
+        {
+          "name": "Amazon Route 53",
+          "description": "Highly available and scalable cloud Domain Name System (DNS) web service.\nRoutes end users to internet applications by translating domain names into IP addresses.\nProvides highly available and scalable DNS with automatic failover and health checking capabilities.\nSupports multiple routing policies including simple, weighted, latency-based, geolocation, and failover routing.\nIncludes domain registration services and integrates with other AWS services for seamless DNS management."
+        },
+        {
+          "name": "AWS App Mesh",
+          "description": "Service mesh that provides application-level networking for microservices.\nStandardizes how services communicate and provides end-to-end visibility and traffic controls.\nProvides a service mesh that makes it easy to monitor and control microservices running on AWS.\nEnables you to implement consistent traffic management, security, and observability across your microservices.\nWorks with services running on EC2, ECS, EKS, and Fargate without requiring code changes to your applications."
+        },
+        {
+          "name": "AWS Cloud Map",
+          "description": "Cloud resource discovery service for microservices applications.\nCreates custom names for application resources and maintains updated location information.\nEnables service discovery for cloud resources including containers, databases, and queues.\nAutomatically updates service registries when resources are added, removed, or changed.\nWorks seamlessly with ECS, EKS, and EC2 to simplify service discovery in microservices architectures."
+        },
+        {
+          "name": "AWS Direct Connect",
+          "description": "Dedicated network connection from your premises to AWS.\nReduces network costs, increases bandwidth throughput, and provides more consistent network experience.\nEstablishes a dedicated network connection from your premises to AWS, bypassing the public internet.\nProvides more consistent network performance and reduced bandwidth costs compared to internet-based connections.\nSupports connection speeds from 50 Mbps to 100 Gbps with multiple connection options for redundancy."
+        },
+        {
+          "name": "AWS Global Accelerator",
+          "description": "Network service that improves availability and performance of applications.\nRoutes traffic to optimal endpoints based on health, geography, and routing policies.\nUses AWS's global network infrastructure to improve the availability and performance of your applications.\nAutomatically routes traffic to the optimal endpoint based on health, geography, and routing policies.\nProvides static IP addresses that act as a fixed entry point to your applications, simplifying client configuration."
+        },
+        {
+          "name": "AWS PrivateLink",
+          "description": "Provides private connectivity between VPCs and AWS services.\nKeeps traffic within the AWS network and doesn't traverse the public internet.\nEnables you to privately access services over AWS's private network without exposing traffic to the public internet.\nSimplifies network architecture by eliminating the need for internet gateways, NAT devices, or VPN connections.\nProvides secure connectivity between VPCs, AWS services, and on-premises applications using private IP addresses."
+        },
+        {
+          "name": "AWS Transit Gateway",
+          "description": "Network transit hub for connecting VPCs and on-premises networks.\nSimplifies network management and reduces operational costs with centralized connectivity.\nActs as a central hub to connect multiple VPCs and on-premises networks through a single gateway.\nSimplifies network architecture by eliminating the need for point-to-point connections between networks.\nSupports route tables, multicast, and VPN connections for flexible network routing and management."
+        },
+        {
+          "name": "AWS VPN",
+          "description": "Managed VPN service for creating secure connections between networks.\nProvides site-to-site VPN connections between your on-premises networks and AWS VPCs.\nEnables you to establish secure IPsec VPN connections between your on-premises networks and AWS VPCs.\nSupports both AWS managed VPN and third-party VPN solutions for flexible connectivity options.\nProvides automatic failover and high availability with multiple VPN tunnels for redundancy."
+        },
+        {
+          "name": "Elastic Load Balancing",
+          "description": "Automatically distributes incoming application traffic across multiple targets.\nEnsures high availability and fault tolerance for your applications.\nSupports three types of load balancers: Application Load Balancer, Network Load Balancer, and Classic Load Balancer.\nAutomatically distributes incoming traffic across multiple targets including EC2 instances, containers, and IP addresses.\nProvides health checking, SSL/TLS termination, and integration with Auto Scaling for automatic capacity management."
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "purpose": "Data processing, querying, ETL, streaming analytics",
+      "services": [
+        {
+          "name": "Amazon Athena",
+          "description": "Interactive query service for analyzing data in S3 using standard SQL.\nNo infrastructure to manage and pay only for queries you run.\nEnables you to analyze data directly in S3 using standard SQL without loading data into a database.\nSupports various data formats including CSV, JSON, ORC, Avro, and Parquet with automatic schema inference.\nProvides serverless query execution with automatic scaling and pay-per-query pricing model."
+        },
+        {
+          "name": "Amazon CloudSearch",
+          "description": "Managed search service for websites and applications.\nProvides fast, highly scalable, and cost-effective search capabilities without managing infrastructure.\nProvides a managed search service that makes it easy to set up, manage, and scale a search solution.\nSupports 34 languages and provides features like autocomplete, geospatial search, and faceted search.\nAutomatically scales to handle search traffic and provides built-in integration with other AWS services."
+        },
+        {
+          "name": "Amazon Elasticsearch Service",
+          "description": "Managed service for deploying, operating, and scaling Elasticsearch clusters.\nMakes it easy to search, analyze, and visualize data in real-time.\nProvides a fully managed Elasticsearch service with automatic software patching and monitoring.\nSupports open-source Elasticsearch and Kibana for search, analytics, and visualization.\nIncludes features like automated snapshots, VPC support, and integration with CloudWatch for monitoring."
+        },
+        {
+          "name": "Amazon EMR",
+          "description": "Cloud big data platform for processing vast amounts of data using open-source tools.\nRun Apache Spark, HBase, Presto, Flink, and other frameworks on managed Hadoop clusters.\nProvides a managed Hadoop framework that makes it easy to process vast amounts of data using open-source tools.\nSupports popular frameworks including Apache Spark, HBase, Presto, Flink, and Hive.\nAutomatically provisions and scales clusters based on workload requirements with pay-as-you-go pricing."
+        },
+        {
+          "name": "Amazon Kinesis",
+          "description": "Platform for streaming data on AWS with real-time analytics capabilities.\nCollect, process, and analyze streaming data at any scale with sub-second latency.\nIncludes multiple services: Kinesis Data Streams for real-time data streaming, Kinesis Data Firehose for data delivery, and Kinesis Data Analytics for real-time processing.\nEnables you to build real-time applications that process and analyze streaming data as it arrives.\nScales automatically to handle any amount of streaming data with pay-as-you-go pricing."
+        },
+        {
+          "name": "Amazon MSK",
+          "description": "Fully managed Apache Kafka service for building and running applications.\nProcess streaming data in real-time with high throughput and low latency.\nProvides a fully managed Apache Kafka service that makes it easy to build and run applications that use Apache Kafka.\nAutomatically provisions and manages Kafka clusters, handling software updates and patching.\nEnables you to migrate existing Apache Kafka applications to AWS without code changes."
+        },
+        {
+          "name": "Amazon Redshift",
+          "description": "Fully managed petabyte-scale data warehouse service for analytics.\nQuery data across data warehouses, operational databases, and data lakes using SQL.\nDelivers fast query performance using columnar storage technology and parallel query execution.\nScales from a few hundred gigabytes to a petabyte or more with automatic backups and encryption.\nIntegrates with popular business intelligence tools and supports standard SQL for easy data analysis."
+        },
+        {
+          "name": "Amazon QuickSight",
+          "description": "Cloud-powered business intelligence service for building visualizations and dashboards.\nDelivers insights to everyone in your organization with interactive dashboards.\nEnables you to create and publish interactive dashboards that can be accessed from any device.\nProvides machine learning-powered insights including anomaly detection and forecasting.\nOffers pay-per-session pricing that makes it cost-effective to share insights with thousands of users."
+        },
+        {
+          "name": "AWS Data Exchange",
+          "description": "Data marketplace service for finding, subscribing to, and using third-party data.\nMakes it easy to find and use data products from qualified data providers.\nProvides a data marketplace where you can find, subscribe to, and use third-party data products.\nEnables data providers to publish and monetize their data products on AWS.\nAutomatically manages data delivery to your S3 buckets with automatic updates when new data becomes available."
+        },
+        {
+          "name": "AWS Data Pipeline",
+          "description": "Web service for orchestrating and automating data movement and transformation.\nDefines, schedules, and manages recurring data processing workflows.\nEnables you to reliably process and move data between different AWS compute and storage services.\nProvides a drag-and-drop console for creating data processing workflows without writing code.\nHandles scheduling, error handling, retry logic, and dependencies automatically."
+        },
+        {
+          "name": "AWS Glue",
+          "description": "Serverless ETL service for preparing and transforming data for analytics.\nDiscovers, catalogs, and transforms data from various sources automatically.\nAutomatically discovers and catalogs data from various sources including S3, RDS, and on-premises databases.\nGenerates ETL code in Python or Scala to transform and move data between data stores.\nProvides a serverless environment for running ETL jobs with automatic scaling and no infrastructure to manage."
+        },
+        {
+          "name": "AWS Lake Formation",
+          "description": "Service that makes it easy to set up a secure data lake in days.\nCentralizes security, governance, and compliance controls across your data lake.\nSimplifies the process of setting up a secure data lake by automating many of the complex manual steps.\nProvides a centralized way to define security, governance, and compliance policies across your data lake.\nEnables fine-grained access control and integrates with AWS analytics and machine learning services."
+        }
+      ]
+    },
+    {
+      "name": "Application Integration",
+      "purpose": "Workflow orchestration, message queues, event buses",
+      "services": [
+        {
+          "name": "AWS Step Functions",
+          "description": "Serverless orchestration service for building visual workflows.\nCoordinates multiple AWS services into serverless workflows with built-in error handling.\nProvides a visual workflow editor for building distributed applications using state machines.\nHandles error handling, retries, and parallel execution automatically.\nEnables you to build resilient applications by coordinating microservices and serverless functions."
+        },
+        {
+          "name": "Amazon AppFlow",
+          "description": "Fully managed integration service for securely transferring data between SaaS applications.\nAutomates data flows between AWS services and SaaS applications without writing code.\nEnables you to securely transfer data between SaaS applications like Salesforce, ServiceNow, and Slack.\nProvides pre-built connectors for popular SaaS applications and supports both one-time and scheduled data flows.\nIncludes data transformation capabilities and encryption in transit and at rest for secure data transfer."
+        },
+        {
+          "name": "Amazon EventBridge",
+          "description": "Serverless event bus service for building event-driven applications.\nRoutes events from sources to targets using rules and enables loose coupling between services."
+        },
+        {
+          "name": "Amazon MWAA",
+          "description": "Managed workflow orchestration service for Apache Airflow.\nMakes it easy to run open-source Apache Airflow on AWS without managing infrastructure.\nProvides a fully managed Apache Airflow service that makes it easy to run data pipelines in the cloud.\nAutomatically handles infrastructure provisioning, scaling, and monitoring for your Airflow environments.\nEnables you to use the same Apache Airflow platform you're familiar with without managing servers or clusters."
+        },
+        {
+          "name": "Amazon MQ",
+          "description": "Managed message broker service for Apache ActiveMQ and RabbitMQ.\nMakes it easy to migrate to a message broker in the cloud without rewriting application code.\nProvides a managed message broker service for Apache ActiveMQ and RabbitMQ that makes it easy to set up and operate message brokers in the cloud.\nEnables you to migrate existing applications that use message brokers to AWS without rewriting code.\nIncludes automatic software patching, high availability, and monitoring with CloudWatch integration."
+        },
+        {
+          "name": "Amazon SNS",
+          "description": "Fully managed pub/sub messaging service for microservices and serverless applications.\nCoordinates the delivery of messages to subscribing endpoints or clients."
+        },
+        {
+          "name": "Amazon SQS",
+          "description": "Fully managed message queuing service for decoupling and scaling microservices.\nEliminates the complexity and overhead associated with managing message-oriented middleware."
+        },
+        {
+          "name": "AWS AppSync",
+          "description": "Serverless GraphQL API service for building data-driven applications.\nReal-time data synchronization and offline programming capabilities for mobile and web apps."
+        }
+      ]
+    },
+    {
+      "name": "Cost Management",
+      "purpose": "Monitor, optimize, and plan AWS spending",
+      "services": [
+        {
+          "name": "AWS Cost Explorer",
+          "description": "Web-based interface for visualizing, understanding, and managing AWS costs over time.\nProvides detailed reports and forecasts to help optimize spending and identify cost trends.\nEnables you to visualize, understand, and manage your AWS costs and usage over time.\nProvides detailed reports and forecasts to help you optimize spending and identify cost trends.\nIncludes cost allocation tags, resource-level cost data, and custom date ranges for flexible cost analysis."
+        },
+        {
+          "name": "AWS Budgets",
+          "description": "Service for setting custom cost and usage budgets for your AWS resources.\nSends alerts when costs or usage exceed or are forecasted to exceed your budgeted amounts.\nEnables you to set custom budgets that track your cost and usage from the simplest to the most complex use cases.\nSends alerts via email or SNS when your costs or usage exceed or are forecasted to exceed your budgeted amounts.\nSupports multiple budget types including cost budgets, usage budgets, and reservation utilization budgets."
+        },
+        {
+          "name": "AWS Cost and Usage Report",
+          "description": "Comprehensive billing data report containing line items for each AWS service.\nProvides detailed information about AWS costs and usage for cost allocation and analysis.\nProvides the most comprehensive set of AWS cost and usage data available.\nContains line items for each service used, including resource-level detail and metadata.\nEnables you to analyze your costs and usage at a granular level for cost allocation and optimization."
+        },
+        {
+          "name": "Reserved Instance Reporting",
+          "description": "Reporting service for analyzing Reserved Instance utilization and coverage.\nHelps optimize Reserved Instance purchases and identify opportunities for cost savings.\nProvides detailed reporting on your Reserved Instance utilization and coverage across your AWS account.\nHelps you optimize your Reserved Instance purchases and identify opportunities for additional cost savings.\nIncludes recommendations for purchasing additional Reserved Instances based on your usage patterns."
+        },
+        {
+          "name": "Savings Plans",
+          "description": "Flexible pricing model offering significant savings on AWS compute usage.\nProvides up to 72% savings compared to On-Demand pricing with flexible payment options.\nProvides a flexible pricing model that offers significant savings on AWS compute usage.\nOffers up to 72% savings compared to On-Demand pricing with flexible payment options including all upfront, partial upfront, or no upfront payments.\nAutomatically applies to eligible compute usage across EC2, Lambda, and Fargate with no long-term commitments required."
+        }
+      ]
+    },
+    {
+      "name": "Blockchain",
+      "purpose": "Blockchain networks and immutable ledger storage",
+      "services": [
+        {
+          "name": "Amazon Managed Blockchain",
+          "description": "Fully managed service for creating and managing blockchain networks.\nSupports Hyperledger Fabric and Ethereum frameworks without managing infrastructure.\nMakes it easy to create and manage scalable blockchain networks using the popular open-source frameworks Hyperledger Fabric and Ethereum.\nEliminates the need to provision hardware, configure software, and set up networking and security.\nAutomatically scales to meet the demands of thousands of applications processing millions of transactions."
+        },
+        {
+          "name": "Amazon QLDB",
+          "description": "Fully managed ledger database that provides transparent, immutable, and cryptographically verifiable transaction log.\nMaintains a complete and verifiable history of all changes made to your application data.\nProvides a complete and verifiable history of all changes made to your application data over time.\nUses cryptographic hashing and chaining to create an immutable, tamper-proof transaction log.\nIdeal for systems of record, financial transactions, supply chain, and any application requiring an authoritative record."
+        }
+      ]
+    },
+    {
+      "name": "Business Applications",
+      "purpose": "Collaboration, communication, and no-code business tools",
+      "services": [
+        {
+          "name": "Alexa for Business",
+          "description": "Service that enables organizations to use Alexa for voice-enabled productivity.\nHelps employees manage tasks, control smart office devices, and access business information hands-free.\nEnables organizations to use Alexa for voice-enabled productivity in the workplace.\nHelps employees manage tasks, control smart office devices, and access business information hands-free.\nProvides centralized management and deployment of Alexa devices, skills, and users across your organization."
+        },
+        {
+          "name": "Amazon Chime",
+          "description": "Unified communications service for online meetings, video conferencing, and chat.\nProvides secure, reliable, and easy-to-use communication tools for businesses.\nEnables you to meet, chat, and place business calls inside and outside your organization, all using a single application.\nProvides high-quality video and audio with features like screen sharing, meeting recording, and chat.\nIncludes enterprise-grade security and compliance features with integration to Active Directory and other identity providers."
+        },
+        {
+          "name": "Amazon Honeycode",
+          "description": "No-code application builder for teams to build custom applications.\nEnables teams to create web and mobile applications without writing code.\nProvides a no-code application builder that enables teams to build custom applications without writing code.\nEnables teams to create web and mobile applications using familiar spreadsheet-like interface.\nIncludes built-in data management, automation, and collaboration features for building business applications quickly."
+        },
+        {
+          "name": "Amazon WorkDocs",
+          "description": "Fully managed, secure enterprise storage and sharing service.\nEnables teams to create, edit, and share content from anywhere on any device.\nProvides a fully managed, secure enterprise storage and sharing service with strong administrative controls and feedback capabilities.\nEnables teams to create, edit, and share content from anywhere on any device.\nIncludes version control, commenting, and collaboration features with integration to Active Directory for user management."
+        },
+        {
+          "name": "Amazon WorkMail",
+          "description": "Secure, managed business email and calendar service.\nProvides enterprise-grade email capabilities with integrated calendar and contacts.\nProvides a secure, managed business email and calendar service with support for existing desktop and mobile email clients.\nIncludes enterprise-grade security features including encryption at rest and in transit, and integration with AWS Key Management Service.\nSupports Microsoft Outlook, Apple Mail, and other standard email clients with Active Directory integration for user management."
+        }
+      ]
+    },
+    {
+      "name": "Developer Tools",
+      "purpose": "CI/CD, code repositories, debugging, SDKs",
+      "services": [
+        {
+          "name": "Amazon CodeGuru",
+          "description": "Machine learning-powered service for code reviews and application performance recommendations.\nIdentifies critical issues, security vulnerabilities, and performance bottlenecks in code.\nUses machine learning to identify critical issues, security vulnerabilities, and performance bottlenecks in your code.\nProvides automated code reviews and application performance recommendations based on best practices.\nIncludes CodeGuru Reviewer for code reviews and CodeGuru Profiler for application performance analysis."
+        },
+        {
+          "name": "Amazon Corretto",
+          "description": "No-cost, multiplatform, production-ready distribution of OpenJDK.\nProvides long-term support and security updates for Java applications.\nProvides a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).\nIncludes long-term support and security updates for Java applications running on Amazon Linux, Windows, macOS, and Linux.\nEnables you to run the same Java runtime on AWS and on-premises with consistent performance and security."
+        },
+        {
+          "name": "AWS CDK",
+          "description": "Software development framework for defining cloud infrastructure as code.\nDefine cloud resources using familiar programming languages like TypeScript, Python, and Java."
+        },
+        {
+          "name": "AWS Cloud9",
+          "description": "Cloud-based integrated development environment (IDE) for writing, running, and debugging code.\nIncludes terminal, code editor, and debugger with pre-installed tools and SDKs.\nProvides a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser.\nIncludes a code editor, debugger, and terminal with pre-installed tools and SDKs for popular programming languages.\nEnables you to collaborate on code in real-time and share your development environment with your team."
+        },
+        {
+          "name": "AWS CloudShell",
+          "description": "Browser-based shell environment for managing AWS resources.\nPre-authenticated with your AWS credentials and includes popular development tools."
+        },
+        {
+          "name": "AWS CodeArtifact",
+          "description": "Fully managed artifact repository service for software packages.\nSecurely store, publish, and share software packages used in development workflows.\nProvides a fully managed artifact repository service that makes it easy for organizations to securely store, publish, and share software packages.\nSupports popular package managers including Maven, Gradle, npm, pip, and NuGet.\nIntegrates with your existing development tools and workflows with fine-grained access control and encryption."
+        },
+        {
+          "name": "AWS CodeBuild",
+          "description": "Fully managed continuous integration service for compiling source code and running tests.\nScales automatically and processes multiple builds concurrently."
+        },
+        {
+          "name": "AWS CodeCommit",
+          "description": "Fully managed source control service for hosting private Git repositories.\nSecurely stores code, binaries, and metadata with encryption and access control.\nProvides a fully managed source control service that hosts secure Git-based repositories.\nSecurely stores code, binaries, and metadata with encryption at rest and in transit.\nIntegrates seamlessly with other AWS services and existing Git tools for a familiar development experience."
+        },
+        {
+          "name": "AWS CodeDeploy",
+          "description": "Automated deployment service for updating applications and infrastructure.\nDeploys code to EC2 instances, on-premises instances, serverless Lambda functions, and ECS services.\nAutomates code deployments to any instance, including EC2 instances and instances running on-premises.\nSupports in-place and blue/green deployment strategies for minimizing downtime and risk.\nWorks with AWS Lambda and Amazon ECS for serverless and containerized application deployments."
+        },
+        {
+          "name": "AWS CodePipeline",
+          "description": "Fully managed continuous delivery service for automating release pipelines.\nBuilds, tests, and deploys code every time there is a code change.\nProvides a fully managed continuous delivery service that helps you automate your release pipelines for fast and reliable application and infrastructure updates.\nBuilds, tests, and deploys your code every time there is a code change, based on the release process models you define.\nIntegrates with third-party services like GitHub and integrates with other AWS services for a complete CI/CD solution."
+        },
+        {
+          "name": "AWS CodeStar",
+          "description": "Cloud-based development service for building, testing, and deploying applications.\nProvides unified user interface for managing software development activities.\nProvides a unified user interface that enables you to easily manage your software development activities in one place.\nEnables you to quickly develop, build, and deploy applications on AWS with project templates and integrated toolchains.\nIncludes project dashboards for tracking progress and collaboration features for team-based development."
+        },
+        {
+          "name": "AWS CLI",
+          "description": "Unified command-line tool for managing AWS services.\nEnables automation of service management through scripts and command-line interface."
+        },
+        {
+          "name": "AWS Device Farm",
+          "description": "App testing service for testing Android, iOS, and web apps on real devices.\nRun tests across hundreds of physical devices in parallel without managing device infrastructure."
+        },
+        {
+          "name": "AWS Fault Injection Simulator",
+          "description": "Fully managed service for running fault injection experiments on AWS workloads.\nImproves application performance and resilience by identifying potential failure points.\nProvides a fully managed service for running fault injection experiments on AWS workloads.\nEnables you to improve application performance and resilience by identifying potential failure points before they impact your customers.\nIncludes pre-built fault injection templates and integrates with AWS Systems Manager for safe experimentation."
+        },
+        {
+          "name": "AWS Tools and SDKs",
+          "description": "Software development kits and tools for building applications on AWS.\nProvides libraries, code samples, and documentation for popular programming languages.\nProvides software development kits (SDKs) and tools for building applications on AWS.\nIncludes libraries, code samples, and documentation for popular programming languages including Java, Python, JavaScript, .NET, Go, and more.\nEnables you to build applications that integrate with AWS services using your preferred programming language and development environment."
+        },
+        {
+          "name": "AWS X-Ray",
+          "description": "Service for analyzing and debugging distributed applications.\nProvides insights into application performance and helps identify bottlenecks and errors.\nHelps developers analyze and debug production, distributed applications, including those built using a microservices architecture.\nProvides insights into application performance and helps identify bottlenecks and errors in your application.\nIncludes service maps, trace analysis, and integration with AWS services and third-party tools for comprehensive observability."
+        }
+      ]
+    },
+    {
+      "name": "End User Computing",
+      "purpose": "Virtual desktops and secure app streaming",
+      "services": [
+        {
+          "name": "Amazon WorkSpaces",
+          "description": "Managed, secure cloud desktop service for provisioning Windows or Linux desktops.\nEnables users to access their desktop applications and data from any supported device.\nProvides a managed, secure cloud desktop service that enables you to provision Windows or Linux desktops for your users.\nEnables users to access their desktop applications and data from any supported device including Windows, Mac, Chromebook, iPad, Android tablets, and web browsers.\nIncludes features like automatic software updates, data encryption, and integration with Active Directory for user management."
+        },
+        {
+          "name": "Amazon AppStream 2.0",
+          "description": "Fully managed application streaming service for delivering desktop applications to users.\nStreams applications from AWS to any device without rewriting applications.\nProvides a fully managed application streaming service that enables you to stream desktop applications to users without rewriting applications.\nStreams applications from AWS to any device including Windows, Mac, Chromebook, iPad, Android tablets, and web browsers.\nIncludes features like session management, user authentication, and integration with Active Directory for secure access control."
+        },
+        {
+          "name": "Amazon WorkLink",
+          "description": "Mobile app that provides secure access to internal websites and web apps.\nEnables employees to access corporate intranet sites and internal web applications from mobile devices."
+        }
+      ]
+    },
+    {
+      "name": "Frontend Web & Mobile",
+      "purpose": "Web/mobile app hosting, APIs, testing, engagement",
+      "services": [
+        {
+          "name": "AWS Amplify",
+          "description": "Full-stack development platform for building scalable mobile and web applications.\nProvides libraries, UI components, and CLI tools for frontend and backend development.\nProvides a full-stack development platform for building scalable mobile and web applications.\nIncludes libraries, UI components, and CLI tools for frontend and backend development with support for popular frameworks like React, Vue, and Angular.\nEnables you to deploy and host full-stack applications with features like authentication, storage, API, and hosting."
+        },
+        {
+          "name": "Amazon API Gateway",
+          "description": "Fully managed service for creating, publishing, and managing REST and WebSocket APIs.\nHandles traffic management, authorization, monitoring, and API version management.\nSupports RESTful APIs and WebSocket APIs for real-time two-way communication applications.\nProvides built-in features including request throttling, caching, and API key management.\nIntegrates seamlessly with AWS Lambda, EC2, and other AWS services to build serverless and microservices architectures."
+        },
+        {
+          "name": "Amazon Location Service",
+          "description": "Location-based services for adding maps, points of interest, and geocoding to applications.\nProvides secure, privacy-first location services with data encryption and access controls.\nEnables you to add maps, points of interest, geocoding, routing, and geofencing to your applications.\nProvides secure, privacy-first location services with data encryption and access controls.\nIncludes integration with leading location data providers and supports custom map styles for branded experiences."
+        },
+        {
+          "name": "Amazon Pinpoint",
+          "description": "Multichannel marketing communication service for engaging customers.\nSends targeted messages via email, SMS, push notifications, and voice across multiple channels.\nEnables you to engage your customers with multichannel marketing and transactional messaging.\nSends targeted messages via email, SMS, push notifications, and voice across multiple channels.\nIncludes features like audience segmentation, campaign management, and analytics for measuring engagement and ROI."
+        },
+        {
+          "name": "AWS AppSync",
+          "description": "Serverless GraphQL API service for building data-driven applications.\nReal-time data synchronization and offline programming capabilities for mobile and web apps.\nEnables you to build scalable GraphQL APIs that connect to data sources including DynamoDB, Lambda, and HTTP APIs.\nProvides real-time subscriptions and offline data synchronization for mobile and web applications.\nIncludes built-in security with AWS IAM integration and automatic API versioning and schema evolution."
+        },
+        {
+          "name": "AWS Device Farm",
+          "description": "App testing service for testing Android, iOS, and web apps on real devices.\nRun tests across hundreds of physical devices in parallel without managing device infrastructure.\nEnables you to improve the quality of your Android, iOS, and web apps by testing them on real devices in the AWS cloud.\nRun tests across hundreds of physical devices in parallel without managing device infrastructure.\nIncludes device selection, test execution, and detailed reports with screenshots and performance metrics."
+        }
+      ]
+    },
+    {
+      "name": "Game Tech",
+      "purpose": "Game server hosting and game engine",
+      "services": [
+        {
+          "name": "Amazon GameLift",
+          "description": "Managed service for deploying, operating, and scaling dedicated game servers.\nProvides low-latency game server hosting with automatic scaling and matchmaking capabilities.\nEnables you to deploy, operate, and scale dedicated game servers for session-based multiplayer games.\nProvides low-latency game server hosting with automatic scaling and matchmaking capabilities.\nIncludes features like game session management, player matchmaking, and integration with popular game engines."
+        },
+        {
+          "name": "Amazon Lumberyard",
+          "description": "Free, cross-platform, 3D game engine integrated with AWS and Twitch.\nEnables developers to create high-quality games with built-in cloud and social features.\nProvides a free, cross-platform, 3D game engine that is integrated with AWS and Twitch.\nEnables developers to create high-quality games with built-in cloud and social features.\nIncludes visual scripting tools, physics simulation, and integration with AWS services for scalable game backends."
+        }
+      ]
+    },
+    {
+      "name": "IoT",
+      "purpose": "Device connectivity, management, analytics, edge compute",
+      "services": [
+        {
+          "name": "AWS IoT 1-Click",
+          "description": "Service for simple device triggering with one click.\nEnables simple event-driven actions from supported devices without writing code.\nProvides a service for simple device triggering that enables you to easily perform actions with one click.\nEnables simple event-driven actions from supported devices without writing code.\nIncludes pre-built integrations with AWS services like Lambda, SNS, and SQS for automated workflows."
+        },
+        {
+          "name": "AWS IoT Analytics",
+          "description": "Fully managed analytics service for running sophisticated analytics on IoT data.\nProcesses, enriches, stores, and analyzes IoT data at scale.\nProvides a fully managed analytics service for running sophisticated analytics on IoT data.\nProcesses, enriches, stores, and analyzes IoT data at scale with automatic data transformation and enrichment.\nIncludes features like data pipelines, SQL queries, and integration with machine learning services for advanced analytics."
+        },
+        {
+          "name": "AWS IoT Button",
+          "description": "Programmable button based on the Amazon Dash Button hardware.\nEnables simple event-driven actions with a single button press.\nProvides a programmable button based on the Amazon Dash Button hardware.\nEnables simple event-driven actions with a single button press without writing code.\nIncludes pre-configured actions and integration with AWS services like Lambda, SNS, and SQS for automated workflows."
+        },
+        {
+          "name": "AWS IoT Core",
+          "description": "Managed cloud service that lets connected devices easily and securely interact with cloud applications.\nSupports billions of devices and trillions of messages with reliable, secure communication.\nProvides a managed cloud service that lets connected devices easily and securely interact with cloud applications.\nSupports billions of devices and trillions of messages with reliable, secure communication using MQTT, HTTP, and WebSockets.\nIncludes device authentication, authorization, and message routing with integration to AWS services for data processing and storage."
+        },
+        {
+          "name": "AWS IoT Device Defender",
+          "description": "Fully managed security service for auditing and monitoring IoT device configurations.\nContinuously audits security policies and monitors devices for security anomalies.\nProvides a fully managed security service for auditing and monitoring IoT device configurations.\nContinuously audits security policies and monitors devices for security anomalies and potential threats.\nIncludes automated security assessments, threat detection, and alerts with integration to AWS IoT Core and other security services."
+        },
+        {
+          "name": "AWS IoT Device Management",
+          "description": "Service for registering, organizing, monitoring, and remotely managing IoT devices.\nEnables bulk device operations and provides device indexing and search capabilities.\nProvides a service for registering, organizing, monitoring, and remotely managing IoT devices.\nEnables bulk device operations and provides device indexing and search capabilities for large-scale deployments.\nIncludes features like device groups, remote device updates, and device monitoring with integration to AWS IoT Core."
+        },
+        {
+          "name": "AWS IoT Events",
+          "description": "Managed service for detecting and responding to events from IoT sensors and applications.\nBuilds event-driven applications that respond to changes in IoT device data.\nProvides a managed service for detecting and responding to events from IoT sensors and applications.\nBuilds event-driven applications that respond to changes in IoT device data with automatic event detection and response.\nIncludes visual event detection models and integration with AWS services like Lambda, SNS, and SQS for automated actions."
+        },
+        {
+          "name": "AWS IoT Greengrass",
+          "description": "Software that extends AWS to edge devices for local compute, messaging, and sync.\nEnables devices to run Lambda functions, keep device data in sync, and communicate securely.\nProvides software that extends AWS to edge devices for local compute, messaging, and sync.\nEnables devices to run Lambda functions, keep device data in sync, and communicate securely even when not connected to the internet.\nIncludes local data processing, device shadows, and secure communication with automatic synchronization when connectivity is restored."
+        },
+        {
+          "name": "AWS IoT SiteWise",
+          "description": "Managed service for collecting, storing, organizing, and monitoring data from industrial equipment.\nHelps industrial companies make data-driven decisions by organizing data from equipment.\nProvides a managed service for collecting, storing, organizing, and monitoring data from industrial equipment.\nHelps industrial companies make data-driven decisions by organizing data from equipment into a structured format.\nIncludes asset modeling, data processing, and visualization with integration to AWS analytics and machine learning services."
+        },
+        {
+          "name": "AWS IoT Things Graph",
+          "description": "Service for building IoT applications by connecting different devices and web services.\nProvides visual drag-and-drop interface for creating IoT applications.\nProvides a service for building IoT applications by connecting different devices and web services.\nProvides a visual drag-and-drop interface for creating IoT applications without writing code.\nIncludes pre-built device models and service integrations for rapid application development and deployment."
+        },
+        {
+          "name": "AWS Partner Device Catalog",
+          "description": "Catalog of AWS-qualified IoT devices and solutions from AWS partners.\nHelps customers discover and deploy pre-tested, AWS-compatible IoT devices and solutions.\nProvides a catalog of AWS-qualified IoT devices and solutions from AWS partners.\nHelps customers discover and deploy pre-tested, AWS-compatible IoT devices and solutions.\nIncludes device specifications, compatibility information, and integration guides for seamless deployment."
+        },
+        {
+          "name": "FreeRTOS",
+          "description": "Open-source operating system for microcontrollers that makes small, low-power edge devices easy to program.\nIncludes libraries for connecting securely to AWS IoT Core and other AWS services.\nProvides an open-source operating system for microcontrollers that makes small, low-power edge devices easy to program.\nIncludes libraries for connecting securely to AWS IoT Core and other AWS services with minimal memory footprint.\nEnables developers to build secure, connected microcontroller-based devices with built-in AWS integration."
+        }
+      ]
+    },
+    {
+      "name": "Machine Learning",
+      "purpose": "ML training, inference, AI services, frameworks",
+      "services": [
+        {
+          "name": "Amazon SageMaker",
+          "description": "Fully managed service for building, training, and deploying machine learning models.\nProvides tools for every step of the ML lifecycle from data preparation to model deployment.\nEnables data scientists and developers to build, train, and deploy machine learning models quickly.\nIncludes built-in algorithms, Jupyter notebooks, and one-click model deployment with automatic scaling.\nSupports popular ML frameworks like TensorFlow, PyTorch, and MXNet with managed training and inference infrastructure."
+        },
+        {
+          "name": "Amazon Augmented AI",
+          "description": "Service for adding human review to machine learning predictions.\nEnables human reviewers to review low-confidence predictions and improve model accuracy.\nProvides a service for adding human review to machine learning predictions.\nEnables human reviewers to review low-confidence predictions and improve model accuracy over time.\nIncludes workflow management, reviewer interfaces, and integration with Amazon SageMaker and other ML services."
+        },
+        {
+          "name": "Amazon CodeGuru",
+          "description": "Machine learning-powered service for code reviews and application performance recommendations.\nIdentifies critical issues, security vulnerabilities, and performance bottlenecks in code.\nUses machine learning to identify critical issues, security vulnerabilities, and performance bottlenecks in your code.\nProvides automated code reviews and application performance recommendations based on best practices.\nIncludes CodeGuru Reviewer for code reviews and CodeGuru Profiler for application performance analysis."
+        },
+        {
+          "name": "Amazon Comprehend",
+          "description": "Natural language processing service for extracting insights and relationships from text.\nUses machine learning to find insights and relationships in unstructured text data.\nProvides natural language processing (NLP) capabilities for extracting insights and relationships from text.\nUses machine learning to find insights and relationships in unstructured text data including sentiment analysis, entity recognition, and key phrase extraction.\nSupports multiple languages and includes custom classification models for domain-specific text analysis."
+        },
+        {
+          "name": "Amazon DevOps Guru",
+          "description": "Machine learning-powered service for improving application availability.\nDetects operational issues, recommends remediation actions, and provides insights."
+        },
+        {
+          "name": "Amazon Elastic Inference",
+          "description": "Deep learning inference acceleration service for reducing inference costs.\nAttaches GPU-powered inference acceleration to EC2 instances and SageMaker endpoints.\nProvides deep learning inference acceleration service for reducing inference costs.\nAttaches GPU-powered inference acceleration to EC2 instances and SageMaker endpoints without requiring GPU instances.\nEnables you to run deep learning inference workloads cost-effectively by using fractional GPUs instead of full GPU instances."
+        },
+        {
+          "name": "Amazon Forecast",
+          "description": "Fully managed service for building highly accurate time-series forecasting models.\nUses machine learning to generate forecasts without requiring ML expertise."
+        },
+        {
+          "name": "Amazon Fraud Detector",
+          "description": "Fully managed service for identifying potentially fraudulent online activities.\nUses machine learning and Amazon's fraud detection expertise to identify fraud.\nProvides a fully managed service for identifying potentially fraudulent online activities.\nUses machine learning and Amazon's fraud detection expertise to identify fraud in real-time.\nIncludes pre-built fraud detection models and custom model training capabilities for domain-specific fraud patterns."
+        },
+        {
+          "name": "Amazon Kendra",
+          "description": "Intelligent search service powered by machine learning.\nDelivers accurate answers to natural language questions from enterprise data sources."
+        },
+        {
+          "name": "Amazon Lex",
+          "description": "Service for building conversational interfaces using voice and text.\nProvides advanced deep learning functionalities for natural language understanding.\nProvides a service for building conversational interfaces using voice and text.\nProvides advanced deep learning functionalities for natural language understanding and automatic speech recognition.\nEnables you to build chatbots and voice assistants that understand natural language and respond appropriately."
+        },
+        {
+          "name": "Amazon Lookout for Equipment",
+          "description": "Machine learning service for detecting abnormal equipment behavior.\nUses sensor data to identify early warning signs of machine failures.\nProvides a machine learning service for detecting abnormal equipment behavior.\nUses sensor data to identify early warning signs of machine failures before they cause downtime.\nIncludes automatic model training, anomaly detection, and alerts with integration to industrial IoT systems."
+        },
+        {
+          "name": "Amazon Lookout for Metrics",
+          "description": "Machine learning service for detecting anomalies in business metrics.\nAutomatically detects and alerts on anomalies in time-series data without writing code.\nProvides a machine learning service for detecting anomalies in business metrics.\nAutomatically detects and alerts on anomalies in time-series data without writing code or ML expertise.\nUses machine learning to identify unusual patterns and trends in business metrics with automatic root cause analysis."
+        },
+        {
+          "name": "Amazon Lookout for Vision",
+          "description": "Machine learning service for spotting defects and anomalies in images.\nUses computer vision to identify manufacturing defects and anomalies in images.\nProvides a machine learning service for spotting defects and anomalies in images.\nUses computer vision to identify manufacturing defects and anomalies in images with high accuracy.\nIncludes automatic model training, real-time inference, and integration with production line systems for automated quality control."
+        },
+        {
+          "name": "Amazon Monitron",
+          "description": "End-to-end machine learning service for detecting abnormal equipment behavior.\nUses sensors and machine learning to identify potential equipment failures before they occur.\nProvides an end-to-end machine learning service for detecting abnormal equipment behavior.\nUses sensors and machine learning to identify potential equipment failures before they occur.\nIncludes sensor hardware, gateway devices, and cloud-based analytics with mobile app for monitoring and alerts."
+        },
+        {
+          "name": "Amazon Personalize",
+          "description": "Machine learning service for building personalized recommendation systems.\nCreates real-time personalization and recommendation systems without ML expertise.\nProvides a machine learning service for building personalized recommendation systems.\nCreates real-time personalization and recommendation systems without ML expertise or data science knowledge.\nUses the same machine learning technology used by Amazon.com to deliver personalized recommendations based on user behavior and preferences."
+        },
+        {
+          "name": "Amazon Polly",
+          "description": "Text-to-speech service that uses advanced deep learning technologies.\nConverts text into lifelike speech and supports multiple languages and voices.\nProvides a text-to-speech service that uses advanced deep learning technologies.\nConverts text into lifelike speech and supports multiple languages and voices with natural-sounding pronunciation.\nIncludes neural text-to-speech voices that sound more natural and expressive than traditional TTS systems."
+        },
+        {
+          "name": "Amazon Rekognition",
+          "description": "Deep learning-based image and video analysis service.\nIdentifies objects, people, text, scenes, and activities in images and videos.\nProvides a deep learning-based image and video analysis service.\nIdentifies objects, people, text, scenes, and activities in images and videos with high accuracy.\nIncludes features like face detection, celebrity recognition, content moderation, and custom labels for domain-specific image analysis."
+        },
+        {
+          "name": "Amazon Textract",
+          "description": "Machine learning service for extracting text and data from documents.\nAutomatically extracts text, handwriting, and data from scanned documents and forms.\nProvides a machine learning service for extracting text and data from documents.\nAutomatically extracts text, handwriting, and data from scanned documents and forms with high accuracy.\nIncludes features like table extraction, form data extraction, and key-value pair extraction for structured data processing."
+        },
+        {
+          "name": "Amazon Translate",
+          "description": "Neural machine translation service for translating text between languages.\nProvides fast, high-quality, and affordable language translation using deep learning.\nProvides a neural machine translation service for translating text between languages.\nProvides fast, high-quality, and affordable language translation using deep learning technology.\nSupports over 70 languages and includes features like custom terminology and batch translation for large-scale content."
+        },
+        {
+          "name": "Amazon Transcribe",
+          "description": "Automatic speech recognition service for converting speech to text.\nUses machine learning to recognize speech in audio files and transcribe it accurately.\nProvides an automatic speech recognition service for converting speech to text.\nUses machine learning to recognize speech in audio files and transcribe it accurately with punctuation and formatting.\nIncludes features like speaker identification, custom vocabulary, and real-time transcription for live audio streams."
+        },
+        {
+          "name": "AWS Deep Learning AMIs",
+          "description": "Amazon Machine Images pre-installed with popular deep learning frameworks.\nProvides pre-configured environments for training deep learning models on EC2 instances.\nProvides Amazon Machine Images (AMIs) pre-installed with popular deep learning frameworks.\nProvides pre-configured environments for training deep learning models on EC2 instances with GPU support.\nIncludes frameworks like TensorFlow, PyTorch, MXNet, and Chainer with optimized CUDA and cuDNN libraries."
+        },
+        {
+          "name": "AWS Deep Learning Containers",
+          "description": "Docker images pre-installed with deep learning frameworks.\nProvides optimized environments for training and inference with popular ML frameworks.\nProvides Docker images pre-installed with deep learning frameworks.\nProvides optimized environments for training and inference with popular ML frameworks including TensorFlow, PyTorch, and MXNet.\nIncludes optimized CUDA and cuDNN libraries with support for both CPU and GPU-based training and inference."
+        },
+        {
+          "name": "AWS DeepComposer",
+          "description": "Machine learning-enabled musical keyboard for creating original music.\nUses generative AI to help musicians create original compositions using machine learning.\nProvides a machine learning-enabled musical keyboard for creating original music.\nUses generative AI to help musicians create original compositions using machine learning.\nIncludes pre-trained models and the ability to train custom models for creating unique musical styles and compositions."
+        },
+        {
+          "name": "AWS DeepLens",
+          "description": "Deep learning-enabled video camera for developers.\nHelps developers learn machine learning by providing hands-on experience with computer vision.\nProvides a deep learning-enabled video camera for developers.\nHelps developers learn machine learning by providing hands-on experience with computer vision.\nIncludes pre-built models and the ability to deploy custom models for real-time video analysis and inference."
+        },
+        {
+          "name": "AWS DeepRacer",
+          "description": "Autonomous 1/18th scale race car for learning reinforcement learning.\nProvides hands-on way to learn and experiment with reinforcement learning algorithms.\nProvides an autonomous 1/18th scale race car for learning reinforcement learning.\nProvides a hands-on way to learn and experiment with reinforcement learning algorithms.\nIncludes a 3D racing simulator, training environment, and the ability to race in the AWS DeepRacer League."
+        },
+        {
+          "name": "AWS Inferentia",
+          "description": "Machine learning inference chip designed to deliver high performance at low cost.\nProvides high-throughput, low-latency inference for deep learning applications.\nProvides a machine learning inference chip designed to deliver high performance at low cost.\nProvides high-throughput, low-latency inference for deep learning applications with optimized performance.\nAvailable on EC2 Inf1 instances and supports popular ML frameworks like TensorFlow, PyTorch, and MXNet."
+        },
+        {
+          "name": "AWS Panorama",
+          "description": "Machine learning appliance and SDK for bringing computer vision to on-premises cameras.\nEnables adding computer vision to existing camera networks without replacing cameras.\nProvides a machine learning appliance and SDK for bringing computer vision to on-premises cameras.\nEnables adding computer vision to existing camera networks without replacing cameras.\nIncludes pre-built models and the ability to deploy custom models for real-time video analysis and inference at the edge."
+        },
+        {
+          "name": "Apache MXNet on AWS",
+          "description": "Open-source deep learning framework optimized for AWS infrastructure.\nProvides flexible and efficient deep learning framework for training and deploying models.\nProvides an open-source deep learning framework optimized for AWS infrastructure.\nProvides a flexible and efficient deep learning framework for training and deploying models.\nIncludes optimized implementations for EC2, SageMaker, and other AWS services with support for both imperative and symbolic programming."
+        },
+        {
+          "name": "PyTorch on AWS",
+          "description": "Open-source machine learning framework optimized for AWS.\nProvides flexible deep learning framework with dynamic computation graphs.\nProvides an open-source machine learning framework optimized for AWS.\nProvides a flexible deep learning framework with dynamic computation graphs for research and production.\nIncludes optimized implementations for EC2, SageMaker, and other AWS services with support for distributed training."
+        },
+        {
+          "name": "TensorFlow on AWS",
+          "description": "Open-source machine learning framework optimized for AWS infrastructure.\nProvides comprehensive ecosystem for building and deploying machine learning models.\nProvides an open-source machine learning framework optimized for AWS infrastructure.\nProvides a comprehensive ecosystem for building and deploying machine learning models.\nIncludes optimized implementations for EC2, SageMaker, and other AWS services with support for distributed training and inference."
+        }
+      ]
+    },
+    {
+      "name": "Management & Governance",
+      "purpose": "Monitoring, provisioning, governance, automation",
+      "services": [
+        {
+          "name": "Amazon CloudWatch",
+          "description": "Monitoring and observability service for AWS resources and applications.\nCollects and tracks metrics, monitors log files, and sets alarms for AWS resources.\nProvides monitoring and observability service for AWS resources and applications.\nCollects and tracks metrics, monitors log files, and sets alarms for AWS resources.\nIncludes features like dashboards, log insights, and integration with other AWS services for comprehensive monitoring."
+        },
+        {
+          "name": "Amazon Managed Grafana",
+          "description": "Fully managed service for operational dashboards and visualization.\nProvides scalable, secure, and highly available Grafana workspaces without managing infrastructure."
+        },
+        {
+          "name": "Amazon Managed Prometheus",
+          "description": "Fully managed Prometheus-compatible monitoring service.\nMakes it easy to monitor containerized applications at scale without managing servers.\nProvides a fully managed Prometheus-compatible monitoring service.\nMakes it easy to monitor containerized applications at scale without managing servers.\nIncludes automatic scaling, high availability, and integration with Kubernetes and container orchestration platforms."
+        },
+        {
+          "name": "AWS Auto Scaling",
+          "description": "Service for automatically scaling AWS resources based on demand.\nMaintains application availability and allows you to scale resources up or down automatically."
+        },
+        {
+          "name": "AWS Chatbot",
+          "description": "Interactive agent for monitoring and interacting with AWS resources from Slack.\nSends notifications, runs commands, and provides insights directly in Slack channels.\nProvides an interactive agent for monitoring and interacting with AWS resources from Slack.\nSends notifications, runs commands, and provides insights directly in Slack channels.\nIncludes integration with CloudWatch alarms, CodePipeline, and other AWS services for real-time notifications."
+        },
+        {
+          "name": "AWS CloudFormation",
+          "description": "Infrastructure as code service for modeling and provisioning AWS resources.\nEnables you to create and manage AWS infrastructure deployments predictably and repeatedly.\nProvides an infrastructure as code service for modeling and provisioning AWS resources.\nEnables you to create and manage AWS infrastructure deployments predictably and repeatedly.\nIncludes template versioning, change sets, and stack management for reliable infrastructure deployment and updates."
+        },
+        {
+          "name": "AWS CloudTrail",
+          "description": "Service for logging, monitoring, and auditing API calls and account activity.\nProvides event history of AWS API calls for security, compliance, and operational auditing.\nProvides a service for logging, monitoring, and auditing API calls and account activity.\nProvides event history of AWS API calls for security, compliance, and operational auditing.\nIncludes log file integrity validation, encryption, and integration with CloudWatch Logs and S3 for log storage."
+        },
+        {
+          "name": "AWS CLI",
+          "description": "Unified command-line tool for managing AWS services.\nEnables automation of service management through scripts and command-line interface."
+        },
+        {
+          "name": "AWS Compute Optimizer",
+          "description": "Service for analyzing resource utilization and recommending optimal AWS resource configurations.\nUses machine learning to analyze historical utilization metrics and identify cost optimization opportunities.\nProvides a service for analyzing resource utilization and recommending optimal AWS resource configurations.\nUses machine learning to analyze historical utilization metrics and identify cost optimization opportunities.\nIncludes recommendations for EC2 instance types, EBS volumes, Lambda functions, and ECS services based on usage patterns."
+        },
+        {
+          "name": "AWS Config",
+          "description": "Service for assessing, auditing, and evaluating configurations of AWS resources.\nTracks configuration changes and provides detailed inventory of AWS resources.\nProvides a service for assessing, auditing, and evaluating configurations of AWS resources.\nTracks configuration changes and provides detailed inventory of AWS resources.\nIncludes compliance checking, configuration history, and integration with other AWS services for governance and compliance."
+        },
+        {
+          "name": "AWS Control Tower",
+          "description": "Service for setting up and governing a secure, multi-account AWS environment.\nProvides automated setup of landing zone with best-practice blueprints for governance.\nProvides a service for setting up and governing a secure, multi-account AWS environment.\nProvides automated setup of landing zone with best-practice blueprints for governance.\nIncludes account management, centralized logging, and compliance monitoring across multiple AWS accounts."
+        },
+        {
+          "name": "AWS Console Mobile Application",
+          "description": "Mobile application for managing AWS resources from iOS and Android devices.\nProvides secure access to AWS services and resources from mobile devices.\nProvides a mobile application for managing AWS resources from iOS and Android devices.\nProvides secure access to AWS services and resources from mobile devices.\nIncludes features like resource management, CloudWatch alarms, and support for common AWS operations on the go."
+        },
+        {
+          "name": "AWS Distro for OpenTelemetry",
+          "description": "Secure, production-ready distribution of OpenTelemetry for collecting metrics and traces.\nProvides vendor-neutral observability data collection for AWS and on-premises environments.\nProvides a secure, production-ready distribution of OpenTelemetry for collecting metrics and traces.\nProvides vendor-neutral observability data collection for AWS and on-premises environments.\nIncludes automatic instrumentation, secure data collection, and integration with CloudWatch, X-Ray, and Prometheus."
+        },
+        {
+          "name": "AWS License Manager",
+          "description": "Service for managing software licenses from vendors like Microsoft, SAP, Oracle, and IBM.\nHelps reduce licensing costs by tracking and managing license usage across accounts.\nProvides a service for managing software licenses from vendors like Microsoft, SAP, Oracle, and IBM.\nHelps reduce licensing costs by tracking and managing license usage across accounts.\nIncludes license tracking, usage reporting, and automated license compliance enforcement."
+        },
+        {
+          "name": "AWS Management Console",
+          "description": "Web-based interface for accessing and managing AWS services and resources.\nProvides graphical user interface for managing AWS infrastructure without command-line tools.\nProvides a web-based interface for accessing and managing AWS services and resources.\nProvides graphical user interface for managing AWS infrastructure without command-line tools.\nIncludes features like resource search, service dashboards, and integration with AWS services for comprehensive management."
+        },
+        {
+          "name": "AWS Managed Services",
+          "description": "Infrastructure operations management service for AWS environments.\nProvides ongoing management of AWS infrastructure to reduce operational overhead.\nProvides an infrastructure operations management service for AWS environments.\nProvides ongoing management of AWS infrastructure to reduce operational overhead.\nIncludes 24/7 monitoring, incident management, and change management with AWS best practices."
+        },
+        {
+          "name": "AWS OpsWorks",
+          "description": "Configuration management service for managing applications and servers.\nSupports Chef and Puppet for automating server configuration, deployment, and management.\nProvides a configuration management service for managing applications and servers.\nSupports Chef and Puppet for automating server configuration, deployment, and management.\nIncludes application lifecycle management, automated deployments, and integration with other AWS services."
+        },
+        {
+          "name": "AWS Organizations",
+          "description": "Account management service for consolidating multiple AWS accounts.\nCentralizes billing and access management across multiple AWS accounts.\nProvides an account management service for consolidating multiple AWS accounts.\nCentralizes billing and access management across multiple AWS accounts.\nIncludes organizational units, service control policies, and consolidated billing for cost management and governance."
+        },
+        {
+          "name": "AWS Personal Health Dashboard",
+          "description": "Personalized view of AWS service health events that might affect your resources.\nProvides alerts and remediation guidance for events that impact your AWS resources.\nProvides a personalized view of AWS service health events that might affect your resources.\nProvides alerts and remediation guidance for events that impact your AWS resources.\nIncludes event notifications, remediation steps, and integration with CloudWatch Events for automated responses."
+        },
+        {
+          "name": "AWS Proton",
+          "description": "Service for provisioning and managing container and serverless application deployments.\nHelps platform teams provision, deploy, and manage infrastructure for developer teams.\nProvides a service for provisioning and managing container and serverless application deployments.\nHelps platform teams provision, deploy, and manage infrastructure for developer teams.\nIncludes service templates, infrastructure provisioning, and CI/CD integration for standardized application deployments."
+        },
+        {
+          "name": "AWS Service Catalog",
+          "description": "Service for creating and managing catalogs of IT services approved for use on AWS.\nEnables organizations to create and manage standardized IT service catalogs.\nProvides a service for creating and managing catalogs of IT services approved for use on AWS.\nEnables organizations to create and manage standardized IT service catalogs.\nIncludes product portfolios, versioning, and access control for managing approved IT services and resources."
+        },
+        {
+          "name": "AWS Systems Manager",
+          "description": "Operations hub for AWS resources for viewing and controlling infrastructure.\nProvides unified interface for operational data and simplifies resource and application management.\nProvides an operations hub for AWS resources for viewing and controlling infrastructure.\nProvides unified interface for operational data and simplifies resource and application management.\nIncludes patch management, parameter store, run commands, and session manager for comprehensive infrastructure management."
+        },
+        {
+          "name": "AWS Trusted Advisor",
+          "description": "Service that provides real-time guidance to help provision resources following AWS best practices.\nAnalyzes AWS environment and provides recommendations for cost optimization and security improvements.\nProvides a service that provides real-time guidance to help provision resources following AWS best practices.\nAnalyzes AWS environment and provides recommendations for cost optimization and security improvements.\nIncludes checks for cost optimization, performance, security, fault tolerance, and service limits with actionable recommendations."
+        },
+        {
+          "name": "AWS Well-Architected Tool",
+          "description": "Service for reviewing architectures and implementing scalable designs.\nProvides consistent approach to evaluating architectures against AWS best practices.\nProvides a service for reviewing architectures and implementing scalable designs.\nProvides consistent approach to evaluating architectures against AWS best practices.\nIncludes workload reviews, improvement plans, and integration with AWS services for implementing architectural best practices."
+        }
+      ]
+    },
+    {
+      "name": "Media Services",
+      "purpose": "Video processing, live streaming, transcoding",
+      "services": [
+        {
+          "name": "Amazon Elastic Transcoder",
+          "description": "Media transcoding service for converting media files into formats required for playback.\nProcesses media files stored in S3 and converts them into formats optimized for different devices.\nProvides a media transcoding service for converting media files into formats required for playback.\nProcesses media files stored in S3 and converts them into formats optimized for different devices.\nIncludes preset configurations for common formats and the ability to create custom transcoding pipelines."
+        },
+        {
+          "name": "Amazon Interactive Video Service",
+          "description": "Managed live streaming service for building interactive video experiences.\nEnables real-time, low-latency streaming with interactive features like chat and live polls.\nProvides a managed live streaming service for building interactive video experiences.\nEnables real-time, low-latency streaming with interactive features like chat and live polls.\nIncludes features like video playback, real-time messaging, and interactive overlays for engaging viewer experiences."
+        },
+        {
+          "name": "Amazon Kinesis Video Streams",
+          "description": "Service for streaming video from connected devices to AWS for analytics and processing.\nCaptures, processes, and stores video streams from millions of devices for analytics and machine learning.\nProvides a service for streaming video from connected devices to AWS for analytics and processing.\nCaptures, processes, and stores video streams from millions of devices for analytics and machine learning.\nIncludes features like time-indexed video storage, playback, and integration with other AWS services for video analytics."
+        },
+        {
+          "name": "AWS Elemental MediaConnect",
+          "description": "Reliable and secure live video transport service.\nTransports live video content from source to destination with broadcast-grade reliability.\nProvides a reliable and secure live video transport service.\nTransports live video content from source to destination with broadcast-grade reliability.\nIncludes features like encryption, redundancy, and integration with other AWS Elemental services for complete video workflows."
+        },
+        {
+          "name": "AWS Elemental MediaConvert",
+          "description": "File-based video transcoding service for broadcast and video-on-demand workflows.\nConverts media files from source format to formats required for playback on various devices.\nProvides a file-based video transcoding service for broadcast and video-on-demand workflows.\nConverts media files from source format to formats required for playback on various devices.\nIncludes support for a wide range of input and output formats with advanced video processing features."
+        },
+        {
+          "name": "AWS Elemental MediaLive",
+          "description": "Broadcast-grade live video processing service.\nEncodes live video streams for delivery to broadcast televisions and internet-connected multiscreen devices.\nProvides a broadcast-grade live video processing service.\nEncodes live video streams for delivery to broadcast televisions and internet-connected multiscreen devices.\nIncludes features like multi-bitrate encoding, ad insertion, and integration with other AWS Elemental services."
+        },
+        {
+          "name": "AWS Elemental MediaPackage",
+          "description": "Just-in-time video packaging and origination service.\nPrepares and protects video for delivery over the internet to a wide variety of devices.\nProvides a just-in-time video packaging and origination service.\nPrepares and protects video for delivery over the internet to a wide variety of devices.\nIncludes features like DRM encryption, ad insertion, and support for multiple streaming protocols."
+        },
+        {
+          "name": "AWS Elemental MediaStore",
+          "description": "Storage service optimized for media.\nProvides low-latency, high-throughput storage for video workflows and live streaming.\nProvides a storage service optimized for media.\nProvides low-latency, high-throughput storage for video workflows and live streaming.\nIncludes features like automatic scaling, high availability, and integration with other AWS Elemental services."
+        },
+        {
+          "name": "AWS Elemental MediaTailor",
+          "description": "Server-side ad insertion service for video streaming.\nInserts personalized ads into video streams without modifying client-side applications.\nProvides a server-side ad insertion service for video streaming.\nInserts personalized ads into video streams without modifying client-side applications.\nIncludes features like ad decisioning, personalization, and integration with ad servers for monetization."
+        },
+        {
+          "name": "AWS Elemental Appliances and Software",
+          "description": "On-premises video processing appliances and software for broadcast workflows.\nProvides high-performance video processing for broadcast and live streaming applications.\nProvides on-premises video processing appliances and software for broadcast workflows.\nProvides high-performance video processing for broadcast and live streaming applications.\nIncludes hardware appliances and software solutions for encoding, transcoding, and streaming video content."
+        }
+      ]
+    },
+    {
+      "name": "Migration & Transfer",
+      "purpose": "Migrate servers, databases, data to AWS",
+      "services": [
+        {
+          "name": "AWS Migration Hub",
+          "description": "Central location for tracking migration progress across multiple AWS and partner solutions.\nProvides visibility into application migration status and helps coordinate migration efforts.\nProvides a central location for tracking migration progress across multiple AWS and partner solutions.\nProvides visibility into application migration status and helps coordinate migration efforts.\nIncludes migration tracking, progress monitoring, and integration with AWS migration tools and partner solutions."
+        },
+        {
+          "name": "AWS Application Discovery Service",
+          "description": "Service for automatically discovering and mapping on-premises applications and dependencies.\nHelps plan migration projects by identifying application dependencies and resource requirements.\nProvides a service for automatically discovering and mapping on-premises applications and dependencies.\nHelps plan migration projects by identifying application dependencies and resource requirements.\nIncludes agent-based and agentless discovery methods with detailed application and infrastructure mapping."
+        },
+        {
+          "name": "AWS Database Migration Service",
+          "description": "Service for migrating databases to AWS with minimal downtime.\nSupports homogeneous and heterogeneous migrations between database platforms.\nEnables continuous data replication with minimal downtime during database migrations.\nSupports migration between 20+ database engines including Oracle, SQL Server, MySQL, PostgreSQL, and MongoDB.\nAutomatically handles schema conversion and provides ongoing replication to keep source and target databases in sync."
+        },
+        {
+          "name": "AWS DataSync",
+          "description": "Data transfer service for moving large amounts of data between on-premises storage and AWS.\nAutomates and accelerates data transfer with built-in data validation and encryption."
+        },
+        {
+          "name": "AWS Server Migration Service",
+          "description": "Agentless service for migrating thousands of on-premises workloads to AWS.\nAutomates, schedules, and tracks incremental replications of live server volumes.\nProvides an agentless service for migrating thousands of on-premises workloads to AWS.\nAutomates, schedules, and tracks incremental replications of live server volumes.\nIncludes support for VMware vSphere, Microsoft Hyper-V, and Azure virtual machines with automated cutover capabilities."
+        },
+        {
+          "name": "AWS Snow Family",
+          "description": "Physical devices for data migration and edge computing in offline environments.\nTransfer petabytes of data securely when network transfer is impractical."
+        },
+        {
+          "name": "AWS Transfer Family",
+          "description": "Fully managed service for file transfers into and out of S3 or EFS.\nSupports SFTP, FTPS, and FTP protocols for secure file transfers without managing servers.\nProvides a fully managed service for file transfers into and out of S3 or EFS.\nSupports SFTP, FTPS, and FTP protocols for secure file transfers without managing servers.\nIncludes integration with IAM for authentication, CloudWatch for monitoring, and automatic scaling for high availability."
+        },
+        {
+          "name": "CloudEndure Migration",
+          "description": "Automated migration service for moving applications to AWS with minimal downtime.\nProvides continuous replication and automated cutover for server and database migrations.\nProvides an automated migration service for moving applications to AWS with minimal downtime.\nProvides continuous replication and automated cutover for server and database migrations.\nIncludes support for physical, virtual, and cloud-based servers with automated failover and failback capabilities."
+        },
+        {
+          "name": "Migration Evaluator",
+          "description": "Assessment service for understanding migration readiness and planning AWS migrations.\nProvides insights into application portfolios and helps create migration roadmaps.\nProvides an assessment service for understanding migration readiness and planning AWS migrations.\nProvides insights into application portfolios and helps create migration roadmaps.\nIncludes workload analysis, cost estimation, and migration strategy recommendations based on application characteristics."
+        }
+      ]
+    },
+    {
+      "name": "Security, Identity & Compliance",
+      "purpose": "Identity, encryption, threat detection, compliance",
+      "services": [
+        {
+          "name": "AWS IAM",
+          "description": "Identity and access management service for securely controlling access to AWS resources.\nEnables fine-grained access control and identity management for users, groups, and roles."
+        },
+        {
+          "name": "Amazon Cognito",
+          "description": "Service for adding user sign-up, sign-in, and access control to web and mobile apps.\nProvides authentication, authorization, and user management for applications.\nProvides a service for adding user sign-up, sign-in, and access control to web and mobile apps.\nProvides authentication, authorization, and user management for applications.\nIncludes features like social identity providers, multi-factor authentication, and user pools for scalable user management."
+        },
+        {
+          "name": "Amazon Detective",
+          "description": "Security service for analyzing and investigating potential security issues.\nAutomatically collects log data from AWS services and uses machine learning to identify root causes."
+        },
+        {
+          "name": "Amazon GuardDuty",
+          "description": "Threat detection service that continuously monitors for malicious activity.\nUses machine learning to identify threats and anomalies in AWS accounts and workloads.\nProvides a threat detection service that continuously monitors for malicious activity.\nUses machine learning to identify threats and anomalies in AWS accounts and workloads.\nIncludes threat intelligence feeds, anomaly detection, and integration with CloudWatch Events for automated responses."
+        },
+        {
+          "name": "Amazon Inspector",
+          "description": "Automated security assessment service for applications deployed on EC2.\nIdentifies application vulnerabilities and deviations from security best practices."
+        },
+        {
+          "name": "Amazon Macie",
+          "description": "Data security service that uses machine learning to discover and protect sensitive data.\nAutomatically identifies and alerts on sensitive data like personally identifiable information.\nProvides a data security service that uses machine learning to discover and protect sensitive data.\nAutomatically identifies and alerts on sensitive data like personally identifiable information.\nIncludes data classification, access monitoring, and integration with S3 for comprehensive data protection."
+        },
+        {
+          "name": "AWS Artifact",
+          "description": "Self-service portal for on-demand access to AWS compliance reports.\nProvides access to security and compliance reports from AWS and ISVs."
+        },
+        {
+          "name": "AWS Audit Manager",
+          "description": "Service for continuously auditing AWS usage to simplify risk and compliance assessments.\nAutomates evidence collection and helps maintain compliance with industry standards.\nProvides a service for continuously auditing AWS usage to simplify risk and compliance assessments.\nAutomates evidence collection and helps maintain compliance with industry standards.\nIncludes pre-built frameworks, automated evidence collection, and compliance reporting for various regulations."
+        },
+        {
+          "name": "AWS Certificate Manager",
+          "description": "Service for provisioning, managing, and deploying SSL/TLS certificates.\nSimplifies certificate management and provides free SSL/TLS certificates for use with AWS services."
+        },
+        {
+          "name": "AWS CloudHSM",
+          "description": "Hardware security module service for generating and using encryption keys.\nProvides dedicated hardware security modules for managing encryption keys in compliance with regulations.\nProvides a hardware security module service for generating and using encryption keys.\nProvides dedicated hardware security modules for managing encryption keys in compliance with regulations.\nIncludes FIPS 140-2 Level 3 validated HSMs, key management, and integration with KMS for centralized key management."
+        },
+        {
+          "name": "AWS Directory Service",
+          "description": "Managed Microsoft Active Directory service in the AWS cloud.\nEnables directory-aware workloads and AWS resources to use managed Active Directory."
+        },
+        {
+          "name": "AWS Firewall Manager",
+          "description": "Security management service for centrally configuring and managing firewall rules.\nSimplifies administration and maintenance of firewall rules across accounts and resources.\nProvides a security management service for centrally configuring and managing firewall rules.\nSimplifies administration and maintenance of firewall rules across accounts and resources.\nIncludes centralized policy management, automatic rule deployment, and integration with WAF and Network Firewall."
+        },
+        {
+          "name": "AWS KMS",
+          "description": "Managed service for creating and controlling encryption keys.\nProvides centralized key management for encrypting data across AWS services and applications.\nProvides a managed service for creating and controlling encryption keys.\nProvides centralized key management for encrypting data across AWS services and applications.\nIncludes key rotation, access control, audit logging, and integration with CloudTrail for key usage tracking."
+        },
+        {
+          "name": "AWS Network Firewall",
+          "description": "Managed network firewall service for protecting virtual networks.\nProvides network-level protection with stateful inspection and intrusion prevention capabilities.\nProvides a managed network firewall service for protecting virtual networks.\nProvides network-level protection with stateful inspection and intrusion prevention capabilities.\nIncludes stateful packet inspection, intrusion prevention, and integration with Firewall Manager for centralized management."
+        },
+        {
+          "name": "AWS Resource Access Manager",
+          "description": "Service for securely sharing AWS resources across accounts.\nEnables resource sharing without creating duplicate resources or using complex IAM roles.\nProvides a service for securely sharing AWS resources across accounts.\nEnables resource sharing without creating duplicate resources or using complex IAM roles.\nIncludes support for sharing VPCs, Transit Gateways, Route 53 Resolver rules, and other AWS resources."
+        },
+        {
+          "name": "AWS Secrets Manager",
+          "description": "Service for storing and retrieving secrets like database credentials and API keys.\nHelps protect secrets needed to access applications, services, and IT resources.\nProvides a service for storing and retrieving secrets like database credentials and API keys.\nHelps protect secrets needed to access applications, services, and IT resources.\nIncludes automatic secret rotation, encryption at rest and in transit, and integration with RDS and other AWS services."
+        },
+        {
+          "name": "AWS Security Hub",
+          "description": "Cloud security posture management service for centralizing security findings.\nAggregates, organizes, and prioritizes security findings from multiple AWS services.\nProvides a cloud security posture management service for centralizing security findings.\nAggregates, organizes, and prioritizes security findings from multiple AWS services.\nIncludes automated compliance checks, security scoring, and integration with GuardDuty, Inspector, and Macie."
+        },
+        {
+          "name": "AWS Shield",
+          "description": "Managed DDoS protection service for applications running on AWS.\nProvides always-on detection and automatic inline mitigations for DDoS attacks.\nProvides a managed DDoS protection service for applications running on AWS.\nProvides always-on detection and automatic inline mitigations for DDoS attacks.\nIncludes Standard protection for all AWS customers and Advanced protection with additional features and support."
+        },
+        {
+          "name": "AWS Single Sign-On",
+          "description": "Cloud-based single sign-on service for managing SSO access to AWS accounts and applications.\nEnables users to sign in once and access multiple AWS accounts and business applications.\nProvides a cloud-based single sign-on service for managing SSO access to AWS accounts and applications.\nEnables users to sign in once and access multiple AWS accounts and business applications.\nIncludes integration with Active Directory, SAML 2.0, and support for thousands of pre-integrated applications."
+        },
+        {
+          "name": "AWS WAF",
+          "description": "Web application firewall service for protecting web applications from common exploits.\nHelps protect applications from attacks that could affect availability, compromise security, or consume excessive resources.\nProvides a web application firewall service for protecting web applications from common exploits.\nHelps protect applications from attacks that could affect availability, compromise security, or consume excessive resources.\nIncludes rule-based and managed rule sets, rate limiting, and integration with CloudFront, Application Load Balancer, and API Gateway."
+        }
+      ]
+    },
+    {
+      "name": "Serverless",
+      "purpose": "Event-driven, pay-per-use backend infrastructure",
+      "services": [
+        {
+          "name": "AWS Lambda",
+          "description": "Serverless compute service that runs code in response to events.\nPay only for compute time consumed with no server management required.\nAutomatically scales from a few requests per day to thousands per second with no configuration needed.\nSupports multiple programming languages including Node.js, Python, Java, C#, Go, PowerShell, and Ruby.\nIntegrates seamlessly with other AWS services to build serverless applications and microservices architectures."
+        },
+        {
+          "name": "Amazon API Gateway",
+          "description": "Fully managed service for creating, publishing, and managing REST and WebSocket APIs.\nHandles traffic management, authorization, monitoring, and API version management.\nSupports RESTful APIs and WebSocket APIs for real-time two-way communication applications.\nProvides built-in features including request throttling, caching, and API key management.\nIntegrates seamlessly with AWS Lambda, EC2, and other AWS services to build serverless and microservices architectures."
+        },
+        {
+          "name": "Amazon DynamoDB",
+          "description": "Fully managed NoSQL database service with single-digit millisecond latency.\nProvides built-in security, backup, restore, and in-memory caching capabilities.\nAutomatically scales to handle millions of requests per second with consistent performance.\nSupports both document and key-value data models with flexible schema design.\nIncludes built-in encryption, point-in-time recovery, and on-demand backup capabilities with no performance impact."
+        },
+        {
+          "name": "Amazon EventBridge",
+          "description": "Serverless event bus service for building event-driven applications.\nRoutes events from sources to targets using rules and enables loose coupling between services.\nProvides a serverless event bus that makes it easy to connect applications using data from your own applications, SaaS applications, and AWS services.\nEnables you to build event-driven architectures with automatic scaling and pay-per-event pricing.\nSupports event filtering, transformation, and routing to multiple targets including Lambda, SQS, SNS, and Kinesis."
+        },
+        {
+          "name": "Amazon SNS",
+          "description": "Fully managed pub/sub messaging service for microservices and serverless applications.\nCoordinates the delivery of messages to subscribing endpoints or clients.\nEnables you to decouple microservices, distributed systems, and serverless applications.\nSupports multiple subscription types including SQS, Lambda, HTTP/HTTPS, email, SMS, and mobile push notifications.\nProvides topic-based messaging with filtering capabilities and automatic message retry with dead-letter queues."
+        },
+        {
+          "name": "Amazon SQS",
+          "description": "Fully managed message queuing service for decoupling and scaling microservices.\nEliminates the complexity and overhead associated with managing message-oriented middleware.\nProvides two types of queues: Standard queues for maximum throughput and FIFO queues for exactly-once processing.\nAutomatically scales to handle any volume of messages without provisioning or configuration.\nIncludes features like message visibility timeout, dead-letter queues, and server-side encryption for secure messaging."
+        },
+        {
+          "name": "Amazon S3",
+          "description": "Object storage service offering industry-leading scalability, data availability, and security.\nStore and retrieve any amount of data from anywhere on the web with 99.999999999% durability.\nProvides multiple storage classes designed for different use cases including Standard, Intelligent-Tiering, Glacier, and Deep Archive.\nIncludes features like versioning, lifecycle policies, cross-region replication, and server-side encryption.\nIntegrates seamlessly with other AWS services and supports REST APIs for easy integration with applications."
+        },
+        {
+          "name": "AWS AppSync",
+          "description": "Serverless GraphQL API service for building data-driven applications.\nReal-time data synchronization and offline programming capabilities for mobile and web apps.\nEnables you to build scalable GraphQL APIs that connect to data sources including DynamoDB, Lambda, and HTTP APIs.\nProvides real-time subscriptions and offline data synchronization for mobile and web applications.\nIncludes built-in security with AWS IAM integration and automatic API versioning and schema evolution."
+        },
+        {
+          "name": "AWS Fargate",
+          "description": "Serverless compute engine for containers that works with ECS and EKS.\nRun containers without managing servers or clusters.\nEliminates the need to provision, configure, or scale clusters of virtual machines to run containers.\nPay only for the resources you need to run your containers, with automatic scaling based on demand.\nProvides isolation at the task and pod level for enhanced security and resource management."
+        },
+        {
+          "name": "AWS Step Functions",
+          "description": "Serverless orchestration service for building visual workflows.\nCoordinates multiple AWS services into serverless workflows with built-in error handling.\nProvides a visual workflow editor for building distributed applications using state machines.\nHandles error handling, retries, and parallel execution automatically.\nEnables you to build resilient applications by coordinating microservices and serverless functions."
+        }
+      ]
+    },
+    {
+      "name": "Satellite",
+      "purpose": "Manage satellite communications",
+      "services": [
+        {
+          "name": "AWS Ground Station",
+          "description": "Fully managed service for controlling satellite communications and processing satellite data.\nEnables satellite operators to downlink data from satellites without building ground station infrastructure.\nProvides a fully managed service for controlling satellite communications and processing satellite data.\nEnables satellite operators to downlink data from satellites without building ground station infrastructure.\nIncludes global ground station network, data processing, and integration with other AWS services for satellite data analytics."
+        }
+      ]
+    },
+    {
+      "name": "Robotics",
+      "purpose": "Simulate, build, and deploy robotics applications",
+      "services": [
+        {
+          "name": "AWS RoboMaker",
+          "description": "Cloud-based simulation service for testing and validating robotics applications.\nEnables developers to run, scale, and automate simulation workloads without managing infrastructure.\nProvides a cloud-based simulation service for testing and validating robotics applications.\nEnables developers to run, scale, and automate simulation workloads without managing infrastructure.\nIncludes 3D simulation environments, robot development tools, and integration with ROS (Robot Operating System) for comprehensive robotics development."
+        }
+      ]
+    },
+    {
+      "name": "Quantum",
+      "purpose": "Quantum computing experiments and research",
+      "services": [
+        {
+          "name": "Amazon Braket",
+          "description": "Fully managed quantum computing service for exploring and experimenting with quantum algorithms.\nProvides access to quantum hardware from multiple providers and simulators for algorithm development.\nProvides a fully managed quantum computing service for exploring and experimenting with quantum algorithms.\nProvides access to quantum hardware from multiple providers and simulators for algorithm development.\nIncludes Jupyter notebooks, quantum simulators, and integration with classical computing resources for hybrid quantum-classical algorithms."
+        },
+        {
+          "name": "Amazon Quantum Solutions Lab",
+          "description": "Program that connects customers with quantum computing experts from AWS and partners.\nHelps organizations explore quantum computing use cases and develop quantum applications.\nProvides a program that connects customers with quantum computing experts from AWS and partners.\nHelps organizations explore quantum computing use cases and develop quantum applications.\nIncludes workshops, technical support, and collaboration opportunities for building quantum solutions."
+        }
+      ]
+    },
+    {
+      "name": "AR / VR",
+      "purpose": "3D, AR, VR application creation",
+      "services": [
+        {
+          "name": "Amazon Sumerian",
+          "description": "Service for creating and running virtual reality, augmented reality, and 3D applications.\nEnables developers to build immersive experiences without specialized programming or 3D graphics expertise.\nProvides a service for creating and running virtual reality, augmented reality, and 3D applications.\nEnables developers to build immersive experiences without specialized programming or 3D graphics expertise.\nIncludes visual scene editor, 3D asset library, and integration with AWS services for scalable AR/VR applications."
+        }
+      ]
+    }
+  ]

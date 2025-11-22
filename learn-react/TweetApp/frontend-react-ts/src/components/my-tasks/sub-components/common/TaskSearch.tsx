@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react'; // ✅ Added useMemo for Phase 3
 
 type TaskSearchProps = {
   tasks: any[];
@@ -9,18 +9,22 @@ const TaskSearch: React.FC<TaskSearchProps> = ({ tasks, postSearch = () => {} })
   const [inputValue, setInputValue] = useState<string>('');
   const [matchingTasks, setMatchingTasks] = useState<any[]>([]);
 
+  // ✅ Phase 3: Memoize filtered tasks to avoid re-filtering on every render
+  const filteredTasks = useMemo(
+    () => tasks.filter((task) => task.uniqueId.includes(inputValue)),
+    [tasks, inputValue]
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
+  };
 
-    // Filter tasks based on uniqueId containing the input value
-    const filteredTasks = tasks.filter((task) =>
-      task.uniqueId.includes(value)
-    );
-
+  // Update matching tasks when filteredTasks changes
+  React.useEffect(() => {
     setMatchingTasks(filteredTasks);
     postSearch(filteredTasks);
-  };
+  }, [filteredTasks, postSearch]);
 
   return (
     <div>
@@ -40,4 +44,5 @@ const TaskSearch: React.FC<TaskSearchProps> = ({ tasks, postSearch = () => {} })
   );
 };
 
-export default TaskSearch;
+// ✅ Phase 3: Memoize component to prevent unnecessary re-renders
+export default React.memo(TaskSearch);

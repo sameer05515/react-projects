@@ -26,7 +26,7 @@ const GlobalBreadcrumbV2 = () => {
         )}
       </div>
 
-      <p className="text-sm font-semibold text-red-600">
+      {/* <p className="text-sm font-semibold text-red-600">
         Halting (or Stopping) all development, enhancements, and bug fixes until further (or next) instructions from the CEO of SPP
         International Pvt Ltd. Please refer below link for details:&nbsp;
         <a
@@ -37,7 +37,7 @@ const GlobalBreadcrumbV2 = () => {
         >
           Click here
         </a>
-      </p>
+      </p> */}
     </div>
   );
 };

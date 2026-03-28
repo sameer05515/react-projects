@@ -25,6 +25,10 @@ jest.mock("uuid", () => ({
   v4: jest.fn(() => "fixed-uuid"),
 }));
 
+jest.mock("../../redis/redisClient", () => ({
+  getRedisClient: jest.fn(() => null),
+}));
+
 const {
   createTopic,
   createTopicsBulk,

@@ -14,6 +14,12 @@ const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const redoc = require("redoc-express");
 const swaggerSpec = require("./swagger");
+const {
+  connectRedis,
+  quitRedis,
+  isRedisConfigured,
+  isRedisReady,
+} = require("./redis/redisClient");
 
 // App & port configuration
 const app = express();
@@ -109,6 +115,21 @@ app.get("/", (req, res) => {
 // Register general documentation routes
 app.use("", docRoutes);
 
+// Health check (public): MongoDB + optional Redis
+app.get("/health", (req, res) => {
+  const mongoOk = mongoose.connection.readyState === 1;
+  let redisStatus = "disabled";
+  if (isRedisConfigured()) {
+    redisStatus = isRedisReady() ? "connected" : "disconnected";
+  }
+  const ok = mongoOk;
+  res.status(ok ? 200 : 503).json({
+    ok,
+    mongo: mongoOk ? "connected" : "disconnected",
+    redis: redisStatus,
+  });
+});
+
 // Serve Swagger UI API documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -175,10 +196,32 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal Server Error" });
 });
 
-// Start server
-app.listen(PORT, () => {
-  const baseUrl = `http://localhost:${PORT}`;
-  console.log(`[${new Date().toISOString()}] 🚀 Server running at ${baseUrl}`);
-  console.log(`[${new Date().toISOString()}] 📄 Swagger UI docs: ${baseUrl}/api-docs`);
-  console.log(`[${new Date().toISOString()}] 🔁 Redoc docs: ${baseUrl}/redoc`);
+async function start() {
+  await connectRedis();
+
+  app.listen(PORT, () => {
+    const baseUrl = `http://localhost:${PORT}`;
+    console.log(`[${new Date().toISOString()}] 🚀 Server running at ${baseUrl}`);
+    console.log(`[${new Date().toISOString()}] 📄 Swagger UI docs: ${baseUrl}/api-docs`);
+    console.log(`[${new Date().toISOString()}] 🔁 Redoc docs: ${baseUrl}/redoc`);
+  });
+}
+
+start().catch(err => {
+  console.error("Failed to start server:", err);
+  process.exit(1);
 });
+
+async function shutdown(signal) {
+  console.log(`[${new Date().toISOString()}] ${signal} received, shutting down...`);
+  try {
+    await quitRedis();
+    await mongoose.connection.close();
+  } catch (e) {
+    console.error("Shutdown error:", e.message);
+  }
+  process.exit(0);
+}
+
+process.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGTERM", () => shutdown("SIGTERM"));

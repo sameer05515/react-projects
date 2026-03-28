@@ -2,9 +2,30 @@
 
 const { Topic, TopicSection } = require("./Topic.model");
 const { v4: uuidv4 } = require("uuid");
+const { getRedisClient } = require("../../redis/redisClient");
+
+const TOPICS_TREE_CACHE_KEY =
+  process.env.TOPICS_TREE_CACHE_KEY || "tweetapp:topics:all:tree";
+const TOPICS_TREE_CACHE_TTL_SEC = Number(
+  process.env.TOPICS_TREE_CACHE_TTL_SECONDS
+)
+  ? Number(process.env.TOPICS_TREE_CACHE_TTL_SECONDS)
+  : 300;
+
+async function invalidateTopicsTreeCache() {
+  const redis = getRedisClient();
+  if (!redis) return;
+  try {
+    await redis.del(TOPICS_TREE_CACHE_KEY);
+  } catch (e) {
+    console.error("[Topic.service] Redis cache invalidate failed:", e.message);
+  }
+}
 
 const createTopic = async (topicData) => {
-  return await Topic.create(topicData);
+  const created = await Topic.create(topicData);
+  await invalidateTopicsTreeCache();
+  return created;
 };
 
 /**
@@ -44,6 +65,9 @@ const createTopicsBulk = async (topicPayloads) => {
         message: err.message || "Failed to create topic",
       });
     }
+  }
+  if (created.length > 0) {
+    await invalidateTopicsTreeCache();
   }
   return { created, errors };
 };
@@ -85,6 +109,7 @@ const updateTopicByUniqueId = async (uniqueId, topicData) => {
       { uniqueId: { $in: childrenIds } },
       { parentId: topic.uniqueId }
     );
+    await invalidateTopicsTreeCache();
     return topic;
   } catch (err) {
     console.error(err);
@@ -93,6 +118,18 @@ const updateTopicByUniqueId = async (uniqueId, topicData) => {
 };
 
 const getAllTopics = async () => {
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      const cached = await redis.get(TOPICS_TREE_CACHE_KEY);
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (e) {
+      console.error("[Topic.service] Redis cache read failed:", e.message);
+    }
+  }
+
   try {
     const selectFields = {
       uniqueId: 1,
@@ -103,8 +140,16 @@ const getAllTopics = async () => {
       tags: 1,
       published: 1,
     };
-    // console.log(`[Topic.service]: [getAllTopics]: Going to fetch all topics`);
     const topics = await getTopics(null, { ...selectFields });
+    if (redis && topics != null) {
+      try {
+        await redis.set(TOPICS_TREE_CACHE_KEY, JSON.stringify(topics), {
+          EX: TOPICS_TREE_CACHE_TTL_SEC,
+        });
+      } catch (e) {
+        console.error("[Topic.service] Redis cache write failed:", e.message);
+      }
+    }
     return topics;
   } catch (err) {
     console.error(err);
@@ -370,6 +415,7 @@ async function publishTopicByUniqueId(uniqueId) {
   topic.published = true;
   topic.updatedDate = new Date();
   await topic.save();
+  await invalidateTopicsTreeCache();
   return topic;
 }
 

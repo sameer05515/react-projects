@@ -1,51 +1,62 @@
 # Learn to Create React Projects
 
-A curated guide for learning and building React projects from scratch, including libraries, utilities, testing, and UI components.
+A curated workspace for learning and building React projects, including libraries, utilities, testing patterns, and full-stack sample apps.
 
 ## Prerequisites
 
-To get started with these projects, ensure you have the following tools and knowledge:
+Before starting, make sure you have:
 
-- **Basic Programming Knowledge**: Familiarity with JavaScript, HTML, and CSS.
-- **Node.js and npm/yarn**: Install the latest LTS version of [Node.js](https://nodejs.org/) and ensure `npm` or `yarn` is installed.
-- **Git**: Knowledge of Git basics and a GitHub or GitLab account.
-- **Code Editor**: Install [Visual Studio Code](https://code.visualstudio.com/) or another preferred IDE.
-- **Browser DevTools**: Familiarity with using browser developer tools.
-- **React Basics**: Understanding of React fundamentals like components, props, and state.
-- **Optional**: Knowledge of TypeScript is helpful for some modules.
+- Basic JavaScript, HTML, and CSS knowledge
+- Latest LTS [Node.js](https://nodejs.org/) (`npm` is included)
+- Git basics
+- A code editor such as [Visual Studio Code](https://code.visualstudio.com/)
+- Familiarity with browser DevTools
+- React fundamentals (components, props, state, hooks)
+- Optional: TypeScript basics
 
-## Modules
-
-Explore different React-related modules to enhance your development skills:
+## Active Modules
 
 - `In-Progress`: [learn-to-create-react-library](./learn-to-create-react-library)
 - `In-Progress`: [learn-to-create-utility-library](./learn-to-create-utility-library)
-- `Planned`: [learn-to-test-react-components](./learn-to-test-react-components)
-- `Planned`: [learn-to-use-material-ui](./learn-to-use-material-ui)
-- `Planned`: [learn-to-integrate-redux](./learn-to-integrate-redux)
-- `Planned`: [learn-to-build-react-forms](./learn-to-build-react-forms)
-- `Planned`: [learn-to-implement-routing-with-react-router](./learn-to-implement-routing-with-react-router)
-- `Planned`: [learn-to-implement-server-side-rendering](./learn-to-implement-server-side-rendering)
-- `Planned`: [learn-to-use-tailwind-css-with-react](./learn-to-use-tailwind-css-with-react)
+- `In-Progress`: [project-munshi](./project-munshi)
+
+## Planned Modules
+
+- [learn-to-test-react-components](./learn-to-test-react-components)
+- [learn-to-use-material-ui](./learn-to-use-material-ui)
+- [learn-to-integrate-redux](./learn-to-integrate-redux)
+- [learn-to-build-react-forms](./learn-to-build-react-forms)
+- [learn-to-implement-routing-with-react-router](./learn-to-implement-routing-with-react-router)
+- [learn-to-implement-server-side-rendering](./learn-to-implement-server-side-rendering)
+- [learn-to-use-tailwind-css-with-react](./learn-to-use-tailwind-css-with-react)
+
+## Highlight: project-munshi
+
+`project-munshi` is a full-stack project (React + Spring Boot + MongoDB) for project management.
+
+Recent implemented capabilities:
+
+- Soft delete support for projects (`deleted: true/false`)
+- Optional API query handling for status/deleted filtering
+- Markdown description rendering using `marked` + syntax highlight using `prismjs`
+- Delete confirmation popup before project delete
+- Bulk project creation from CSV import
 
 ## Additional Topics to Explore
 
-- Debugging React Applications
-- Optimizing Performance with React
-- Understanding React Hooks (useState, useEffect, useContext, etc.)
-- Creating Custom React Hooks
+- Debugging React applications
+- Performance optimization in React apps
+- Core and advanced React hooks
+- Creating reusable custom hooks
 - Testing with Jest and React Testing Library
-- Integrating APIs with Axios or Fetch
-- Component Styling Techniques (CSS Modules, Styled Components, Emotion)
+- API integration using Fetch/Axios
+- Styling approaches (CSS Modules, Styled Components, Emotion)
 
-## Must-Watch or Refer Links
+## Learning Resources
 
-- [Learn X in Y Minutes: A full series for frontend development](https://www.youtube.com/watch?v=iiADhChRriM&list=PLZlA0Gpn_vH85jM1TWO6TdCtSr6ruglWn)
-- 
-
-Here are some recommended learning resources: 
+- [Learn X in Y Minutes playlist](https://www.youtube.com/watch?v=iiADhChRriM&list=PLZlA0Gpn_vH85jM1TWO6TdCtSr6ruglWn)
 - [references.md](./references.md)
 - [documentation.md](./documentation.md)
-- [version-info.md](./version-details.md)
+- [version-details.md](./version-details.md)
 - [key-terminologies.md](./key-terminologies.md)
 

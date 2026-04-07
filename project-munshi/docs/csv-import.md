@@ -65,10 +65,14 @@ Status is normalized to uppercase in import processing.
 - If bulk API fails, valid rows in that batch are reported as failed.
 - Parsing errors are shown directly in result/errors.
 
-## Best Practices
+## Template download
 
-- Start with a small CSV (5-10 rows) to validate format.
-- Use the built-in template download.
-- Keep headers exactly as documented.
-- Use valid status values only.
+In the import UI, use **Download Template** to get a starter CSV (`project_import_template.csv`) with the correct header row and one example line. That matches the columns in [CSV Template](#csv-template).
+
+## Best practices
+
+- Start with a small CSV (5–10 rows) to validate format.
+- Prefer the in-app **Download Template** so headers match exactly.
+- Keep header names identical to this guide (case-sensitive for `papaparse` header mapping).
+- Use only the supported status values (normalized to uppercase on import).
 

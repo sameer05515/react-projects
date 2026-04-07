@@ -1,6 +1,16 @@
-# Backend API Reference
+# Backend API reference
 
-Base URL: `http://localhost:8080`
+Base URL (local): `http://localhost:8080`
+
+All JSON endpoints use `Content-Type: application/json` unless noted.
+
+## Health
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/health` | Liveness check. Returns JSON such as `status: UP` and a short `message`. |
+
+## Projects
 
 Project endpoints are under `/api/projects`.
 
@@ -18,7 +28,7 @@ Project endpoints are under `/api/projects`.
 | `tags` | string[] | No | Array of tags |
 | `createdAt` | datetime | No | Auto-managed |
 | `updatedAt` | datetime | No | Auto-managed |
-| `deleted` | boolean | No | Soft delete flag, default `false` |
+| `deleted` | boolean | No | Stored in MongoDB for soft delete; **not** included in `ProjectResponse` JSON (clients infer removal from list endpoints). |
 
 ## Endpoints
 
@@ -31,12 +41,12 @@ Project endpoints are under `/api/projects`.
 ### 2) Get all projects
 
 - **GET** `/api/projects`
-- Optional query param:
-  - `status` (boolean, default `false`)
-  - `status=false`: only active (not deleted) projects
-  - `status=true`: include deleted projects
+- Optional query parameter: **`status`** (boolean, default `false`).
+  - In the OpenAPI description this flag is documented as **“Include deleted projects”**.
+  - `false` (default): return only projects where `deleted` is not true (active list).
+  - `true`: return all projects, including soft-deleted ones.
 
-> Note: Query parameter name is `status`, but behavior controls deleted inclusion.
+> Naming note: the query parameter is called `status`, but it does **not** filter by project status (`ACTIVE`, `ON_HOLD`, …). Use [Filter by status](#7-filter-by-status) for that.
 
 ### 3) Get project by id
 
@@ -73,8 +83,9 @@ Project endpoints are under `/api/projects`.
 ### 9) Bulk create projects
 
 - **POST** `/api/projects/bulk`
-- Body: array of `ProjectRequest`
-- Returns: array of created `ProjectResponse`
+- Body: JSON array of `ProjectRequest` objects
+- **201 Created** with body: array of created `ProjectResponse`
+- **400** if validation fails on the payload
 
 ## Sample Requests
 
@@ -126,9 +137,22 @@ curl -X POST http://localhost:8080/api/projects/bulk \
   ]'
 ```
 
-## Error Behavior
+## Request validation (create / update / bulk)
 
-- Validation errors: `400 Bad Request`
-- Missing/deleted project for ID routes: `404 Not Found` behavior via exception handling
-- Unexpected server errors: `500 Internal Server Error`
+`ProjectRequest` requires:
+
+- `name` — non-blank string  
+- `status` — non-blank string (use values like `ACTIVE`, `COMPLETED`, `ON_HOLD`, `CANCELLED`)  
+- `startDate` — required non-null datetime  
+
+Optional: `description`, `endDate`, `owner`, `tags` (string array).
+
+## Error behavior
+
+- Validation errors: **400 Bad Request**
+- Missing project or soft-deleted project on **GET by id** / **PUT** / **DELETE**: **404** (per service rules)
+- Successful soft delete: **204 No Content**
+- Unexpected server errors: **500 Internal Server Error**
+
+For response shapes on errors, see `GlobalExceptionHandler` and `ErrorResponse` in the backend source.
 

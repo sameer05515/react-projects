@@ -7,8 +7,9 @@ Project Munshi is a full-stack project management application built with:
 
 It supports project CRUD, soft delete, markdown descriptions, and CSV bulk import.
 
-## Documentation Index
+## Documentation index
 
+- [Architecture](./docs/architecture.md) — layers, data flow, dev vs production
 - [Setup and Run Guide](./docs/setup-and-run.md)
 - [Backend API Reference](./docs/backend-api.md)
 - [Frontend Guide](./docs/frontend-guide.md)

@@ -30,8 +30,9 @@ mvn spring-boot:run
 
 4. Verify backend:
 
-- API: `http://localhost:8080/api/projects`
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Health: `http://localhost:8080/api/health` (JSON: `status`, `message`)
+- Projects API: `http://localhost:8080/api/projects`
+- Swagger UI (SpringDoc): try `http://localhost:8080/swagger-ui.html` or `http://localhost:8080/swagger-ui/index.html` depending on your SpringDoc version; the redirect usually lands on the working path.
 
 ## Frontend Setup
 
@@ -57,11 +58,20 @@ npm run dev
 
 - `http://localhost:3000`
 
-## Environment and Proxy Notes
+## Environment and proxy
 
-- Frontend API base is `/api`.
-- Vite proxy forwards `/api/*` to `http://localhost:8080`.
-- In production, point frontend API calls to your deployed backend URL.
+- The frontend calls the API with a **relative** base path `/api` (see `src/services/projectApi.ts`).
+- In dev, **Vite** proxies `/api` to `http://localhost:8080` (see `frontend/vite.config.ts`), so the browser only talks to the Vite origin.
+- In **production**, serve the built SPA and configure your host or env so `/api` reaches the real backend (reverse proxy, same origin, or an explicit API URL if you change the client).
+
+## Project layout
+
+```
+project-munshi/
+  backend/          Spring Boot + MongoDB
+  frontend/         React + TypeScript + Vite
+  docs/             Guides (this folder)
+```
 
 ## Common Commands
 

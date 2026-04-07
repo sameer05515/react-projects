@@ -2,6 +2,17 @@
 
 A curated workspace for learning and building React projects, including libraries, utilities, testing patterns, and full-stack sample apps.
 
+## Documentation map
+
+| Document | Description |
+|----------|-------------|
+| [docs/WORKSPACE-OVERVIEW.md](./docs/WORKSPACE-OVERVIEW.md) | What lives in each top-level folder and suggested learning paths. |
+| [documentation.md](./documentation.md) | Curated links to official docs (React, testing, bundlers, APIs). |
+| [references.md](./references.md) | Videos and articles (planned vs completed). |
+| [version-details.md](./version-details.md) | How versions work in this monorepo; Munshi stack snapshot. |
+| [key-terminologies.md](./key-terminologies.md) | Glossary for React and common tooling terms. |
+| [project-munshi](./project-munshi) | Full-stack app: [README](./project-munshi/README.md) and [docs/](./project-munshi/docs/) (setup, API, frontend, CSV, architecture). |
+
 ## Prerequisites
 
 Before starting, make sure you have:
@@ -13,6 +24,10 @@ Before starting, make sure you have:
 - Familiarity with browser DevTools
 - React fundamentals (components, props, state, hooks)
 - Optional: TypeScript basics
+
+## learn-react folder
+
+Dozens of sample apps live under [learn-react](./learn-react/). See the **[project catalog](./learn-react/docs/PROJECT-CATALOG.md)** and [getting started](./learn-react/docs/GETTING-STARTED.md) guide there.
 
 ## Active Modules
 

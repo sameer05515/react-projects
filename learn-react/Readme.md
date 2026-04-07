@@ -1,5 +1,20 @@
 # React Learning
 
+This directory contains **many independent React (and related) sample projects**. None of them share a single root `package.json`; open each app’s folder separately.
+
+## Documentation for this folder
+
+| Document | Purpose |
+|----------|---------|
+| [docs/PROJECT-CATALOG.md](./docs/PROJECT-CATALOG.md) | **Catalog of every project** under `learn-react`: topic, path, stack, and README links. |
+| [docs/GETTING-STARTED.md](./docs/GETTING-STARTED.md) | How to run CRA vs Vite vs nested apps, ports, and backends. |
+| [docs/TWEETAPP-OVERVIEW.md](./docs/TWEETAPP-OVERVIEW.md) | Map of the large **TweetApp** tree (React, React+TS, Vue, Angular, backends). |
+| [../docs/WORKSPACE-OVERVIEW.md](../docs/WORKSPACE-OVERVIEW.md) | How `learn-react` fits in the parent monorepo. |
+
+The sections below are **personal course notes** (Academind React, hooks, patterns) and remain the long-form learning reference.
+
+---
+
 ## 1. Current Reading
 Section 10: Chapter 128
 

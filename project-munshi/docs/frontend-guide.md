@@ -1,6 +1,18 @@
-# Frontend Guide
+# Frontend guide
 
 This guide covers core frontend behavior and user flows in `project-munshi/frontend`.
+
+## Entry and routing
+
+| Path | Screen | Component |
+|------|--------|-----------|
+| `/` | Redirect | → `/projects` |
+| `/projects` | Project list | `ProjectList` |
+| `/projects/new` | Create | `ProjectForm` (`mode="create"`) |
+| `/projects/:id` | Details | `ProjectDetails` |
+| `/projects/:id/edit` | Edit | `ProjectForm` (`mode="edit"`) |
+
+Defined in `src/App.tsx` with `react-router-dom` (`BrowserRouter`, `Routes`, `Route`).
 
 ## Core Stack
 
@@ -57,7 +69,12 @@ This guide covers core frontend behavior and user flows in `project-munshi/front
 - `CsvImport.tsx`: CSV upload, validation, result summary
 - `MarkdownRenderer.tsx`: markdown-to-HTML rendering and Prism highlight
 
-## API Service Layer
+## Dev server and API base URL
+
+- Vite serves the app (default **port 3000**).
+- API calls use the relative prefix **`/api`**, which the Vite dev proxy forwards to Spring Boot on **8080**. See `vite.config.ts` and [setup-and-run.md](./setup-and-run.md).
+
+## API service layer
 
 `src/services/projectApi.ts` centralizes backend calls:
 

@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# next-ts-basics
 
-## Getting Started
+Next.js + TypeScript training project with multiple App Router demos in a single codebase.
 
-First, run the development server:
+## Stack
+
+- Next.js `14.2.11`
+- React `18`
+- TypeScript
+- `better-sqlite3` (local meals DB)
+- `xss`, `js-yaml`, `react-icons`
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs on `http://localhost:5174`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run build`
+- `npm run start`
+- `npm run lint`
 
-## Learn More
+## Project shape
 
-To learn more about Next.js, take a look at the following resources:
+### Route modules (`src/app`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `about` - simple dynamic route example (`about/[slug]`).
+- `dummy-welcome` - dynamic client route (`dummy-welcome/[name]`).
+- `foodies` - meals discovery + share flow (server/data examples).
+- `news-room` - advanced routing examples (route groups, parallel routes, interception).
+- `playground` - large client-side experimentation dashboard.
+- `resume-service` - UI flow + navigation example for resume-oriented pages.
+- `spp-analytics` - parallel-route style page sections (`@tasks`, `@topics`, `@interviews`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Components (`src/components`)
 
-## Deploy on Vercel
+- `foodies-sub-components`
+- `news-room-sub-components`
+- `playground-sub-components`
+- `resume-service-sub-components`
+- plus common wrappers/utils
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Data & server logic (`src/lib`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `meals.ts` - SQLite reads/writes, basic sanitization.
+- `actions.ts` - server action (`shareMeal`) with `revalidatePath` + redirect.
+- `news-room/news.ts` - filter helpers for news archive pages.
+- `topics.ts` - graph transformation + external fetch helpers.
+
+## Notable behavior and caveats
+
+- Root layout (`src/app/layout.tsx`) currently renders a prominent warning banner with a local link (`http://localhost:3002/notifications`) on every page.
+- `getMeals()` introduces an artificial delay (`setTimeout`) and filters out one record.
+- `saveMeal()` currently hardcodes creator/image fields and has commented-out image upload logic.
+- Some route files include intentional experiments, commented alternatives, and non-final naming (e.g. `loading-out.tsx`, `loadin.module.css`).
+
+## DB bootstrap / refresh
+
+Database file is `meals.db` at project root.
+
+To seed meals data:
+
+```bash
+node initdb.js
+```
+
+## Routing features showcased
+
+- Dynamic segments: `[slug]`, `[placeHolder]`
+- Nested layouts
+- Error boundaries (`error.tsx`)
+- Loading states
+- Route handlers (`route.tsx`)
+- Parallel routes (`@archive`, `@latest`, `@tasks`, `@topics`, `@interviews`)
+- Intercepted modal routes (`(.)image-fs`)
+
+See `docs/ROUTES-AND-FEATURES.md` for a route-by-route map.

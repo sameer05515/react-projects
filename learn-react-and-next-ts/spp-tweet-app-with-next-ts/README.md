@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# spp-tweet-app-with-next-ts
 
-## Getting Started
+Focused Next.js TypeScript app used to test and demonstrate components from an external React library.
 
-First, run the development server:
+## Stack
+
+- Next.js `^15.0.3`
+- React `18`
+- TypeScript
+- External library: `@stparap/react-js-library-with-vite-receter-template`
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other scripts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run build`
+- `npm run start`
+- `npm run lint`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## What this app does
 
-## Learn More
+Home page (`src/app/page.tsx`) renders a client component (`src/components/Playground.tsx`) that imports and exercises:
 
-To learn more about Next.js, take a look at the following resources:
+- `PremKaButton` (aliased as `Button`)
+- `PremKaLabel` (aliased as `Label`)
+- `PremKaCounter`
+- `PKJDV`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The page updates a local timestamp label on button click, making it easy to verify client interactivity and component behavior from the external package.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Important files
 
-## Deploy on Vercel
+| File | Purpose |
+|---|---|
+| `src/app/layout.tsx` | Root layout, local font setup (`GeistVF`, `GeistMonoVF`) and global styles |
+| `src/app/page.tsx` | Root route; mounts `Playground` |
+| `src/components/Playground.tsx` | Main integration/demo component |
+| `src/app/globals.css` | Global styles |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Integration notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `Playground.tsx` is marked `"use client"` because it uses React state and interactive third-party components.
+- If external-library exports change, update imports in `Playground.tsx` first.
+- Keep this project minimal; use it as a verification harness when iterating on shared libraries.
+
+## Troubleshooting
+
+- **Module import errors**: ensure package is installed and lockfile is up to date (`npm install`).
+- **Hydration/client issues**: keep interactive components in client components (`"use client"`).
+- **Font loading issues**: verify font files exist in `src/app/fonts/`.

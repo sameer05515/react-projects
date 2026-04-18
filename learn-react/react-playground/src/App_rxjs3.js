@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { map } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
 import './styles.css';
 
-const api = `http://localhost:8085/topics/find`;
-const getName = user => `${user.id} : ${user.title}`;
-const getnamesObservable =(page=0,size=10)=>{ 
-  const names$=ajax
-  .getJSON(`${api}?page=${page}&size=${size}`)
-  .pipe(map((users) => users.map(getName)));
-  return names$;
+/** Public placeholder API — no local server required. @see https://jsonplaceholder.typicode.com/ */
+const PLACEHOLDER_API = 'https://jsonplaceholder.typicode.com';
+const PAGE_SIZE = 10;
+
+const getName = (post) => `${post.id} : ${post.title}`;
+
+const getnamesObservable = (page = 0, size = PAGE_SIZE) => {
+  const start = page * size;
+  return ajax
+    .getJSON(`${PLACEHOLDER_API}/posts?_start=${start}&_limit=${size}`)
+    .pipe(map((posts) => posts.map(getName)));
 };
 
 const useObservable = observable => {
@@ -27,23 +31,21 @@ const useObservable = observable => {
 };
 
 function App() {
-  const [names, setNames]= useState([]);
-  const [pageNo,setPageNo]=useState(0);
-  const nextPage=()=>{
-    setPageNo(pageNo+1);    
-  }
+  const [pageNo, setPageNo] = useState(0);
+  const names$ = useMemo(() => getnamesObservable(pageNo), [pageNo]);
+  const names = useObservable(names$);
 
-  useEffect(()=>{
-    const names = useObservable(getnamesObservable());
-    setNames(names);
-  },[pageNo])
-  //const names = useObservable(getnamesObservable());
-  console.log('will reload names now');
+  const nextPage = () => {
+    setPageNo((p) => p + 1);
+  };
+
   return (
     <div className="App">
       <h1>RxJS with React</h1>
-      <button onClick={nextPage}>Next</button>
-      <List items={names} />
+      <button type="button" onClick={nextPage}>
+        Next
+      </button>
+      <List items={Array.isArray(names) ? names : []} />
     </div>
   );
 }

@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Node.js 17+ (OpenSSL / webpack)
+
+On **Node.js 17+** (including Node 22), you may see **`ERR_OSSL_EVP_UNSUPPORTED`** when running `npm start` or `npm run build`. This template uses **`react-scripts` 4.x** with a webpack version that needs the legacy OpenSSL provider.
+
+`package.json` already sets **`NODE_OPTIONS=--openssl-legacy-provider`** for `start` and `build` via `cross-env` (after `npm install`).
+
+Alternatives: use **Node 16 LTS**, or upgrade **`react-scripts`** / migrate to **Vite**.
+
 ## Available Scripts
 
 In the project directory, you can run:

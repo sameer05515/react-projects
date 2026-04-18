@@ -80,7 +80,7 @@ Related study notes and links: [Readme.md](../Readme.md) (hooks, effects, contex
 
 | Project                                                                  | Run from                            | Stack           | Focus                                                                              |
 | ------------------------------------------------------------------------ | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------- |
-| [react-router-bootstrap-project](../react-router-bootstrap-project/)     | `react-router-bootstrap-project/`   | CRA + Bootstrap | React Router + Bootstrap UI. [README](../react-router-bootstrap-project/README.md) |
+| [react-router-bootstrap-project](../react-router-bootstrap-project/)     | `react-router-bootstrap-project/`   | CRA + Bootstrap + React Router v6 | Five sample routes (`/`, `/about`, `/contact`, `/products`, `/blog`). [README](../react-router-bootstrap-project/README.md) |
 | [coreui-free-react-admin-template](../coreui-free-react-admin-template/) | `coreui-free-react-admin-template/` | CRA + CoreUI    | Admin dashboard template. [README](../coreui-free-react-admin-template/README.md)  |
 
 

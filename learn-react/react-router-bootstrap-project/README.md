@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Routes
+
+| Path | Page |
+|------|------|
+| `/` | Home |
+| `/about` | About |
+| `/contact` | Contact |
+| `/products` | Products |
+| `/blog` | Blog |
+
+Uses **React Router v6** (`BrowserRouter`, `Routes`, `Route`, `NavLink`) and **Bootstrap 5** for layout and the collapsible navbar.
+
 ## Available Scripts
 
 In the project directory, you can run:

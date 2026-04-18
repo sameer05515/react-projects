@@ -8,7 +8,7 @@ const Post = () => {
   const [postContent, setPostContent] = useState("");
 
   useEffect(() => {
-    import("../markdown/my-content.md")
+    import("../markdown/article.md")
       .then(res => {
         fetch(res.default)
           .then(response => response.text())

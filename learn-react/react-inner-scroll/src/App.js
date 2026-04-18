@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import ScrollView, { ScrollElement } from "./scroller";
-import topicMgmtInstance from './axios';
+import placeholderApi from './axios';
 //import Wysiwyg from './Wysiwyg';
 
 //import { TrixEditor } from "react-trix";
@@ -14,17 +14,21 @@ import topicMgmtInstance from './axios';
 // import 'jodit/build/jodit.min.css';
 // import JoditEditor from "jodit-react";
 
-import items from "./data";
-
 class App extends Component {
   componentDidMount() {
-    topicMgmtInstance.get('/groups')
-      .then(response => {
-        console.log(response);
-        this.setState({
-          views: response.data
-        });
+    placeholderApi
+      .get('/posts?_limit=12')
+      .then((response) => {
+        const views = response.data.map((post) => ({
+          id: post.id,
+          title: post.title,
+          description: post.body,
+        }));
+        this.setState({ views });
       })
+      .catch(() => {
+        this.setState({ views: [] });
+      });
   }
 
   state = {
@@ -66,17 +70,17 @@ class App extends Component {
           </div>
         </ScrollView> */}
 
-        {
-          this.state.views.map(({ id, title }) => <button onClick={() => this.scrollTo(id)}>{title}</button>)
-        }
+        {this.state.views.map(({ id, title }) => (
+          <button key={id} type="button" onClick={() => this.scrollTo(id)}>
+            {title}
+          </button>
+        ))}
 
         <ScrollView ref={scroller => this._scroller = scroller}>
           <div className="scroller">
             {this.state.views.map((group) => {
-
-              console.log('group.description' + group.description)
               return (
-                <ScrollElement name={group.id}>
+                <ScrollElement key={group.id} name={group.id}>
                   <div className="item">
 
                     {/* <strong>{group.title}</strong>  : <TrixEditor value={group.description} ></TrixEditor> */}

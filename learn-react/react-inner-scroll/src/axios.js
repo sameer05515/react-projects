@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-const topicMgmtInstance=axios.create({
-    baseURL:'http://127.0.0.1:8080/RestServices/rest/'
+/**
+ * Public placeholder API (no auth). Used instead of the deprecated local REST service.
+ * @see https://jsonplaceholder.typicode.com/
+ */
+const placeholderApi = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
 });
 
-//topicMgmtInstance.defaults.headers.common['Access-Control-Allow-Origin']='*';
-
-export default topicMgmtInstance;
+export default placeholderApi;

@@ -64,6 +64,9 @@ const PLAYGROUND_REGISTRY = [
   ["LineNumberFormatterV1", () => import("./LineNumberFormatter/v1")],
   ["SmartEditorV4Dashboard_V1_0_0", () => import("./smart-editor/main/SmartEditorV4Dashboard_V1_0_0")],
   ["ChatGPTDashboardV1_0_0", () => import("./chatgpt-renderer/AppChatGPTDashboardV1_0_0")],
+  ["SchedulerCalenderWithEventsWithViews", () => import("./calendar/SchedulerCalenderWithEventsWithViews")],
+  ["SchedulerCalenderWithEvents", () => import("./calendar/SchedulerCalenderWithEvents")],
+  ["SchedulerCalender", () => import("./calendar/SchedulerCalender")],
 ];
 
 export const componentNames = PLAYGROUND_REGISTRY.map(([name]) => name);

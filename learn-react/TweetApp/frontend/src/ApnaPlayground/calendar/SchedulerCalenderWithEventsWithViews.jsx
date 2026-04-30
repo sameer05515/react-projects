@@ -11,7 +11,7 @@ import {
 } from "date-fns";
 import React, { useState } from "react";
 
-const Calendar = () => {
+const SchedulerCalenderWithEventsWithViews = () => {
   const [date, setDate] = useState(new Date());
   const [events] = useState([
     { date: new Date(2023, 8, 10), title: "Meeting" },
@@ -149,4 +149,4 @@ const Calendar = () => {
   return <div className="mx-auto max-w-5xl">{renderCalendar()}</div>;
 };
 
-export default Calendar;
+export default SchedulerCalenderWithEventsWithViews;

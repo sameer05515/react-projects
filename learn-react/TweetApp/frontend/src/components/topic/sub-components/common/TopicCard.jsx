@@ -258,9 +258,10 @@ const TopicCard = ({
           renderItem={({ title, action, disabled, isPublishedLabel }, idx) => {
             // Primary actions use blue, secondary actions use gray
             const isPrimaryAction = ["Edit", "Add subtopic", "Add Section", "Pin topic", "Publish"].includes(title);
-            const buttonClass = isPrimaryAction && !isPublishedLabel
-              ? "bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 text-xs rounded mr-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
-              : "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-1.5 py-0.5 text-xs rounded mr-2.5 disabled:opacity-60 disabled:cursor-not-allowed";
+            // const buttonClass = isPrimaryAction && !isPublishedLabel
+            //   ? "bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 text-xs rounded mr-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
+            //   : "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 px-1.5 py-0.5 text-xs rounded mr-2.5 disabled:opacity-60 disabled:cursor-not-allowed";
+            const buttonClass = "bg-blue-600 hover:bg-blue-700 text-white px-1.5 py-0.5 text-xs rounded mr-2.5 disabled:opacity-60 disabled:cursor-not-allowed";
             if (isPublishedLabel) {
               return (
                 <span key={`action_buttons_${idx + 1}`} className="bg-green-100 text-green-800 border border-green-300 px-1.5 py-0.5 text-xs rounded mr-2.5">

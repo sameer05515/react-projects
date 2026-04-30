@@ -63,6 +63,7 @@ const PLAYGROUND_REGISTRY = [
   ["DesignPatternAccordion", () => import("./aws-services/DesignPatternAccordion")],
   ["LineNumberFormatterV1", () => import("./LineNumberFormatter/v1")],
   ["SmartEditorV4Dashboard_V1_0_0", () => import("./smart-editor/main/SmartEditorV4Dashboard_V1_0_0")],
+  ["ChatGPTDashboardV1_0_0", () => import("./chatgpt-renderer/AppChatGPTDashboardV1_0_0")],
 ];
 
 export const componentNames = PLAYGROUND_REGISTRY.map(([name]) => name);

@@ -1,10 +1,10 @@
 // import React from 'react'
-
+// import { BACKEND_APPLICATION_BASE_URL } from '../../../common/constants/globalConstants';
 
 // const EditCategory = () => {
 //     const navigate = useNavigate();
 //     const { id } = useParams();
-//     const url = `http://localhost:3003/intvw-mgmt/v2/categories/${id}`;
+//     const url = `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/categories/${id}`;
 //     const { data } = useDataFetching({url});
 //     return (
 //         <>

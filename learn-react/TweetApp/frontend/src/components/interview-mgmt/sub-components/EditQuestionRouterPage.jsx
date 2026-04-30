@@ -2,11 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import QuestionForm from "./QuestionForm";
 import { apiRequest } from "../../../common/service/apiClient/v1";
+import { BACKEND_APPLICATION_BASE_URL } from "../../../common/constants/globalConstants";
 
 const EditQuestionRouterPage = () => {
   const navigate = useNavigate();
   const { qid } = useParams();
-  const url = `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`;
+  const url = `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/${qid}`;
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);

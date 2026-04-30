@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BACKEND_APPLICATION_BASE_URL } from "../../../../../../common/constants/globalConstants";
 
 // interface StatisticsData {
 //   totalCount: number;
@@ -18,7 +19,7 @@ const ShowStatisticsItr1/**: React.FC<{ iteration: string }>*/ = ({ iteration })
   useEffect(() => {
     setLoading(true);
     axios
-      .get(` http://localhost:3003/think-tank/v1/stats/${iteration}`)
+      .get(`${BACKEND_APPLICATION_BASE_URL}/think-tank/v1/stats/${iteration}`)
       .then((response) => {
         setStatistics(response.data);
         setError(null);

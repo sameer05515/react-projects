@@ -1,6 +1,7 @@
 // wordsSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BACKEND_APPLICATION_BASE_URL } from '../../common/constants/globalConstants';
 
 // Define the initial state
 const initialState = {
@@ -12,7 +13,7 @@ const initialState = {
 // Create an async thunk for fetching paginated data
 export const fetchWords = createAsyncThunk('words/fetchWords', async ({ page, pageSize }) => {
   try {
-    const response = await axios.get(`http://localhost:3003/api/words?page=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`${BACKEND_APPLICATION_BASE_URL}/api/words?page=${page}&pageSize=${pageSize}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;

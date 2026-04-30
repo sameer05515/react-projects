@@ -10,13 +10,14 @@ import {
 } from "../../../redux/slices/interviewMgmtSlice";
 import { useInterviewMgmt } from "../common/InterviewMgmtContextUtil";
 import QuestionCard from "./QuestionCard";
+import { BACKEND_APPLICATION_BASE_URL } from "../../../common/constants/globalConstants";
 
 const ViewQuestionDetailsRouterPage = () => {
   const { partialUpdateQuestionByUniqueId } = useInterviewManagementAPIs();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id, qid } = useParams();
-  const url = `http://localhost:3003/intvw-mgmt/v2/questions/${qid}`;
+  const url = `${BACKEND_APPLICATION_BASE_URL}/intvw-mgmt/v2/questions/${qid}`;
   const { data, refetch } = useFetchByUrl({ url });
   useEffect(() => {
     if (qid) {

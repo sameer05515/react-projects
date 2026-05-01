@@ -5,22 +5,34 @@
 
 function isPublicPath(req) {
   const { method, path: p } = req;
-  const pathLower = p.toLowerCase();
+  const normalizedMethod = (method || "").toUpperCase();
+  const pathLower = (p || "").toLowerCase();
+  const normalizedPath = pathLower.replace(/\/+$/, "") || "/";
 
   // CORS preflight (browser sends OPTIONS without Authorization)
-  if (method === "OPTIONS") return true;
+  if (normalizedMethod === "OPTIONS") return true;
 
   // Docs and health
-  if (p === "/" && method === "GET") return true;
-  if (p === "/health" && method === "GET") return true;
-  if (pathLower.startsWith("/api-docs")) return true;
-  if (pathLower === "/redoc") return true;
-  if (pathLower === "/api-docs-json") return true;
-  if (pathLower === "/help" || pathLower.startsWith("/help")) return true;
+  if (normalizedPath === "/" && normalizedMethod === "GET") return true;
+  if (normalizedPath === "/health" && normalizedMethod === "GET") return true;
+  if (normalizedPath.startsWith("/api-docs")) return true;
+  if (normalizedPath === "/redoc") return true;
+  if (normalizedPath === "/api-docs-json") return true;
+  if (normalizedPath === "/help" || normalizedPath.startsWith("/help/")) return true;
 
   // Auth endpoints (no token required)
-  if (pathLower === "/api/users/register" && method === "POST") return true;
-  if (pathLower === "/api/users/login" && method === "POST") return true;
+  if (
+    normalizedMethod === "POST" &&
+    (normalizedPath === "/api/users/register" || normalizedPath === "/users/register")
+  ) {
+    return true;
+  }
+  if (
+    normalizedMethod === "POST" &&
+    (normalizedPath === "/api/users/login" || normalizedPath === "/users/login")
+  ) {
+    return true;
+  }
 
   return false;
 }

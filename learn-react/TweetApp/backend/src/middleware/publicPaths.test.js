@@ -41,11 +41,15 @@ describe("isPublicPath", () => {
   it("returns true for POST /api/users/register", () => {
     expect(isPublicPath({ method: "POST", path: "/api/users/register" })).toBe(true);
     expect(isPublicPath({ method: "POST", path: "/API/USERS/REGISTER" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/api/users/register/" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/users/register" })).toBe(true);
   });
 
   it("returns true for POST /api/users/login", () => {
     expect(isPublicPath({ method: "POST", path: "/api/users/login" })).toBe(true);
     expect(isPublicPath({ method: "POST", path: "/API/USERS/LOGIN" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/api/users/login/" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/users/login" })).toBe(true);
   });
 
   it("returns false for GET /api/users/login (needs POST)", () => {

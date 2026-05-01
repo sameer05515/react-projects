@@ -20,7 +20,7 @@ const options = {
         <br><br>
         <b>Authentication</b>: Secure endpoints require a Bearer JWT token.<br>
         <b>Contact</b>: support@example.com<br>
-        <b>Base URL</b>: <code>http://localhost:3000</code>
+        <b>Base URL</b>: <code>http://localhost:3003</code>
         <br><br>
         <b>Note:</b> All endpoints prefer and produce <code>application/json</code>.
       `,
@@ -36,7 +36,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'http://localhost:3003',
         description: 'Local development server'
       },
       // Add production server when deploying

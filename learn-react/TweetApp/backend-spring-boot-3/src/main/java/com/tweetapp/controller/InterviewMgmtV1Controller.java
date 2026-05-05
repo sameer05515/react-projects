@@ -35,7 +35,7 @@ public class InterviewMgmtV1Controller {
     @Operation(summary = "Get a category by uniqueId")
     public ResponseEntity<?> getCategoryByUniqueId(@PathVariable String uniqueId) {
         try {
-            InterviewCategory category = interviewMgmtV1Service.getCategoryByUniqueId(uniqueId);
+            Map<String, Object> category = interviewMgmtV1Service.getCategoryResponseByUniqueId(uniqueId);
             if (category == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Category not found"));
             }
@@ -79,6 +79,48 @@ public class InterviewMgmtV1Controller {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Category not found"));
             }
             return ResponseEntity.ok(Map.of("message", "Category deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{categoryId}/questions")
+    @Operation(summary = "Get all questions for a category")
+    public ResponseEntity<?> getQuestionsByCategoryId(@PathVariable String categoryId) {
+        try {
+            return ResponseEntity.ok(interviewMgmtV1Service.getQuestionsByCategoryId(categoryId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/{categoryId}/questions")
+    @Operation(summary = "Add question to a category")
+    public ResponseEntity<?> saveQuestionForCategoryId(@PathVariable String categoryId, @RequestBody Map<String, Object> questionData) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(interviewMgmtV1Service.saveQuestionForCategoryId(categoryId, questionData));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{categoryId}/questions/{quesId}")
+    @Operation(summary = "Update question in a category")
+    public ResponseEntity<?> updateQuestionForCategoryId(@PathVariable String categoryId,
+                                                         @PathVariable String quesId,
+                                                         @RequestBody Map<String, Object> questionData) {
+        try {
+            return ResponseEntity.ok(interviewMgmtV1Service.updateQuestionForCategoryId(categoryId, quesId, questionData));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{categoryId}/questions/{quesId}")
+    @Operation(summary = "Get question by category and question id")
+    public ResponseEntity<?> getQuestionByCategoryIdAndQuesId(@PathVariable String categoryId, @PathVariable String quesId) {
+        try {
+            return ResponseEntity.ok(interviewMgmtV1Service.getQuestionByCategoryIdAndQuesId(categoryId, quesId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }

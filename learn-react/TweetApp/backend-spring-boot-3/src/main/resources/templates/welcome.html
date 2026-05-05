@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TweetApp API Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background-color: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .info-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .info-section p {
+            color: #666;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .info-section strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .info-section a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .info-section a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .links-section {
+            margin: 30px 0;
+        }
+
+        .links-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .timestamp {
+            margin-top: 30px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        #mongodb-status {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        #server-timestamp {
+            font-weight: 600;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the TweetApp API Server!</h1>
+        <p class="subtitle">Your API server is up and running.</p>
+        <div>
+            <span class="status-indicator online"></span>
+            <span style="color: #4caf50; font-weight: 600;">Server Online</span>
+        </div>
+
+        <div class="info-section">
+            <h2>Server Information</h2>
+            <p><strong>Port:</strong> <span id="server-port">3006</span></p>
+            <p><strong>Base URL:</strong> <a href="http://localhost:3006" target="_blank">http://localhost:3006</a></p>
+            <p><strong>MongoDB Status:</strong> <span id="mongodb-status">Connecting...</span></p>
+        </div>
+
+        <div class="links-section">
+            <h2>API Documentation</h2>
+            <div class="button-group">
+                <a href="http://localhost:3006/api-docs" target="_blank" class="button">Swagger UI</a>
+                <a href="http://localhost:3006/redoc" target="_blank" class="button">Redoc</a>
+                <a href="http://localhost:3006/api-docs-json" target="_blank" class="button">API Docs JSON</a>
+            </div>
+        </div>
+
+        <div class="timestamp">
+            Server started at: <span id="server-timestamp"></span>
+        </div>
+    </div>
+
+    <script>
+        // Set server timestamp
+        document.getElementById('server-timestamp').textContent = new Date().toLocaleString();
+
+        // Check MongoDB connection status (simplified check)
+        fetch('http://localhost:3006/api-docs-json')
+            .then(() => {
+                document.getElementById('mongodb-status').textContent = 'Connected';
+                document.getElementById('mongodb-status').style.color = '#4caf50';
+            })
+            .catch(() => {
+                document.getElementById('mongodb-status').textContent = 'Disconnected';
+                document.getElementById('mongodb-status').style.color = '#f44336';
+            });
+    </script>
+</body>
+</html>
+

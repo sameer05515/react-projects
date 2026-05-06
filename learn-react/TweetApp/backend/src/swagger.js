@@ -65,6 +65,7 @@ const options = {
     // Add global tags for grouping, optional
     tags: [
       { name: 'Auth', description: 'Authentication and user session endpoints' },
+      { name: 'User', description: 'User registration, login, profile, and role operations' },
       { name: 'Topic', description: 'Operations on topics and sections' },
       { name: 'Tag', description: 'Tag management' },
       { name: 'MemoryMap', description: 'Memory maps and associated operations' },

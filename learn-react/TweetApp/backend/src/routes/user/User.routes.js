@@ -21,10 +21,11 @@ const {
 
 /**
  * @swagger
- * /users/register:
+ * /api/users/register:
  *   post:
  *     summary: Register a new user
  *     tags: [User]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -70,10 +71,11 @@ router.post('/register', async (req, res) => {
 
 /**
  * @swagger
- * /users/login:
+ * /api/users/login:
  *   post:
  *     summary: Login user
  *     tags: [User]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -119,10 +121,11 @@ router.post('/login', async (req, res) => {
 
 /**
  * @swagger
- * /users/reset-password:
+ * /api/users/reset-password:
  *   post:
  *     summary: Reset user password
  *     tags: [User]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -166,7 +169,7 @@ router.post('/reset-password', async (req, res) => {
 
 /**
  * @swagger
- * /users:
+ * /api/users:
  *   get:
  *     summary: Get all users
  *     tags: [User]
@@ -200,7 +203,7 @@ router.get('/', async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}/admin:
+ * /api/users/{userId}/admin:
  *   put:
  *     summary: Update user role to admin
  *     tags: [User]
@@ -240,7 +243,7 @@ router.put('/:userId/admin', async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}:
+ * /api/users/{userId}:
  *   get:
  *     summary: Get user by ID
  *     tags: [User]
@@ -280,7 +283,7 @@ router.get('/:userId', async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}:
+ * /api/users/{userId}:
  *   put:
  *     summary: Update user by ID
  *     tags: [User]

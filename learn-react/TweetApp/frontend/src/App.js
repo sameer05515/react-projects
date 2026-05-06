@@ -18,7 +18,8 @@ function App() {
     if (token) {
       setIsAuthenticated(true);
     } else {
-      if (window.location.pathname !== "/register") {
+      const publicPaths = ["/register", "/reset-password"];
+      if (!publicPaths.includes(window.location.pathname)) {
         history("/login");
       }
     }

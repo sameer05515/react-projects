@@ -33,6 +33,7 @@ jest.mock("jsonwebtoken", () => ({
 const {
   registerUser,
   loginUser,
+  resetPassword,
   getAllUsers,
   updateUserRole,
   getUserById,
@@ -133,6 +134,35 @@ describe("User.service", () => {
       mockFind.mockRejectedValue(new Error("DB error"));
 
       await expect(getAllUsers()).rejects.toThrow("Error fetching users");
+    });
+  });
+
+  describe("resetPassword", () => {
+    it("updates password hash and saves user", async () => {
+      const user = { password: "old-hash", save: jest.fn().mockResolvedValue(undefined) };
+      mockFindOne.mockResolvedValue(user);
+
+      const result = await resetPassword("u1", "new-pass");
+
+      expect(mockFindOne).toHaveBeenCalledWith({ username: "u1" });
+      expect(user.password).toBe("hashed");
+      expect(user.save).toHaveBeenCalled();
+      expect(result).toEqual({ message: "Password reset successful" });
+    });
+
+    it("throws user not found when username does not exist", async () => {
+      mockFindOne.mockResolvedValue(null);
+
+      await expect(resetPassword("missing", "new-pass")).rejects.toThrow("User not found");
+    });
+
+    it("throws generic reset password error on save failure", async () => {
+      const user = { password: "old-hash", save: jest.fn().mockRejectedValue(new Error("DB error")) };
+      mockFindOne.mockResolvedValue(user);
+
+      await expect(resetPassword("u1", "new-pass")).rejects.toThrow(
+        "An error occurred while resetting password"
+      );
     });
   });
 

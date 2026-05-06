@@ -52,6 +52,13 @@ describe("isPublicPath", () => {
     expect(isPublicPath({ method: "POST", path: "/users/login" })).toBe(true);
   });
 
+  it("returns true for POST /api/users/reset-password", () => {
+    expect(isPublicPath({ method: "POST", path: "/api/users/reset-password" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/API/USERS/RESET-PASSWORD" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/api/users/reset-password/" })).toBe(true);
+    expect(isPublicPath({ method: "POST", path: "/users/reset-password" })).toBe(true);
+  });
+
   it("returns false for GET /api/users/login (needs POST)", () => {
     expect(isPublicPath({ method: "GET", path: "/api/users/login" })).toBe(false);
   });

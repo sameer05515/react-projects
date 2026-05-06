@@ -6,6 +6,7 @@ import * as P from "./lazyPages";
 import { getMainLayoutNestedRouteElements } from "./mainLayoutNestedRoutes";
 import LoginUser from "./login/LoginUser";
 import Registration from "./login/Registration";
+import ResetPassword from "./login/ResetPassword";
 import Notifications from "./Notifications/v1";
 
 const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
@@ -21,6 +22,7 @@ const SPPAppRoutes = ({ isAuthenticated = false, handleLogin = () => {} }) => {
 
           <Route path="/login" element={<LoginUser onLogin={handleLogin} />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/notifications" element={<Notifications />} />
 
           <Route path="*" element={<NotFound />} />

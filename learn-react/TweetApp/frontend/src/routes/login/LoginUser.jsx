@@ -80,6 +80,12 @@ function LoginUser() {
           <p>
             New User? <NavLink to="/register" className="text-blue-600 hover:underline">Sign Up</NavLink>
           </p>
+          <p className="mt-2">
+            Forgot password?{" "}
+            <NavLink to="/reset-password" className="text-blue-600 hover:underline">
+              Reset it
+            </NavLink>
+          </p>
         </div>
       </form>
     </div>

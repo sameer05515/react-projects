@@ -136,11 +136,33 @@ const updateUserById = async (userId, userData) => {
     }
 };
 
+const resetPassword = async (username, newPassword) => {
+    try {
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        return { message: 'Password reset successful' };
+    } catch (error) {
+        if (error.message === 'User not found') {
+            throw error;
+        }
+        throw new Error('An error occurred while resetting password');
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getAllUsers,
     updateUserRole,
     getUserById,
-    updateUserById
+    updateUserById,
+    resetPassword
 };

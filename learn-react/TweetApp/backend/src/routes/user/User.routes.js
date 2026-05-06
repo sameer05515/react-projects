@@ -5,6 +5,7 @@ const router = express.Router();
 const {
     registerUser,
     loginUser,
+    resetPassword,
     getAllUsers,
     updateUserRole,
     getUserById,
@@ -113,6 +114,53 @@ router.post('/login', async (req, res) => {
         res.status(200).json({ token });
     } catch (error) {
         res.status(401).json({ error: error.message });
+    }
+});
+
+/**
+ * @swagger
+ * /users/reset-password:
+ *   post:
+ *     summary: Reset user password
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - newPassword
+ *     responses:
+ *       200:
+ *         description: Password reset successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.post('/reset-password', async (req, res) => {
+    try {
+        const result = await resetPassword(req.body.username, req.body.newPassword);
+        res.status(200).json(result);
+    } catch (error) {
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: error.message });
+        }
+        res.status(500).json({ error: error.message });
     }
 });
 

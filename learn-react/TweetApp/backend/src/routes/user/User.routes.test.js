@@ -5,6 +5,7 @@ const userRouter = require("./User.routes");
 jest.mock("./User.service", () => ({
   registerUser: jest.fn(),
   loginUser: jest.fn(),
+  resetPassword: jest.fn(),
   getAllUsers: jest.fn(),
   updateUserRole: jest.fn(),
   getUserById: jest.fn(),
@@ -79,6 +80,44 @@ describe("User.routes", () => {
         .send({ username: "u", password: "p" });
 
       expect(res.status).toBe(401);
+    });
+  });
+
+  describe("POST /users/reset-password", () => {
+    it("calls resetPassword and returns 200 with success message", async () => {
+      userService.resetPassword.mockResolvedValue({
+        message: "Password reset successful",
+      });
+
+      const res = await request(app)
+        .post("/users/reset-password")
+        .send({ username: "u", newPassword: "new-pass" });
+
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe("Password reset successful");
+      expect(userService.resetPassword).toHaveBeenCalledWith("u", "new-pass");
+    });
+
+    it("returns 404 when resetPassword throws user not found", async () => {
+      userService.resetPassword.mockRejectedValue(new Error("User not found"));
+
+      const res = await request(app)
+        .post("/users/reset-password")
+        .send({ username: "missing", newPassword: "new-pass" });
+
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBe("User not found");
+    });
+
+    it("returns 500 when resetPassword throws any other error", async () => {
+      userService.resetPassword.mockRejectedValue(new Error("Something broke"));
+
+      const res = await request(app)
+        .post("/users/reset-password")
+        .send({ username: "u", newPassword: "new-pass" });
+
+      expect(res.status).toBe(500);
+      expect(res.body.error).toBe("Something broke");
     });
   });
 

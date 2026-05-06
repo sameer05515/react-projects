@@ -33,6 +33,12 @@ function isPublicPath(req) {
   ) {
     return true;
   }
+  if (
+    normalizedMethod === "POST" &&
+    (normalizedPath === "/api/users/reset-password" || normalizedPath === "/users/reset-password")
+  ) {
+    return true;
+  }
 
   return false;
 }

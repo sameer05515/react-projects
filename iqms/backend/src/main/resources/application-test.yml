@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:iqms_test;MODE=MySQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+  cache:
+    type: simple
+
+iqms:
+  jwt:
+    secret: dGVzdC1zZWNyZXQta2V5LWZvci1pcW1zLXVuaXQtdGVzdHMtb25seS1kby1ub3QtdXNl
+    access-token-expiration-ms: 900000
+    refresh-token-expiration-ms: 604800000
+    issuer: iqms-backend-test
+    refresh-cookie-name: iqms_refresh_token
+    secure-cookie: false

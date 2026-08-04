@@ -116,6 +116,23 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         />
       </div>
 
+      <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-start">
+        <label htmlFor="tags" className="font-medium text-slate-700 sm:min-w-[7rem] pt-2">
+          Tags:
+        </label>
+        <div className="w-full min-w-0">
+          <Select
+            isMulti
+            name="tags"
+            id="tags"
+            options={tagOptions}
+            value={tagOptions.filter((tag) => topicData.tags.includes(tag.value))}
+            onChange={handleTagSelect}
+            classNamePrefix="react-select"
+          />
+        </div>
+      </div>
+
       <div>
         <div className="flex items-center gap-2 mb-2">
           <label htmlFor="description" className="font-medium text-slate-700">Description:</label>
@@ -155,22 +172,7 @@ function CreateTopic({ parentId, topic, onSave, onCancelEdit }) {
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-start">
-        <label htmlFor="tags" className="font-medium text-slate-700 sm:min-w-[7rem] pt-2">
-          Tags:
-        </label>
-        <div className="w-full min-w-0">
-          <Select
-            isMulti
-            name="tags"
-            id="tags"
-            options={tagOptions}
-            value={tagOptions.filter((tag) => topicData.tags.includes(tag.value))}
-            onChange={handleTagSelect}
-            classNamePrefix="react-select"
-          />
-        </div>
-      </div>
+      
 
       {formErrors.length > 0 && (
         <div className="rounded-md bg-red-50 border border-red-200 p-3">

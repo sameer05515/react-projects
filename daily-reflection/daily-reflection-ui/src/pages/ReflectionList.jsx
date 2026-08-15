@@ -117,6 +117,13 @@ function ReflectionList() {
     }
   };
 
+  const handleExport = () => {
+  window.open(
+    "http://localhost:8080/api/reflections/export/json",
+    "_blank"
+  );
+};
+
   if (loading) {
     return (
       <div className="container">
@@ -130,6 +137,8 @@ function ReflectionList() {
     <>
       <div className="container">
         <h1>Daily Reflections</h1>
+
+        <button onClick={handleExport}>Export as json</button>
 
         {error && <p className="error">{error}</p>}
 

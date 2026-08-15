@@ -63,4 +63,9 @@ public class DailyReflectionService {
 
         repository.deleteById(id);
     }
+
+    // EXPORT
+    public List<DailyReflection> exportAsJson() {
+        return repository.findAll();
+    }
 }

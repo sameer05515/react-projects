@@ -2,9 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.DailyReflection;
 import com.example.demo.service.DailyReflectionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -80,5 +84,32 @@ public class DailyReflectionController {
         service.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Export all reflections as JSON",
+            description = "Downloads all daily reflections as a JSON file"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Reflections exported successfully"
+    )
+    @GetMapping(
+            value = "/export/json",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<DailyReflection>> exportAsJson() {
+
+        List<DailyReflection> reflections =
+                service.exportAsJson();
+
+        return ResponseEntity
+                .ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=daily-reflections.json"
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(reflections);
     }
 }

@@ -10,7 +10,7 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Navigate to="/add" replace />} />
+        <Route path="/" element={<Navigate to="/reflections" replace />} />
 
         <Route path="/add" element={<AddReflection />} />
 

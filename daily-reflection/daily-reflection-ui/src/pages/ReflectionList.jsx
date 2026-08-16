@@ -138,7 +138,7 @@ function ReflectionList() {
       <div className="container">
         <h1>Daily Reflections</h1>
 
-        <button onClick={handleExport}>Export as json</button>
+        <button className="button-37" onClick={handleExport}>Export as json</button>
 
         {error && <p className="error">{error}</p>}
 

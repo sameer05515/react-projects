@@ -118,11 +118,11 @@ function ReflectionList() {
   };
 
   const handleExport = () => {
-  window.open(
-    "http://localhost:8080/api/reflections/export/json",
-    "_blank"
-  );
-};
+    window.open(
+      "http://localhost:8080/api/reflections/export/json",
+      "_blank"
+    );
+  };
 
   if (loading) {
     return (

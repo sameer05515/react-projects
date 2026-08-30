@@ -111,10 +111,6 @@ h1 {
 
 .folder-form input:focus {
     border-color: #555;
-
-    box-shadow:
-        0 0 0 2px
-        rgba(0, 0, 0, 0.08);
 }
 
 
@@ -133,8 +129,6 @@ h1 {
     font-size: 16px;
 
     cursor: pointer;
-
-    white-space: nowrap;
 }
 
 
@@ -169,13 +163,8 @@ h1 {
 }
 
 
-.error-icon {
-    font-size: 20px;
-}
-
-
 /* ==================================================
-   Gallery header
+   Gallery Header
    ================================================== */
 
 .gallery-header {
@@ -244,7 +233,7 @@ h1 {
 
 
 /* ==================================================
-   Photo card
+   Photo Card
    ================================================== */
 
 .photo-card {
@@ -273,10 +262,6 @@ h1 {
         rgba(0, 0, 0, 0.15);
 }
 
-
-/* ==================================================
-   Image
-   ================================================== */
 
 .image-wrapper {
     width: 100%;
@@ -311,12 +296,9 @@ h1 {
 }
 
 
-/* ==================================================
-   Filename
-   ================================================== */
-
 .photo-name {
-    padding: 11px 12px;
+    padding:
+        11px 12px;
 
     font-size: 14px;
 
@@ -329,7 +311,7 @@ h1 {
 
 
 /* ==================================================
-   Empty message
+   Empty Message
    ================================================== */
 
 .empty-message {
@@ -343,8 +325,6 @@ h1 {
 
 .empty-icon {
     font-size: 60px;
-
-    margin-bottom: 10px;
 }
 
 
@@ -353,11 +333,6 @@ h1 {
 
     margin:
         10px 0;
-}
-
-
-.empty-message p {
-    margin: 0;
 }
 
 
@@ -386,11 +361,13 @@ h1 {
     align-items: center;
 
     justify-content: center;
+
+    overflow: hidden;
 }
 
 
 /* ==================================================
-   Modal image container
+   Image Container
    ================================================== */
 
 .modal-image-container {
@@ -405,9 +382,21 @@ h1 {
     justify-content: center;
 
     padding:
-        60px 100px 80px;
+        70px 120px 100px;
+
+    overflow: hidden;
+
+    /*
+     * Important:
+     * Allows zoomed image to extend
+     * outside its normal size.
+     */
 }
 
+
+/* ==================================================
+   Modal Image
+   ================================================== */
 
 .modal-content {
     display: block;
@@ -425,6 +414,15 @@ h1 {
     user-select: none;
 
     pointer-events: none;
+
+    transform-origin: center center;
+
+    transition:
+        transform 0.15s ease;
+
+    /*
+     * Prevent image from being selected.
+     */
 }
 
 
@@ -467,7 +465,7 @@ h1 {
 
 
 /* ==================================================
-   Navigation buttons
+   Previous / Next buttons
    ================================================== */
 
 .nav-btn {
@@ -494,8 +492,6 @@ h1 {
     color: white;
 
     font-size: 42px;
-
-    line-height: 1;
 
     cursor: pointer;
 
@@ -527,34 +523,105 @@ h1 {
 
 
 /* ==================================================
-   Caption
+   Zoom Controls
    ================================================== */
 
-.image-caption {
+.zoom-controls {
     position: absolute;
 
-    bottom: 20px;
-
     left: 50%;
+
+    bottom: 55px;
 
     transform:
         translateX(-50%);
 
     z-index: 1100;
 
-    max-width: 75%;
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 5px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.65);
+
+    backdrop-filter:
+        blur(5px);
+}
+
+
+.zoom-controls button {
+    width: 40px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+.zoom-controls button:hover {
+    background:
+        rgba(255, 255, 255, 0.25);
+}
+
+
+#zoomLevel {
+    min-width: 55px;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   Caption
+   ================================================== */
+
+.image-caption {
+    position: absolute;
+
+    bottom: 15px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 1050;
+
+    max-width: 70%;
 
     padding:
-        9px 16px;
+        7px 14px;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
     background:
         rgba(0, 0, 0, 0.60);
 
     color: white;
 
-    font-size: 14px;
+    font-size: 13px;
 
     text-align: center;
 
@@ -563,11 +630,15 @@ h1 {
     text-overflow: ellipsis;
 
     white-space: nowrap;
+
+    /*
+     * Keep caption above the background.
+     */
 }
 
 
 /* ==================================================
-   Responsive
+   Mobile
    ================================================== */
 
 @media (max-width: 800px) {
@@ -602,7 +673,7 @@ h1 {
 
     .modal-image-container {
         padding:
-            55px 55px 70px;
+            60px 60px 110px;
     }
 
 
@@ -659,23 +730,23 @@ h1 {
     }
 
 
-    .photo-name {
-        font-size: 12px;
-
-        padding: 8px;
+    .modal-image-container {
+        padding:
+            55px 45px 110px;
     }
 
 
-    .modal-image-container {
-        padding:
-            55px 45px 65px;
+    .zoom-controls {
+        bottom: 45px;
     }
 
 
     .image-caption {
+        bottom: 10px;
+
         max-width: 85%;
 
-        font-size: 12px;
+        font-size: 11px;
     }
 
 

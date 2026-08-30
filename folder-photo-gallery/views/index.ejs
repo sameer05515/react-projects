@@ -95,7 +95,7 @@
 
 
     <!-- ========================================= -->
-    <!-- Gallery information -->
+    <!-- Gallery -->
     <!-- ========================================= -->
 
     <% if (images.length > 0) { %>
@@ -128,17 +128,11 @@
         </div>
 
 
-        <!-- ===================================== -->
-        <!-- Gallery -->
-        <!-- ===================================== -->
-
         <div class="gallery">
 
             <% images.forEach((image, index) => { %>
 
-                <div
-                    class="photo-card"
-                >
+                <div class="photo-card">
 
                     <div class="image-wrapper">
 
@@ -150,7 +144,6 @@
                         >
 
                     </div>
-
 
                     <div class="photo-name">
 
@@ -167,10 +160,6 @@
 
     <% } else if (folderPath && !error) { %>
 
-
-        <!-- ===================================== -->
-        <!-- No photos -->
-        <!-- ===================================== -->
 
         <div class="empty-message">
 
@@ -208,22 +197,6 @@
 
 
     <!-- ============================================= -->
-    <!-- Previous -->
-    <!-- ============================================= -->
-
-    <button
-        type="button"
-        class="nav-btn prev-btn"
-        onclick="showPrevious(event)"
-        aria-label="Previous image"
-    >
-
-        &#10094;
-
-    </button>
-
-
-    <!-- ============================================= -->
     <!-- Close -->
     <!-- ============================================= -->
 
@@ -233,17 +206,32 @@
         onclick="closeImage(event)"
         aria-label="Close"
     >
-
         &times;
-
     </button>
 
 
     <!-- ============================================= -->
-    <!-- Image -->
+    <!-- Previous -->
     <!-- ============================================= -->
 
-    <div class="modal-image-container">
+    <button
+        type="button"
+        class="nav-btn prev-btn"
+        onclick="showPrevious(event)"
+        aria-label="Previous image"
+    >
+        &#10094;
+    </button>
+
+
+    <!-- ============================================= -->
+    <!-- Image area -->
+    <!-- ============================================= -->
+
+    <div
+        id="zoomContainer"
+        class="modal-image-container"
+    >
 
         <img
             id="modalImage"
@@ -264,10 +252,45 @@
         onclick="showNext(event)"
         aria-label="Next image"
     >
-
         &#10095;
-
     </button>
+
+
+    <!-- ============================================= -->
+    <!-- Zoom controls -->
+    <!-- ============================================= -->
+
+    <div class="zoom-controls">
+
+        <button
+            type="button"
+            onclick="zoomOut(event)"
+            title="Zoom out"
+        >
+            −
+        </button>
+
+        <span id="zoomLevel">
+            100%
+        </span>
+
+        <button
+            type="button"
+            onclick="zoomIn(event)"
+            title="Zoom in"
+        >
+            +
+        </button>
+
+        <button
+            type="button"
+            onclick="resetZoom(event)"
+            title="Reset zoom"
+        >
+            ↺
+        </button>
+
+    </div>
 
 
     <!-- ============================================= -->
@@ -288,7 +311,7 @@
 
 
 // =================================================
-// Images received from server
+// Images
 // =================================================
 
 const images =
@@ -296,6 +319,19 @@ const images =
 
 
 let currentIndex = 0;
+
+
+// =================================================
+// Zoom configuration
+// =================================================
+
+let zoomLevel = 1;
+
+const MIN_ZOOM = 0.5;
+
+const MAX_ZOOM = 5;
+
+const ZOOM_STEP = 0.25;
 
 
 // =================================================
@@ -312,6 +348,9 @@ function openImage(index) {
     currentIndex = index;
 
 
+    resetZoom();
+
+
     updateModalImage();
 
 
@@ -324,7 +363,6 @@ function openImage(index) {
     modal.style.display = "flex";
 
 
-    // Prevent background scrolling
     document.body.classList.add(
         "modal-open"
     );
@@ -370,6 +408,9 @@ function updateModalImage() {
     caption.innerText =
         `${currentIndex + 1} / ${images.length}  •  ${image.name}`;
 
+
+    applyZoom();
+
 }
 
 
@@ -400,6 +441,8 @@ function showPrevious(event) {
     }
 
 
+    resetZoom();
+
     updateModalImage();
 
 }
@@ -424,19 +467,169 @@ function showNext(event) {
     currentIndex++;
 
 
-    if (
-        currentIndex >=
-        images.length
-    ) {
+    if (currentIndex >= images.length) {
 
         currentIndex = 0;
 
     }
 
 
+    resetZoom();
+
     updateModalImage();
 
 }
+
+
+// =================================================
+// Zoom In
+// =================================================
+
+function zoomIn(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    zoomLevel += ZOOM_STEP;
+
+
+    if (zoomLevel > MAX_ZOOM) {
+        zoomLevel = MAX_ZOOM;
+    }
+
+
+    applyZoom();
+
+}
+
+
+// =================================================
+// Zoom Out
+// =================================================
+
+function zoomOut(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    zoomLevel -= ZOOM_STEP;
+
+
+    if (zoomLevel < MIN_ZOOM) {
+        zoomLevel = MIN_ZOOM;
+    }
+
+
+    applyZoom();
+
+}
+
+
+// =================================================
+// Reset zoom
+// =================================================
+
+function resetZoom(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    zoomLevel = 1;
+
+
+    applyZoom();
+
+}
+
+
+// =================================================
+// Apply zoom
+// =================================================
+
+function applyZoom() {
+
+    const image =
+        document.getElementById(
+            "modalImage"
+        );
+
+
+    const zoomText =
+        document.getElementById(
+            "zoomLevel"
+        );
+
+
+    if (!image) {
+        return;
+    }
+
+
+    image.style.transform =
+        `scale(${zoomLevel})`;
+
+
+    zoomText.innerText =
+        `${Math.round(zoomLevel * 100)}%`;
+
+}
+
+
+// =================================================
+// Mouse wheel zoom
+// =================================================
+
+document.addEventListener(
+    "wheel",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "imageModal"
+            );
+
+
+        if (
+            modal.style.display !==
+            "flex"
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * Zoom using mouse wheel.
+         *
+         * Wheel up   = zoom in
+         * Wheel down = zoom out
+         */
+
+        if (event.deltaY < 0) {
+
+            zoomIn();
+
+        } else {
+
+            zoomOut();
+
+        }
+
+
+        event.preventDefault();
+
+    },
+    {
+        passive: false
+    }
+);
 
 
 // =================================================
@@ -464,10 +657,12 @@ function closeImage(event) {
     );
 
 
-    // Clear image
     document.getElementById(
         "modalImage"
     ).src = "";
+
+
+    resetZoom();
 
 }
 
@@ -496,7 +691,7 @@ document
 
 
 // =================================================
-// Keyboard navigation
+// Keyboard controls
 // =================================================
 
 document.addEventListener(
@@ -541,38 +736,31 @@ document.addEventListener(
 
                 break;
 
-        }
 
-    }
-);
+            case "+":
 
+            case "=":
 
-// =================================================
-// Prevent scrolling when modal is open
-// =================================================
+                zoomIn();
 
-document.addEventListener(
-    "wheel",
-    function(event) {
-
-        const modal =
-            document.getElementById(
-                "imageModal"
-            );
+                break;
 
 
-        if (
-            modal.style.display ===
-            "flex"
-        ) {
+            case "-":
 
-            event.preventDefault();
+                zoomOut();
+
+                break;
+
+
+            case "0":
+
+                resetZoom();
+
+                break;
 
         }
 
-    },
-    {
-        passive: false
     }
 );
 

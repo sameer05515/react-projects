@@ -1,7 +1,10 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,19 +12,44 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Folder Photo Gallery</title>
+    <title>
+        Folder Photo Gallery
+    </title>
 
     <link
         rel="stylesheet"
         href="/style.css"
     >
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <h1>📸 Folder Photo Gallery</h1>
+
+    <!-- ========================================= -->
+    <!-- Header -->
+    <!-- ========================================= -->
+
+    <header>
+
+        <h1>
+            📸 Folder Photo Gallery
+        </h1>
+
+        <p class="subtitle">
+            Enter a folder path to view its photos
+        </p>
+
+    </header>
+
+
+    <!-- ========================================= -->
+    <!-- Folder input -->
+    <!-- ========================================= -->
 
     <form
         action="/gallery"
@@ -32,8 +60,9 @@
         <input
             type="text"
             name="folderPath"
-            placeholder="Enter folder path"
+            placeholder="C:\Users\Prem\Pictures"
             value="<%= folderPath %>"
+            autocomplete="off"
             required
         >
 
@@ -43,43 +72,90 @@
 
     </form>
 
+
+    <!-- ========================================= -->
+    <!-- Error -->
+    <!-- ========================================= -->
+
     <% if (error) { %>
 
         <div class="error">
-            <%= error %>
+
+            <span class="error-icon">
+                ⚠️
+            </span>
+
+            <span>
+                <%= error %>
+            </span>
+
         </div>
 
     <% } %>
+
+
+    <!-- ========================================= -->
+    <!-- Gallery information -->
+    <!-- ========================================= -->
 
     <% if (images.length > 0) { %>
 
         <div class="gallery-header">
 
-            <h2>
-                <%= images.length %> Photos
-            </h2>
+            <div>
 
-            <div class="folder-path">
-                <%= folderPath %>
+                <h2>
+                    Photos
+                </h2>
+
+                <div class="folder-path">
+                    <%= folderPath %>
+                </div>
+
+            </div>
+
+
+            <div class="photo-count">
+
+                <%= images.length %>
+
+                <span>
+                    photos
+                </span>
+
             </div>
 
         </div>
 
+
+        <!-- ===================================== -->
+        <!-- Gallery -->
+        <!-- ===================================== -->
+
         <div class="gallery">
 
-            <% images.forEach(image => { %>
+            <% images.forEach((image, index) => { %>
 
-                <div class="photo-card">
+                <div
+                    class="photo-card"
+                >
 
-                    <img
-                        src="<%= image.url %>"
-                        alt="<%= image.name %>"
-                        loading="lazy"
-                        onclick="openImage('<%= image.url %>')"
-                    >
+                    <div class="image-wrapper">
+
+                        <img
+                            src="<%= image.url %>"
+                            alt="<%= image.name %>"
+                            loading="lazy"
+                            onclick="openImage(<%= index %>)"
+                        >
+
+                    </div>
+
 
                     <div class="photo-name">
+
                         <%= image.name %>
+
                     </div>
 
                 </div>
@@ -88,65 +164,423 @@
 
         </div>
 
+
     <% } else if (folderPath && !error) { %>
 
+
+        <!-- ===================================== -->
+        <!-- No photos -->
+        <!-- ===================================== -->
+
         <div class="empty-message">
-            No photos found in this folder.
+
+            <div class="empty-icon">
+                🖼️
+            </div>
+
+            <h2>
+                No photos found
+            </h2>
+
+            <p>
+                This folder does not contain
+                supported image files.
+            </p>
+
         </div>
+
 
     <% } %>
 
+
 </div>
 
+
+
+<!-- ================================================= -->
+<!-- IMAGE CAROUSEL MODAL -->
+<!-- ================================================= -->
 
 <div
     id="imageModal"
     class="modal"
-    onclick="closeImage()"
 >
 
-    <span class="close">
-        &times;
-    </span>
 
-    <img
-        id="modalImage"
-        class="modal-content"
+    <!-- ============================================= -->
+    <!-- Previous -->
+    <!-- ============================================= -->
+
+    <button
+        type="button"
+        class="nav-btn prev-btn"
+        onclick="showPrevious(event)"
+        aria-label="Previous image"
     >
+
+        &#10094;
+
+    </button>
+
+
+    <!-- ============================================= -->
+    <!-- Close -->
+    <!-- ============================================= -->
+
+    <button
+        type="button"
+        class="close"
+        onclick="closeImage(event)"
+        aria-label="Close"
+    >
+
+        &times;
+
+    </button>
+
+
+    <!-- ============================================= -->
+    <!-- Image -->
+    <!-- ============================================= -->
+
+    <div class="modal-image-container">
+
+        <img
+            id="modalImage"
+            class="modal-content"
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- Next -->
+    <!-- ============================================= -->
+
+    <button
+        type="button"
+        class="nav-btn next-btn"
+        onclick="showNext(event)"
+        aria-label="Next image"
+    >
+
+        &#10095;
+
+    </button>
+
+
+    <!-- ============================================= -->
+    <!-- Caption -->
+    <!-- ============================================= -->
+
+    <div
+        id="imageCaption"
+        class="image-caption"
+    ></div>
+
 
 </div>
 
 
+
 <script>
 
-function openImage(url) {
 
-    const modal = document.getElementById("imageModal");
-    const image = document.getElementById("modalImage");
+// =================================================
+// Images received from server
+// =================================================
 
-    image.src = url;
-
-    modal.style.display = "flex";
-}
+const images =
+    <%- JSON.stringify(images) %>;
 
 
-function closeImage() {
-
-    document.getElementById("imageModal")
-        .style.display = "none";
-
-}
+let currentIndex = 0;
 
 
-document.addEventListener("keydown", event => {
+// =================================================
+// Open image
+// =================================================
 
-    if (event.key === "Escape") {
-        closeImage();
+function openImage(index) {
+
+    if (!images.length) {
+        return;
     }
 
-});
+
+    currentIndex = index;
+
+
+    updateModalImage();
+
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+
+    modal.style.display = "flex";
+
+
+    // Prevent background scrolling
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+// =================================================
+// Update modal image
+// =================================================
+
+function updateModalImage() {
+
+    if (!images.length) {
+        return;
+    }
+
+
+    const image =
+        images[currentIndex];
+
+
+    const modalImage =
+        document.getElementById(
+            "modalImage"
+        );
+
+
+    const caption =
+        document.getElementById(
+            "imageCaption"
+        );
+
+
+    modalImage.src =
+        image.url;
+
+
+    modalImage.alt =
+        image.name;
+
+
+    caption.innerText =
+        `${currentIndex + 1} / ${images.length}  •  ${image.name}`;
+
+}
+
+
+// =================================================
+// Previous image
+// =================================================
+
+function showPrevious(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    if (!images.length) {
+        return;
+    }
+
+
+    currentIndex--;
+
+
+    if (currentIndex < 0) {
+
+        currentIndex =
+            images.length - 1;
+
+    }
+
+
+    updateModalImage();
+
+}
+
+
+// =================================================
+// Next image
+// =================================================
+
+function showNext(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    if (!images.length) {
+        return;
+    }
+
+
+    currentIndex++;
+
+
+    if (
+        currentIndex >=
+        images.length
+    ) {
+
+        currentIndex = 0;
+
+    }
+
+
+    updateModalImage();
+
+}
+
+
+// =================================================
+// Close modal
+// =================================================
+
+function closeImage(event) {
+
+    if (event) {
+        event.stopPropagation();
+    }
+
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+
+    modal.style.display = "none";
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+
+    // Clear image
+    document.getElementById(
+        "modalImage"
+    ).src = "";
+
+}
+
+
+// =================================================
+// Click outside image
+// =================================================
+
+document
+    .getElementById("imageModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeImage();
+
+            }
+
+        }
+    );
+
+
+// =================================================
+// Keyboard navigation
+// =================================================
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "imageModal"
+            );
+
+
+        if (
+            modal.style.display !==
+            "flex"
+        ) {
+
+            return;
+
+        }
+
+
+        switch (event.key) {
+
+            case "Escape":
+
+                closeImage();
+
+                break;
+
+
+            case "ArrowLeft":
+
+                showPrevious();
+
+                break;
+
+
+            case "ArrowRight":
+
+                showNext();
+
+                break;
+
+        }
+
+    }
+);
+
+
+// =================================================
+// Prevent scrolling when modal is open
+// =================================================
+
+document.addEventListener(
+    "wheel",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "imageModal"
+            );
+
+
+        if (
+            modal.style.display ===
+            "flex"
+        ) {
+
+            event.preventDefault();
+
+        }
+
+    },
+    {
+        passive: false
+    }
+);
+
 
 </script>
 
+
 </body>
+
 </html>
+

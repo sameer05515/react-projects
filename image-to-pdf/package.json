@@ -1,0 +1,14 @@
+
+{
+  "name": "image-folder-to-pdf",
+  "version": "1.0.0",
+  "description": "Create a PDF from all images in a folder",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
+

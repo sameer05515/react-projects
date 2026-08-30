@@ -1,0 +1,186 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 40px auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.folder-form {
+    display: flex;
+    gap: 10px;
+    max-width: 900px;
+    margin: 0 auto 35px;
+}
+
+.folder-form input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.folder-form button {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    background: #333;
+    color: white;
+}
+
+.folder-form button:hover {
+    opacity: 0.85;
+}
+
+.error {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 8px;
+    background: #ffe5e5;
+    color: #a60000;
+}
+
+.gallery-header {
+    margin-bottom: 20px;
+}
+
+.gallery-header h2 {
+    margin-bottom: 5px;
+}
+
+.folder-path {
+    color: #666;
+    word-break: break-all;
+}
+
+.gallery {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(220px, 1fr));
+
+    gap: 20px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.photo-card img {
+    display: block;
+    width: 100%;
+    height: 220px;
+
+    object-fit: cover;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.photo-card img:hover {
+    transform: scale(1.04);
+}
+
+.photo-name {
+    padding: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 14px;
+}
+
+.empty-message {
+    text-align: center;
+    color: #777;
+    font-size: 18px;
+    margin-top: 50px;
+}
+
+
+/*
+Modal
+*/
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    z-index: 1000;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        rgba(0, 0, 0, 0.9);
+
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90%;
+
+    object-fit: contain;
+}
+
+.close {
+    position: absolute;
+
+    top: 20px;
+    right: 40px;
+
+    color: white;
+
+    font-size: 45px;
+
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+
+    .folder-form {
+        flex-direction: column;
+    }
+
+    .gallery {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .photo-card img {
+        height: 160px;
+    }
+}

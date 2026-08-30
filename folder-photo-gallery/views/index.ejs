@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Folder Photo Gallery</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📸 Folder Photo Gallery</h1>
+
+    <form
+        action="/gallery"
+        method="POST"
+        class="folder-form"
+    >
+
+        <input
+            type="text"
+            name="folderPath"
+            placeholder="Enter folder path"
+            value="<%= folderPath %>"
+            required
+        >
+
+        <button type="submit">
+            Show Photos
+        </button>
+
+    </form>
+
+    <% if (error) { %>
+
+        <div class="error">
+            <%= error %>
+        </div>
+
+    <% } %>
+
+    <% if (images.length > 0) { %>
+
+        <div class="gallery-header">
+
+            <h2>
+                <%= images.length %> Photos
+            </h2>
+
+            <div class="folder-path">
+                <%= folderPath %>
+            </div>
+
+        </div>
+
+        <div class="gallery">
+
+            <% images.forEach(image => { %>
+
+                <div class="photo-card">
+
+                    <img
+                        src="<%= image.url %>"
+                        alt="<%= image.name %>"
+                        loading="lazy"
+                        onclick="openImage('<%= image.url %>')"
+                    >
+
+                    <div class="photo-name">
+                        <%= image.name %>
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    <% } else if (folderPath && !error) { %>
+
+        <div class="empty-message">
+            No photos found in this folder.
+        </div>
+
+    <% } %>
+
+</div>
+
+
+<div
+    id="imageModal"
+    class="modal"
+    onclick="closeImage()"
+>
+
+    <span class="close">
+        &times;
+    </span>
+
+    <img
+        id="modalImage"
+        class="modal-content"
+    >
+
+</div>
+
+
+<script>
+
+function openImage(url) {
+
+    const modal = document.getElementById("imageModal");
+    const image = document.getElementById("modalImage");
+
+    image.src = url;
+
+    modal.style.display = "flex";
+}
+
+
+function closeImage() {
+
+    document.getElementById("imageModal")
+        .style.display = "none";
+
+}
+
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape") {
+        closeImage();
+    }
+
+});
+
+</script>
+
+</body>
+</html>

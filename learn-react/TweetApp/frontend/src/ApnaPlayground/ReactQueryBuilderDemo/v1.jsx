@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { QueryBuilder } from "react-querybuilder";
 import { materialControlElements } from "@react-querybuilder/material";
-// import "@react-querybuilder/material/dist/index.css"; // Import Material styles
-import "react-querybuilder/dist/query-builder.css"; // Import core styles
+import "react-querybuilder/dist/query-builder.css";
 
 const initialQuery = {
   combinator: "and",
@@ -13,10 +12,10 @@ const initialQuery = {
 };
 
 const fields = [
-  { name: "name", label: "Name", value: "string" },
-  { name: "age", label: "Age", value: "number" },
-  { name: "city", label: "City", value: "string" },
-  { name: "dob", label: "Date of Birth", value: "date" },
+  { name: "name", label: "Name", datatype: "string" },
+  { name: "age", label: "Age", datatype: "number" },
+  { name: "city", label: "City", datatype: "string" },
+  { name: "dob", label: "Date of Birth", datatype: "date" },
 ];
 
 const ReactQueryBuilderDemoV1 = () => {
@@ -24,16 +23,22 @@ const ReactQueryBuilderDemoV1 = () => {
 
   return (
     <div className="p-5 font-sans">
-      <h2 className="text-2xl font-bold mb-4">React Query Builder with Material UI</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        React Query Builder with Material UI
+      </h2>
+
       <QueryBuilder
         fields={fields}
         query={query}
-        onQueryChange={(newQuery) => setQuery(newQuery)}
+        onQueryChange={setQuery}
         controlElements={materialControlElements}
       />
+
       <div className="mt-5">
         <h3 className="text-xl font-semibold mb-2">Generated Query:</h3>
-        <pre className="bg-gray-100 p-4 rounded overflow-auto">{JSON.stringify(query, null, 2)}</pre>
+        <pre className="bg-gray-100 p-4 rounded overflow-auto">
+          {JSON.stringify(query, null, 2)}
+        </pre>
       </div>
     </div>
   );

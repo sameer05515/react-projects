@@ -7,10 +7,10 @@
     "@ckeditor/ckeditor5-react": "^6.1.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.1",
-    "@mui/material": "^6.4.1",
-    "@mui/x-date-pickers": "^7.24.0",
-    "@react-querybuilder/material": "^8.1.1",
+    "@mui/icons-material": "6.5.0",
+    "@mui/material": "6.5.0",
+    "@mui/x-date-pickers": "7.29.4",
+    "@react-querybuilder/material": "8.24.4",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -45,16 +45,17 @@
     "react-toastify": "^9.1.3",
     "rehype-highlight": "^7.0.0",
     "remark-gfm": "^4.0.0",
-    "styled-components": "^6.1.11",
+    "styled-components": "6.1.19",
     "uuid": "^9.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-querybuilder": "8.24.4"
   },
   "scripts": {
-    "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && react-scripts build",
-    "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "test:coverage:ci": "react-scripts test --coverage --watchAll=false --ci --reporters=default --reporters=jest-junit",
+    "start": "react-dotenv && craco start",
+    "build": "react-dotenv && craco build",
+    "test": "craco test",
+    "test:coverage": "craco test --coverage --watchAll=false",
+    "test:coverage:ci": "craco test --coverage --watchAll=false --ci --reporters=default --reporters=jest-junit",
     "coverage:open": "npx --yes open-cli@8.0.0 coverage/lcov-report/index.html",
     "coverage:serve": "npx --yes http-server@14 coverage/lcov-report -p 9777 -o",
     "eject": "react-scripts eject"
@@ -85,7 +86,10 @@
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
-    "jest-junit": "^16.0.0"
+    "jest-junit": "^16.0.0",
+    "@craco/craco": "7.1.0",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7"
   },
   "jest": {
     "collectCoverageFrom": [
